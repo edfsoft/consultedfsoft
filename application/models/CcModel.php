@@ -76,6 +76,7 @@ class CcModel extends CI_Model
         $updatedata = array(
             // 'doctorPassword' => $post['ccCnfmPassword']
             'doctorPassword' => password_hash($post['ccCnfmPassword'], PASSWORD_BCRYPT),
+            'firstLoginPswd' => '1'
         );
         $this->db->where('doctorMobile', $post['ccMobileNum']);
         $this->db->update('cc_details', $updatedata);
@@ -229,7 +230,16 @@ class CcModel extends CI_Model
         return ($this->db->affected_rows() > 0);
     }
 
+    // In application/models/Cc_model.php (create this file if not exists, or add to existing Cc_model.php)
 
+
+    public function check_session_name($chief_full_name) {
+        // Check if session 'ccName' exists and matches the provided chief_full_name
+        if ($this->session->has_userdata('ccName') && $this->session->userdata('ccName') === $chief_full_name) {
+            return true;
+        }
+        return false;
+    }
 
 }
 ?>

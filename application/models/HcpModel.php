@@ -76,6 +76,7 @@ class HcpModel extends CI_Model
         $post = $this->input->post(null, true);
         $updatedata = array(
             'hcpPassword' => password_hash($post['hcpCnfmPassword'], PASSWORD_BCRYPT),
+            'firstLoginPswd' => '1'
         );
         $this->db->where('hcpMobile', $post['hcpMobileNum']);
         $this->db->update('hcp_details', $updatedata);
@@ -663,20 +664,21 @@ class HcpModel extends CI_Model
     }
 
 
-    function generateMeetingID() {
-    $chars = 'abcdefghijklmnopqrstuvwxyz'; // Google Meet uses lowercase letters
-    
-    // Generate 3 random letters for the first part
-    $part1 = substr(str_shuffle($chars), 0, 3);
-    // Generate 4 random letters for the middle part
-    $part2 = substr(str_shuffle($chars), 0, 4);
-    // Generate 3 random letters for the last part
-    $part3 = substr(str_shuffle($chars), 0, 3);
+    function generateMeetingID()
+    {
+        $chars = 'abcdefghijklmnopqrstuvwxyz'; // Google Meet uses lowercase letters
 
-    return $part1 . '-' . $part2 . '-' . $part3; // Result: wzo-dprz-zqy
-}
+        // Generate 3 random letters for the first part
+        $part1 = substr(str_shuffle($chars), 0, 3);
+        // Generate 4 random letters for the middle part
+        $part2 = substr(str_shuffle($chars), 0, 4);
+        // Generate 3 random letters for the last part
+        $part3 = substr(str_shuffle($chars), 0, 3);
 
-public function insertAppointment()
+        return $part1 . '-' . $part2 . '-' . $part3; // Result: wzo-dprz-zqy
+    }
+
+    public function insertAppointment()
     {
         $post = $this->input->post(null, true);
 

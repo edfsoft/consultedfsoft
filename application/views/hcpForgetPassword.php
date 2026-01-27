@@ -102,14 +102,14 @@
                                         class="text-danger">*</span></label>
                                 <input type="number" name="hcpMobileNum" id="hcpMobileNum" placeholder="9876543210"
                                     class="form-control rounded-pill p-3">
-                                <div id="hcpMobileNum_err" class="text-danger pt-1"></div>
+                                <small id="hcpMobileNum_err" class="text-danger pt-1"></small>
                             </div>
                             <div class="mb-3">
                                 <label for="hcpPassMail" class="form-label">Mail Id <span
                                         class="text-danger">*</span></label>
                                 <input type="mail" name="hcpPassMail" id="hcpPassMail" placeholder="example@gmail.com"
                                     class="form-control rounded-pill p-3">
-                                <div id="hcpPassMail_err" class="text-danger pt-1"></div>
+                                <small id="hcpPassMail_err" class="text-danger pt-1"></small>
                             </div>
                             <button type="submit" class="border-0 rounded-pill text-light px-4 px-sm-5 py-1 py-sm-3"
                                 style="background-color:#00AD8E;font-size:16px;font-weight:600;">Send OTP</button>
@@ -131,7 +131,7 @@
                                 }
 
                                 if (email == "") {
-                                    document.getElementById("hcpPassMail_err").innerHTML = "Mail address must be filled out.";
+                                    document.getElementById("hcpPassMail_err").innerHTML = "Please enter an email address.";
                                     return false;
                                 } else if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
                                     document.getElementById("hcpPassMail_err").innerHTML = "Invalid email address. Please enter valid mail address.";
@@ -168,7 +168,7 @@
                                     <label for="hcpPwdOtp" class="form-label">OTP <span class="text-danger">*</span></label>
                                     <input type="number" name="hcpPwdOtp" id="hcpPwdOtp" placeholder="1234"
                                         class="form-control rounded-pill p-3" min="0">
-                                    <div id="otp_err" class="text-danger pt-1"></div>
+                                    <small id="otp_err" class="text-danger pt-1"></small>
                                 </div>
                                 <input type="hidden" id="hcpMobileNum" name="hcpMobileNum"
                                     value="<?php echo $hcpMobileNumber; ?>">
@@ -186,7 +186,7 @@
                                     var otp = document.getElementById("hcpPwdOtp").value;
 
                                     if (otp === "") {
-                                        document.getElementById("otp_err").innerHTML = "OTP must be filled out.";
+                                        document.getElementById("otp_err").innerHTML = "Please enter the OTP.";
                                         return false;
                                     } else if (!/^\d{4}$/.test(otp)) {
                                         document.getElementById("otp_err").innerHTML = "Invalid OTP. Please enter a valid 4-digit OTP.";
@@ -214,7 +214,7 @@
                                             class="bi bi-eye position-absolute end-0 top-50 translate-middle-y mt-3 me-4"
                                             style="cursor: pointer;"></i>
                                     </div>
-                                    <div id="password_err" class="text-danger pt-1"></div>
+                                    <small id="password_err" class="text-danger pt-1"></small>
                                     <div class="text-secondary my-3" style="font-size:12px;display:none;" id="passwordmessage">
                                         Passwords must contain atleast 1 uppercase, 1 lowercase, 1 special character, <br> 1 number
                                         and a minimum of 8 characters.</div>
@@ -223,7 +223,7 @@
                                                 class="text-danger">*</span></label>
                                         <input type="password" name="hcpCnfmPassword" id="hcpCnfmPassword"
                                             placeholder="re-type password" class="form-control rounded-pill p-3">
-                                        <div id="cnfmpassword_err" class="text-danger pt-1"></div>
+                                        <small id="cnfmpassword_err" class="text-danger pt-1"></small>
                                     </div>
                                     <input type="hidden" id="hcpMobileNum" name="hcpMobileNum"
                                         value="<?php echo $hcpMobileNumber ?>">
@@ -249,7 +249,7 @@
                                         var cnfmPassword = document.getElementById("hcpCnfmPassword").value;
 
                                         if (password == "") {
-                                            document.getElementById("password_err").innerHTML = "Password must be filled out.";
+                                            document.getElementById("password_err").innerHTML = "Please enter a password.";
                                             return false;
                                         } else if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(password)) {
                                             document.getElementById("password_err").innerHTML = "Invalid password. Please enter valid password.";
@@ -259,10 +259,10 @@
                                         }
 
                                         if (cnfmPassword == "") {
-                                            document.getElementById("cnfmpassword_err").innerHTML = "Re-enter the password.";
+                                            document.getElementById("cnfmpassword_err").innerHTML = "Please re-enter the password.";
                                             return false;
                                         } else if (cnfmPassword != password) {
-                                            document.getElementById("cnfmpassword_err").innerHTML = "Enter same as password."
+                                            document.getElementById("cnfmpassword_err").innerHTML = "Please enter the same password again."
                                             return false;
                                         } else {
                                             document.getElementById("cnfmpassword_err").innerHTML = "";

@@ -48,76 +48,85 @@ class Patient extends CI_Controller
     }
 
 
-    // public function resetPassword()
-    // {
-    //     $this->data['method'] = "getMailId";
-    //     $this->load->view('hcpForgetPassword.php', $this->data);
-    // }
+    public function resetPassword()
+    {
+        $this->data['method'] = "getMailId";
+        $this->load->view('patientForgetPassword.php', $this->data);
+    }
 
-    // public function sendFPOtp()
-    // {
-    //     $to = $this->input->post('hcpPassMail');
-    //     $mobile = $this->input->post('hcpMobileNum');
-    //     $otp = rand(1000, 9999);
-    //     $this->session->set_userdata('generated_otp', $otp);
+    public function sendFPOtp()
+    {
+        $patientMail = $this->input->post('patientPassMail');
+        $patientId = $this->input->post('patientPassId');
+        $user_exists = $this->db->where('mailId', $patientMail)->get('patient_details')->num_rows() > 0;
+        if (!$user_exists) {
+            $this->session->set_flashdata('errorMessage', 'Email not registered.');
+            redirect('Patient/resetPassword');
+        }
 
-    //     // $message = "Your OTP is $otp to change the new password for your Health Care Provider[HCP] account.";
-    //     $message = "Hi there, <br> <br>
-    //     Your One-Time Password (OTP) to reset your Health Care Provider (HCP) account password is:
-    //     <b> $otp </b> <br>
-    //     Please use this OTP to proceed with updating your password. For security reasons, this OTP is valid for 10 minutes and should not be shared with anyone.
-    //     <br><br>
-    //     Regards,
-    //     <br><b>EDF Healthcare Team</b>";
+        $otp = $this->PatientModel->generate_otp($patientMail);
 
-    //     $this->email->set_newline("\r\n");
-    //     $this->email->from('noreply@consult.edftech.in', 'Consult EDF');
-    //     $this->email->to($to);
-    //     $this->email->subject('OTP to Reset Your HCP Account Password');
-    //     $this->email->message($message);
+        $message = "Hi there, <br> <br>
+        Your One-Time Password (OTP) to reset your Patient account password is:
+        <b> $otp </b> <br>
+        Please use this OTP to proceed with updating your password. For security reasons, this OTP is valid for 10 minutes and should not be shared with anyone.
+        <br><br>
+        Regards,
+        <br><b>EDF Healthcare Team</b>";
 
-    //     if ($this->email->send()) {
-    //         $this->data['method'] = "verifyOtp";
-    //         $this->data['message'] = "Enter the OTP that has been sent to this mail address: ";
-    //         $this->data['toMail'] = $to;
-    //         $this->data['hcpMobileNumber'] = $mobile;
-    //     } else {
-    //         $this->data['method'] = "getMailId";
-    //     }
-    //     $this->load->view('hcpForgetPassword.php', $this->data);
-    // }
+        $this->email->set_newline("\r\n");
+        $this->email->from('noreply@consult.edftech.in', 'Consult EDF');
+        $this->email->to($patientMail);
+        $this->email->subject('OTP to Reset Your Patient Account Password');
+        $this->email->message($message);
 
-    // public function verifyOtp()
-    // {
-    //     $enteredOtp = isset($_POST['hcpPwdOtp']) ? $this->input->post('hcpPwdOtp') : '0';
-    //     $mobile = $this->input->post('hcpMobileNum');
-    //     $generatedOtp = $this->session->userdata('generated_otp');
+        if ($this->email->send()) {
+            $this->data['method'] = "verifyOtp";
+            $this->data['patientMail'] = $patientMail;
+            $this->data['patientId'] = $patientId;
+            $this->session->set_flashdata('successMessage', 'OTP sent to your email and is valid for the next 10 minutes.');
+        } else {
+            $this->data['method'] = "getMailId";
+            $this->session->set_flashdata('errorMessage', 'Error in sending OTP. Please try again.');
+        }
+        $this->load->view('patientForgetPassword.php', $this->data);
+    }
 
-    //     if ($enteredOtp == $generatedOtp) {
-    //         $this->session->unset_userdata('generated_otp');
-    //         $this->data['method'] = "newPassword";
-    //         $this->data['message'] = "Your OTP has been verified successfully.";
-    //         $this->data['hcpMobileNumber'] = $mobile;
-    //     } else {
-    //         $this->data['method'] = "verifyOtp";
-    //         $this->data['message'] = "Invalid OTP. Please try again.";
-    //         $this->data['toMail'] = NULL;
-    //         $this->data['hcpMobileNumber'] = NULL;
+    public function verifyOtp()
+    {
+        $enteredOtp = isset($_POST['patientPwdOtp']) ? $this->input->post('patientPwdOtp') : '0';
+        $mail = $this->input->post('patientMail');
+        $patientId = $this->input->post('patientId');
+        $result = $this->PatientModel->validate_otp($mail, $enteredOtp);
+        if ($result['status'] == true) {
+            $this->data['method'] = "newPassword";
+            $this->data['mailId'] = $mail;
+            $this->data['patientId'] = $patientId;
+            $this->session->set_flashdata('successMessage', 'OTP verified successfully.');
+            $this->load->view('patientForgetPassword.php', $this->data);
+        } elseif ($result['status'] == false && $result['reason'] == 'Invalid OTP') {
+            $this->data['method'] = "verifyOtp";
+            $this->data['mailId'] = $mail;
+            $this->data['patientId'] = $patientId;
+            $this->session->set_flashdata('errorMessage', $result['reason']);
+            $this->load->view('patientForgetPassword.php', $this->data);
+        } elseif ($result['status'] == false && $result['reason'] == 'OTP expired') {
+            $this->data['method'] = "getMailId";
+            $this->session->set_flashdata('errorMessage', $result['reason']);
+            $this->load->view('patientForgetPassword.php', $this->data);
+        }
+    }
 
-    //     }
-    //     $this->load->view('hcpForgetPassword.php', $this->data);
-    // }
-
-    // public function updateNewPassword()
-    // {
-    //     $result = $this->PatientModel->changeNewPassword();
-    //     if ($result) {
-    //         $this->session->set_flashdata('showSuccessMessage', 'Password updated successfully');
-    //     } else {
-    //         $this->session->set_flashdata('showErrorMessage', 'Password update failed or no changes made');
-    //     }
-    //     redirect('Patient/');
-    // }
+    public function updateNewPassword()
+    {
+        $result = $this->PatientModel->changeNewPassword();
+        if ($result) {
+            $this->session->set_flashdata('successMessage', 'Password updated successfully');
+        } else {
+            $this->session->set_flashdata('errorMessage', 'Password update failed or no changes made');
+        }
+        redirect('Patient/');
+    }
 
     public function patientLogin()
     {
@@ -146,7 +155,9 @@ class Patient extends CI_Controller
     {
         if (isset($_SESSION['patientIdDb'])) {
             $this->data['method'] = "dashboard";
-
+            $patientIdDb = $_SESSION['patientIdDb'];
+            $this->data['patientDetails'] = $this->PatientModel->getPatientDetails();
+            $this->data['consultations'] = $this->PatientModel->get_consultations_by_patient($patientIdDb);
             $this->load->view('patientDashboard.php', $this->data);
         } else {
             redirect('Patient/');
@@ -210,7 +221,7 @@ class Patient extends CI_Controller
         }
     }
 
-    public function sendEmailOtp()/* OTP for change password in the HCP after login*/
+    public function sendEmailOtp()/* OTP for change password in the patient after login*/
     {
         $email = $this->input->post('email');
 
@@ -271,7 +282,7 @@ class Patient extends CI_Controller
     {
         if (isset($_SESSION['patientIdDb'])) {
             $this->data['method'] = "hcps";
-             $hcpDetails = $this->PatientModel->getHcpProfile();
+            $hcpDetails = $this->PatientModel->getHcpProfile();
             $this->data['hcpDetails'] = $hcpDetails['response'];
             $this->load->view('patientDashboard.php', $this->data);
         } else {

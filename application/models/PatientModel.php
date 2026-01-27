@@ -6,26 +6,70 @@ class PatientModel extends CI_Model
         parent::__construct();
     }
 
+    public function generate_otp($email)
+    {
+        $otp = rand(1000, 9999);
+        $hashed_otp = password_hash($otp, PASSWORD_BCRYPT);
+        date_default_timezone_set('Asia/Kolkata');
+        $expiry_time = date('Y-m-d H:i:s', strtotime('+10 minutes'));
+        $this->db->where('email', $email)->delete('password_resets');
 
-    // public function changeNewPassword()
-    // {
-    //     $post = $this->input->post(null, true);
-    //     $updatedata = array(
-    //         'hcpPassword' => password_hash($post['hcpCnfmPassword'], PASSWORD_BCRYPT),
-    //     );
-    //     $this->db->where('hcpMobile', $post['hcpMobileNum']);
-    //     $this->db->update('hcp_details', $updatedata);
-    //     return ($this->db->affected_rows() > 0);
-    // }
+        $data = [
+            'email' => $email,
+            'otp' => $hashed_otp,
+            'expires_at' => $expiry_time,
+            'is_used' => 0
+        ];
+        $this->db->insert('password_resets', $data);
+
+        return $otp;
+    }
+
+    public function validate_otp($email, $otp)
+    {
+        date_default_timezone_set('Asia/Kolkata');
+
+        $this->db->where('email', $email);
+        $this->db->order_by('created_at', 'DESC');
+        $query = $this->db->get('password_resets');
+        $record = $query->row();
+        $expires_at_timestamp = strtotime($record->expires_at);
+        $current_timestamp = time();
+
+        if ($expires_at_timestamp < $current_timestamp) {
+            return ['status' => false, 'reason' => 'OTP expired'];
+        }
+        if (password_verify($otp, $record->otp)) {
+            return ['status' => true];
+        } else {
+            return ['status' => false, 'reason' => 'Invalid OTP'];
+        }
+    }
+
+    public function changeNewPassword()
+    {
+        $post = $this->input->post(null, true);
+        $updatedata = array(
+            'password' => password_hash($post['patientCnfmPassword'], PASSWORD_BCRYPT),
+            'firstLoginPswd' => '1'
+        );
+        $this->db->where('mailId', $post['mailId']);
+        $this->db->where('patientId', $post['patientId']);
+        return $this->db->update('patient_details', $updatedata);
+    }
 
     public function patientLoginDetails()
     {
         $postData = $this->input->post(null, true);
         $emailid = $postData['patientEmail'];
+        $id = $postData['patientId'];
         $password = $postData['patientPassword'];
-        $query = "SELECT * FROM patient_details WHERE mailId = ? AND deleteStatus = '0'";
-        $result = $this->db->query($query, array($emailid));
-        $user = $result->row_array();
+        $user = $this->db
+            ->where('mailId', $emailid)
+            ->where('patientId', $id)
+            ->where('deleteStatus', '0')
+            ->get('patient_details')
+            ->row_array();
 
         $hashedPassword = $user['password'];
         if (password_verify($password, $hashedPassword)) {
@@ -33,6 +77,74 @@ class PatientModel extends CI_Model
         }
     }
 
+     public function get_consultations_by_patient($patient_id)
+    {
+        $this->db->select('*');
+        $this->db->from('consultations');
+        $this->db->where('patient_id', $patient_id);
+        // $this->db->order_by('created_at', 'DESC');
+        $this->db->order_by('consult_date', 'DESC');
+        $this->db->order_by('consult_time', 'DESC');
+        $consultations = $this->db->get()->result_array();
+
+        foreach ($consultations as &$consultation) {
+            $consultation_id = $consultation['id'];
+
+            // Vitals
+            $consultation['vitals'] = $this->db
+                ->get_where('consult_vitals', ['consultation_id' => $consultation_id])
+                ->row_array();
+
+            // Symptoms
+            $consultation['symptoms'] = $this->db
+                ->get_where('consult_symptoms', ['consultation_id' => $consultation_id])
+                ->result_array();
+
+            // Findings
+            $consultation['findings'] = $this->db
+                ->get_where('consult_findings', ['consultation_id' => $consultation_id])
+                ->result_array();
+
+            // Diagnosis
+            $consultation['diagnosis'] = $this->db
+                ->get_where('consult_diagnosis', ['consultation_id' => $consultation_id])
+                ->result_array();
+
+            // Investigations
+            $consultation['investigations'] = $this->db
+                ->get_where('consult_investigations', ['consultation_id' => $consultation_id])
+                ->result_array();
+
+            // Instructions
+            $consultation['instructions'] = $this->db
+                ->get_where('consult_instructions', ['consultation_id' => $consultation_id])
+                ->result_array();
+
+            // Procedures
+            $consultation['procedures'] = $this->db
+                ->get_where('consult_procedures', ['consultation_id' => $consultation_id])
+                ->result_array();
+
+            // Advices
+            $consultation['advices'] = $this->db
+                ->get_where('consult_advices', ['consultation_id' => $consultation_id])
+                ->result_array();
+
+            // Medicines
+            $consultation['medicines'] = $this->db
+                ->order_by('order_position', 'ASC')
+                ->get_where('consult_medicines', ['consultation_id' => $consultation_id])
+                ->result_array();
+
+            // Attachments
+            $consultation['attachments'] = $this->db
+                ->get_where('consult_attachments', ['consultation_id' => $consultation_id])
+                ->result_array();
+        }
+
+        return $consultations;
+    }
+    
     public function getPatientDetails()
     {
         $patientIdDb = $_SESSION['patientIdDb'];

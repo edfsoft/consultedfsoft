@@ -1,6 +1,10 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
+// Manually include the files in this order
+require_once APPPATH . 'libraries/Agora/Util.php';
+require_once APPPATH . 'libraries/Agora/AccessToken.php';
+require_once APPPATH . 'libraries/Agora/RtcTokenBuilder.php';
 class Patient extends CI_Controller
 {
 
@@ -345,7 +349,55 @@ class Patient extends CI_Controller
 
 
 
+public function join($unique_meeting_id = null) {
+    if (!$unique_meeting_id) {
+        show_error('Invalid Meeting Link', 404);
+        return;
+    }
 
+    date_default_timezone_set('Asia/Kolkata');
 
+    $appointment = $this->db->select('
+            appointment_details.*, 
+            patient_details.firstName, 
+            patient_details.lastName, 
+            hcp_details.hcpName,
+            cc_details.doctorName as chiefName
+        ')
+        ->from('appointment_details')
+        ->join('patient_details', 'patient_details.id = appointment_details.patientDbId', 'inner')
+        ->join('hcp_details', 'hcp_details.id = appointment_details.hcpDbId', 'inner')
+        ->join('cc_details', 'cc_details.id = appointment_details.referalDoctorDbId', 'left')
+        ->where('appointment_details.appointmentlink', $unique_meeting_id)
+        ->get()->row();
+
+    if (!$appointment) {
+        show_error('This meeting link is invalid.', 403);
+        return;
+    }
+
+    $appID = 'f891d97665524065b626ea324f06942f';
+    $appCertificate = '3b5229b39c254ce9b03f5a64966fa5c9';
+    $uid = rand(100000, 199999); 
+    $privilegeExpiredTs = time() + 3600;
+
+    $token = RtcTokenBuilder::buildTokenWithUid($appID, $appCertificate, $unique_meeting_id, $uid, RtcTokenBuilder::RolePublisher, $privilegeExpiredTs);
+
+    $data = [
+        'app_id'       => $appID,
+        'temp_token'   => $token,
+        'channel_name' => $unique_meeting_id,
+        'uid'          => $uid,
+        'local_name'   => ($appointment->firstName ?? 'Patient') . ' ' . ($appointment->lastName ?? ''),
+        'patient_name' => ($appointment->firstName ?? 'Patient') . ' ' . ($appointment->lastName ?? ''),
+        'hcp_name'     => $appointment->hcpName ?? 'Healthcare Provider',
+        // UPDATED: Now passing the actual doctor name from the database
+        'chief_name'   => $appointment->chiefName ?? 'N/A', 
+        'role'         => 'patient', 
+        'is_doctor'    => false 
+    ];
+
+    $this->load->view('onlineMeeting', $data);
+}
 
 }

@@ -571,8 +571,8 @@ class Healthcareprovider extends CI_Controller
 
             $formattedDate = date('d M Y', strtotime($details['dateOfAppoint']));
             $formattedTime = date('h:i A', strtotime($details['timeOfAppoint']));
-            $meetingBaseUrl = 'https://consult.edftech.in/Healthcareprovider/join/';
-            $joinUrl = $meetingBaseUrl . ltrim($details['appointmentLink'], '/');
+            $meetingBaseUrl = 'https://consult.edftech.in/patient/join/';
+            $joinUrl = $meetingBaseUrl . ltrim($details['appointmentLink'], '/') . '?role=patient';
             $message = "
                 Dear {$details['firstName']} {$details['lastName']},<br><br>
                 Your appointment has been successfully booked.<br><br>
@@ -692,6 +692,8 @@ class Healthcareprovider extends CI_Controller
 
                 $formattedDate = date('d M Y', strtotime($details['dateOfAppoint']));
                 $formattedTime = date('h:i A', strtotime($details['timeOfAppoint']));
+                $meetingBaseUrl = 'https://consult.edftech.in/patient/join/';
+                $joinUrl = $meetingBaseUrl . ltrim($details['appointmentLink'], '/') . '?role=patient';
 
                 $message = "
                     Dear {$details['firstName']} {$details['lastName']},<br><br>
@@ -699,7 +701,7 @@ class Healthcareprovider extends CI_Controller
                     <b>📅 Date:</b> {$formattedDate}<br>
                     <b>⏰ Time:</b> {$formattedTime}<br><br>
                     <b>🔗 Join Meeting:</b><br>
-                    <a href='{$details['appointmentLink']}' target='_blank'>{$details['appointmentLink']}</a><br><br>
+                    <a href='{$joinUrl}' target='_blank'>{$joinUrl}</a><br><br>
                     Please join the meeting at the scheduled time. <br><br>
                     Regards,
                     <br><b>EDF Healthcare Team</b>
@@ -988,7 +990,7 @@ class Healthcareprovider extends CI_Controller
         $this->load->view('agoraTestView', $data);
     } */
 
-    public function join($unique_meeting_id = null) {
+    /* public function join($unique_meeting_id = null) {
         if (!$unique_meeting_id) {
             show_error('Invalid Meeting Link', 404);
         }
@@ -1109,5 +1111,61 @@ class Healthcareprovider extends CI_Controller
         ];
 
         $this->load->view('agoraTestView', $data);
+    } */
+
+ public function join($unique_meeting_id = null) {
+    if (!$this->session->userdata('hcpsName')) {
+        show_error('Unauthorized Access', 403);
+        return;
     }
+    if (!$unique_meeting_id) {
+        show_error('Invalid Meeting Link', 404);
+        return;
+    }
+
+    date_default_timezone_set('Asia/Kolkata');
+
+    $appointment = $this->db->select('
+            appointment_details.*, 
+            patient_details.firstName, 
+            patient_details.lastName, 
+            hcp_details.hcpName,
+            cc_details.doctorName as chiefName
+        ')
+        ->from('appointment_details')
+        ->join('patient_details', 'patient_details.id = appointment_details.patientDbId', 'inner')
+        ->join('hcp_details', 'hcp_details.id = appointment_details.hcpDbId', 'inner')
+        ->join('cc_details', 'cc_details.id = appointment_details.referalDoctorDbId', 'left')
+        ->where('appointment_details.appointmentlink', $unique_meeting_id)
+        ->get()->row();
+
+    $logged_hcp_id = $this->session->userdata('hcpIdDb');
+    if (!$appointment || $logged_hcp_id != $appointment->hcpDbId) {
+        show_error('Unauthorized access', 403);
+        return;
+    }
+
+    $appID = 'f891d97665524065b626ea324f06942f';
+    $appCertificate = '3b5229b39c254ce9b03f5a64966fa5c9';
+    $uid = rand(200000, 299999); // HCP UID Range [cite: 17]
+    $privilegeExpiredTs = time() + 3600;
+
+    $token = RtcTokenBuilder::buildTokenWithUid($appID, $appCertificate, $unique_meeting_id, $uid, RtcTokenBuilder::RolePublisher, $privilegeExpiredTs);
+
+    $data = [
+        'app_id'       => $appID,
+        'temp_token'   => $token,
+        'channel_name' => $unique_meeting_id,
+        'uid'          => $uid,
+        'local_name'   => $appointment->hcpName ?? 'Healthcare Provider',
+        'patient_name' => ($appointment->firstName ?? 'Patient') . ' ' . ($appointment->lastName ?? ''),
+        'hcp_name'     => $appointment->hcpName ?? 'Healthcare Provider',
+        // UPDATED: Now passing the dynamic doctor name from the database 
+        'chief_name'   => $appointment->chiefName ?? 'N/A', 
+        'role'         => 'hcp', 
+        'is_doctor'    => true 
+    ];
+
+    $this->load->view('onlineMeeting', $data);
+}
 }

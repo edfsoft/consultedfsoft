@@ -12,9 +12,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --bg-dark: #202124;
+            --bg-dark: #ffffff;
             --bg-surface: #3c4043;
-            --text-primary: #ffffff;
+            --text-primary: #e6e0e0;
             --danger: #ea4335;
             --primary-blue: #8ab4f8;
             --border-color: #5f6368;
@@ -32,41 +32,37 @@
             overflow: hidden;
         }
 
-        /* --- FIXED: Role colors now apply ONLY to specific containers, not globally via body --- */
-        
-        /* HCP Color */
+        /* Role colors */
         .role-hcp .video-placeholder, 
-        .video-player.role-hcp .video-placeholder {
-            background: #00ad8e;
-        }
-        
-        /* CC Color */
+        .video-player.role-hcp .video-placeholder { background: #00ad8e; }
         .role-cc .video-placeholder,
-        .video-player.role-cc .video-placeholder {
-            background: #0079AD;
-        }
-        
-        /* Patient Color */
+        .video-player.role-cc .video-placeholder { background: #0079AD; }
         .role-patient .video-placeholder,
-        .video-player.role-patient .video-placeholder {
-            background: #5086eb;
-        }
+        .video-player.role-patient .video-placeholder { background: #2F80ED; }
 
-        /* Avatar Circle Background (Uniform or can be role specific if needed) */
+        /* Avatar Circle */
         .avatar-circle {
-            background: gray !important; 
+            --size: 80px;
+            width: var(--size);
+            height: var(--size);
+            border-radius: 50%;
+            background: gray !important;
+            color: white;
+            font-size: calc(var(--size) * 0.5);
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
         }
 
-        /* --- LOBBY LAYOUT --- */
+        /* Lobby layout */
         #lobby-container {
             display: flex;
             flex: 1; align-items: center; justify-content: center;
             padding: 20px; gap: 80px;
-        }
-
-        #lobby-container {
-            background-color: #ffffff; /* White background */
-            color: #202124;            /* Dark text (Google Grey 900) */
+            background-color: #ffffff;
+            color: #202124;
         }
 
         .lobby-left { flex: 0 1 640px; display: flex; flex-direction: column; align-items: center; }
@@ -75,14 +71,12 @@
         .preview-wrapper {
             position: relative;
             width: 100%; aspect-ratio: 16 / 9;
-            background-color: #000; border-radius: 8px; overflow: hidden;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+            background-color: #ffffff; border-radius: 25px; overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
 
         #local-preview-container { width: 100%; height: 100%; }
 
-        /* Placeholder / Avatar logic */
-       /* Update the general placeholder style */
         .video-placeholder {
             position: absolute;
             inset: 0; 
@@ -93,28 +87,9 @@
             font-weight: 500; 
             color: white; 
             z-index: 1;
-            background: var(--placeholder-bg);
-            border-radius: 30px;      /* Matches the radius of your lobby container */
-            overflow: hidden;         /* Clips the background color to the radius */
-        }
-
-        /* Specifically for the Lobby Preview Wrapper */
-        .preview-wrapper {
-            position: relative;
-            width: 100%; 
-            aspect-ratio: 16 / 9;
-            background-color: #000; 
-            border-radius: 25px;      /* Ensure this matches your placeholder radius */
-            overflow: hidden;         /* Important: Clips all children to this curve */
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-
-        .video-placeholder .avatar-circle {
-            width: 80px;
-            height: 80px; border-radius: 50%;
-            background: var(--avatar-bg); display: flex;
-            align-items: center; justify-content: center;
-            font-size: 40px; color: white;
+            background: var(--placeholder-bg); 
+            border-radius: 10px; 
+            overflow: hidden; 
         }
 
         .preview-controls-overlay {
@@ -134,136 +109,144 @@
 
         .overlay-btn.active { background: var(--danger); border-color: transparent; }
 
-        /* Device Selection */
         .device-settings {
             width: 100%;
             margin-top: 24px;
             display: grid;
-            grid-template-columns: 1fr 1fr 1fr; /* Equal width for all three */
+            grid-template-columns: 1fr 1fr 1fr;
             gap: 12px;
             padding: 0 10px;
         }
+
         .device-field { display: flex; flex-direction: column; gap: 4px; }
-        #lobby-container .device-field label {
-            color: #5f6368;            /* Medium gray for labels */
-            font-weight: 600;
-        }
-       #lobby-container .device-select {
+
+        #lobby-container .device-field label { color: #5f6368; font-weight: 600; }
+
+        #lobby-container .device-select {
             color: #3c4043;
             border: 1px solid #dadce0;
             background-color: #ffffff;
             border-radius: 100px;
-            /* Reduced padding to fit text better in small rows */
             padding: 8px 30px 8px 38px; 
-            font-size: 13px; /* Slightly smaller for better fit */
+            font-size: 13px;
             font-weight: 500;
             width: 100%;
-            
-            /* These properties handle the "text..." clipping effect */
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            
             appearance: none;
             -webkit-appearance: none;
             cursor: pointer;
             background-repeat: no-repeat;
+            background-position: left 14px center, right 12px center;
+            background-size: 18px, 14px;
         }
 
-        #lobby-container .device-select:hover {
-            background-color: #e4eaf0;
-            border-color: #d2d3d7;
-        }
-
-        /* Add a hover/focus effect to make it interactive */
-        #lobby-container .device-select:focus {
-            border-color: var(--primary-blue); /* Highlights border on click [cite: 55, 28] */
-            box-shadow: 0 0 0 2px rgba(138, 180, 248, 0.2); 
-        }
-
-        #cam-list, #mic-list, #speaker-list {
-        background-position: left 12px center, right 10px center !important;
-        background-size: 16px, 12px !important;
-        }
-
-        @media (max-width: 600px) {
-            .device-settings {
-                grid-template-columns: 1fr;
-            }
-        }
+        /* Device icons */
         #cam-list {
-        background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%235f6368' viewBox='0 0 24 24'%3E%3Cpath d='M15 8v8H5V8h10m1-2H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4V7c0-.55-.45-1-1-1z'/%3E%3C/svg%3E"), 
-        url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%235f6368' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E") !important;
-        background-position: left 14px center, right 12px center !important;
-        background-size: 18px, 14px !important;
-    }
-    #mic-list {
-        background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%235f6368' viewBox='0 0 24 24'%3E%3Cpath d='M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z'/%3E%3Cpath d='M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z'/%3E%3C/svg%3E"), 
-        url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%235f6368' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E") !important;
-        background-position: left 14px center, right 12px center !important;
-        background-size: 18px, 14px !important;
-    }
-    #speaker-list {
-        background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%235f6368' viewBox='0 0 24 24'%3E%3Cpath d='M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z'/%3E%3C/svg%3E"), 
-        url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%235f6368' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E") !important;
-        background-position: left 14px center, right 12px center !important;
-        background-size: 18px, 14px !important;
-    }
-            
-
-        /* --- JOIN SECTION --- */
-        #lobby-container .ready-text {
-            color: #202124;            /* Ensure "Ready to join?" is dark */
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%235f6368' viewBox='0 0 24 24'%3E%3Cpath d='M15 8v8H5V8h10m1-2H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4V7c0-.55-.45-1-1-1z'/%3E%3C/svg%3E"), 
+                          url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%235f6368' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E") !important;
+            background-position: left 14px center, right 12px center !important;
+            background-size: 18px, 14px !important;
         }
 
-        .preview-wrapper {
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            border: 1px solid #dadce0;
+        #mic-list {
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%235f6368' viewBox='0 0 24 24'%3E%3Cpath d='M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z'/%3E%3Cpath d='M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z'/%3E%3C/svg%3E"), 
+                          url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%235f6368' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E") !important;
+            background-position: left 14px center, right 12px center !important;
+            background-size: 18px, 14px !important;
+        }
+
+        #speaker-list {
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%235f6368' viewBox='0 0 24 24'%3E%3Cpath d='M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z'/%3E%3C/svg%3E"), 
+                          url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%235f6368' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E") !important;
+            background-position: left 14px center, right 12px center !important;
+            background-size: 18px, 14px !important;
         }
 
         #join-btn {
-            /* Normal State: Dark Blue */
             background-color: #1a73e8; 
-            color: #ffffff;            /* Changed to white for better contrast on dark blue */
+            color: #ffffff;
             border: none;
-            padding: 18px 48px;        /* Restored to standard size for a cleaner look */
+            padding: 18px 48px;
             font-size: 14px;
             font-weight: 500;
-            border-radius: 25px;       /* Pill shape  */
+            border-radius: 25px;
             cursor: pointer;
-            transition: background-color 0.2s, box-shadow 0.2s; /* Smooth color transition */
+            transition: background-color 0.2s, box-shadow 0.2s;
             box-shadow: 0 1px 2px 0 rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15);
         }
 
-        /* Hover State: Light Blue */
         #join-btn:hover {
-            background-color: #8ab4f8; /* Light blue  */
-            color: #202124;            /* Dark text for better readability on light blue  */
+            background-color: #8ab4f8;
+            color: #202124;
             box-shadow: 0 1px 3px 0 rgba(60,64,67,0.3), 0 4px 8px 3px rgba(60,64,67,0.15);
         }
 
-        #join-btn:active {
-            background-color: #1765cc;
-            box-shadow: 0 1px 2px 0 rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15);
+        #join-btn:active { background-color: #1765cc; }
+
+        /* Call UI */
+        #call-container { 
+            display: none; 
+            height: 100vh; 
+            flex-direction: column; 
+            position: relative; 
         }
 
-        /* --- CALL UI --- */
-        #call-container { display: none; height: 100vh; flex-direction: column; position: relative; }
-        #video-grid { flex: 1; display: flex; align-items: center; justify-content: center; position: relative; padding: 16px; box-sizing: border-box; }
-        .video-player { position: relative; background: #000; border-radius: 8px; overflow: hidden; width: 100%; height: 100%; max-width: 90vw; max-height: 80vh; aspect-ratio: 16 / 9; }
-        .controls-bar { height: 80px; display: flex; justify-content: center; align-items: center; gap: 12px; }
-        .control-btn { width: 48px; height: 48px; border-radius: 50%; border: none; background: var(--bg-surface); color: white; cursor: pointer; font-size: 18px; }
+        #video-grid {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 20px;
+            box-sizing: border-box;
+            background-color: #ffffff; 
+        }
+
+        .video-player {
+            position: relative;
+            background: transparent; 
+            border-radius: 11px;
+            overflow: hidden;
+            width: 100%;
+            height: 100%;
+            max-width: 100%;
+            max-height: 100%;
+            aspect-ratio: 16 / 9;
+        }
+
+        .controls-bar { 
+            height: 80px; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            gap: 12px; 
+        }
+
+        .control-btn { 
+            width: 48px; 
+            height: 48px; 
+            border-radius: 50%; 
+            border: none; 
+            background: var(--bg-surface); 
+            color: white; 
+            cursor: pointer; 
+            font-size: 18px; 
+        }
+
         .control-btn.active { background: var(--danger); }
         #leave-btn { background: var(--danger); width: 64px; border-radius: 24px; }
 
-        /* Floating Self View */
         .floating-self {
             position: absolute;
             bottom: 100px; right: 16px;
-            width: 240px; aspect-ratio: 16 / 9; border-radius: 8px;
-            background: #000; z-index: 100;
+            width: 240px; aspect-ratio: 16 / 9; 
+            border-radius: 8px;
+            background: #ffffff; 
+            z-index: 100;
             box-shadow: 0 8px 24px rgba(0,0,0,0.4);
-            overflow: hidden; transition: all 0.3s;
+            overflow: hidden;
         }
 
         #player-local.alone {
@@ -279,9 +262,42 @@
         }
 
         #player-local.alone .avatar-circle {
-            width: 200px;
-            height: 200px;
-            font-size: 100px;
+            --size: 200px;
+            font-size: calc(var(--size) * 0.5);
+        }
+
+        /* TWO USERS – minimal gaps, local smaller, but now LOCAL on RIGHT */
+        #video-grid.two-users {
+            flex-direction: row;
+            align-items: stretch;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 20px;
+            height: calc(100% - 40px);
+        }
+
+        #video-grid.two-users .video-player {
+            flex: 1 1 50%;
+            height: 100%;
+            aspect-ratio: auto;
+            max-height: none;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        /* Keep local size as is */
+        #video-grid.two-users #player-local {
+            flex: 0 0 300px !important;
+            max-width: 300px !important;
+        }
+
+        /* Swap positions: remote left (order 1), local right (order 2) */
+        #video-grid.two-users #player-local {
+            order: 2;                     /* ← this places local on the right */
+        }
+
+        #video-grid.two-users .video-player:not(#player-local) {
+            order: 1;                     /* remote stays on left */
         }
 
         /* Grid for 3+ users */
@@ -292,6 +308,7 @@
             align-items: stretch;
             justify-items: center;
             max-width: 100%;
+            padding: 20px;
         }
 
         #video-grid.multi .video-player {
@@ -304,11 +321,8 @@
             position: absolute;
             bottom: 8px;
             left: 8px;
-            /* Semi-transparent gray background */
             background: rgba(0, 0, 0, 0.4); 
-            /* Soft shadow effect */
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-            /* Blurs the video behind the name for better readability */
             backdrop-filter: blur(4px); 
             color: white;
             padding: 4px 12px;
@@ -316,36 +330,33 @@
             font-size: 14px;
             font-weight: 500;
             z-index: 2;
-            pointer-events: none; /* Ensures the label doesn't interfere with clicks */
+            pointer-events: none;
         }
 
+        /* TOAST – TOP-RIGHT */
         #toast {
-            position: absolute;
-            bottom: 100px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(0,0,0,0.6);
+            position: fixed;
+            top: 40px;
+            right: 40px;
+            left: auto;
+            transform: none;
+            background: rgba(0,0,0,0.75);
             color: white;
-            padding: 8px 16px;
-            border-radius: 4px;
+            padding: 10px 18px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
             display: none;
-            z-index: 200;
+            z-index: 1000;
             font-size: 14px;
+            max-width: 320px;
+            text-align: left;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
 
-        /* End Screen Button Style */
-        .home-btn {
-            margin-top: 20px;
-            background-color: var(--primary-blue);
-            color: #202124;
-            border: none;
-            padding: 10px 24px;
-            font-size: 14px;
-            font-weight: 500;
-            border-radius: 4px;
-            text-decoration: none;
-            cursor: pointer;
-            display: inline-block;
+        #toast[style*="block"] {
+            opacity: 1;
         }
 
         /* Responsive Design */
@@ -354,15 +365,38 @@
             .lobby-left, .lobby-right { width: 100%; flex: none; }
             .preview-wrapper { aspect-ratio: 4 / 3; }
             .device-settings { grid-template-columns: 1fr; gap: 12px; }
-            .ready-text { font-size: 24px; }
-            #join-btn { padding: 12px 32px; font-size: 16px; }
-            #video-grid { padding: 8px; }
+            #video-grid { padding: 16px; }
             .floating-self { width: 140px; bottom: 90px; right: 10px; }
             .controls-bar { height: 60px; gap: 8px; padding: 0 10px; }
             .control-btn { width: 44px; height: 44px; font-size: 16px; }
             #leave-btn { width: 56px; }
-            .name-label { font-size: 14px; bottom: 8px; left: 8px; }
-            #toast { bottom: 80px; font-size: 12px; padding: 6px 12px; }
+
+            #video-grid.two-users {
+                flex-direction: column;
+                gap: 12px;
+                padding: 16px;
+                height: 100%;
+            }
+            
+            #video-grid.two-users .video-player {
+                flex: 1 1 auto;
+                max-width: 100%;
+                height: 48%;
+                aspect-ratio: 4 / 3;
+            }
+
+            #video-grid.two-users #player-local {
+                flex: 0 0 35% !important;
+                max-height: 35% !important;
+            }
+
+            #toast {
+                top: 30px;
+                right: 20px;
+                font-size: 13px;
+                padding: 8px 14px;
+                max-width: 280px;
+            }
         }
 
         @media (max-width: 480px) {
@@ -370,6 +404,7 @@
             .floating-self { width: 120px; bottom: 70px; }
             .controls-bar { height: 50px; }
             .control-btn { width: 40px; height: 40px; font-size: 14px; }
+            #video-grid { padding: 12px; }
         }
     </style>
 </head>
@@ -379,7 +414,7 @@
         <div class="lobby-left">
             <div class="preview-wrapper">
                 <div id="local-preview-container"></div>
-                <div id="lobby-placeholder" class="video-placeholder"  style="border-radius: 20px;">
+                <div id="lobby-placeholder" class="video-placeholder" style="border-radius: 20px;">
                     <div class="avatar-circle"></div>
                 </div>
                 
@@ -390,16 +425,16 @@
             </div>
 
             <div class="device-settings">
-    <div class="device-field">
-        <select id="cam-list" class="device-select"></select>
-    </div>
-    <div class="device-field">
-        <select id="mic-list" class="device-select"></select>
-    </div>
-    <div class="device-field">
-        <select id="speaker-list" class="device-select"></select>
-    </div>
-</div>
+                <div class="device-field">
+                    <select id="cam-list" class="device-select"></select>
+                </div>
+                <div class="device-field">
+                    <select id="mic-list" class="device-select"></select>
+                </div>
+                <div class="device-field">
+                    <select id="speaker-list" class="device-select"></select>
+                </div>
+            </div>
         </div>
 
         <div class="lobby-right">
@@ -431,11 +466,11 @@
             appId: "<?php echo $app_id; ?>",
             channel: "<?php echo $channel_name; ?>",
             token: "<?php echo $temp_token; ?>",
-            uid: Number(<?php echo $uid; ?>),
-            localName: "<?php echo addslashes($local_name); ?>",
-            patientName: "<?php echo addslashes($patient_name); ?>",
-            hcpName: "<?php echo addslashes($hcp_name); ?>",
-            chiefName: "<?php echo addslashes($chief_name); ?>",
+            uid: Number(<?php echo $uid ?: 0; ?>),
+            localName: "<?php echo addslashes($local_name ?: 'Guest'); ?>",
+            patientName: "<?php echo addslashes($patient_name ?: 'Patient'); ?>",
+            hcpName: "<?php echo addslashes($hcp_name ?: 'Doctor'); ?>",
+            chiefName: "<?php echo addslashes($chief_name ?: 'Chief Doctor'); ?>",
             role: "<?php echo $role ?: 'patient'; ?>"
         };
 
@@ -466,10 +501,13 @@
 
         function getUserName(uid) {
             const role = getRoleFromUid(uid);
-            if (role === 'patient') return options.patientName;
-            if (role === 'hcp') return options.hcpName;
-            if (role === 'cc') return options.chiefName;
-            return 'Unknown';
+            let name = 'Unknown';
+
+            if (role === 'patient') name = options.patientName;
+            else if (role === 'hcp') name = options.hcpName;
+            else if (role === 'cc') name = options.chiefName;
+
+            return (name && name.trim() !== "") ? name : (role.toUpperCase());
         }
 
         function togglePlaceholder(id, show) {
@@ -500,17 +538,14 @@
             const player = document.createElement('div');
             player.className = 'video-player';
             player.id = `player-${uid}`;
-            // Add specific role class to the container
             player.classList.add(`role-${role}`);
 
             const placeholder = document.createElement('div');
             placeholder.id = `placeholder-${uid}`;
             placeholder.className = 'video-placeholder';
-            // Background is now handled by .role-X .video-placeholder css
 
             const avatar = document.createElement('div');
             avatar.className = 'avatar-circle';
-            // Safe check for name
             let initial = (name && name.length > 0) ? name.charAt(0).toUpperCase() : '?';
             avatar.innerText = initial;
             
@@ -575,20 +610,22 @@
             const videoGrid = document.getElementById('video-grid');
             const localPlayer = document.getElementById('player-local');
             const numRemotes = remoteUsers.size;
+            const total = numRemotes + 1;
 
-            if (numRemotes === 0) {
-                videoGrid.classList.remove('multi');
+            videoGrid.classList.remove('multi', 'two-users');
+            localPlayer.classList.remove('alone', 'floating-self', 'video-player');
+
+            if (total === 1) {
                 localPlayer.classList.add('alone');
                 localPlayer.classList.add('floating-self');
-                localPlayer.classList.remove('video-player');
-            } else if (numRemotes === 1) {
-                videoGrid.classList.remove('multi');
-                localPlayer.classList.remove('alone');
-                localPlayer.classList.add('floating-self');
-                localPlayer.classList.remove('video-player');
-            } else {
+            } 
+            else if (total === 2) {
+                videoGrid.classList.add('two-users');
+                localPlayer.classList.add('video-player');
+                localPlayer.classList.remove('floating-self');
+            } 
+            else {
                 videoGrid.classList.add('multi');
-                localPlayer.classList.remove('alone', 'floating-self');
                 localPlayer.classList.add('video-player');
             }
         }
@@ -600,7 +637,6 @@
 
             let localInitial = (options.localName && options.localName.length > 0) ? options.localName.charAt(0).toUpperCase() : '?';
 
-            // Local lobby placeholder - Add Role Class Here
             const lobbyPlaceholder = document.querySelector('#lobby-placeholder');
             lobbyPlaceholder.querySelector('.avatar-circle').innerText = localInitial;
             lobbyPlaceholder.parentElement.classList.add(`role-${options.role}`); 
@@ -609,10 +645,8 @@
 
             togglePlaceholder('lobby-placeholder', false);
 
-            // Local call placeholder
             document.querySelector('#placeholder-local .avatar-circle').innerText = localInitial;
             document.querySelector('#player-local .name-label').innerText = getDisplayName(options.localName, options.role);
-            // This ensures local player has correct color
             document.getElementById('player-local').classList.add(`role-${options.role}`);
 
             const devices = await AgoraRTC.getDevices();
@@ -652,13 +686,11 @@
                 togglePlaceholder('placeholder-local', true);
             }
 
-            // Update call buttons state
             document.getElementById('call-mic-btn').classList.toggle('active', !localTracks.audioTrack.enabled);
             document.getElementById('call-mic-btn').innerHTML = `<i class="fas fa-microphone${!localTracks.audioTrack.enabled ? '-slash' : ''}"></i>`;
             document.getElementById('call-video-btn').classList.toggle('active', !localTracks.videoTrack.enabled);
             document.getElementById('call-video-btn').innerHTML = `<i class="fas fa-video${!localTracks.videoTrack.enabled ? '-slash' : ''}"></i>`;
             
-            // Handle existing remote users
             for (const user of client.remoteUsers) {
                 const uid = user.uid;
                 if (!remoteUsers.has(uid)) {
@@ -739,7 +771,6 @@
         });
 
         document.getElementById("leave-btn").onclick = async () => {
-            // 1. Stop and close all local tracks
             for (let track in localTracks) {
                 if (localTracks[track]) {
                     localTracks[track].stop();
@@ -747,41 +778,45 @@
                 }
             }
 
-            // 2. Leave the Agora channel
             await client.leave();
             isJoined = false;
             showToast('Ending call...');
 
-            // 3. Handle specific workflows based on Role
-            if (options.role === 'cc') {
-                // CC: Redirect immediately, no message shown
-                window.location.href = "<?php echo base_url('Chiefconsultant/appointments'); ?>";
-
-            } else if (options.role === 'patient') {
-                // Patient: Close tab immediately, no message shown
+            if (options.role === 'patient') {
                 window.close();
-                
-                // Fallback: If browser blocks window.close() (security restriction), show a simple message
-                if (!window.closed) {
-                    document.getElementById('call-container').innerHTML = 
-                        '<div style="height:100vh; display:flex; align-items:center; justify-content:center; flex-direction:column; color:white;">' +
-                        '<h1>Call Ended</h1><p>You can now close this tab.</p></div>';
-                }
 
-            } else if (options.role === 'hcp') {
-                // HCP: Show 'Back to Appointments' button, which closes the tab when clicked
-                let endHtml = '<div style="height:100vh; display:flex; align-items:center; justify-content:center; flex-direction:column; color:white;"><h1>Call Ended</h1>';
+                setTimeout(() => {
+                    if (!window.closed) {
+                        document.getElementById('call-container').innerHTML = 
+                            '<div style="height:100vh; display:flex; align-items:center; justify-content:center; flex-direction:column; color:#333; background:#fff;">' +
+                            '<h1>Call Ended</h1>' +
+                            '<p style="font-size:18px; margin:20px 0;">You can now safely close this browser tab.</p>' +
+                            '<p style="color:#666;">(Some browsers block auto-closing — close it manually)</p>' +
+                            '</div>';
+                    }
+                }, 500);
+            } 
+            else if (options.role === 'cc') {
+                window.location.href = "<?php echo base_url('Chiefconsultant/appointments'); ?>";
+            } 
+            else if (options.role === 'hcp') {
+                let endHtml = '<div style="height:100vh; display:flex; align-items:center; justify-content:center; flex-direction:column; background-color:#ffffff; color:#000000;">';
+                // Header text
+                endHtml += '<h1 style="margin-bottom:20px; font-weight:600;">Call Ended</h1>';
                 
-                // Button that triggers window.close()
-                endHtml += '<button onclick="window.close()" class="home-btn">Back to Appointments</button>';
+                endHtml += '<button onclick="window.close(); window.location.href=\'<?php echo base_url('healthcareprovider/appointments'); ?>\'" class="home-btn" style="background-color:#28a745; color:#ffffff; padding:14px 32px; font-size:18px; border:none; border-radius:8px; cursor:pointer; font-weight:500; transition: background-color 0.2s;">Back to Appointments</button>';
                 
-                // Optional fallback message if close fails
-                endHtml += '<p style="margin-top:10px; font-size:12px; color:#aaa;">(Click to close meeting tab)</p>';
+                // Subtext
+                endHtml += '<p style="margin-top:16px; font-size:14px; color:#5f6368;">(This tab will close and return you to your dashboard)</p>';
+                
                 endHtml += '</div>';
                 
                 document.getElementById('call-container').innerHTML = endHtml;
+            } else {
+                window.close();
             }
         };
+
         startPreview();
     </script>
 </body>

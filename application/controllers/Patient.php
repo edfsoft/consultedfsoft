@@ -397,7 +397,7 @@ public function join($unique_meeting_id = null) {
         'is_doctor'    => false 
     ];
 
-    $this->load->view('onlineMeeting', $data);
+    $this->load->view('customMeeting', $data);
 }
 
 }

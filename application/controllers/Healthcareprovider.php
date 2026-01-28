@@ -1166,6 +1166,6 @@ class Healthcareprovider extends CI_Controller
         'is_doctor'    => true 
     ];
 
-    $this->load->view('onlineMeeting', $data);
+    $this->load->view('customMeeting', $data);
 }
 }

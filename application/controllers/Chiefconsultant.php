@@ -443,6 +443,6 @@ public function join($unique_meeting_id = null) {
         'is_doctor'    => true 
     ];
 
-    $this->load->view('onlineMeeting', $data);
+    $this->load->view('customMeeting', $data);
 }
 }

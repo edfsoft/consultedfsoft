@@ -349,7 +349,8 @@ class Patient extends CI_Controller
 
 
 
-    public function join($unique_meeting_id = null) {
+    public function join($unique_meeting_id = null)
+    {
         if (!$unique_meeting_id) {
             show_error('Invalid Meeting Link', 404);
             return;
@@ -378,22 +379,22 @@ class Patient extends CI_Controller
 
         $appID = 'f891d97665524065b626ea324f06942f';
         $appCertificate = '3b5229b39c254ce9b03f5a64966fa5c9';
-        $uid = rand(100000, 199999); 
+        $uid = rand(100000, 199999);
         $privilegeExpiredTs = time() + 3600;
 
         $token = RtcTokenBuilder::buildTokenWithUid($appID, $appCertificate, $unique_meeting_id, $uid, RtcTokenBuilder::RolePublisher, $privilegeExpiredTs);
 
         $data = [
-            'app_id'       => $appID,
-            'temp_token'   => $token,
+            'app_id' => $appID,
+            'temp_token' => $token,
             'channel_name' => $unique_meeting_id,
-            'uid'          => $uid,
-            'local_name'   => ($appointment->firstName ?? 'Patient') . ' ' . ($appointment->lastName ?? ''),
+            'uid' => $uid,
+            'local_name' => ($appointment->firstName ?? 'Patient') . ' ' . ($appointment->lastName ?? ''),
             'patient_name' => ($appointment->firstName ?? 'Patient') . ' ' . ($appointment->lastName ?? ''),
-            'hcp_name'     => $appointment->hcpName ?? 'Doctor',
-            'chief_name'   => $appointment->chiefName ?? 'Chief doctor', 
-            'role'         => 'patient', 
-            'is_doctor'    => false 
+            'hcp_name' => $appointment->hcpName ?? 'Doctor',
+            'chief_name' => $appointment->chiefName ?? 'Chief doctor',
+            'role' => 'patient',
+            'is_doctor' => false
         ];
 
         $this->load->view('customMeeting', $data);

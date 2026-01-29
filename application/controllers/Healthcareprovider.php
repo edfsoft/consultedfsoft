@@ -488,7 +488,7 @@ class Healthcareprovider extends CI_Controller
             'patientHcp' => $_SESSION['hcpId'],
             'patientHcpDbId' => $_SESSION['hcpIdDb'],
             'password' => $hashedPassword,
-            'firstLoginPswd' => '0' 
+            'firstLoginPswd' => '0'
         ];
 
         $insertId = $this->HcpModel->insertPartialPatient($data);
@@ -899,7 +899,8 @@ class Healthcareprovider extends CI_Controller
     }
 
 
-    public function join($unique_meeting_id = null) {
+    public function join($unique_meeting_id = null)
+    {
         if (!$this->session->userdata('hcpsName')) {
             show_error('Unauthorized Access', 403);
             return;
@@ -939,17 +940,17 @@ class Healthcareprovider extends CI_Controller
         $token = RtcTokenBuilder::buildTokenWithUid($appID, $appCertificate, $unique_meeting_id, $uid, RtcTokenBuilder::RolePublisher, $privilegeExpiredTs);
 
         $data = [
-            'app_id'       => $appID,
-            'temp_token'   => $token,
+            'app_id' => $appID,
+            'temp_token' => $token,
             'channel_name' => $unique_meeting_id,
-            'uid'          => $uid,
-            'local_name'   => $appointment->hcpName ?? 'Healthcare Provider',
+            'uid' => $uid,
+            'local_name' => $appointment->hcpName ?? 'Healthcare Provider',
             'patient_name' => ($appointment->firstName ?? 'Patient') . ' ' . ($appointment->lastName ?? ''),
-            'hcp_name'     => $appointment->hcpName ?? 'Healthcare Provider',
+            'hcp_name' => $appointment->hcpName ?? 'Healthcare Provider',
             // UPDATED: Now passing the dynamic doctor name from the database 
-            'chief_name'   => $appointment->chiefName ?? 'N/A', 
-            'role'         => 'hcp', 
-            'is_doctor'    => true 
+            'chief_name' => $appointment->chiefName ?? 'N/A',
+            'role' => 'hcp',
+            'is_doctor' => true
         ];
 
         $this->load->view('customMeeting', $data);

@@ -1187,8 +1187,8 @@
                                                                     <button class="btn btn-success" disabled>Join</button>
                                                     <?php } else { ?>
 
-                                                                    <a href="<?php  echo base_url() . 'chiefconsultant/join/' . ltrim($value['appointmentLink'], '/'); ?>"
-                                                                    target="_self" rel="noopener">
+                                                                    <a href="<?php echo base_url() . 'chiefconsultant/join/' . ltrim($value['appointmentLink'], '/'); ?>"
+                                                                        target="_self" rel="noopener">
                                                                         <button class="btn btn-success">Join</button>
                                                                     </a>
                                                     <?php } ?>
@@ -1487,7 +1487,7 @@
                                                     </div>
                                                 </div>
 
-                                                 <p class="my-3 fs-5 fw-semibold">Profile Details</p>
+                                                <p class="my-3 fs-5 fw-semibold">Profile Details</p>
 
                                                 <div class="d-md-flex pb-1">
                                                     <p class="text-secondary col-md-3 mb-1">Years of Experience : </p>

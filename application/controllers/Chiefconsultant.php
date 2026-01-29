@@ -392,7 +392,8 @@ class Chiefconsultant extends CI_Controller
         redirect('Chiefconsultant/');
     }
 
-    public function join($unique_meeting_id = null) {
+    public function join($unique_meeting_id = null)
+    {
         if (!$this->session->userdata('ccName')) {
             show_error('Unauthorized Access', 403);
             return;
@@ -425,22 +426,22 @@ class Chiefconsultant extends CI_Controller
 
         $appID = 'f891d97665524065b626ea324f06942f';
         $appCertificate = '3b5229b39c254ce9b03f5a64966fa5c9';
-        $uid = rand(300000, 399999); 
+        $uid = rand(300000, 399999);
         $privilegeExpiredTs = time() + 3600;
 
         $token = RtcTokenBuilder::buildTokenWithUid($appID, $appCertificate, $unique_meeting_id, $uid, RtcTokenBuilder::RolePublisher, $privilegeExpiredTs);
 
         $data = [
-            'app_id'       => $appID,
-            'temp_token'   => $token,
+            'app_id' => $appID,
+            'temp_token' => $token,
             'channel_name' => $unique_meeting_id,
-            'uid'          => $uid,
-            'local_name'   => $appointment->doctorName ?? 'Chief Consultant',
+            'uid' => $uid,
+            'local_name' => $appointment->doctorName ?? 'Chief Consultant',
             'patient_name' => ($appointment->firstName ?? 'Patient') . ' ' . ($appointment->lastName ?? ''),
-            'hcp_name'     => $appointment->hcpName ?? 'Healthcare Provider',
-            'chief_name'   => $appointment->doctorName ?? 'Chief Consultant',
-            'role'         => 'cc', 
-            'is_doctor'    => true 
+            'hcp_name' => $appointment->hcpName ?? 'Healthcare Provider',
+            'chief_name' => $appointment->doctorName ?? 'Chief Consultant',
+            'role' => 'cc',
+            'is_doctor' => true
         ];
 
         $this->load->view('customMeeting', $data);

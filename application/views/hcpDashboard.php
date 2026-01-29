@@ -1005,7 +1005,7 @@
                     }
 
                     function renderActionButtons(row) {
-                        const fullJoinUrl = `${baseUrl}healthcareprovider/join/${row.appointmentLink}?role=hcp`;
+                        const fullJoinUrl = `${baseUrl}healthcareprovider/join/${row.appointmentLink}`;
                         const consultBtn = `
                                 <a href="${baseUrl}Consultation/consultation/${row.patientDbId}">
                                     <button class="btn btn-secondary mx-1"

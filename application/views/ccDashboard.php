@@ -1187,7 +1187,7 @@
                                                                     <button class="btn btn-success" disabled>Join</button>
                                                     <?php } else { ?>
 
-                                                                    <a href="<?php echo $meetingBaseUrl . 'Healthcareprovider/join/' . ltrim($value['appointmentLink'], '/') . '?role=cc'; ?>"
+                                                                    <a href="<?php  echo base_url() . 'chiefconsultant/join/' . ltrim($value['appointmentLink'], '/'); ?>"
                                                                     target="_self" rel="noopener">
                                                                         <button class="btn btn-success">Join</button>
                                                                     </a>

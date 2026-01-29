@@ -527,7 +527,7 @@
             else if (options.role === 'hcp') {
                 let endHtml = '<div style="height:100vh; display:flex; align-items:center; justify-content:center; flex-direction:column; background-color:#ffffff; color:#000000;">';
                 endHtml += '<h1 style="margin-bottom:20px; font-weight:600;">Call Ended</h1>';
-                endHtml += '<button onclick="window.close(); window.location.href=\'<?php echo base_url('healthcareprovider/appointments'); ?>\'" class="home-btn" style="background-color:#28a745; color:#ffffff; padding:14px 32px; font-size:18px; border:none; border-radius:8px; cursor:pointer; font-weight:500; transition: background-color 0.2s;"> close and Back to Appointments</button>';
+                endHtml += '<button onclick="window.close(); window.location.href=\'<?php echo base_url('healthcareprovider/appointments'); ?>\'" class="home-btn" style="background-color:#28a745; color:#ffffff; padding:14px 32px; font-size:18px; border:none; border-radius:8px; cursor:pointer; font-weight:500; transition: background-color 0.2s;"> Close and Back to Appointments</button>';
                 endHtml += '<p style="margin-top:16px; font-size:14px; color:#5f6368;">(This tab will close and return you to your dashboard)</p>';
                 endHtml += '</div>';
                 document.getElementById('call-container').innerHTML = endHtml;

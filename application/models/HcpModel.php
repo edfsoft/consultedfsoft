@@ -382,7 +382,8 @@ class HcpModel extends CI_Model
                     LEFT JOIN `patient_details` p ON a.patientDbId = p.id
                     WHERE a.hcpDbId = $hcpIdDb 
                     AND a.appStatus = '0' 
-                    AND ( a.dateOfAppoint > CURDATE() OR ( a.dateOfAppoint = CURDATE() AND ADDTIME(a.timeOfAppoint, '00:10:00') >= CURTIME() ) ) 
+                    AND ( a.dateOfAppoint > CURDATE() 
+                    OR ( a.dateOfAppoint = CURDATE() AND ADDTIME(a.timeOfAppoint, '00:15:00') >= CURTIME() ) ) 
                     ORDER BY a.dateOfAppoint, a.timeOfAppoint";
 
         $select = $this->db->query($details);
@@ -717,8 +718,10 @@ class HcpModel extends CI_Model
         return $this->db->insert_id();
     }
 
-
-
+    public function update_appointment_status($id, $status) {
+        $this->db->where('id', $id);
+        return $this->db->update('appointment_details', ['appStatus' => $status]);
+    }
 
 
 }

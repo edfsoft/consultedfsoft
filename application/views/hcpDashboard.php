@@ -820,6 +820,8 @@
                                                 </th> -->
                                                 <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">ACTION
                                                 </th>
+                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">Completed
+                                                </th>
                                             </tr>
                                         </thead>
                                         <tbody id="appointmentTableBody">
@@ -836,10 +838,51 @@
                     </div>
                 </section>
 
+                <!-- Tick Box Model -->
+                <div class="modal fade" id="completionModal" data-bs-backdrop="static" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" style="max-width: 350px;">
+                        <div class="modal-content border-0 shadow-lg">
+                            <div class="modal-body text-center p-4">
+                                <div class="mb-4">
+                                    <i class="bi bi-check2-circle text-success" style="font-size: 80px; line-height: 1;"></i>
+                                </div>
+                                
+                                <h5 class="fw-bold mb-2">Finish Appointment?</h5>
+                                <p class="text-muted small px-3">Mark this appointment as completed in the system.</p>
+                                
+                                <div class="my-4 d-flex justify-content-center align-items-center">
+                                    <div class="form-check p-0">
+                                        <input type="checkbox" id="modalBigTick" class="form-check-input border-success" 
+                                        style="width: 50px; height: 50px; cursor: pointer; float: none; margin: 0 auto; transition: transform 0.2s ease-in-out; display: block;" 
+                                        onmouseover="this.style.transform='scale(1.2) translateY(-5px)'" 
+                                        onmouseout="this.style.transform='scale(1) translateY(0)'"
+                                        onclick="initiateCompletion(${row.id}, this)">
+                                        <label class="d-block mt-2 text-success fw-bold" for="modalBigTick">Tick to Complete</label>
+                                    </div>
+                                </div>
+
+                                <input type="hidden" id="pendingAppointmentId">
+                                
+                                    <button type="button" 
+                                    class="btn w-100 mt-2" 
+                                    style="background-color: transparent; border: 2px solid #aab1b8; color: #6c757d; transition: all 0.2s ease-in-out; font-weight: 500;" 
+                                    onmouseover="this.style.transform='scale(1.05)'; this.style.backgroundColor='#aab1b8'; this.style.color='#ffffff';" 
+                                    onmouseout="this.style.transform='scale(1)'; this.style.backgroundColor='transparent'; this.style.color='#6c757d';"
+                                    data-bs-dismiss="modal">
+                                Cancel and Close
+                            </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Display Appointments -->
                 <script>
                     const appointmentList = <?php echo json_encode($appointmentList, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>;
                     const baseUrl = '<?php echo base_url(); ?>';
+
+                    let activeCheckboxElement = null; 
+                    let completionModalInstance = null;
 
                     let filteredList = [...appointmentList];
                     let itemsPerPageAppointment = parseInt(localStorage.getItem('itemsPerPageAppointment')) || 10;
@@ -1022,8 +1065,9 @@
 
                         const diffMinutes = (now - appointmentDateTime) / (1000 * 60);
                         const isToday = now.toISOString().slice(0, 10) === row.dateOfAppoint;
-                        const isWithin10Minutes = diffMinutes >= -10000 && diffMinutes <= 10000;
+                        const isWithin10Minutes = diffMinutes >= -10 && diffMinutes <= 10;
                         const shouldEnableJoin = isToday && isWithin10Minutes;
+                        const shouldShowCheckbox = isToday && isWithin10Minutes;
 
                         const joinBtn = shouldEnableJoin
                             ? `
@@ -1060,6 +1104,70 @@
                                 ${joinBtn}
                             `;
                     }
+
+                    function initiateCompletion(id, element) {
+                        if (element.checked) {
+                            element.checked = false; // Keep unchecked until confirmed
+                            
+                            // Store the ID and the Element globally
+                            document.getElementById('pendingAppointmentId').value = id;
+                            document.getElementById('modalBigTick').checked = false;
+                            activeCheckboxElement = element; 
+                            
+                            // Initialize modal ONLY ONCE and reuse it
+                            const modalEl = document.getElementById('completionModal');
+                            if (!completionModalInstance) {
+                                completionModalInstance = new bootstrap.Modal(modalEl);
+                            }
+                            completionModalInstance.show();
+                        }
+                    }
+
+                    document.getElementById('modalBigTick').onchange = function() {
+                        if (this.checked) {
+                            const id = document.getElementById('pendingAppointmentId').value;
+                            const status = '1';
+
+                            // Debugging: Check console to see if this triggers
+                            console.log("Sending update for ID:", id);
+
+                            fetch(`${baseUrl}Healthcareprovider/updateStatus`, {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                                body: `id=${id}&status=${status}`
+                            })
+                            .then(res => res.json()) // Make sure your Controller echoes json_encode(['success'=>true])
+                            .then(data => {
+                                console.log("Server Response:", data);
+                                
+                                if (data.success) {
+                                    // 1. Visually tick the box in the background table
+                                    if(activeCheckboxElement) {
+                                        activeCheckboxElement.checked = true;
+                                        activeCheckboxElement.disabled = true;
+                                    }
+
+                                    // 2. Update the local data so it doesn't disappear on filter
+                                    const app = appointmentList.find(a => a.id == id);
+                                    if (app) app.appStatus = '1';
+
+                                    // 3. Auto-Close the Modal properly using the global instance
+                                    if (completionModalInstance) {
+                                        completionModalInstance.hide();
+                                    }
+                                    window.location.reload();
+                                } else {
+                                    alert("Failed to update status. Server responded with error.");
+                                    this.checked = false; // Uncheck the big box if failed
+                                }
+                            })
+                            .catch(err => {
+                                console.error("Fetch Error:", err);
+                                alert("Error connecting to server.");
+                                this.checked = false;
+                            });
+                        }
+                    };
                     function formatTimeAMPM(timeStr) {
                         if (!timeStr) return '';
 
@@ -1119,6 +1227,13 @@
                             onmouseout="this.style.textDecoration='none'">${escapeHTML(r.referalDoctor)}</a>`;
                             }
 
+                            const now = new Date();
+                            const appointmentDateTime = new Date(r.dateOfAppoint + ' ' + r.timeOfAppoint);
+                            const diffMinutes = (now - appointmentDateTime) / (1000 * 60);
+                            const isToday = now.toISOString().slice(0, 10) === r.dateOfAppoint;
+                            
+                            const shouldShowCheckbox = isToday && diffMinutes >= -10 && diffMinutes <= 10;
+
                             tbody.insertAdjacentHTML('beforeend', `
                                     <tr data-bs-toggle="tooltip"
                                         data-bs-placement="top"
@@ -1130,6 +1245,18 @@
                                         <td class="align-middle">${formatTimeAMPM(r.timeOfAppoint)}</td>
                                         <td class="align-middle">${ccLink}</td>
                                         <td class="d-flex d-lg-block">${renderActionButtons(r)}</td>
+                                        <td class="align-middle">
+                                            <div class="text-center">
+                                                <div class="">
+                                                    <input type="checkbox" 
+                                                        class="form-check-input border-secondary" 
+                                                        style="width: 20px; height: 20px; cursor: ${shouldShowCheckbox || r.appStatus === '1' ? 'pointer' : 'not-allowed'};"
+                                                        ${r.appStatus === '1' ? 'checked disabled' : (shouldShowCheckbox ? '' : 'disabled')}
+                                                        ${r.appStatus === '1' ? 'checked disabled' : ''} 
+                                                        onclick="initiateCompletion(${r.id}, this)">
+                                                </div>
+                                            </div>
+                                        </td>
                                     </tr>
                                 `);
                         });
@@ -3681,7 +3808,7 @@
                                                 </script>
             <?php
         } ?>
-
+        
         <!-- All modal files -->
         <?php include 'hcpModals.php'; ?>
 

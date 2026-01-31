@@ -9,12 +9,15 @@
     <!-- bootstrap link -->
     <link href="<?php echo base_url(); ?>assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
     <link href="<?php echo base_url(); ?>assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet" />
+    <!-- Fonts -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" />
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
         :root {
-            --bg-dark: #ffffff;
+            --bg-dark: #e7e5e5;
             --bg-surface: #3c4043;
             --text-primary: #e6e0e0;
             --danger: #ea4335;
@@ -97,12 +100,29 @@
         .welcome-text {
             flex: 1;
             text-align: center;
+            font-family: 'Poppins', sans-serif !important;
         }
 
-        .logo-container img {
-            height: 60px;
-            width: auto;
+        .welcome-text p {
+            font-family: 'Poppins', sans-serif !important;
+            font-weight: 400; /* Regular weight */
+            color: #5f6368;
+            line-height: 1.6; /* Improves readability */
         }
+
+        .welcome-text h2 {
+            font-family: 'Poppins', sans-serif !important;
+            font-weight: 600; /* Semi-bold for a professional look */
+            color: #202124;
+            margin-bottom: 8px;
+        }
+
+        .welcome-text strong {font-weight: 700;}
+
+            .logo-container img {
+                height: 60px;
+                width: auto;
+            }
 
         #lobby-container {
             display: flex;
@@ -254,7 +274,7 @@
 
         #join-btn {
             background-color: #1a73e8;
-            color: #ffffff;
+            color: #d3cece;
             border: none;
             padding: 18px 48px;
             font-size: 14px;
@@ -290,7 +310,7 @@
             position: relative;
             padding: 20px;
             box-sizing: border-box;
-            background-color: #ffffff;
+            background-color: #e7e5e5;
         }
 
         .video-player {
@@ -576,7 +596,7 @@
                 <div class="welcome-text">
                     <h2>Welcome to Online Consultation</h2>
                     <p>Make your consultation through this secure online portal.<br>
-                        Press the <strong>Join</strong> button below to enter the meeting.</p>
+                        Press the <strong>Join</strong> button below to enter the consultation.</p>
                 </div>
 
                 <div style="width: 180px; visibility: hidden;" class="d-none d-md-block"></div>
@@ -965,8 +985,7 @@
                         document.getElementById('call-container').innerHTML =
                             '<div style="height:100vh; display:flex; align-items:center; justify-content:center; flex-direction:column; color:#333; background:#fff;">' +
                             '<h1>Call Ended</h1>' +
-                            '<p style="font-size:18px; margin:20px 0;">You can now safely close this browser tab.</p>' +
-                            '<p style="color:#666;">(Some browsers block auto-closing — close it manually)</p>' +
+                            '<p style="font-size:18px; margin:20px 0;">You can now close this browser tab.</p>' +
                             '</div>';
                     }
                 }, 500);
@@ -975,11 +994,23 @@
                 window.location.href = "<?php echo base_url('Chiefconsultant/appointments'); ?>";
             }
             else if (options.role === 'hcp') {
-                let endHtml = '<div style="height:100vh; display:flex; align-items:center; justify-content:center; flex-direction:column; background-color:#ffffff; color:#000000;">';
-                endHtml += '<h1 style="margin-bottom:20px; font-weight:600;">Call Ended</h1>';
-                endHtml += '<button onclick="window.close(); window.location.href=\'<?php echo base_url('healthcareprovider/appointments'); ?>\'" class="home-btn" style="background-color:#28a745; color:#ffffff; padding:14px 32px; font-size:18px; border:none; border-radius:8px; cursor:pointer; font-weight:500; transition: background-color 0.2s;"> Close and Back to Appointments</button>';
-                endHtml += '<p style="margin-top:16px; font-size:14px; color:#5f6368;">(This tab will close and return you to your dashboard)</p>';
+                let endHtml = '<div style="height:100vh; display:flex; align-items:center; justify-content:center; flex-direction:column; background-color:#ffffff; color:#000000; font-family: \'Poppins\', sans-serif;">';
+                
+                endHtml += '<div class="logo-container" style="margin-bottom: 30px;">';
+                endHtml += '    <a href="https://erodediabetesfoundation.org/" target="_blank" class="logo">';
+                endHtml += '        <img src="<?php echo base_url(); ?>assets/edf_logo.png" alt="EDF Logo" style="height: 67px; width: auto;" />';
+                endHtml += '    </a>';
                 endHtml += '</div>';
+
+                endHtml += '<h1 style="margin-bottom:20px; font-weight:600; font-family: \'Poppins\', sans-serif;">Call Ended</h1>';
+                
+                endHtml += '<button onclick="window.close(); setTimeout(function(){ window.location.href=\'<?php echo base_url('healthcareprovider/appointments'); ?>
+                \'; }, 100);" class="home-btn" style="background-color:#28a745; color:#ffffff; padding:14px 32px; font-size:18px; border:none; border-radius:8px; cursor:pointer; font-weight:500; font-family: \'Poppins\', sans-serif; transition: background-color 0.2s;">Close and Back to Appointments</button>';
+        
+                endHtml += '<p style="margin-top:16px; font-size:14px; color:#5f6368; font-family: \'Poppins\', sans-serif;">(Click to return to your dashboard)</p>';
+                
+                endHtml += '</div>';
+                
                 document.getElementById('call-container').innerHTML = endHtml;
             } else {
                 window.close();

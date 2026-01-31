@@ -383,7 +383,7 @@ class HcpModel extends CI_Model
                     WHERE a.hcpDbId = $hcpIdDb 
                     AND a.appStatus = '0' 
                     AND ( a.dateOfAppoint > CURDATE() 
-                    OR ( a.dateOfAppoint = CURDATE() AND ADDTIME(a.timeOfAppoint, '00:15:00') >= CURTIME() ) ) 
+                    OR ( a.dateOfAppoint = CURDATE() AND ADDTIME(a.timeOfAppoint, '00:20:00') >= CURTIME() ) ) 
                     ORDER BY a.dateOfAppoint, a.timeOfAppoint";
 
         $select = $this->db->query($details);
@@ -446,28 +446,28 @@ class HcpModel extends CI_Model
 
     public function getAppMorTime()
     {
-        $details = "SELECT * FROM `morning_time` ";
+        $details = "SELECT * FROM `morning_time` WHERE `status` = '0' ORDER BY `time` ASC";
         $select = $this->db->query($details);
         return $select->result_array();
     }
 
     public function getAppAfterTime()
     {
-        $details = "SELECT * FROM `afternoon_time` ";
+        $details = "SELECT * FROM `afternoon_time` WHERE `status` = '0' ORDER BY `time` ASC ";
         $select = $this->db->query($details);
         return $select->result_array();
     }
 
     public function getAppEveTime()
     {
-        $details = "SELECT * FROM `evening_time` ";
+        $details = "SELECT * FROM `evening_time` WHERE `status` = '0' ORDER BY `time` ASC ";
         $select = $this->db->query($details);
         return $select->result_array();
     }
 
     public function getAppNightTime()
     {
-        $details = "SELECT * FROM `night_time` ";
+        $details = "SELECT * FROM `night_time`WHERE `status` = '0' ORDER BY `time` ASC ";
         $select = $this->db->query($details);
         return $select->result_array();
     }

@@ -1065,7 +1065,7 @@
 
                         const diffMinutes = (now - appointmentDateTime) / (1000 * 60);
                         const isToday = now.toISOString().slice(0, 10) === row.dateOfAppoint;
-                        const isWithin10Minutes = diffMinutes >= -10 && diffMinutes <= 10;
+                        const isWithin10Minutes = diffMinutes >= -0 && diffMinutes <= 20;
                         const shouldEnableJoin = isToday && isWithin10Minutes;
                         const shouldShowCheckbox = isToday && isWithin10Minutes;
 
@@ -1232,7 +1232,7 @@
                             const diffMinutes = (now - appointmentDateTime) / (1000 * 60);
                             const isToday = now.toISOString().slice(0, 10) === r.dateOfAppoint;
                             
-                            const shouldShowCheckbox = isToday && diffMinutes >= -10 && diffMinutes <= 10;
+                            const shouldShowCheckbox = isToday && diffMinutes >= -0 && diffMinutes <= 20;
 
                             tbody.insertAdjacentHTML('beforeend', `
                                     <tr data-bs-toggle="tooltip"

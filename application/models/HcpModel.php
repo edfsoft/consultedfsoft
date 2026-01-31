@@ -415,7 +415,7 @@ class HcpModel extends CI_Model
         $this->db->where('hcpDbId', $hcpIdDb);
         $this->db->where('dateOfAppoint', $today);
         $this->db->where('appStatus', '0');
-        $this->db->where('timeOfAppoint >=', $currentTime);
+        $this->db->where("ADDTIME(timeOfAppoint, '00:20:00') >=", $currentTime);
         return $this->db->count_all_results('appointment_details');
     }
 
@@ -718,7 +718,8 @@ class HcpModel extends CI_Model
         return $this->db->insert_id();
     }
 
-    public function update_appointment_status($id, $status) {
+    public function update_appointment_status($id, $status)
+    {
         $this->db->where('id', $id);
         return $this->db->update('appointment_details', ['appStatus' => $status]);
     }

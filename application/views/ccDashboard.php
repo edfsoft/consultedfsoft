@@ -1125,7 +1125,7 @@
                                                             HCP ID
                                                         </th>
                                                         <th scope="col" style="font-size: 16px; font-weight: 500; color: #0079AD">
-                                                            PURPOSE
+                                                            COMPLAINT
                                                         </th>
                                                         <th scope="col" style="font-size: 16px; font-weight: 500; color: #0079AD">
                                                             ACTION
@@ -1154,7 +1154,7 @@
                                                     } ?>
                                                             </td>
                                                             <td style="font-size: 16px" class="pt-3">
-                                                    <?php echo date('h:i a', strtotime($value['timeOfAppoint'])); ?>
+                                                    <?php echo date('h:i A', strtotime($value['timeOfAppoint'])); ?>
                                                             </td>
                                                             <td style="font-size: 16px" class="pt-3"><a
                                                                     href="<?php echo base_url() . "Chiefconsultant/healthCareProvidersProfile/" . $value['hcpDbId']; ?>"
@@ -1179,9 +1179,9 @@
 
                                                         $isToday = ($dateOfAppoint == $today);
 
-                                                        $isWithin10Minutes = ($currentDateTime <= strtotime('+10 minutes', $appointmentDateTime)) &&
+                                                        $isWithin20Minutes = ($currentDateTime <= strtotime('+20 minutes', $appointmentDateTime)) &&
                                                             ($currentDateTime >= $appointmentDateTime);
-                                                        $shouldEnableButton = $isToday && $isWithin10Minutes;
+                                                        $shouldEnableButton = $isToday && $isWithin20Minutes;
 
                                                         if ($shouldEnableButton) { ?>
                                                                     <a href="<?php echo base_url() . 'chiefconsultant/join/' . ltrim($value['appointmentLink'], '/'); ?>"

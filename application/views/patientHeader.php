@@ -68,7 +68,8 @@
             </a>
         </li>
 
-        <li class="pt-4">
+        <!-- Commented temporarily -->
+        <!-- <li class="pt-4">
             <a href="<?php echo base_url() . "Patient/appointments" ?>"
                 style="font-size: 18px; font-weight: 400; color: white;" id="appointments">
 
@@ -84,7 +85,7 @@
                     <?php endif; ?>
                 </div>
             </a>
-        </li>
+        </li> -->
 
         <li class="pt-4">
             <a class="" href="<?php echo base_url() . "Patient/myProfile" ?>"

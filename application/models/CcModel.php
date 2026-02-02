@@ -123,7 +123,7 @@ class CcModel extends CI_Model
     {
         $ccId = $_SESSION['ccId'];
         $details = "SELECT * FROM `appointment_details` WHERE `referalDoctor` = '$ccId' AND `appStatus` = '0' AND ( `dateOfAppoint` > CURDATE() OR 
-        ( `dateOfAppoint` = CURDATE() AND ADDTIME(`timeOfAppoint`, '00:10:00') >= CURTIME() ) ) ORDER BY `dateOfAppoint`, `timeOfAppoint`;";
+        ( `dateOfAppoint` = CURDATE() AND ADDTIME(`timeOfAppoint`, '00:20:00') >= CURTIME() ) ) ORDER BY `dateOfAppoint`, `timeOfAppoint`;";
         $select = $this->db->query($details);
         return array("response" => $select->result_array(), "totalRows" => $select->num_rows());
     }

@@ -204,7 +204,7 @@
                                 <p class="text-justify" style="font-size:18px;font-weight:400;"></p>
                                 <form action="<?php echo base_url() . "Patient/updateNewPassword" ?>" method="post"
                                     name="patientPasswordResetForm" onsubmit="return validateFields()">
-                                    <input type="hidden" id="mailId" name="mailId" value="<?php echo $mailId; ?>">
+                                    <input type="hidden" id="mailId" name="mailId" value="<?php echo $patientMail; ?>">
                                     <input type="hidden" id="patientId" name="patientId" value="<?php echo $patientId; ?>">
                                     <div class="position-relative">
                                         <label for="patientPassword" class="form-label">Password <span

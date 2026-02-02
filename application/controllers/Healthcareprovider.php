@@ -949,6 +949,7 @@ class Healthcareprovider extends CI_Controller
             'hcp_name' => $appointment->hcpName ?? 'Healthcare Provider',
             // UPDATED: Now passing the dynamic doctor name from the database 
             'chief_name' => $appointment->chiefName ?? 'N/A',
+            'consult_mode' => $appointment->modeOfConsultant ?? 'video',
             'role' => 'hcp',
             'is_doctor' => true
         ];
@@ -956,19 +957,20 @@ class Healthcareprovider extends CI_Controller
         $this->load->view('customMeeting', $data);
     }
 
-    public function updateStatus() {
+    public function updateStatus()
+    {
         $id = $this->input->post('id');
         $status = $this->input->post('status');
 
         if (is_numeric($id) && $status === '1') {
             $this->load->model('HcpModel');
             $success = $this->HcpModel->update_appointment_status($id, $status);
-            
+
             echo json_encode(['success' => $success]);
         } else {
             echo json_encode(['success' => false, 'message' => 'Invalid Request']);
         }
     }
 
-    
+
 }

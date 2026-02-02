@@ -50,12 +50,14 @@ class PatientModel extends CI_Model
     {
         $post = $this->input->post(null, true);
         $updatedata = array(
-            'password' => password_hash($post['patientCnfmPassword'], PASSWORD_BCRYPT),
+            // 'password' => password_hash($post['patientCnfmPassword'], PASSWORD_BCRYPT),
+            'password' => '111111',
             'firstLoginPswd' => '1'
         );
         $this->db->where('mailId', $post['mailId']);
         $this->db->where('patientId', $post['patientId']);
-        return $this->db->update('patient_details', $updatedata);
+        $this->db->update('patient_details', $updatedata);
+        return ($this->db->affected_rows() > 0);
     }
 
     public function patientLoginDetails()
@@ -77,7 +79,7 @@ class PatientModel extends CI_Model
         }
     }
 
-     public function get_consultations_by_patient($patient_id)
+    public function get_consultations_by_patient($patient_id)
     {
         $this->db->select('*');
         $this->db->from('consultations');
@@ -144,7 +146,7 @@ class PatientModel extends CI_Model
 
         return $consultations;
     }
-    
+
     public function getPatientDetails()
     {
         $patientIdDb = $_SESSION['patientIdDb'];

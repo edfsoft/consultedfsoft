@@ -55,6 +55,7 @@ class Patient extends CI_Controller
     public function resetPassword()
     {
         $this->data['method'] = "getMailId";
+        $this->session->unset_userdata('successMessage');
         $this->load->view('patientForgetPassword.php', $this->data);
     }
 
@@ -62,9 +63,12 @@ class Patient extends CI_Controller
     {
         $patientMail = $this->input->post('patientPassMail');
         $patientId = $this->input->post('patientPassId');
-        $user_exists = $this->db->where('mailId', $patientMail)->get('patient_details')->num_rows() > 0;
+        $user_exists = $this->db->where([
+            'mailId' => $patientMail,
+            'patientId' => $patientId
+        ])->count_all_results('patient_details') > 0;
         if (!$user_exists) {
-            $this->session->set_flashdata('errorMessage', 'Email not registered.');
+            $this->session->set_flashdata('errorMessage', 'Invalid Email or Patient ID.');
             redirect('Patient/resetPassword');
         }
 
@@ -104,14 +108,18 @@ class Patient extends CI_Controller
         $result = $this->PatientModel->validate_otp($mail, $enteredOtp);
         if ($result['status'] == true) {
             $this->data['method'] = "newPassword";
-            $this->data['mailId'] = $mail;
+            $this->data['patientMail'] = $mail;
             $this->data['patientId'] = $patientId;
+            $this->session->unset_userdata('successMessage');
+            $this->session->unset_userdata('errorMessage');
             $this->session->set_flashdata('successMessage', 'OTP verified successfully.');
             $this->load->view('patientForgetPassword.php', $this->data);
         } elseif ($result['status'] == false && $result['reason'] == 'Invalid OTP') {
             $this->data['method'] = "verifyOtp";
-            $this->data['mailId'] = $mail;
+            $this->data['patientMail'] = $mail;
             $this->data['patientId'] = $patientId;
+            $this->session->unset_userdata('successMessage');
+            $this->session->unset_userdata('errorMessage');
             $this->session->set_flashdata('errorMessage', $result['reason']);
             $this->load->view('patientForgetPassword.php', $this->data);
         } elseif ($result['status'] == false && $result['reason'] == 'OTP expired') {

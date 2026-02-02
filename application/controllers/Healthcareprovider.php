@@ -956,19 +956,20 @@ class Healthcareprovider extends CI_Controller
         $this->load->view('customMeeting', $data);
     }
 
-    public function updateStatus() {
+    public function updateStatus()
+    {
         $id = $this->input->post('id');
         $status = $this->input->post('status');
 
         if (is_numeric($id) && $status === '1') {
             $this->load->model('HcpModel');
             $success = $this->HcpModel->update_appointment_status($id, $status);
-            
+
             echo json_encode(['success' => $success]);
         } else {
             echo json_encode(['success' => false, 'message' => 'Invalid Request']);
         }
     }
 
-    
+
 }

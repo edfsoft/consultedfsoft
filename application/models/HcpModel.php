@@ -162,6 +162,9 @@ class HcpModel extends CI_Model
     public function insertPatients($hashedPassword)
     {
         $post = $this->input->post(null, true);
+        $enteredAge = (int) $post['patientAge'];
+        $today = new DateTime();
+        $derivedDob = $today->modify("-{$enteredAge} years")->format('Y-m-d');
 
         $insertdata = array(
             'firstName' => $post['patientName'],
@@ -170,7 +173,8 @@ class HcpModel extends CI_Model
             'alternateMobile' => $post['patientAltMobile'],
             'mailId' => $post['patientEmail'],
             'gender' => $post['patientGender'],
-            'age' => $post['patientAge'],
+            'age' => $post['patientAge'], /* Not in use - just save */
+            'derived_dob' => $derivedDob,
             'bloodGroup' => $post['patientBlood'],
             'maritalStatus' => $post['patientMarital'],
             'marriedSince' => $post['marriedSince'],
@@ -228,6 +232,9 @@ class HcpModel extends CI_Model
     public function updatePatientsDetails()
     {
         $post = $this->input->post(null, true);
+        $correctedAge = (int) $post['patientAge'];
+        $today = new DateTime();
+        $newDerivedDob = $today->modify("-{$correctedAge} years")->format('Y-m-d');
         $updateData = array(
             'firstName' => $post['patientName'],
             'lastName' => $post['patientLastName'],
@@ -235,7 +242,8 @@ class HcpModel extends CI_Model
             'alternateMobile' => $post['patientAltMobile'],
             'mailId' => $post['patientEmail'],
             'gender' => $post['patientGender'],
-            'age' => $post['patientAge'],
+            // 'age' => $post['patientAge'],
+            'derived_dob' => $newDerivedDob,
             'bloodGroup' => $post['patientBlood'],
             'maritalStatus' => $post['patientMarital'],
             'marriedSince' => $post['marriedSince'],

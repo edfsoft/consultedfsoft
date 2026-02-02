@@ -390,7 +390,15 @@
                                 <p>
                                     <a href="tel:<?php echo $value['mobileNumber'] ?>" class="text-decoration-none text-dark">
                                         <?php echo $value['mobileNumber'] ?>
-                                    </a> | <?php echo $value['gender'] ?> | <?php echo $value['age'] ?> Year(s)
+                                        <?php
+                                        if (!empty($value['derived_dob'])) {
+                                            $dob = new DateTime($value['derived_dob']);
+                                            $today = new DateTime();
+                                            $currentAge = $today->diff($dob)->y;
+                                        } else {
+                                            $currentAge = $value['age'];
+                                        } ?>
+                                    </a> | <?php echo $value['gender'] ?> | <?php echo $currentAge ?> Year(s)
                                 </p>
                             <?php } ?>
                         </div>
@@ -897,7 +905,15 @@
                                                                                 <?php echo $patientDetails[0]['lastName'] ?>
                                                                             </p>
                                                                             <p class="mb-0"><strong>Age & Sex:</strong>
-                                                                                <?php echo $patientDetails[0]['age'] ?> Year(s) /
+                                                                                <?php
+                                                                                if (!empty($patientDetails[0]['derived_dob'])) {
+                                                                                    $dob = new DateTime($patientDetails[0]['derived_dob']);
+                                                                                    $today = new DateTime();
+                                                                                    $currentAge = $today->diff($dob)->y;
+                                                                                } else {
+                                                                                    $currentAge = $patientDetails[0]['age'];
+                                                                                } ?>
+                                                                                <?php echo $currentAge ?> Year(s) /
                                                                                 <?php echo $patientDetails[0]['gender'] ?>
                                                                             </p>
                                                                             <p class="mb-0"><strong>Patient ID<span
@@ -1774,7 +1790,15 @@
                                 <p>
                                     <a href="tel:<?php echo $value['mobileNumber'] ?>" class="text-decoration-none text-dark">
                                         <?php echo $value['mobileNumber'] ?>
-                                    </a> | <?php echo $value['gender'] ?> | <?php echo $value['age'] ?> Year(s)
+                                        <?php
+                                        if (!empty($value['derived_dob'])) {
+                                            $dob = new DateTime($value['derived_dob']);
+                                            $today = new DateTime();
+                                            $currentAge = $today->diff($dob)->y;
+                                        } else {
+                                            $currentAge = $value['age'];
+                                        } ?>
+                                    </a> | <?php echo $value['gender'] ?> | <?php echo $currentAge ?> Year(s)
                                 </p>
                             <?php } ?>
                         </div>
@@ -2361,7 +2385,15 @@
                                 <p>
                                     <a href="tel:<?php echo $value['mobileNumber'] ?>" class="text-decoration-none text-dark">
                                         <?php echo $value['mobileNumber'] ?>
-                                    </a> | <?php echo $value['gender'] ?> | <?php echo $value['age'] ?> Year(s)
+                                        <?php
+                                        if (!empty($value['derived_dob'])) {
+                                            $dob = new DateTime($value['derived_dob']);
+                                            $today = new DateTime();
+                                            $currentAge = $today->diff($dob)->y;
+                                        } else {
+                                            $currentAge = $value['age'];
+                                        } ?>
+                                    </a> | <?php echo $value['gender'] ?> | <?php echo $currentAge ?> Year(s)
                                 </p>
                             <?php } ?>
                         </div>

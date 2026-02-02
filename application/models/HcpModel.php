@@ -694,7 +694,7 @@ class HcpModel extends CI_Model
         $ccId = 'Nil';
         $ccDbId = 'Nil';
         $appLink = $this->generateMeetingID();//link for only hcp
-        $modeOfConsultant = 'Nil';
+        //$modeOfConsultant = 'Nil';
         if (!empty($post['patientId'])) {
             list($patientId, $dbId) = explode('|', $post['patientId']);
         } else {
@@ -711,7 +711,7 @@ class HcpModel extends CI_Model
             'referalDoctor' => $ccId,
             'appointmentLink' => $appLink,
             'referalDoctorDbId' => $ccDbId,
-            'modeOfConsultant' => $modeOfConsultant,
+            'modeOfConsultant' => $post['appConsult'],
             'dateOfAppoint' => $post['appDate'],
             'partOfDay' => $post['dayTime'],
             'timeOfAppoint' => $post['appTime'],

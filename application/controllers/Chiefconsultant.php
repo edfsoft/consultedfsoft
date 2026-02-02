@@ -440,6 +440,7 @@ class Chiefconsultant extends CI_Controller
             'patient_name' => ($appointment->firstName ?? 'Patient') . ' ' . ($appointment->lastName ?? ''),
             'hcp_name' => $appointment->hcpName ?? 'Healthcare Provider',
             'chief_name' => $appointment->doctorName ?? 'Chief Consultant',
+            'consult_mode' => $appointment->modeOfConsultant ?? 'video',
             'role' => 'cc',
             'is_doctor' => true
         ];

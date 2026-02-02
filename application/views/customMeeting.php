@@ -670,6 +670,8 @@
         };
 
         const isDoctor = <?php echo $is_doctor ? 'true' : 'false'; ?>;
+        const consultMode = "<?php echo $consult_mode ?? 'video'; ?>"; 
+        const isAudioOnly = consultMode === 'audio';
 
         const client = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
         let localTracks = { videoTrack: null, audioTrack: null };
@@ -677,7 +679,7 @@
         let isVideoEnabled = true;
         let remoteUsers = new Map();
         let isJoined = false;
-
+        console.log("Mode Of consultant:",consultMode );
         function getDisplayName(name, role) {
             let prefix = role === 'patient' ? '' : 'Dr. ';
             let suffix = '';
@@ -759,47 +761,59 @@
         }
 
         async function handleToggle(type) {
-            const isMic = type === 'mic';
-            const track = isMic ? localTracks.audioTrack : localTracks.videoTrack;
-            if (!track) return;
-            const enabled = !track.enabled;
-            await track.setEnabled(enabled);
-            if (isJoined) {
-                if (enabled) {
-                    await client.publish(track);
-                } else {
-                    await client.unpublish(track);
-                }
-            }
+    const isMic = type === 'mic';
+    
+    // 1. Safety Check: Stop if trying to toggle video in Audio Mode
+    if (!isMic && isAudioOnly) return; 
 
-            const btns = [document.getElementById(`lobby-${type}-btn`), document.getElementById(`call-${type}-btn`)];
-            btns.forEach(btn => {
-                if (btn) {
-                    btn.classList.toggle('active', !enabled);
-                    btn.innerHTML = `<i class="fas fa-${isMic ? 'microphone' : 'video'}${!enabled ? '-slash' : ''}"></i>`;
-                }
-            });
+    // 2. Define track (ONLY ONCE)
+    const track = isMic ? localTracks.audioTrack : localTracks.videoTrack;
+    if (!track) return;
 
-            if (!isMic) {
-                isVideoEnabled = enabled;
-                const containerId = isJoined ? 'player-local' : 'local-preview-container';
-                const placeholderId = isJoined ? 'placeholder-local' : 'lobby-placeholder';
-                togglePlaceholder(placeholderId, !enabled);
-                if (!enabled) {
-                    const container = document.getElementById(containerId);
-                    const videos = container.querySelectorAll('video');
-                    videos.forEach(v => {
-                        v.pause();
-                        v.srcObject = null;
-                        v.remove();
-                    });
-                } else {
-                    safePlay(localTracks.videoTrack, containerId);
-                }
-            } else {
-                isMicEnabled = enabled;
-            }
+    // 3. Toggle Logic
+    const enabled = !track.enabled;
+    await track.setEnabled(enabled);
+
+    if (isJoined) {
+        if (enabled) {
+            await client.publish(track);
+        } else {
+            await client.unpublish(track);
         }
+    }
+
+    // 4. Update Button UI
+    const btns = [document.getElementById(`lobby-${type}-btn`), document.getElementById(`call-${type}-btn`)];
+    btns.forEach(btn => {
+        if (btn) {
+            btn.classList.toggle('active', !enabled);
+            btn.innerHTML = `<i class="fas fa-${isMic ? 'microphone' : 'video'}${!enabled ? '-slash' : ''}"></i>`;
+        }
+    });
+
+    // 5. Handle Local Preview / Placeholder visibility
+    if (!isMic) {
+        isVideoEnabled = enabled;
+        const containerId = isJoined ? 'player-local' : 'local-preview-container';
+        const placeholderId = isJoined ? 'placeholder-local' : 'lobby-placeholder';
+        
+        togglePlaceholder(placeholderId, !enabled);
+        
+        if (!enabled) {
+            const container = document.getElementById(containerId);
+            const videos = container.querySelectorAll('video');
+            videos.forEach(v => {
+                v.pause();
+                v.srcObject = null;
+                v.remove();
+            });
+        } else {
+            safePlay(localTracks.videoTrack, containerId);
+        }
+    } else {
+        isMicEnabled = enabled;
+    }
+}
 
         function updateLayout() {
             const videoGrid = document.getElementById('video-grid');
@@ -826,32 +840,46 @@
         }
 
         async function startPreview() {
-            localTracks.audioTrack = await AgoraRTC.createMicrophoneAudioTrack();
-            localTracks.videoTrack = await AgoraRTC.createCameraVideoTrack();
-            safePlay(localTracks.videoTrack, 'local-preview-container');
+    localTracks.audioTrack = await AgoraRTC.createMicrophoneAudioTrack();
 
-            let localInitial = (options.localName && options.localName.length > 0) ? options.localName.charAt(0).toUpperCase() : '?';
+    // 1. Handle Video Track Creation
+    if (!isAudioOnly) {
+        localTracks.videoTrack = await AgoraRTC.createCameraVideoTrack();
+        safePlay(localTracks.videoTrack, 'local-preview-container');
+        // We hide it here if video is ready, but the line at the bottom controls the final state
+    } else {
+        // IF AUDIO ONLY: Hide video controls
+        document.getElementById('lobby-video-btn').style.display = 'none';
+        document.getElementById('call-video-btn').style.display = 'none';
+        document.getElementById('cam-list').parentElement.style.display = 'none';
+    }
 
-            const lobbyPlaceholder = document.querySelector('#lobby-placeholder');
-            lobbyPlaceholder.querySelector('.avatar-circle').innerText = localInitial;
-            lobbyPlaceholder.parentElement.classList.add(`role-${options.role}`);
-            lobbyPlaceholder.classList.add(`role-${options.role}`);
-            document.querySelector('.lobby-left').classList.add(`role-${options.role}`);
+    // 2. Setup Avatar UI
+    let localInitial = (options.localName && options.localName.length > 0) ? options.localName.charAt(0).toUpperCase() : '?';
 
-            togglePlaceholder('lobby-placeholder', false);
+    const lobbyPlaceholder = document.querySelector('#lobby-placeholder');
+    lobbyPlaceholder.querySelector('.avatar-circle').innerText = localInitial;
+    lobbyPlaceholder.parentElement.classList.add(`role-${options.role}`);
+    lobbyPlaceholder.classList.add(`role-${options.role}`);
+    document.querySelector('.lobby-left').classList.add(`role-${options.role}`);
 
-            document.querySelector('#placeholder-local .avatar-circle').innerText = localInitial;
-            document.querySelector('#player-local .name-label').innerText = getDisplayName(options.localName, options.role);
-            document.getElementById('player-local').classList.add(`role-${options.role}`);
+    // FIX: Show placeholder if Audio Mode, Hide if Video Mode
+    togglePlaceholder('lobby-placeholder', isAudioOnly); 
 
-            const devices = await AgoraRTC.getDevices();
-            ['mic-list', 'cam-list', 'speaker-list'].forEach(selectId => {
-                const select = document.getElementById(selectId);
-                devices.filter(d => d.kind === (selectId === 'mic-list' ? 'audioinput' : selectId === 'cam-list' ? 'videoinput' : 'audiooutput')).forEach(d => {
-                    select.add(new Option(d.label, d.deviceId));
-                });
-            });
-        }
+    // 3. Setup Initial Local Player (Self View in Call)
+    document.querySelector('#placeholder-local .avatar-circle').innerText = localInitial;
+    document.querySelector('#player-local .name-label').innerText = getDisplayName(options.localName, options.role);
+    document.getElementById('player-local').classList.add(`role-${options.role}`);
+
+    // 4. Populate Devices
+    const devices = await AgoraRTC.getDevices();
+    ['mic-list', 'cam-list', 'speaker-list'].forEach(selectId => {
+        const select = document.getElementById(selectId);
+        devices.filter(d => d.kind === (selectId === 'mic-list' ? 'audioinput' : selectId === 'cam-list' ? 'videoinput' : 'audiooutput')).forEach(d => {
+            select.add(new Option(d.label, d.deviceId));
+        });
+    });
+}
 
         document.getElementById('mic-list').onchange = (e) => { if (localTracks.audioTrack) localTracks.audioTrack.setDevice(e.target.value); };
         document.getElementById('cam-list').onchange = (e) => { if (localTracks.videoTrack) localTracks.videoTrack.setDevice(e.target.value); };

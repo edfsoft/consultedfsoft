@@ -393,6 +393,7 @@ class Patient extends CI_Controller
             'patient_name' => ($appointment->firstName ?? 'Patient') . ' ' . ($appointment->lastName ?? ''),
             'hcp_name' => $appointment->hcpName ?? 'Doctor',
             'chief_name' => $appointment->chiefName ?? 'Chief doctor',
+            'consult_mode' => $appointment->modeOfConsultant ?? 'video',
             'role' => 'patient',
             'is_doctor' => false
         ];

@@ -949,6 +949,7 @@ class Healthcareprovider extends CI_Controller
             'hcp_name' => $appointment->hcpName ?? 'Healthcare Provider',
             // UPDATED: Now passing the dynamic doctor name from the database 
             'chief_name' => $appointment->chiefName ?? 'N/A',
+            'consult_mode' => $appointment->modeOfConsultant ?? 'video',
             'role' => 'hcp',
             'is_doctor' => true
         ];

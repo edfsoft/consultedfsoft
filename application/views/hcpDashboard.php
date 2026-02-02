@@ -1246,17 +1246,32 @@
                                         <td class="align-middle">${ccLink}</td>
                                         <td class="d-flex d-lg-block">${renderActionButtons(r)}</td>
                                         <td class="align-middle">
-                                            <div class="text-center">
-                                                <div class="">
+                                            <div class="text-center" 
+                                                /* Tooltip to explain status to user */
+                                                title="${r.appStatus === '1' ? 'Completed' : (shouldShowCheckbox ? 'Mark as Done' : 'Available during appointment time')}">
+                                                
+                                                <div class="form-check d-inline-block p-0 m-0 position-relative">
                                                     <input type="checkbox" 
-                                                        class="form-check-input border-secondary" 
-                                                        style="width: 20px; height: 20px; cursor: ${shouldShowCheckbox || r.appStatus === '1' ? 'pointer' : 'not-allowed'};"
-                                                        ${r.appStatus === '1' ? 'checked disabled' : (shouldShowCheckbox ? '' : 'disabled')}
-                                                        ${r.appStatus === '1' ? 'checked disabled' : ''} 
-                                                        onclick="initiateCompletion(${r.id}, this)">
+                                                        class="form-check-input ${r.appStatus === '1' ? 'bg-success border-success' : 'border-secondary'}" 
+                                                        
+                                                        /* Styling: Larger size, shadow, and smooth animation */
+                                                        style="width: 24px; height: 24px; 
+                                                            cursor: ${shouldShowCheckbox || r.appStatus === '1' ? 'pointer' : 'not-allowed'};
+                                                            transition: all 0.2s ease-in-out; 
+                                                            box-shadow: 0 2px 4px rgba(0,0,0,0.1);"
+                                                        
+                                                        /* Logic: Exact logic preserved */
+                                                        ${r.appStatus === '1' ? 'checked disabled' : (shouldShowCheckbox ? '' : 'disabled')} 
+                                                        
+                                                        onclick="initiateCompletion(${r.id}, this)"
+                                                        
+                                                        /* Animation: Pop effect on hover */
+                                                        onmouseover="if(!this.disabled) this.style.transform='scale(1.2)'"
+                                                        onmouseout="this.style.transform='scale(1)'">
                                                 </div>
                                             </div>
                                         </td>
+                                    
                                     </tr>
                                 `);
                         });
@@ -1750,17 +1765,24 @@
                                                     <small id="patientId_err" class="text-danger pt-1"></small>
                                                 </div>
 
+                                                <div class="form-group pb-3" id="modeSection">
+                                                    <label class="form-label" for="patientId">Enable Video? <span
+                                                        class="text-danger">*</span></label>
+                                                    
+                                                    <div class="d-flex gap-2" style="max-width: 160px;">
+                                                        <div class="flex-fill">
+                                                            <input type="radio" class="btn-check" name="appConsult" id="audio" value="audio" autocomplete="off">
+                                                            <label class="btn btn-sm btn-outline-secondary w-100 fw-bold" for="audio">No</label>
+                                                        </div>
 
-
-                                                <!-- <div class="form-group pb-3" id="modeSection">
-                                                    <label class="form-label pb-2" for="appConsult">Mode of consult <span class="text-danger">*</span></label><br>
-                                                    <input type="radio" id="audio" name="appConsult" value="audio" checked>
-                                                    <label for="audio">Audio</label>
-                                                    <input type="radio" class="ms-5 ps-5" id="video" name="appConsult" value="video">
-                                                    <label for="video">Video</label><br>
-                                                    <div id="appConsult_err" class="text-danger pt-1"></div>
-                                                </div> -->
-
+                                                        <div class="flex-fill">
+                                                            <input type="radio" class="btn-check" name="appConsult" id="video" value="video" autocomplete="off" checked>
+                                                            <label class="btn btn-sm btn-outline-success w-100 fw-bold" for="video">Yes</label>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div id="appConsult_err" class="text-danger pt-1 small"></div>
+                                                </div>
                                                 <div class="form-group pb-3">
                                                     <label class="form-label" for="appDate">Date <span
                                                             class="text-danger">*</span></label>

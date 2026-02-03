@@ -776,7 +776,8 @@
                                                         style="font-size:16px;font-weight:400;" class="text-decoration-none text-dark fs-6">
                                             <?php echo $value['doctorMail']; ?>
                                                     </a></p>
-                                                <p class="pt-3"><?php echo $value['gMeetLink']; ?></p>
+                                                <!-- Google meet link is not in use -->
+                                                <!-- <p class="pt-3"><?php echo $value['gMeetLink']; ?></p> -->
                                             </div>
                                         </div>
 
@@ -844,7 +845,8 @@
                                             </p>
                                         </div>
 
-                                        <p class="my-3 mt-3 fs-5 fw-semibold">Appointment Link</p>
+                                        <!-- Below section is no need -->
+                                        <!-- <p class="my-3 mt-3 fs-5 fw-semibold">Appointment Link</p>
                                         <form action="<?php echo base_url() . "Edfadmin/addAppLink/" . $value['id'] ?>" method="POST"
                                             class="col-md-6 mb-5" name="appLinkForm" onsubmit="return validateLink()">
                                             <label for="appLink" class="form-label pb-2">Add Link <span
@@ -860,7 +862,8 @@
                                                 <button type="submit" style="background-color: #2b353bf5;"
                                                     class="btn text-light my-2 float-end">Update</button>
                                 <?php } ?>
-                                        </form>
+                                        </form> -->
+
                                         <p class="my-3 mt-3 fs-5 fw-semibold">Profile Approval Process</p>
                                         <!--<p>Please review the details and approve the Chief Consultant for login :
                                                   <a href="<?php echo base_url() . "Edfadmin/approveCc/" . $value['id'] ?>"

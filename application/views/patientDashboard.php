@@ -537,8 +537,16 @@
                                                                         <?php echo $patientDetails[0]['firstName'] ?>
                                                                         <?php echo $patientDetails[0]['lastName'] ?>
                                                                     </p>
+                                                                    <?php
+                                                                    if (!empty($patientDetails[0]['derived_dob'])) {
+                                                                        $dob = new DateTime($patientDetails[0]['derived_dob']);
+                                                                        $today = new DateTime();
+                                                                        $currentAge = $today->diff($dob)->y;
+                                                                    } else {
+                                                                        $currentAge = $patientDetails[0]['age'];
+                                                                    } ?>
                                                                     <p class="mb-0"><strong>Age & Sex:</strong>
-                                                                        <?php echo $patientDetails[0]['age'] ?> Year(s) /
+                                                                        <?php echo $currentAge ?> Year(s) /
                                                                         <?php echo $patientDetails[0]['gender'] ?>
                                                                     </p>
                                                                     <p class="mb-0"><strong>Patient ID<span
@@ -865,11 +873,13 @@
                                         <?php echo $value['lastName'] ?>
                                             </p>
                                         <?php
-                                        $createdDate = new DateTime($value['created_at']);
-                                        $today = new DateTime();
-                                        $diff = $today->diff($createdDate);
-                                        $currentAge = $value['age'] + $diff->y;
-                                        ?>
+                                        if (!empty($value['derived_dob'])) {
+                                            $dob = new DateTime($value['derived_dob']);
+                                            $today = new DateTime();
+                                            $currentAge = $today->diff($dob)->y;
+                                        } else {
+                                            $currentAge = $value['age'];
+                                        } ?>
                                             <p> <?php echo $value['gender'] ?> | <?php echo $currentAge; ?> Year(s)</p>
                                         </div>
                                         <div class="position-absolute top-0 end-0 m-2 d-flex flex-column gap-2 align-items-end">
@@ -1043,11 +1053,13 @@
                                             </div>
                                             <div class="d-md-flex justify-content-between pb-3">
                                         <?php
-                                        $createdDate = new DateTime($value['created_at']);
-                                        $today = new DateTime();
-                                        $diff = $today->diff($createdDate);
-                                        $currentAge = $value['age'] + $diff->y;
-                                        ?>
+                                        if (!empty($value['derived_dob'])) {
+                                            $dob = new DateTime($value['derived_dob']);
+                                            $today = new DateTime();
+                                            $currentAge = $today->diff($dob)->y;
+                                        } else {
+                                            $currentAge = $value['age'];
+                                        } ?>
                                                 <div class="col-md-6 pe-md-4 pb-2 pb-md-0">
                                                     <label class="form-label" for="patientAge">Age
                                                         <span class="text-danger">*</span>

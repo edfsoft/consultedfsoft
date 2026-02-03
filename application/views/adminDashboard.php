@@ -1752,6 +1752,23 @@
                                                     patientTableBody.appendChild(noMatchesRow);
                                                 } else {
                                                     itemsToShow.forEach((patient, index) => {
+                                                        let currentAge = patient.age;
+
+                                                        if (patient.derived_dob) {
+                                                            const dob = new Date(patient.derived_dob);
+                                                            const today = new Date();
+
+                                                            let yearsDiff = today.getFullYear() - dob.getFullYear();
+
+                                                            const hasBirthdayPassed =
+                                                                today.getMonth() > dob.getMonth() ||
+                                                                (today.getMonth() === dob.getMonth() && today.getDate() >= dob.getDate());
+
+                                                            if (!hasBirthdayPassed) {
+                                                                yearsDiff -= 1;
+                                                            }
+                                                            currentAge = yearsDiff;
+                                                        }
                                                         const patientRow = document.createElement('tr');
                                                         patientRow.innerHTML = `
                                                                     <td class="pt-3">${start + index + 1}.</td>
@@ -1759,7 +1776,7 @@
                                                                     <td style="font-size: 16px; text-align:left" class="pt-3">${patient.firstName} ${patient.lastName}</td>
                                                                     <td style="font-size: 16px" class="pt-3">${patient.mobileNumber}</td>
                                                                     <td style="font-size: 16px text-align:left" class="pt-3">${patient.gender}</td>
-                                                                    <td style="font-size: 16px" class="pt-3">${patient.age}</td>
+                                                                    <td style="font-size: 16px" class="pt-3">${currentAge}</td>
                                                                     <td style="font-size: 16px" class="pt-3">
                                                                         <a href="${baseUrl}Edfadmin/hcpDetails/${patient.patientHcpDbId}" class="text-dark" onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'">${patient.patientHcp}</a>
                                                                     </td>
@@ -1856,7 +1873,15 @@
                                                                     <p class="fs-4 fw-bolder"> <?php echo $value['firstName'] ?>
                                         <?php echo $value['lastName'] ?>
                                                                     </p>
-                                                                    <p> <?php echo $value['gender'] ?> | <?php echo $value['age'] ?> Year(s)</p>
+                                        <?php
+                                        if (!empty($value['derived_dob'])) {
+                                            $dob = new DateTime($value['derived_dob']);
+                                            $today = new DateTime();
+                                            $currentAge = $today->diff($dob)->y;
+                                        } else {
+                                            $currentAge = $value['age'];
+                                        } ?>
+                                                                    <p> <?php echo $value['gender'] ?> | <?php echo $currentAge ?> Year(s)</p>
                                                                     <!-- <p class="text-dark" style="font-weight:500;font-size:20px;">
                                         <?php echo $value['diagonsis'] ?>
                                                     </p> -->
@@ -1886,9 +1911,17 @@
                                     <?php echo $value['bloodGroup'] ? $value['bloodGroup'] : "Not provided"; ?>
                                                                 </p>
                                                             </div>
+                                <?php
+                                if (!empty($value['derived_dob'])) {
+                                    $dob = new DateTime($value['derived_dob']);
+                                    $today = new DateTime();
+                                    $currentAge = $today->diff($dob)->y;
+                                } else {
+                                    $currentAge = $value['age'];
+                                } ?>
                                                             <div class="d-md-flex">
                                                                 <p class="col-sm-6"><span class="text-secondary ">Age </span> :
-                                    <?php echo $value['age']; ?>
+                                    <?php echo $currentAge; ?>
                                                                 </p>
                                                                 <p><span class="text-secondary ">Married status</span> :
                                     <?php echo $value['maritalStatus'] ? $value['maritalStatus'] . " " . $value['marriedSince'] : "Not provided"; ?>

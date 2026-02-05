@@ -1668,17 +1668,16 @@
                                         <?php
                                         $emailAvailable = !empty($patientDetails[0]['mailId']); ?>
                                         <div class="form-check">
-                                            <input type="hidden" name="consultationSendEmail" value="0">
-                                            <input class="form-check-input border-dark" type="checkbox"
+                                            <input type="hidden" id="consultationSendEmail" name="consultationSendEmail" value="0">
+                                            <!-- <input class="form-check-input border-dark" type="checkbox"
                                                 id="consultationSendEmail" name="consultationSendEmail" value="1"
                                                 <?= $emailAvailable ? '' : 'disabled'; ?>>
                                             <label class="form-check-label fw-medium text-dark" for="consultationSendEmail">
                                                 Send consultation details to patient's email
-                                            </label>
+                                            </label> -->
                                         </div>
-
-                                        <button type="submit" id="submitForm" class="float-end btn text-light"
-                                            style="background-color: #00ad8e;">Save</button>
+                                            <button type="button" class="float-end btn text-light" style="background-color: #00ad8e;" 
+                                            onclick="handleSaveProcess()">Save as new</button>
                                     </div>
                                 </form>
                                 <!---------------------------------------------------- Image Edit Modal -------------------------->
@@ -2277,9 +2276,9 @@
                                     value="<?= isset($consultation['next_follow_up']) ? $consultation['next_follow_up'] : '' ?>">
                                 <div id="nextFollowUpDate_err" class="text-danger pt-1"></div>
                             </div>
-                            <input type="hidden" name="consultationSendEmail" value="0">
-                            <button type="submit" id="submitForm" class="mt-2 float-end btn text-light"
-                                style="background-color: #00ad8e;">Save as new</button>
+                            <input type="hidden" id="consultationSendEmail" name="consultationSendEmail" value="0">
+                            <button type="button" class="float-end btn text-light" style="background-color: #00ad8e;" 
+                                onclick="handleSaveProcess()">Save as new</button>
                         </form>
                         <!---------------------------------------------------- Image Edit Modal -------------------------->
                         <div class="modal fade" id="imageEditModal" tabindex="-1" aria-labelledby="imageEditModalLabel"
@@ -2365,6 +2364,8 @@
                         </div>
                     </div>
             </section>
+
+                
             <!-------------------------- Edit Consultant -->
         <?php } elseif ($method == "editConsult") { ?>
             <section>
@@ -2920,6 +2921,55 @@
                     </div>
             </section>
         <?php } ?>
+
+        <!-- Popup Model select save or email with save -->
+                <div class="modal fade" id="confirmSaveModal" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content border-0 shadow-lg" style="border-radius: 12px;">
+                            <div class="modal-body text-center p-4">
+                                <div class="mb-3">
+                                    <i class="bi bi-question-circle text-primary" style="font-size: 3rem;"></i>
+                                </div>
+                                <h4 class="fw-bold mb-3">Save Consultation</h4>
+                                <p class="text-muted">Would you like to send the consultation details to the patient's email as well?</p>
+                                
+                                <div class="d-grid gap-2 mt-4">
+                                    <button type="button" class="btn btn-success py-2 fw-bold" 
+                                            onclick="submitWithEmail(1)"
+                                            <?= !empty($patientDetails[0]['mailId']) ? '' : 'disabled'; ?>>
+                                        <i class="bi bi-envelope-check me-2"></i> Save and Send Mail
+                                    </button>
+
+                                    <button type="button" class="btn btn-primary py-2 fw-bold" 
+                                            onclick="submitWithEmail(0)">
+                                        <i class="bi bi-save me-2"></i> Just Save
+                                    </button>
+
+                                    <button type="button" class="btn btn-link text-decoration-none text-muted mt-2" data-bs-dismiss="modal">
+                                        Cancel
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <script>
+                function handleSaveProcess() {
+                    // 1. Check if email is available
+                    const isEmailAvailable = <?php echo !empty($patientDetails[0]['mailId']) ? 'true' : 'false'; ?>;
+                    
+                    if (isEmailAvailable) {
+                        // 2. Show the modal if email exists
+                        var myModal = new bootstrap.Modal(document.getElementById('confirmSaveModal'));
+                        myModal.show();
+                        document.getElementById('consultationSendEmail').value = 1;
+                        document.getElementById('consultationForm').submit();
+                    } else {
+                        // 3. Simply save without popup if no email
+                        document.getElementById('consultationSendEmail').value = 0;
+                        document.getElementById('consultationForm').submit();
+                    }
+                }</script>
 
         <!-- ******************************************************************************************************************************************** -->
 

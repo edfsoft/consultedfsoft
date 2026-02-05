@@ -400,7 +400,7 @@ class HcpModel extends CI_Model
 
     public function getAppointmentTime()
     {
-        $details = "SELECT * FROM `appointment_details` ";
+        $details = "SELECT * FROM `appointment_details` WHERE `appStatus` = '0'";
         $select = $this->db->query($details);
         return $select->result_array();
     }
@@ -484,7 +484,7 @@ class HcpModel extends CI_Model
     {
         $hcpIdDb = $_SESSION['hcpIdDb'];
         $details = "SELECT pd.id, pd.patientId, pd.firstName, pd.lastName , pd.mobileNumber , pd.gender , pd.age , pd.bloodGroup, pd.profilePhoto,
-        ad.referalDoctor, ad.referalDoctorDbId , ad.dateOfAppoint , ad.timeOfAppoint , ad.patientComplaint , ad.patientHcp, ad.appointmentType
+        ad.referalDoctor, ad.referalDoctorDbId , ad.dateOfAppoint , DATE_FORMAT(ad.timeOfAppoint, '%h:%i %p') AS timeOfAppoint12, ad.patientComplaint , ad.patientHcp, ad.appointmentType
         FROM patient_details AS pd
         LEFT JOIN appointment_details AS ad ON pd.id = ad.patientDbId
         WHERE hcpDbId = $hcpIdDb AND  `dateOfAppoint` = CURDATE()   AND `timeOfAppoint` >= CURTIME() ORDER BY `dateOfAppoint`, `timeOfAppoint`;";
@@ -580,8 +580,8 @@ class HcpModel extends CI_Model
         $updatedata = array(
             'modeOfConsultant' => $post['appConsult'],
             'dateOfAppoint' => $post['appDate'],
-            'partOfDay' => $post['dayTime'],
-            'timeOfAppoint' => $post['appTime'],
+            //'partOfDay' => $post['dayTime'],
+            'timeOfAppoint'     => date('H:i', strtotime($post['appTime'])),
             'appStatus' => "0"
         );
         $this->db->where('id', $post['appTableId']);
@@ -713,8 +713,8 @@ class HcpModel extends CI_Model
             'referalDoctorDbId' => $ccDbId,
             'modeOfConsultant' => $post['appConsult'],
             'dateOfAppoint' => $post['appDate'],
-            'partOfDay' => $post['dayTime'],
-            'timeOfAppoint' => $post['appTime'],
+            /* 'partOfDay' => $post['dayTime'], */
+            'timeOfAppoint'     => date('H:i', strtotime($post['appTime'])),
             'appointmentType' => $post['appointmentType'],
             'patientComplaint' => $post['appReason'],
             'patientHcp' => $_SESSION['hcpId'],

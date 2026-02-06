@@ -1677,7 +1677,7 @@
                                             </label> -->
                                         </div>
                                             <button type="button" class="float-end btn text-light" style="background-color: #00ad8e;" 
-                                            onclick="handleSaveProcess()">Save as new</button>
+                                            onclick="handleSaveProcess()">Save</button>
                                     </div>
                                 </form>
                                 <!---------------------------------------------------- Image Edit Modal -------------------------->
@@ -2841,9 +2841,9 @@
                                     value="<?= isset($consultation['next_follow_up']) ? $consultation['next_follow_up'] : '' ?>">
                                 <div id="nextFollowUpDate_err" class="text-danger pt-1"></div>
                             </div>
-
-                            <button type="submit" id="submitForm" class="mt-2 float-end btn text-light"
-                                style="background-color: #00ad8e;">Update</button>
+                                <input type="hidden" id="consultationSendEmail" name="consultationSendEmail" value="0">
+                            <button type="button" class="float-end btn text-light" style="background-color: #00ad8e;" 
+                                onclick="handleSaveProcess()">Update</button>
                         </form>
                         <!---------------------------------------------------- Image Edit Modal -------------------------->
                         <div class="modal fade" id="imageEditModal" tabindex="-1" aria-labelledby="imageEditModalLabel"
@@ -2935,13 +2935,13 @@
                                 
                                 <div class="d-grid gap-2 mt-4">
                                     <button type="button" class="btn btn-success py-2 fw-bold" 
-                                            onclick="submitWithEmail(1)"
+                                            onclick="submitConsultation(1)"
                                             <?= !empty($patientDetails[0]['mailId']) ? '' : 'disabled'; ?>>
                                         <i class="bi bi-envelope-check me-2"></i> Save and Send Mail
                                     </button>
 
                                     <button type="button" class="btn btn-primary py-2 fw-bold" 
-                                            onclick="submitWithEmail(0)">
+                                            onclick="submitConsultation(0)">
                                         <i class="bi bi-save me-2"></i> Just Save
                                     </button>
 
@@ -2953,23 +2953,28 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Script to save consultation with email send or Just save -->
                 <script>
-                function handleSaveProcess() {
-                    // 1. Check if email is available
-                    const isEmailAvailable = <?php echo !empty($patientDetails[0]['mailId']) ? 'true' : 'false'; ?>;
-                    
-                    if (isEmailAvailable) {
-                        // 2. Show the modal if email exists
-                        var myModal = new bootstrap.Modal(document.getElementById('confirmSaveModal'));
-                        myModal.show();
-                        document.getElementById('consultationSendEmail').value = 1;
-                        document.getElementById('consultationForm').submit();
-                    } else {
-                        // 3. Simply save without popup if no email
-                        document.getElementById('consultationSendEmail').value = 0;
+                    function handleSaveProcess() {
+                        const isEmailAvailable = <?php echo !empty($patientDetails[0]['mailId']) ? 'true' : 'false'; ?>;
+                        
+                        if (isEmailAvailable) {
+                            var myModal = new bootstrap.Modal(document.getElementById('confirmSaveModal'));
+                            myModal.show();
+                        } else {
+                            // 3. No email, so auto-submit with value 0
+                            submitConsultation(0);
+                        }
+                    }
+
+                    // This function is called by the buttons inside the modal
+                    function submitConsultation(sendEmailValue) {
+                        document.getElementById('consultationSendEmail').value = sendEmailValue;
+
                         document.getElementById('consultationForm').submit();
                     }
-                }</script>
+                </script>
 
         <!-- ******************************************************************************************************************************************** -->
 

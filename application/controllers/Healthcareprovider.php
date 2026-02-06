@@ -568,6 +568,26 @@ class Healthcareprovider extends CI_Controller
         $details = $this->HcpModel->getAppointmentAndPatientDetails($appointmentId);
 
         if ($details && $details['appointmentType'] === 'PATIENT' && !empty($details['mailId'])) {
+            $this->session->set_flashdata('showSuccessMessage', 'Appointment booked successfully. Mail is being sent in the background.');
+        } else {
+            $this->session->set_flashdata('showSuccessMessage', 'Appointment booked successfully');
+        }
+
+        session_write_close();
+
+        $redirectUrl = base_url('Healthcareprovider/appointments');
+        header("Location: " . $redirectUrl);
+        header("Content-Encoding: none");
+        header("Content-Length: 0");
+        header("Connection: close");
+
+        if (ob_get_level()) ob_end_clean();
+        flush();
+
+        if (function_exists('fastcgi_finish_request')) {
+            fastcgi_finish_request();
+        }
+        if ($details && $details['appointmentType'] === 'PATIENT' && !empty($details['mailId'])) {
 
             $formattedDate = date('d M Y', strtotime($details['dateOfAppoint']));
             $formattedTime = date('h:i A', strtotime($details['timeOfAppoint']));
@@ -605,7 +625,27 @@ class Healthcareprovider extends CI_Controller
     {
         $details = $this->HcpModel->getAppointmentAndPatientDetails($id);
 
-        if ($this->HcpModel->delete_appointment($id)) {
+            if ($this->HcpModel->delete_appointment($id)) {
+            // 1. Prepare the success message
+            if ($details && $details['appointmentType'] === 'PATIENT' && !empty($details['mailId'])) {
+                $this->session->set_flashdata('showSuccessMessage', 'Appointment Canceled. Cancellation email is being sent in the background.');
+            } else {
+                $this->session->set_flashdata('showSuccessMessage', 'Appointment Canceled Successfully.');
+            }
+            session_write_close();
+
+            $redirectUrl = base_url('Healthcareprovider/appointments');
+            header("Location: " . $redirectUrl);
+            header("Content-Encoding: none");
+            header("Content-Length: 0");
+            header("Connection: close");
+
+            if (ob_get_level()) ob_end_clean();
+            flush();
+
+            if (function_exists('fastcgi_finish_request')) {
+                fastcgi_finish_request();
+            }
 
             if ($details && $details['appointmentType'] === 'PATIENT' && !empty($details['mailId'])) {
 
@@ -618,7 +658,8 @@ class Healthcareprovider extends CI_Controller
                 Your appointment on <b>{$formattedDate}</b> at <b>{$formattedTime}</b> 
                 has been <b>CANCELED</b>.<br><br>
 
-                You may reschedule anytime through our platform.<br><br>
+                You may Re-book anytime through our platform.<br><br>
+                <b>Thank you</b>.<br>
 
                 <br><br>
                 Regards,
@@ -632,16 +673,12 @@ class Healthcareprovider extends CI_Controller
                 $this->email->message($message);
                 $this->email->send();
 
-                $this->session->set_flashdata('showSuccessMessage', 'Appointment Canceled and cancellation email sent.');
-            } else {
-                $this->session->set_flashdata('showSuccessMessage', 'Appointment Canceled Successfully.');
-            }
+            } 
 
         } else {
             $this->session->set_flashdata('showErrorMessage', 'Failed to cancel appointment.');
+            redirect('Healthcareprovider/appointments');
         }
-
-        redirect('Healthcareprovider/appointments');
     }
 
     //Update Appointments
@@ -687,6 +724,28 @@ class Healthcareprovider extends CI_Controller
             $appointmentId = $this->input->post('appTableId');
 
             $details = $this->HcpModel->getAppointmentAndPatientDetails($appointmentId);
+            $details = $this->HcpModel->getAppointmentAndPatientDetails($appointmentId);
+
+            if ($details && $details['appointmentType'] === 'PATIENT' && !empty($details['mailId'])) {
+                $this->session->set_flashdata('showSuccessMessage', 'Appointment booked successfully. Mail is being sent in the background.');
+            } else {
+                $this->session->set_flashdata('showSuccessMessage', 'Appointment booked successfully');
+            }
+
+            session_write_close();
+
+            $redirectUrl = base_url('Healthcareprovider/appointments');
+            header("Location: " . $redirectUrl);
+            header("Content-Encoding: none");
+            header("Content-Length: 0");
+            header("Connection: close");
+
+            if (ob_get_level()) ob_end_clean();
+            flush();
+
+            if (function_exists('fastcgi_finish_request')) {
+                fastcgi_finish_request();
+            }
 
             if ($details && $details['appointmentType'] === 'PATIENT' && !empty($details['mailId'])) {
 
@@ -714,17 +773,14 @@ class Healthcareprovider extends CI_Controller
                 $this->email->message($message);
                 $this->email->send();
 
-                $this->session->set_flashdata('showSuccessMessage', 'Appointment details updated successfully and Mail has been sent');
-
-            } else {
-                $this->session->set_flashdata('showSuccessMessage', 'Appointment details updated successfully');
             }
 
         } else {
             $this->session->set_flashdata('showErrorMessage', 'Error in updating appointment details');
+            redirect('Healthcareprovider/appointments');
         }
 
-        redirect('Healthcareprovider/appointments');
+        
     }
 
     public function appointmentReschedule()

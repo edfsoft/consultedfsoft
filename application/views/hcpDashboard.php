@@ -2406,7 +2406,7 @@
                             var patientId = document.getElementById("patientId").value;
                             var referalDr = document.getElementById("referalDoctor").value;
                             var date = document.getElementById("appDate").value;
-                            var dayTime = document.getElementById("dayTime").value;
+                            //var dayTime = document.getElementById("dayTime").value;
                             var time = document.getElementById("appTime").value;
 
                             // 2. Clear error for Appointment Type
@@ -2422,9 +2422,9 @@
                             if (date != "") {
                                 document.getElementById("appDate_err").innerHTML = "";
                             }
-                            if (dayTime != "") {
+                            /* if (dayTime != "") {
                                 document.getElementById("dayTime_err").innerHTML = "";
-                            }
+                            } */
                             if (time != "") {
                                 document.getElementById("appTime_err").innerHTML = "";
                             }
@@ -2843,7 +2843,7 @@
                                                                 <input type="text" class="form-control" name="appointmentType" id="appointmentType"
                                                                     value="<?= $value['appointmentType'] === 'CC' ? 'CC & HCP Appointment' : 'PATIENT & HCP Appointment' ?>" 
                                                                     disabled
-                                                                    style="background-color: <?= $value['appointmentType'] === 'CC' ? '#198754' : '#2F80ED' ?>; 
+                                                                    style="background-color: <?= $value['appointmentType'] === 'CC' ? '#67c298' : '#87aee0' ?>; 
                                                                     color: white !important; cursor: no-drop; opacity: 1;"
                                                                 >
                                                             </div>
@@ -3262,7 +3262,11 @@
                                     } else {
                                         document.getElementById("appTime_err").innerHTML = "";
                                     }
-
+                                        var submitBtn = document.getElementById("ReSubmit");
+                                        if (submitBtn) {
+                                            submitBtn.disabled = true;
+                                            submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Processing...';
+                                        }
                                     return true;
                                 }
                             </script>

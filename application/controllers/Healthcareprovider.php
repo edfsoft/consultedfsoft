@@ -974,8 +974,11 @@ class Healthcareprovider extends CI_Controller
                 appointment_details.*, 
                 patient_details.firstName, 
                 patient_details.lastName, 
+                patient_details.patientId, 
                 hcp_details.hcpName,
-                cc_details.doctorName as chiefName
+                 hcp_details.hcpId,
+                cc_details.doctorName as chiefName,
+                cc_details.ccId as ccId
             ')
             ->from('appointment_details')
             ->join('patient_details', 'patient_details.id = appointment_details.patientDbId', 'inner')
@@ -1002,11 +1005,11 @@ class Healthcareprovider extends CI_Controller
             'temp_token' => $token,
             'channel_name' => $unique_meeting_id,
             'uid' => $uid,
-            'local_name' => $appointment->hcpName ?? 'Healthcare Provider',
-            'patient_name' => ($appointment->firstName ?? 'Patient') . ' ' . ($appointment->lastName ?? ''),
-            'hcp_name' => $appointment->hcpName ?? 'Healthcare Provider',
+            'local_name' => ($appointment->hcpName . ' ' . $appointment->hcpId) ?? 'Healthcare Provider',
+            'patient_name' => ($appointment->firstName ?? 'Patient') . ' ' . ($appointment->lastName ?? '') . ' ' . ($appointment->patientId ?? ''),
+            'hcp_name' => ($appointment->hcpName . ' ' . $appointment->hcpId) ?? 'Healthcare Provider',
             // UPDATED: Now passing the dynamic doctor name from the database 
-            'chief_name' => $appointment->chiefName ?? 'N/A',
+            'chief_name' => ($appointment->chiefName . ' ' . $appointment->ccId) ?? 'N/A',
             'consult_mode' => $appointment->modeOfConsultant ?? 'video',
             'role' => 'hcp',
             'is_doctor' => true

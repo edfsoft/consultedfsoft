@@ -101,16 +101,17 @@ class CcModel extends CI_Model
         }
     }
 
-    public function addAppLinkCc($ccIdDb)
-    {
-        $post = $this->input->post(null, true);
-        $updatedata = array(
-            'gMeetLink' => $post['appLink']
-        );
-        $this->db->where('id', $ccIdDb);
-        $this->db->update('cc_details', $updatedata);
-        return true;
-    }
+    // Not in use
+    // public function addAppLinkCc($ccIdDb)
+    // {
+    //     $post = $this->input->post(null, true);
+    //     $updatedata = array(
+    //         'gMeetLink' => $post['appLink']
+    //     );
+    //     $this->db->where('id', $ccIdDb);
+    //     $this->db->update('cc_details', $updatedata);
+    //     return true;
+    // }
 
     public function allPatientList()
     {

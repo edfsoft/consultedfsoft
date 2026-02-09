@@ -263,7 +263,8 @@ class Consultation extends CI_Controller
             $messages[] = "Attachments";
 
         if (!empty($messages)) {
-            $this->session->set_flashdata('showSuccessMessage', implode(", ", $messages) . " saved successfully. Mail is being sent in the background.");
+            $emailNotice = ($post['consultationSendEmail'] == '1') ? " Mail is being sent in the background." : "";
+            $this->session->set_flashdata('showSuccessMessage', implode(", ", $messages) . " saved successfully. $emailNotice");
         } else {
             $this->session->set_flashdata('showErrorMessage', 'Failed to save consultation details.');
         }
@@ -283,7 +284,7 @@ class Consultation extends CI_Controller
             fastcgi_finish_request();
         }
 
-        if ($post['consultationSendEmail'] == '1') {
+        /* if ($post['consultationSendEmail'] == '1') {
 
             $patient = $this->ConsultModel->getPatientDetails($post['patientIdDb']);
             $email = $patient[0]['mailId'];
@@ -348,6 +349,11 @@ class Consultation extends CI_Controller
             if (file_exists($tempFilePath)) {
                 unlink($tempFilePath);
             }
+        } */
+
+        if (isset($post['consultationSendEmail']) && $post['consultationSendEmail'] == '1') {
+            // Pass the data gathered during the edit process to your separate function
+            $this->sendConsultationEmail($consultationId, $symptoms, $diagnoses, $medicines, $post);
         }
 
     }
@@ -703,11 +709,32 @@ class Consultation extends CI_Controller
             $messages[] = "Attachments";
 
         if (!empty($messages)) {
-            $this->session->set_flashdata('showSuccessMessage', implode(", ", $messages) . " updated successfully.");
+            $emailNotice = ($post['consultationSendEmail'] == '1') ? " Mail is being sent in the background." : "";
+            $this->session->set_flashdata('showSuccessMessage', implode(", ", $messages) . " updated successfully. $emailNotice");
         } else {
             $this->session->set_flashdata('showErrorMessage', 'Failed to update consultation details.');
         }
+        //Logic to close form and make action(send email) in background
+        session_write_close();
 
+        $redirectUrl = base_url('Consultation/consultation/' . $post['patientIdDb']);
+        header("Location: " . $redirectUrl);
+        header("Content-Encoding: none");
+        header("Content-Length: 0");
+        header("Connection: close");
+
+        if (ob_get_level()) {
+            ob_end_clean();
+        }
+        flush();
+
+        if (function_exists('fastcgi_finish_request')) {
+            fastcgi_finish_request();
+        }
+        //send prescription in email
+        if (isset($post['consultationSendEmail']) && $post['consultationSendEmail'] == '1') {
+            $this->sendConsultationEmail($consultationId, $symptoms, $diagnoses, $medicines, $post);
+        }
         redirect('Consultation/consultation/' . $post['patientIdDb']);
     }
 
@@ -1067,5 +1094,83 @@ class Consultation extends CI_Controller
             echo json_encode(['status' => 'error']);
         }
     }
+
+    // Common mail send function for consultation email with pdf attachment - New, followup, edit consultation
+    private function sendConsultationEmail($consultationId, $symptoms, $diagnoses, $medicines, $post)
+    {
+        // Fetch patient details using the ID from post data
+        $patient = $this->ConsultModel->getPatientDetails($post['patientIdDb']);
+        $email = $patient[0]['mailId'];
+
+        // Format instructions for the PDF template
+        $rawInstructions = $this->input->post('instructions');
+        $pdfInstructions = [];
+        if (!empty($rawInstructions) && is_array($rawInstructions)) {
+            foreach ($rawInstructions as $ins) {
+                $pdfInstructions[] = ['instruction_name' => $ins];
+            }
+        }
+
+        date_default_timezone_set('Asia/Kolkata');
+        $consultationData = [
+            'patientDetails' => $patient,
+            'consultation' => [
+                'consult_date' => date('Y-m-d'),
+                'consult_time' => date('H:i:s'),
+                'symptoms' => $symptoms,
+                'diagnosis' => $diagnoses,
+                'medicines' => $medicines,
+                'instructions' => $pdfInstructions,
+                'next_follow_up' => $this->input->post('nextFollowUpDate')
+            ]
+        ];
+
+        // Generate PDF using Dompdf
+        require_once FCPATH . 'vendor/autoload.php';
+        $dompdf = new \Dompdf\Dompdf();
+        $html = $this->load->view('prescription_pdf_template', $consultationData, true);
+
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
+
+        $output = $dompdf->output();
+        $tempFileName = 'Consultation_' . date('d-m-Y_h-i_A') . '_' . $consultationId . '.pdf';
+        $tempFilePath = FCPATH . 'uploads/temp/' . $tempFileName;
+
+        if (!is_dir(FCPATH . 'uploads/temp/')) {
+            mkdir(FCPATH . 'uploads/temp/', 0777, true);
+        }
+        file_put_contents($tempFilePath, $output);
+
+        // Email Configuration and Sending
+        $message = "
+            Dear {$patient[0]['firstName']},<br><br>
+            Your consultation has been successfully completed.<br>
+            Please find your consultation attached.<br><br>
+            Regards,<br><b>EDF Healthcare Team</b>";
+
+        $this->email->set_newline("\r\n");
+        $this->email->from('noreply@consult.edftech.in', 'Consult EDF');
+        $this->email->to($email);
+        $this->email->subject('Consultation Details');
+        $this->email->message($message);
+        $this->email->attach($tempFilePath);
+
+        $result = $this->email->send();
+
+        // Clean up temporary file
+        if (file_exists($tempFilePath)) {
+            unlink($tempFilePath);
+        }
+
+        return $result;
+    }
+
+
+
+
+
+
 
 }

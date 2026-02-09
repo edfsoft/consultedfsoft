@@ -797,7 +797,9 @@
                                             <tr>
                                                 <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">S.NO</th>
                                                 <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">
-                                                    APPOINTMENT WITH</th>
+                                                    APP WITH</th>
+                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">CC ID</th>
+                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">VIDEO</th>
                                                 <th scope="col"
                                                     style="font-size:16px; font-weight:500; color:#00ad8e; cursor:pointer;"
                                                     id="sortPatientId">
@@ -815,12 +817,12 @@
                                                     </span>
                                                 </th>
                                                 <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">TIME</th>
-                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">CC ID</th>
+
                                                 <!-- <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">PURPOSE
                                                 </th> -->
                                                 <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">ACTION
                                                 </th>
-                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">Completed
+                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">COMPLETED
                                                 </th>
                                             </tr>
                                         </thead>
@@ -1246,6 +1248,11 @@
                             onmouseout="this.style.textDecoration='none'">${escapeHTML(r.referalDoctor)}</a>`;
                             }
 
+                            let videoMode = 'YES';
+                            if (r.modeOfConsultant !== 'video' && r.modeOfConsultant === 'Nil') {
+                                videoMode = 'NO';
+                            }
+
                             const now = new Date();
                             const appointmentDateTime = new Date(r.dateOfAppoint + ' ' + r.timeOfAppoint);
                             const diffMinutes = (now - appointmentDateTime) / (1000 * 60);
@@ -1258,11 +1265,12 @@
                                         data-bs-placement="top"
                                         title="${complaintText}">
                                         <td class="align-middle">${start + i + 1}.</td>
-                                        <td class="align-middle">${escapeHTML(r.appointmentType)}</td>
+                                        <td class="align-middle">${escapeHTML(r.appointmentType)}</td> 
+                                        <td class="align-middle">${ccLink}</td>
+                                        <td class="align-middle">${videoMode}</td>
                                         <td class="align-middle">${patientLink}</td>
                                         <td class="align-middle">${formatDateOrToday(r.dateOfAppoint)}</td>
                                         <td class="align-middle">${formatTimeAMPM(r.timeOfAppoint)}</td>
-                                        <td class="align-middle">${ccLink}</td>
                                         <td class="d-flex d-lg-block">${renderActionButtons(r)}</td>
                                         <td class="align-middle">
                                             <div class="text-center"
@@ -1297,7 +1305,7 @@
                                                     <!-- Hover catcher -->
                                                     <div
                                                         style="position:absolute;top:0;left:0;width:24px;height:24px;cursor:not-allowed;
-                                                                "
+                                                                                                                                "
                                                         onmouseenter="this.nextElementSibling.style.display='flex'"
                                                         onmouseleave="this.nextElementSibling.style.display='none'"
                                                     ></div>
@@ -1442,8 +1450,11 @@
                                                 <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">S.NO
                                                 </th>
                                                 <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">
-                                                    APPOINTMENT WITH</th>
-
+                                                    APP WITH</th>
+                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">CC ID
+                                                </th>
+                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">VIDEO
+                                                </th>
                                                 <th scope="col"
                                                     style="font-size: 16px; font-weight: 500; color: #00ad8e; cursor:pointer;"
                                                     id="sortPatientIdReschedule">
@@ -1464,8 +1475,7 @@
 
                                                 <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">TIME
                                                 </th>
-                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">CC ID
-                                                </th>
+
                                                 <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">ACTION
                                                 </th>
                                             </tr>
@@ -1598,16 +1608,22 @@
                             onmouseout="this.style.textDecoration='none'">${escapeHTML(r.referalDoctor)}</a>`;
                             }
 
+                            let videoMode = 'YES';
+                            if (r.modeOfConsultant !== 'video' && r.modeOfConsultant === 'Nil') {
+                                videoMode = 'NO';
+                            }
+
                             tbody.insertAdjacentHTML('beforeend', `
                                 <tr data-bs-toggle="tooltip"
                                         data-bs-placement="top"
                                         title="${complaintText}">
                                     <td class="align-middle">${start + i + 1}.</td>
                                     <td class="align-middle">${r.appointmentType}</td>
+                                    <td class="align-middle">${ccLink}</td>
+                                    <td class="align-middle">${videoMode}</td>
                                     <td class="align-middle">${patientLink}</td>
                                     <td class="align-middle">${formatDateOrToday(r.dateOfAppoint)}</td>
                                     <td class="align-middle">${formatTimeAMPM(r.timeOfAppoint)}</td>
-                                    <td class="align-middle">${ccLink}</td>
                                     <td class="align-middle">${renderRescheduleActions(r)}</td>
                                 </tr>
                             `);
@@ -1811,7 +1827,7 @@
                                                     <small id="referalDoctor_err" class="text-danger pt-1"></small>
                                                 </div>
 
-                                                <div class="form-group pb-2">
+                                                <div class="form-group pb-3">
                                                     <label class="form-label" for="patientId">Patient Id <span
                                                             class="text-danger">*</span></label>
                                                     <div class="input-group mb-1">
@@ -2458,7 +2474,7 @@
 
                             if (type !== "PATIENT") {
                                 if (referalDr == "") {
-                                    document.getElementById("referalDoctor_err").innerHTML = "Please Select the referral doctor’s name.";
+                                    document.getElementById("referalDoctor_err").innerHTML = "Please select the referral doctor’s name.";
                                     document.getElementById("referalDoctor").focus();
                                     return false;
                                 } else {
@@ -2499,7 +2515,7 @@
                             }
 
                             if (Reason == "") {
-                                document.getElementById("appReason_err").innerHTML = "Please fill the compliant section";
+                                document.getElementById("appReason_err").innerHTML = "Please enter the compliant.";
                                 document.getElementById("appReason").focus();
                                 return false;
 
@@ -2846,20 +2862,13 @@
                                                         method="POST" name="patientDetails" onsubmit="return validateAppointment()"
                                                         oninput="clearErrorAppointment()">
                                                         <div class="form-group pb-3">
-                                                            <label class="form-label">Appointment With <span
-                                                                    class="text-danger">*</span></label>
-
-                                                            <div class="form-group pb-1">
-                                                                <input type="text" class="form-control" name="appointmentType"
-                                                                    id="appointmentType"
-                                                                    value="<?= $value['appointmentType'] === 'CC' ? 'CC & HCP Appointment' : 'PATIENT & HCP Appointment' ?>"
-                                                                    disabled
-                                                                    style="background-color: <?= $value['appointmentType'] === 'CC' ? '#67c298' : '#87aee0' ?>; 
+                                                            <label class="form-label">Appointment With </label>
+                                                            <input type="text" class="form-control" name="appointmentType" id="appointmentType"
+                                                                value="<?= $value['appointmentType'] === 'CC' ? 'CC & HCP Appointment' : 'PATIENT & HCP Appointment' ?>"
+                                                                disabled
+                                                                style="background-color: <?= $value['appointmentType'] === 'CC' ? '#67c298' : '#87aee0' ?>; 
                                                                     color: white !important; cursor: no-drop; opacity: 1;">
-                                                            </div>
-                                                            <small id="appointmentType_err" class="text-danger pt-1"></small>
                                                         </div>
-
                                                         <input type="hidden" id="appTableId" name="appTableId"
                                                             value="<?php echo $value['id'] ?>">
                                                         <div class="form-group pb-3">
@@ -3254,7 +3263,7 @@
                                     var time = document.getElementById("appTime").value;
 
                                     if (date == "") {
-                                        document.getElementById("appDate_err").innerHTML = "Please fill the date.";
+                                        document.getElementById("appDate_err").innerHTML = "Please select a date.";
                                         document.getElementById("appDate").focus();
                                         return false;
                                     } else {
@@ -3270,7 +3279,7 @@
                                     } */
 
                                     if (time == "") {
-                                        document.getElementById("appTime_err").innerHTML = "Please select the time.";
+                                        document.getElementById("appTime_err").innerHTML = "Please select a time.";
                                         document.getElementById("appTime").focus();
                                         return false;
                                     } else {

@@ -452,33 +452,34 @@ class HcpModel extends CI_Model
         return $select->result_array();
     }
 
-    public function getAppMorTime()
-    {
-        $details = "SELECT * FROM `morning_time` WHERE `status` = '0' ORDER BY `time` ASC";
-        $select = $this->db->query($details);
-        return $select->result_array();
-    }
+    // Not in use
+    // public function getAppMorTime()
+    // {
+    //     $details = "SELECT * FROM `morning_time` WHERE `status` = '0' ORDER BY `time` ASC";
+    //     $select = $this->db->query($details);
+    //     return $select->result_array();
+    // }
 
-    public function getAppAfterTime()
-    {
-        $details = "SELECT * FROM `afternoon_time` WHERE `status` = '0' ORDER BY `time` ASC ";
-        $select = $this->db->query($details);
-        return $select->result_array();
-    }
+    // public function getAppAfterTime()
+    // {
+    //     $details = "SELECT * FROM `afternoon_time` WHERE `status` = '0' ORDER BY `time` ASC ";
+    //     $select = $this->db->query($details);
+    //     return $select->result_array();
+    // }
 
-    public function getAppEveTime()
-    {
-        $details = "SELECT * FROM `evening_time` WHERE `status` = '0' ORDER BY `time` ASC ";
-        $select = $this->db->query($details);
-        return $select->result_array();
-    }
+    // public function getAppEveTime()
+    // {
+    //     $details = "SELECT * FROM `evening_time` WHERE `status` = '0' ORDER BY `time` ASC ";
+    //     $select = $this->db->query($details);
+    //     return $select->result_array();
+    // }
 
-    public function getAppNightTime()
-    {
-        $details = "SELECT * FROM `night_time`WHERE `status` = '0' ORDER BY `time` ASC ";
-        $select = $this->db->query($details);
-        return $select->result_array();
-    }
+    // public function getAppNightTime()
+    // {
+    //     $details = "SELECT * FROM `night_time`WHERE `status` = '0' ORDER BY `time` ASC ";
+    //     $select = $this->db->query($details);
+    //     return $select->result_array();
+    // }
 
     public function getAppointmentListDash()
     {
@@ -581,7 +582,7 @@ class HcpModel extends CI_Model
             'modeOfConsultant' => $post['appConsult'],
             'dateOfAppoint' => $post['appDate'],
             //'partOfDay' => $post['dayTime'],
-            'timeOfAppoint'     => date('H:i', strtotime($post['appTime'])),
+            'timeOfAppoint' => date('H:i', strtotime($post['appTime'])),
             'appStatus' => "0"
         );
         $this->db->where('id', $post['appTableId']);
@@ -714,7 +715,7 @@ class HcpModel extends CI_Model
             'modeOfConsultant' => $post['appConsult'],
             'dateOfAppoint' => $post['appDate'],
             /* 'partOfDay' => $post['dayTime'], */
-            'timeOfAppoint'     => date('H:i', strtotime($post['appTime'])),
+            'timeOfAppoint' => date('H:i', strtotime($post['appTime'])),
             'appointmentType' => $post['appointmentType'],
             'patientComplaint' => $post['appReason'],
             'patientHcp' => $_SESSION['hcpId'],

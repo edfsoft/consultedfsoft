@@ -1095,6 +1095,7 @@ class Consultation extends CI_Controller
         }
     }
 
+    // Common mail send function for consultation email with pdf attachment - New, followup, edit consultation
     private function sendConsultationEmail($consultationId, $symptoms, $diagnoses, $medicines, $post)
     {
         // Fetch patient details using the ID from post data
@@ -1165,4 +1166,11 @@ class Consultation extends CI_Controller
 
         return $result;
     }
+
+
+
+
+
+
+
 }

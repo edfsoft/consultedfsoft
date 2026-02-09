@@ -726,7 +726,6 @@ class Healthcareprovider extends CI_Controller
             $appointmentId = $this->input->post('appTableId');
 
             $details = $this->HcpModel->getAppointmentAndPatientDetails($appointmentId);
-            $details = $this->HcpModel->getAppointmentAndPatientDetails($appointmentId);
 
             if ($details && $details['appointmentType'] === 'PATIENT' && !empty($details['mailId'])) {
                 $this->session->set_flashdata('showSuccessMessage', 'Appointment booked successfully. Mail is being sent in the background.');

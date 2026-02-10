@@ -562,12 +562,17 @@ class HcpModel extends CI_Model
             a.timeOfAppoint, 
             a.appointmentLink, 
             a.appointmentType,
+
             p.firstName, 
             p.lastName, 
-            p.mailId
+            p.mailId,
+
+            hcp.id as hcpId,
+            hcp.hcpName as hcpName
         ');
         $this->db->from('appointment_details a');
         $this->db->join('patient_details p', 'p.id = a.patientDbId', 'left');
+        $this->db->join('hcp_details hcp', 'hcp.id = a.hcpDbId', 'left');
         $this->db->where('a.id', $appointmentId);
 
         return $this->db->get()->row_array();

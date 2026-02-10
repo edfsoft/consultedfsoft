@@ -596,7 +596,8 @@ class Healthcareprovider extends CI_Controller
             $joinUrl = $meetingBaseUrl . ltrim($details['appointmentLink'], '/');
             $message = "
                 Dear {$details['firstName']} {$details['lastName']},<br><br>
-                Your appointment has been successfully booked.<br><br>
+                Your appointment has been successfully booked with 
+                <b>Dr. {$details['hcpName']}</b>.<br><br>
                 <b>📅 Date:</b> {$formattedDate}<br>
                 <b>⏰ Time:</b> {$formattedTime}<br><br>
                 <b>🔗 Join Meeting:</b><br>
@@ -657,7 +658,8 @@ class Healthcareprovider extends CI_Controller
                 $message = "
                 Dear {$details['firstName']} {$details['lastName']},<br><br>
 
-                Your appointment on <b>{$formattedDate}</b> at <b>{$formattedTime}</b> 
+                Your appointment with <b>Dr. {$details['hcpName']}</b> on 
+                <b>{$formattedDate}</b> at <b>{$formattedTime}</b> 
                 has been <b>CANCELED</b>.<br><br>
 
                 You may Re-book anytime through our platform.<br><br>
@@ -758,7 +760,8 @@ class Healthcareprovider extends CI_Controller
 
                 $message = "
                     Dear {$details['firstName']} {$details['lastName']},<br><br>
-                    Your Reschedule appointment has been successfully <b>updated</b>.<br><br>
+                    Your appointment with <b>Dr. {$details['hcpName']}</b> has been 
+                    successfully <b>rescheduled</b>.<br><br>
                     <b>📅 Date:</b> {$formattedDate}<br>
                     <b>⏰ Time:</b> {$formattedTime}<br><br>
                     <b>🔗 Join Meeting:</b><br>

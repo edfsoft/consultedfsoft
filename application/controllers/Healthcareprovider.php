@@ -434,6 +434,31 @@ class Healthcareprovider extends CI_Controller
         }
     }
 
+    // getCompletedAppointments
+    public function getCompletedAppointments()
+    {
+        $hcpIdDb = $this->session->userdata('hcpIdDb');
+        if (!$hcpIdDb) {
+            echo json_encode(['success' => false, 'message' => 'Unauthorized']);
+            return;
+        }
+
+        $date = $this->input->get('date');
+        $data = $this->HcpModel->getCompletedAppointments($hcpIdDb, $date);
+
+        foreach ($data as &$row) {
+            $row['referalDoctor'] = ($row['appointmentType'] == 'CC') ? $row['referalDoctor'] : (($row['appointmentType'] == 'PATIENT') ? 'NA' : 'NA');
+            $row['modeOfConsultant'] = ($row['modeOfConsultant'] == 'video') ? 'YES' : (($row['modeOfConsultant'] == 'audio') ? 'NO' : 'YES');
+            $row['date_formatted'] = date('d-m-Y', strtotime($row['dateOfAppoint']));
+            $row['time_12hr'] = date('h:i A', strtotime($row['timeOfAppoint']));
+        }
+
+        echo json_encode([
+            'success' => true,
+            'data' => $data
+        ]);
+    }
+
     public function appointmentsForm()
     {
         if (isset($_SESSION['hcpsName'])) {

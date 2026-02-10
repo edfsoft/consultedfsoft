@@ -540,6 +540,32 @@ class HcpModel extends CI_Model
         return array("response" => $select->result_array(), "totalRows" => $select->num_rows());
     }
 
+    public function getCompletedAppointments($hcpIdDb, $completedDate = null)
+    {
+        $this->db->select('
+            ad.id,
+            ad.appointmentType,
+            ad.referalDoctor,
+            ad.modeOfConsultant,
+            ad.patientId,
+            ad.dateOfAppoint,
+            ad.timeOfAppoint,
+            ad.patientComplaint ');
+        $this->db->from('appointment_details ad');
+        $this->db->where('ad.hcpDbId', $hcpIdDb);
+        $this->db->where('ad.appStatus', '1');
+
+        if (!empty($completedDate)) {
+            $this->db->where('DATE(ad.dateOfAppoint)', $completedDate);
+        }
+
+        $this->db->group_by('ad.id');
+        $this->db->order_by('ad.timeOfAppoint', 'ASC');
+
+        $query = $this->db->get();
+        return $query->result_array();
+    }
+
     public function editAppDetails($id)
     {
         $details = "SELECT * FROM `appointment_details` WHERE `id` = $id";

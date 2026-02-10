@@ -1297,7 +1297,7 @@
                                                     <!-- Hover catcher -->
                                                     <div
                                                         style="position:absolute;top:0;left:0;width:24px;height:24px;cursor:not-allowed;
-                                                                                                                                                                                                                                                                                                                                                                                "
+                                                                                                                                                                                                                                                                                                                                                                                                "
                                                         onmouseenter="this.nextElementSibling.style.display='flex'"
                                                         onmouseleave="this.nextElementSibling.style.display='none'"
                                                     ></div>
@@ -2687,150 +2687,6 @@
                         }
                         window.addEventListener('load', function () {
                             toggleAppointmentFields();
-                        });
-                    </script>
-
-
-                    <!-- New Logic Appointment booking Script GENERATED Morning, evening...Logics-->
-                    <script>
-                        var appBookedDetails = <?php echo json_encode($appBookedDetails); ?>;
-                        var currentHcpId = "<?php echo $_SESSION['hcpIdDb']; ?>";
-
-                        const APP_CONFIG = {
-                            interval: 20,      // Minutes per slot
-                            bufferMins: 20,    // Lead time buffer
-                            schedule: [
-                                { label: 'Morning', start: 9, end: 11, icon: 'bi-brightness-alt-high' },
-                                { label: 'Afternoon', start: 12, end: 15, icon: 'bi-sun' },
-                                { label: 'Evening', start: 16, end: 19, icon: 'bi-brightness-high' },
-                                { label: 'Night', start: 20, end: 22, icon: 'bi-moon-stars' }
-                            ]
-                        };
-
-                        function formatDate(dateString) {
-                            const date = new Date(dateString);
-                            const yyyy = date.getFullYear();
-                            const mm = String(date.getMonth() + 1).padStart(2, '0');
-                            const dd = String(date.getDate()).padStart(2, '0');
-                            return `${yyyy}-${mm}-${dd}`;
-                        }
-
-                        function generateAllTimeSlots() {
-                            const dateInput = document.getElementById('appDate').value;
-                            const referalCcValue = document.getElementById('referalDoctor').value;
-                            const referalCcId = referalCcValue ? referalCcValue.split('|')[0] : '';
-                            const container = document.getElementById('allTimeSlotsWrapper');
-
-                            if (!dateInput) return;
-
-                            const currentDate = new Date();
-                            const selectedDateObj = new Date(dateInput);
-                            const isToday = currentDate.toDateString() === selectedDateObj.toDateString();
-
-                            const cutoffTime = new Date();
-                            cutoffTime.setMinutes(cutoffTime.getMinutes() + APP_CONFIG.bufferMins);
-
-                            let fullHtml = "";
-
-                            APP_CONFIG.schedule.forEach(part => {
-                                let sectionHtml = "";
-
-                                for (let h = part.start; h <= part.end; h++) {
-                                    for (let m = 0; m < 60; m += APP_CONFIG.interval) {
-                                        let slotDate = new Date(dateInput);
-                                        slotDate.setHours(h, m, 0);
-
-                                        if (isToday && slotDate < cutoffTime) continue;
-
-                                        let ampm = h >= 12 ? 'PM' : 'AM';
-                                        let displayHour = h % 12 || 12;
-                                        let displayMin = m < 10 ? '0' + m : m;
-                                        let timeString = `${displayHour}:${displayMin} ${ampm}`;
-
-                                        let isBooked = false;
-
-                                        appBookedDetails.forEach(appointment => {
-                                            const bookedDate = formatDate(appointment.dateOfAppoint);
-
-                                            let dbTime = appointment.timeOfAppoint;
-                                            let bookedTime12h = "";
-
-                                            if (dbTime) {
-                                                let [hours, minutes] = dbTime.split(':');
-                                                hours = parseInt(hours);
-                                                let ampm = hours >= 12 ? 'PM' : 'AM';
-                                                let displayHour = hours % 12 || 12;
-                                                bookedTime12h = `${displayHour}:${minutes} ${ampm}`;
-                                            }
-
-                                            const bookedCcDoctor = appointment.referalDoctor;
-                                            const bookedHcpId = appointment.hcpDbId;
-
-                                            const conditionCC = (bookedDate === dateInput && referalCcId !== '' && bookedCcDoctor === referalCcId);
-
-                                            const conditionHCP = (bookedDate === dateInput && bookedHcpId === currentHcpId);
-
-                                            if ((conditionCC || conditionHCP) && bookedTime12h === timeString) {
-                                                isBooked = true;
-                                            }
-                                        });
-
-                                        const btnClass = isBooked ? 'btn-secondary disabled' : 'btn-outline-secondary';
-                                        const btnText = isBooked ? `${timeString} Booked` : timeString;
-                                        const btnStyle = isBooked ? 'font-size: 12px;' : 'font-size: 16px;';
-
-                                        sectionHtml += `
-                            <button type="button" class="timeButton btn ${btnClass} my-1 me-2" 
-                                    style="${btnStyle}"
-                                    ${isBooked ? 'disabled' : ''}
-                                    onclick="selectTimeSlot('${timeString}', this)">
-                                ${btnText}
-                            </button>`;
-                                    }
-                                }
-
-                                if (sectionHtml !== "") {
-                                    fullHtml += `
-                        <div class="py-2 border-bottom">
-                            <p class="mb-2 fw-bold text-muted small text-uppercase" style="letter-spacing:1px;">
-                                <i class="bi ${part.icon} me-2 text-primary"></i>${part.label} Slots
-                            </p>
-                            <div class="d-flex flex-wrap">${sectionHtml}</div>
-                        </div>`;
-                                }
-                            });
-
-                            container.innerHTML = fullHtml || '<div class="alert alert-warning text-center">No available slots.</div>';
-                        }
-
-                        function selectTimeSlot(time, btn) {
-                            document.getElementById('appTime').value = time;
-                            document.querySelectorAll('.timeButton').forEach(b => {
-                                if (!b.classList.contains('disabled')) {
-                                    b.classList.remove('btn-primary', 'text-white', 'shadow-sm');
-                                    b.classList.add('btn-outline-secondary');
-                                }
-                            });
-                            btn.classList.remove('btn-outline-secondary');
-                            btn.classList.add('btn-primary', 'text-white', 'shadow-sm');
-                        }
-
-                        document.addEventListener('DOMContentLoaded', function () {
-                            document.getElementById('appDate').addEventListener('change', generateAllTimeSlots);
-                            document.getElementById('referalDoctor').addEventListener('change', generateAllTimeSlots);
-                        });
-
-                        window.addEventListener('load', function () {
-                            const dateInput = document.getElementById('appDate');
-                            const today = new Date();
-
-                            const yyyy = today.getFullYear();
-                            const mm = String(today.getMonth() + 1).padStart(2, '0');
-                            const dd = String(today.getDate()).padStart(2, '0');
-
-                            const minDate = `${yyyy}-${mm}-${dd}`;
-
-                            dateInput.setAttribute('min', minDate);
                         });
                     </script>
 
@@ -4342,6 +4198,149 @@
         <?php } elseif ($method == "chiefDoctors" || $method == "chiefDoctorProfile") { ?>
             document.getElementById('chiefDoctor').style.color = "#87F7E3";
         <?php } ?>
+    </script>
+
+    <!-- New Logic Appointment booking Script GENERATED Morning, evening...Logics-->
+    <script>
+        var appBookedDetails = <?php echo json_encode($appBookedDetails); ?>;
+        var currentHcpId = "<?php echo $_SESSION['hcpIdDb']; ?>";
+
+        const APP_CONFIG = {
+            interval: 20,      // Minutes per slot
+            bufferMins: 20,    // Lead time buffer
+            schedule: [
+                { label: 'Morning', start: 9, end: 11, icon: 'bi-brightness-alt-high' },
+                { label: 'Afternoon', start: 12, end: 15, icon: 'bi-sun' },
+                { label: 'Evening', start: 16, end: 19, icon: 'bi-brightness-high' },
+                { label: 'Night', start: 20, end: 22, icon: 'bi-moon-stars' }
+            ]
+        };
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            const yyyy = date.getFullYear();
+            const mm = String(date.getMonth() + 1).padStart(2, '0');
+            const dd = String(date.getDate()).padStart(2, '0');
+            return `${yyyy}-${mm}-${dd}`;
+        }
+
+        function generateAllTimeSlots() {
+            const dateInput = document.getElementById('appDate').value;
+            const referalCcValue = document.getElementById('referalDoctor').value;
+            const referalCcId = referalCcValue ? referalCcValue.split('|')[0] : '';
+            const container = document.getElementById('allTimeSlotsWrapper');
+
+            if (!dateInput) return;
+
+            const currentDate = new Date();
+            const selectedDateObj = new Date(dateInput);
+            const isToday = currentDate.toDateString() === selectedDateObj.toDateString();
+
+            const cutoffTime = new Date();
+            cutoffTime.setMinutes(cutoffTime.getMinutes() + APP_CONFIG.bufferMins);
+
+            let fullHtml = "";
+
+            APP_CONFIG.schedule.forEach(part => {
+                let sectionHtml = "";
+
+                for (let h = part.start; h <= part.end; h++) {
+                    for (let m = 0; m < 60; m += APP_CONFIG.interval) {
+                        let slotDate = new Date(dateInput);
+                        slotDate.setHours(h, m, 0);
+
+                        if (isToday && slotDate < cutoffTime) continue;
+
+                        let ampm = h >= 12 ? 'PM' : 'AM';
+                        let displayHour = h % 12 || 12;
+                        let displayMin = m < 10 ? '0' + m : m;
+                        let timeString = `${displayHour}:${displayMin} ${ampm}`;
+
+                        let isBooked = false;
+
+                        appBookedDetails.forEach(appointment => {
+                            const bookedDate = formatDate(appointment.dateOfAppoint);
+
+                            let dbTime = appointment.timeOfAppoint;
+                            let bookedTime12h = "";
+
+                            if (dbTime) {
+                                let [hours, minutes] = dbTime.split(':');
+                                hours = parseInt(hours);
+                                let ampm = hours >= 12 ? 'PM' : 'AM';
+                                let displayHour = hours % 12 || 12;
+                                bookedTime12h = `${displayHour}:${minutes} ${ampm}`;
+                            }
+
+                            const bookedCcDoctor = appointment.referalDoctor;
+                            const bookedHcpId = appointment.hcpDbId;
+
+                            const conditionCC = (bookedDate === dateInput && referalCcId !== '' && bookedCcDoctor === referalCcId);
+
+                            const conditionHCP = (bookedDate === dateInput && bookedHcpId === currentHcpId);
+
+                            if ((conditionCC || conditionHCP) && bookedTime12h === timeString) {
+                                isBooked = true;
+                            }
+                        });
+
+                        const btnClass = isBooked ? 'btn-secondary disabled' : 'btn-outline-secondary';
+                        const btnText = isBooked ? `${timeString} Booked` : timeString;
+                        const btnStyle = isBooked ? 'font-size: 12px;' : 'font-size: 16px;';
+
+                        sectionHtml += `
+                            <button type="button" class="timeButton btn ${btnClass} my-1 me-2" 
+                                    style="${btnStyle}"
+                                    ${isBooked ? 'disabled' : ''}
+                                    onclick="selectTimeSlot('${timeString}', this)">
+                                ${btnText}
+                            </button>`;
+                    }
+                }
+
+                if (sectionHtml !== "") {
+                    fullHtml += `
+                        <div class="py-2 border-bottom">
+                            <p class="mb-2 fw-bold text-muted small text-uppercase" style="letter-spacing:1px;">
+                                <i class="bi ${part.icon} me-2 text-primary"></i>${part.label} Slots
+                            </p>
+                            <div class="d-flex flex-wrap">${sectionHtml}</div>
+                        </div>`;
+                }
+            });
+
+            container.innerHTML = fullHtml || '<div class="alert alert-warning text-center">No available slots.</div>';
+        }
+
+        function selectTimeSlot(time, btn) {
+            document.getElementById('appTime').value = time;
+            document.querySelectorAll('.timeButton').forEach(b => {
+                if (!b.classList.contains('disabled')) {
+                    b.classList.remove('btn-primary', 'text-white', 'shadow-sm');
+                    b.classList.add('btn-outline-secondary');
+                }
+            });
+            btn.classList.remove('btn-outline-secondary');
+            btn.classList.add('btn-primary', 'text-white', 'shadow-sm');
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            document.getElementById('appDate').addEventListener('change', generateAllTimeSlots);
+            document.getElementById('referalDoctor').addEventListener('change', generateAllTimeSlots);
+        });
+
+        window.addEventListener('load', function () {
+            const dateInput = document.getElementById('appDate');
+            const today = new Date();
+
+            const yyyy = today.getFullYear();
+            const mm = String(today.getMonth() + 1).padStart(2, '0');
+            const dd = String(today.getDate()).padStart(2, '0');
+
+            const minDate = `${yyyy}-${mm}-${dd}`;
+
+            dateInput.setAttribute('min', minDate);
+        });
     </script>
 
     <!-- Common Script -->

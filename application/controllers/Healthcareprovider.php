@@ -434,7 +434,6 @@ class Healthcareprovider extends CI_Controller
         }
     }
 
-    // getCompletedAppointments
     public function getCompletedAppointments()
     {
         $hcpIdDb = $this->session->userdata('hcpIdDb');
@@ -467,8 +466,8 @@ class Healthcareprovider extends CI_Controller
             $this->data['patientsId'] = $patientList['response'];
             $ccDetails = $this->HcpModel->getCcProfile();
             $this->data['ccsId'] = $ccDetails['response'];
-            $symptoms = $this->HcpModel->getSymptoms();
-            $this->data['symptomsList'] = $symptoms;
+            // $symptoms = $this->HcpModel->getSymptoms();
+            // $this->data['symptomsList'] = $symptoms;
             $appTime = $this->HcpModel->getAppointmentTime();
             $this->data['appBookedDetails'] = $appTime;
 
@@ -568,17 +567,6 @@ class Healthcareprovider extends CI_Controller
             'firstName' => $data['firstName']
         ]);
     }
-
-    /*  public function newAppointment()
-     {
-         if ($this->HcpModel->insertAppointment()) {
-
-             $this->session->set_flashdata('showSuccessMessage', 'Appointment booked successfully');
-         } else {
-             $this->session->set_flashdata('showErrorMessage', 'Error in booking appointment');
-         }
-         redirect('Healthcareprovider/appointments');
-     } */
 
     public function newAppointment()
     {
@@ -746,6 +734,32 @@ class Healthcareprovider extends CI_Controller
     //     redirect('Healthcareprovider/appointments');
     // }
 
+
+    public function appointmentReschedule()
+    {
+        if (isset($_SESSION['hcpsName'])) {
+            $this->data['method'] = "appointmentReschedule";
+            $appId = $this->uri->segment(3);
+            $editAppDetails = $this->HcpModel->editAppDetails($appId);
+            $this->data['updateAppDetails'] = $editAppDetails;
+            $appTime = $this->HcpModel->getAppointmentTime();
+            $this->data['appBookedDetails'] = $appTime;
+
+            /* $mtime = $this->HcpModel->getAppMorTime();
+            $this->data['morning'] = $mtime;
+            $atime = $this->HcpModel->getAppAfterTime();
+            $this->data['afternoon'] = $atime;
+            $etime = $this->HcpModel->getAppEveTime();
+            $this->data['evening'] = $etime;
+            $ntime = $this->HcpModel->getAppNightTime();
+            $this->data['night'] = $ntime; */
+
+            $this->load->view('hcpDashboard.php', $this->data);
+        } else {
+            redirect('Healthcareprovider/');
+        }
+    }
+
     public function updateAppointmentForm()
     {
         if ($this->HcpModel->updateAppointment()) {
@@ -810,32 +824,6 @@ class Healthcareprovider extends CI_Controller
             redirect('Healthcareprovider/appointments');
         }
 
-
-    }
-
-    public function appointmentReschedule()
-    {
-        if (isset($_SESSION['hcpsName'])) {
-            $this->data['method'] = "appointmentReschedule";
-            $appId = $this->uri->segment(3);
-            $editAppDetails = $this->HcpModel->editAppDetails($appId);
-            $this->data['updateAppDetails'] = $editAppDetails;
-            $appTime = $this->HcpModel->getAppointmentTime();
-            $this->data['appBookedDetails'] = $appTime;
-
-            /* $mtime = $this->HcpModel->getAppMorTime();
-            $this->data['morning'] = $mtime;
-            $atime = $this->HcpModel->getAppAfterTime();
-            $this->data['afternoon'] = $atime;
-            $etime = $this->HcpModel->getAppEveTime();
-            $this->data['evening'] = $etime;
-            $ntime = $this->HcpModel->getAppNightTime();
-            $this->data['night'] = $ntime; */
-
-            $this->load->view('hcpDashboard.php', $this->data);
-        } else {
-            redirect('Healthcareprovider/');
-        }
     }
 
     public function chiefDoctors()
@@ -969,22 +957,7 @@ class Healthcareprovider extends CI_Controller
         redirect('Healthcareprovider/myProfile');
     }
 
-    public function logout()
-    {
-        $this->session->unset_userdata('hcpIdDb');
-        $this->session->unset_userdata('hcpId');
-        $this->session->unset_userdata('hcpsName');
-        $this->session->unset_userdata('hcpsMailId');
-        $this->session->unset_userdata('hcpsMobileNum');
-        $this->session->unset_userdata('firstLogin');
-        $this->session->unset_userdata('last_activity_time');
-
-        $this->session->sess_regenerate(TRUE);
-
-        redirect('Healthcareprovider/');
-    }
-
-
+    // Consultation join for HCP
     public function join($unique_meeting_id = null)
     {
         if (!$this->session->userdata('hcpsName')) {
@@ -1046,6 +1019,7 @@ class Healthcareprovider extends CI_Controller
         $this->load->view('customMeeting', $data);
     }
 
+    // Appointment status update by HCP after consultation is done
     public function updateStatus()
     {
         $id = $this->input->post('id');
@@ -1060,6 +1034,23 @@ class Healthcareprovider extends CI_Controller
             echo json_encode(['success' => false, 'message' => 'Invalid Request']);
         }
     }
+
+    public function logout()
+    {
+        $this->session->unset_userdata('hcpIdDb');
+        $this->session->unset_userdata('hcpId');
+        $this->session->unset_userdata('hcpsName');
+        $this->session->unset_userdata('hcpsMailId');
+        $this->session->unset_userdata('hcpsMobileNum');
+        $this->session->unset_userdata('firstLogin');
+        $this->session->unset_userdata('last_activity_time');
+
+        $this->session->sess_regenerate(TRUE);
+
+        redirect('Healthcareprovider/');
+    }
+
+
 
 
 }

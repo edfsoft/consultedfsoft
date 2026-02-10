@@ -900,7 +900,6 @@
                     let sortBy = 'patientId';
                     let sortOrder = 'asc';
 
-                    // Elements
                     const itemsDropdown = document.getElementById('itemsPerPageDropdown');
                     const searchBar = document.getElementById('searchBar');
                     const clearSearch = document.getElementById('clearSearch');
@@ -913,13 +912,12 @@
 
                     itemsDropdown.value = itemsPerPageAppointment;
 
-                    //Delete Appointments
                     function confirmDeleteApp(id) {
                         const app = appointmentList.find(item => item.id == id);
-                        let formattedTime = app.timeOfAppoint; // Default to original if something fails
+                        let formattedTime = app.timeOfAppoint;
 
                         if (app.timeOfAppoint) {
-                            const timeParts = app.timeOfAppoint.split(':'); // Split "14:30:00"
+                            const timeParts = app.timeOfAppoint.split(':');
                             let hours = parseInt(timeParts[0]);
                             let minutes = timeParts[1];
 
@@ -932,8 +930,7 @@
                         }
                         let formattedDate = app.dateOfAppoint;
                         if (app.dateOfAppoint) {
-                            const dateParts = app.dateOfAppoint.split('-'); // Split 2026-01-30
-                            // Reassemble as DD-MM-YYYY (30-01-2026)
+                            const dateParts = app.dateOfAppoint.split('-');
                             if (dateParts.length === 3) {
                                 formattedDate = `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`;
                             }
@@ -978,7 +975,6 @@
                             console.error("Appointment not found in list");
                         }
                     }
-                    //Block XSS Attacks
                     function escapeHTML(value) {
                         return String(value)
                             .replace(/&/g, '&amp;')
@@ -988,7 +984,6 @@
                             .replace(/'/g, '&#039;');
                     }
 
-                    // EVENTS
                     itemsDropdown.onchange = e => {
                         itemsPerPageAppointment = parseInt(e.target.value);
                         localStorage.setItem('itemsPerPageAppointment', itemsPerPageAppointment);
@@ -1008,7 +1003,6 @@
 
                     filterDropdown.onchange = applyFilters;
 
-                    // SORT EVENTS
                     sortPatientId.onclick = () => toggleSort('patientId');
                     sortDate.onclick = () => toggleSort('dateOfAppoint');
 
@@ -1028,7 +1022,6 @@
                         dateIndicator.textContent = sortBy === 'dateOfAppoint' ? (sortOrder === 'asc' ? '🡱' : '🡳') : '';
                     }
 
-                    // CORE FILTER
                     function applyFilters() {
                         const search = searchBar.value.toLowerCase();
                         const typeFilter = filterDropdown.value;
@@ -1099,7 +1092,6 @@
                                 </button>
                             </div>
                             `;
-
 
                         const isTooLateToDelete = diffMinutes > -0;
                         const deleteBtn = isTooLateToDelete
@@ -1216,7 +1208,6 @@
                         return /^https?:\/\//i.test(url) ? url : '#';
                     }
 
-                    // PAGINATION
                     function displayAppointmentPage(page) {
                         currentPageAppointment = page;
 
@@ -1306,11 +1297,10 @@
                                                     <!-- Hover catcher -->
                                                     <div
                                                         style="position:absolute;top:0;left:0;width:24px;height:24px;cursor:not-allowed;
-                                                                                                                                                                                                                                                                                                                                                                "
+                                                                                                                                                                                                                                                                                                                                                                                "
                                                         onmouseenter="this.nextElementSibling.style.display='flex'"
                                                         onmouseleave="this.nextElementSibling.style.display='none'"
                                                     ></div>
-
                                                     `
                             : ''
                         }
@@ -1341,7 +1331,6 @@
                         const ul = document.createElement('ul');
                         ul.className = 'pagination';
 
-                        // Previous
                         const prev = document.createElement('li');
                         prev.innerHTML = `<button class="bg-light border px-3 py-2" ${currentPage === 1 ? 'disabled' : ''}>Previous</button>`;
                         prev.onclick = () => currentPage > 1 && displayAppointmentPage(currentPage - 1);
@@ -1358,7 +1347,6 @@
                             ul.appendChild(li);
                         }
 
-                        // Next
                         const next = document.createElement('li');
                         next.innerHTML = `<button class="border px-3 py-2" ${currentPage === totalPages ? 'disabled' : ''}>Next</button>`;
                         next.onclick = () => currentPage < totalPages && displayAppointmentPage(currentPage + 1);
@@ -1366,8 +1354,7 @@
 
                         container.appendChild(ul);
                     }
-                    startLiveUpdates();//calling function to refresh appointments container each minute. 
-                    // INIT
+                    startLiveUpdates();
                     displayAppointmentPage(1);
 
                     function initBootstrapTooltips() {
@@ -1376,7 +1363,6 @@
                         );
 
                         tooltipTriggerList.forEach(el => {
-                            // Dispose old instance (important for pagination)
                             if (bootstrap.Tooltip.getInstance(el)) {
                                 bootstrap.Tooltip.getInstance(el).dispose();
                             }
@@ -1389,22 +1375,17 @@
                             });
                         });
                     }
-                    // NEW: Sync refresh to the start of every minute
                     function startLiveUpdates() {
                         const refreshUI = () => displayAppointmentPage(currentPageAppointment);
 
-                        // Calculate ms until the next full minute
                         const now = new Date();
                         const delay = 60000 - (now.getSeconds() * 1000 + now.getMilliseconds());
 
                         setTimeout(() => {
-                            refreshUI(); // Run once at the start of the minute
-                            setInterval(refreshUI, 60000); // Then repeat every 60s
+                            refreshUI();
+                            setInterval(refreshUI, 60000);
                         }, delay);
                     }
-
-                    // Start the timer
-
                 </script>
 
                 <!-- Reschedule Appointment Section -->
@@ -1526,7 +1507,6 @@
                         </a>
                         `;
 
-                        // Delete Button (Triggers Modal via new function)
                         const deleteBtn = `
                             <button class="btn btn-danger" onclick="confirmDeleteReschedule(${row.id})" title="Delete">
                                 <i class="bi bi-trash"></i>
@@ -1665,7 +1645,6 @@
                             ul.appendChild(li);
                         }
 
-                        // Next
                         const next = document.createElement('li');
                         next.innerHTML = `<button class="border px-3 py-2" ${currentPage === totalPages ? 'disabled' : ''}>Next</button>`;
                         next.onclick = () => currentPage < totalPages && displayReschedulePage(currentPage + 1);
@@ -1674,7 +1653,6 @@
                         container.appendChild(ul);
                     }
 
-                    // 7. FILTER & SORT LOGIC
                     function applyRescheduleFilters() {
                         const search = searchBarRes.value.toLowerCase();
                         const typeFilter = filterDropdownRes.value; // 'All', 'PATIENT', 'CC'
@@ -1689,7 +1667,6 @@
                             return matchSearch && matchType;
                         });
 
-                        // Sort
                         if (sortByReschedule) {
                             filteredRescheduleList.sort((a, b) => {
                                 let x = a[sortByReschedule] || '';
@@ -1709,14 +1686,12 @@
                             sortOrderReschedule = 'asc';
                         }
 
-                        // Update Icons
                         pidIndRes.textContent = sortByReschedule === 'patientId' ? (sortOrderReschedule === 'asc' ? '🡱' : '🡳') : '';
                         dateIndRes.textContent = sortByReschedule === 'dateOfAppoint' ? (sortOrderReschedule === 'asc' ? '🡱' : '🡳') : '';
 
                         applyRescheduleFilters();
                     }
 
-                    // 8. EVENT LISTENERS
                     itemsDropdownRes.onchange = e => {
                         itemsPerPageReschedule = parseInt(e.target.value);
                         displayReschedulePage(1);
@@ -1738,7 +1713,6 @@
                     sortPidRes.onclick = () => toggleRescheduleSort('patientId');
                     sortDateRes.onclick = () => toggleRescheduleSort('dateOfAppoint');
 
-                    // 9. INITIALIZE
                     displayReschedulePage(1);
 
                     function initRescheduleTooltips() {
@@ -1747,7 +1721,6 @@
                         );
 
                         tooltipTriggerList.forEach(el => {
-                            // Dispose old instance (important for pagination)
                             if (bootstrap.Tooltip.getInstance(el)) {
                                 bootstrap.Tooltip.getInstance(el).dispose();
                             }
@@ -2610,7 +2583,6 @@
                             }
                         }
                         function clearErrorAppointment() {
-                            // 1. Get the new Appointment Type
                             var type = document.getElementById("appointmentType").value;
                             var patientId = document.getElementById("patientId").value;
                             var referalDr = document.getElementById("referalDoctor").value;
@@ -2618,7 +2590,6 @@
                             //var dayTime = document.getElementById("dayTime").value;
                             var time = document.getElementById("appTime").value;
 
-                            // 2. Clear error for Appointment Type
                             if (type != "") {
                                 document.getElementById("appointmentType_err").innerHTML = "";
                             }
@@ -2716,6 +2687,150 @@
                         }
                         window.addEventListener('load', function () {
                             toggleAppointmentFields();
+                        });
+                    </script>
+
+
+                    <!-- New Logic Appointment booking Script GENERATED Morning, evening...Logics-->
+                    <script>
+                        var appBookedDetails = <?php echo json_encode($appBookedDetails); ?>;
+                        var currentHcpId = "<?php echo $_SESSION['hcpIdDb']; ?>";
+
+                        const APP_CONFIG = {
+                            interval: 20,      // Minutes per slot
+                            bufferMins: 20,    // Lead time buffer
+                            schedule: [
+                                { label: 'Morning', start: 9, end: 11, icon: 'bi-brightness-alt-high' },
+                                { label: 'Afternoon', start: 12, end: 15, icon: 'bi-sun' },
+                                { label: 'Evening', start: 16, end: 19, icon: 'bi-brightness-high' },
+                                { label: 'Night', start: 20, end: 22, icon: 'bi-moon-stars' }
+                            ]
+                        };
+
+                        function formatDate(dateString) {
+                            const date = new Date(dateString);
+                            const yyyy = date.getFullYear();
+                            const mm = String(date.getMonth() + 1).padStart(2, '0');
+                            const dd = String(date.getDate()).padStart(2, '0');
+                            return `${yyyy}-${mm}-${dd}`;
+                        }
+
+                        function generateAllTimeSlots() {
+                            const dateInput = document.getElementById('appDate').value;
+                            const referalCcValue = document.getElementById('referalDoctor').value;
+                            const referalCcId = referalCcValue ? referalCcValue.split('|')[0] : '';
+                            const container = document.getElementById('allTimeSlotsWrapper');
+
+                            if (!dateInput) return;
+
+                            const currentDate = new Date();
+                            const selectedDateObj = new Date(dateInput);
+                            const isToday = currentDate.toDateString() === selectedDateObj.toDateString();
+
+                            const cutoffTime = new Date();
+                            cutoffTime.setMinutes(cutoffTime.getMinutes() + APP_CONFIG.bufferMins);
+
+                            let fullHtml = "";
+
+                            APP_CONFIG.schedule.forEach(part => {
+                                let sectionHtml = "";
+
+                                for (let h = part.start; h <= part.end; h++) {
+                                    for (let m = 0; m < 60; m += APP_CONFIG.interval) {
+                                        let slotDate = new Date(dateInput);
+                                        slotDate.setHours(h, m, 0);
+
+                                        if (isToday && slotDate < cutoffTime) continue;
+
+                                        let ampm = h >= 12 ? 'PM' : 'AM';
+                                        let displayHour = h % 12 || 12;
+                                        let displayMin = m < 10 ? '0' + m : m;
+                                        let timeString = `${displayHour}:${displayMin} ${ampm}`;
+
+                                        let isBooked = false;
+
+                                        appBookedDetails.forEach(appointment => {
+                                            const bookedDate = formatDate(appointment.dateOfAppoint);
+
+                                            let dbTime = appointment.timeOfAppoint;
+                                            let bookedTime12h = "";
+
+                                            if (dbTime) {
+                                                let [hours, minutes] = dbTime.split(':');
+                                                hours = parseInt(hours);
+                                                let ampm = hours >= 12 ? 'PM' : 'AM';
+                                                let displayHour = hours % 12 || 12;
+                                                bookedTime12h = `${displayHour}:${minutes} ${ampm}`;
+                                            }
+
+                                            const bookedCcDoctor = appointment.referalDoctor;
+                                            const bookedHcpId = appointment.hcpDbId;
+
+                                            const conditionCC = (bookedDate === dateInput && referalCcId !== '' && bookedCcDoctor === referalCcId);
+
+                                            const conditionHCP = (bookedDate === dateInput && bookedHcpId === currentHcpId);
+
+                                            if ((conditionCC || conditionHCP) && bookedTime12h === timeString) {
+                                                isBooked = true;
+                                            }
+                                        });
+
+                                        const btnClass = isBooked ? 'btn-secondary disabled' : 'btn-outline-secondary';
+                                        const btnText = isBooked ? `${timeString} Booked` : timeString;
+                                        const btnStyle = isBooked ? 'font-size: 12px;' : 'font-size: 16px;';
+
+                                        sectionHtml += `
+                            <button type="button" class="timeButton btn ${btnClass} my-1 me-2" 
+                                    style="${btnStyle}"
+                                    ${isBooked ? 'disabled' : ''}
+                                    onclick="selectTimeSlot('${timeString}', this)">
+                                ${btnText}
+                            </button>`;
+                                    }
+                                }
+
+                                if (sectionHtml !== "") {
+                                    fullHtml += `
+                        <div class="py-2 border-bottom">
+                            <p class="mb-2 fw-bold text-muted small text-uppercase" style="letter-spacing:1px;">
+                                <i class="bi ${part.icon} me-2 text-primary"></i>${part.label} Slots
+                            </p>
+                            <div class="d-flex flex-wrap">${sectionHtml}</div>
+                        </div>`;
+                                }
+                            });
+
+                            container.innerHTML = fullHtml || '<div class="alert alert-warning text-center">No available slots.</div>';
+                        }
+
+                        function selectTimeSlot(time, btn) {
+                            document.getElementById('appTime').value = time;
+                            document.querySelectorAll('.timeButton').forEach(b => {
+                                if (!b.classList.contains('disabled')) {
+                                    b.classList.remove('btn-primary', 'text-white', 'shadow-sm');
+                                    b.classList.add('btn-outline-secondary');
+                                }
+                            });
+                            btn.classList.remove('btn-outline-secondary');
+                            btn.classList.add('btn-primary', 'text-white', 'shadow-sm');
+                        }
+
+                        document.addEventListener('DOMContentLoaded', function () {
+                            document.getElementById('appDate').addEventListener('change', generateAllTimeSlots);
+                            document.getElementById('referalDoctor').addEventListener('change', generateAllTimeSlots);
+                        });
+
+                        window.addEventListener('load', function () {
+                            const dateInput = document.getElementById('appDate');
+                            const today = new Date();
+
+                            const yyyy = today.getFullYear();
+                            const mm = String(today.getMonth() + 1).padStart(2, '0');
+                            const dd = String(today.getDate()).padStart(2, '0');
+
+                            const minDate = `${yyyy}-${mm}-${dd}`;
+
+                            dateInput.setAttribute('min', minDate);
                         });
                     </script>
 
@@ -4218,6 +4333,7 @@
 
     </main>
 
+    <!-- Sidebar Active -->
     <script>
         <?php if ($method == "dashboard") { ?>
             document.getElementById('dashboard').style.color = "#87F7E3";
@@ -4226,160 +4342,6 @@
         <?php } elseif ($method == "chiefDoctors" || $method == "chiefDoctorProfile") { ?>
             document.getElementById('chiefDoctor').style.color = "#87F7E3";
         <?php } ?>
-    </script>
-
-    <!-- New Logic Appointment booking Script GENERATED Morning, evening...Logics-->
-    <script>
-        var appBookedDetails = <?php echo json_encode($appBookedDetails); ?>;
-        var currentHcpId = "<?php echo $_SESSION['hcpIdDb']; ?>";
-
-        const APP_CONFIG = {
-            interval: 20,      // Minutes per slot
-            bufferMins: 20,    // Lead time buffer (+30 mins from now)
-            schedule: [
-                { label: 'Morning', start: 9, end: 11, icon: 'bi-brightness-alt-high' },
-                { label: 'Afternoon', start: 12, end: 15, icon: 'bi-sun' },
-                { label: 'Evening', start: 16, end: 19, icon: 'bi-brightness-high' },
-                { label: 'Night', start: 20, end: 22, icon: 'bi-moon-stars' }
-            ]
-        };
-
-        // Helper to match date formats
-        function formatDate(dateString) {
-            const date = new Date(dateString);
-            const yyyy = date.getFullYear();
-            const mm = String(date.getMonth() + 1).padStart(2, '0');
-            const dd = String(date.getDate()).padStart(2, '0');
-            return `${yyyy}-${mm}-${dd}`;
-        }
-
-        function generateAllTimeSlots() {
-            const dateInput = document.getElementById('appDate').value;
-            const referalCcValue = document.getElementById('referalDoctor').value;
-            const referalCcId = referalCcValue ? referalCcValue.split('|')[0] : '';
-            const container = document.getElementById('allTimeSlotsWrapper');
-
-            if (!dateInput) return;
-
-            const currentDate = new Date();
-            const selectedDateObj = new Date(dateInput);
-            const isToday = currentDate.toDateString() === selectedDateObj.toDateString();
-
-            const cutoffTime = new Date();
-            cutoffTime.setMinutes(cutoffTime.getMinutes() + APP_CONFIG.bufferMins);
-
-            let fullHtml = "";
-
-            APP_CONFIG.schedule.forEach(part => {
-                let sectionHtml = "";
-
-                for (let h = part.start; h <= part.end; h++) {
-                    for (let m = 0; m < 60; m += APP_CONFIG.interval) {
-                        let slotDate = new Date(dateInput);
-                        slotDate.setHours(h, m, 0);
-
-                        // Skip past slots for today's date
-                        if (isToday && slotDate < cutoffTime) continue;
-
-                        // Format Time to 12-hour AM/PM string (matches DB format)
-                        let ampm = h >= 12 ? 'PM' : 'AM';
-                        let displayHour = h % 12 || 12;
-                        let displayMin = m < 10 ? '0' + m : m;
-                        let timeString = `${displayHour}:${displayMin} ${ampm}`; //Script Generated Time
-
-                        // --- Below Logic To CHECK IF BOOKED ---
-                        let isBooked = false;
-
-                        appBookedDetails.forEach(appointment => {
-                            // 1. Format the database date to match your input date (YYYY-MM-DD)
-                            const bookedDate = formatDate(appointment.dateOfAppoint);
-
-                            // 2. CONVERT 24h DB TIME TO 12h AM/PM FORMAT
-                            let dbTime = appointment.timeOfAppoint; // e.g., "14:20"
-                            let bookedTime12h = "";
-
-                            if (dbTime) {
-                                let [hours, minutes] = dbTime.split(':');
-                                hours = parseInt(hours);
-                                let ampm = hours >= 12 ? 'PM' : 'AM';
-                                let displayHour = hours % 12 || 12;
-                                bookedTime12h = `${displayHour}:${minutes} ${ampm}`; // Results in "02:20 PM"
-                            }
-
-                            const bookedCcDoctor = appointment.referalDoctor;
-                            const bookedHcpId = appointment.hcpDbId;
-
-                            const conditionCC = (bookedDate === dateInput && referalCcId !== '' && bookedCcDoctor === referalCcId);
-
-                            const conditionHCP = (bookedDate === dateInput && bookedHcpId === currentHcpId);
-
-                            if ((conditionCC || conditionHCP) && bookedTime12h === timeString) {
-                                isBooked = true;
-                            }
-                        });
-
-                        // Set styles and text based on booking status
-                        const btnClass = isBooked ? 'btn-secondary disabled' : 'btn-outline-secondary';
-                        const btnText = isBooked ? `${timeString} Booked` : timeString;
-                        const btnStyle = isBooked ? 'font-size: 12px;' : 'font-size: 16px;';
-
-                        sectionHtml += `
-                            <button type="button" class="timeButton btn ${btnClass} my-1 me-2" 
-                                    style="${btnStyle}"
-                                    ${isBooked ? 'disabled' : ''}
-                                    onclick="selectTimeSlot('${timeString}', this)">
-                                ${btnText}
-                            </button>`;
-                    }
-                }
-
-                if (sectionHtml !== "") {
-                    fullHtml += `
-                        <div class="py-2 border-bottom">
-                            <p class="mb-2 fw-bold text-muted small text-uppercase" style="letter-spacing:1px;">
-                                <i class="bi ${part.icon} me-2 text-primary"></i>${part.label} Slots
-                            </p>
-                            <div class="d-flex flex-wrap">${sectionHtml}</div>
-                        </div>`;
-                }
-            });
-
-            container.innerHTML = fullHtml || '<div class="alert alert-warning text-center">No available slots.</div>';
-        }
-
-        function selectTimeSlot(time, btn) {
-            document.getElementById('appTime').value = time;
-            document.querySelectorAll('.timeButton').forEach(b => {
-                // Only reset non-booked buttons [cite: 399]
-                if (!b.classList.contains('disabled')) {
-                    b.classList.remove('btn-primary', 'text-white', 'shadow-sm');
-                    b.classList.add('btn-outline-secondary');
-                }
-            });
-            btn.classList.remove('btn-outline-secondary');
-            btn.classList.add('btn-primary', 'text-white', 'shadow-sm');
-        }
-
-        // Set initial listeners to trigger the generator 
-        document.addEventListener('DOMContentLoaded', function () {
-            document.getElementById('appDate').addEventListener('change', generateAllTimeSlots);
-            document.getElementById('referalDoctor').addEventListener('change', generateAllTimeSlots);
-        });
-        //Disable previouse Date on 'appDate field'
-        window.addEventListener('load', function () {
-            const dateInput = document.getElementById('appDate');
-            const today = new Date();
-
-            // Format date to YYYY-MM-DD
-            const yyyy = today.getFullYear();
-            const mm = String(today.getMonth() + 1).padStart(2, '0');
-            const dd = String(today.getDate()).padStart(2, '0');
-
-            const minDate = `${yyyy}-${mm}-${dd}`;
-
-            // Set the min attribute to disable past dates
-            dateInput.setAttribute('min', minDate);
-        });
     </script>
 
     <!-- Common Script -->

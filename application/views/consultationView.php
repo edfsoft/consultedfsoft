@@ -1176,13 +1176,29 @@
                                                                 </div>
                                                             </div>
                                                             <div class="modal-footer d-flex justify-content-between">
-                                                                <a href="<?= base_url('consultation/resendEmail/' . $consultation['id']) ?>" 
-                                                                class="btn btn-warning btn-sm"
-                                                                style="padding: 2px 4px; width:45px; height:45px;"
-                                                                onclick="return confirm('Are you sure you want to send the consultation email to the patient?');"
-                                                                title="Send Email to Patient">
+    
+                                                                <?php 
+                                                                    $patientEmail = isset($patientDetails[0]['mailId']) ? $patientDetails[0]['mailId'] : '';
+                                                                ?>
+
+                                                                <?php if (!empty($patientEmail)): ?>
+                                                                    <a href="<?= base_url('consultation/resendEmail/' . $consultation['id']) ?>" 
+                                                                    class="btn btn-warning btn-sm"
+                                                                    style="padding: 2px 4px; width:45px; height:45px;"
+                                                                    onclick="return confirm('Are you sure you want to send the consultation email to the patient?');"
+                                                                    title="Send Email to Patient">
+                                                                        <i class="bi bi-envelope" style="font-size: 20px;"></i>
+                                                                    </a>
+                                                                <?php else: ?>
+                                                                    <span style="cursor: not-allowed;" title="Email address not available for this patient">
+                                                                <button type="button" 
+                                                                        class="btn btn-warning btn-sm"
+                                                                        style="padding: 2px 4px; width:45px; height:45px; opacity: 0.6; pointer-events: none;"
+                                                                        disabled>
                                                                     <i class="bi bi-envelope" style="font-size: 20px;"></i>
-                                                                </a>
+                                                                </button>
+                                                            </span>
+                                                                <?php endif; ?>
 
                                                                 <div class="d-flex gap-2">
                                                                     <button type="button" class="btn btn-secondary download-pdf-btn"

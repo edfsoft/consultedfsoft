@@ -208,7 +208,7 @@
         </table>
 
         <div class="doc-header">
-            <table style="width: 100%;" style="margin-bottom: 10px;>
+            <table style="width: 100%;" style="margin-bottom: 10px;">
                 <tr>
                     <td>
                         <span style=" font-size: 14px; font-weight: bold;">Dr. A.S. SENTHIL VELU,</span> <span

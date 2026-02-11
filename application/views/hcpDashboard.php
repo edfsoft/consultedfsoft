@@ -1297,7 +1297,7 @@
                                                     <!-- Hover catcher -->
                                                     <div
                                                         style="position:absolute;top:0;left:0;width:24px;height:24px;cursor:not-allowed;
-                                                                                                                                                                                                                                                                                                                                                                                                "
+                                                                                                                                                                                                                                                                                                                                                                                                                "
                                                         onmouseenter="this.nextElementSibling.style.display='flex'"
                                                         onmouseleave="this.nextElementSibling.style.display='none'"
                                                     ></div>
@@ -4200,7 +4200,7 @@
         <?php } ?>
     </script>
 
-    <!-- New Logic Appointment booking Script GENERATED Morning, evening...Logics-->
+    <!-- Appointment - New Booking and Reschedule -->
     <script>
         var appBookedDetails = <?php echo json_encode($appBookedDetails); ?>;
         var currentHcpId = "<?php echo $_SESSION['hcpIdDb']; ?>";

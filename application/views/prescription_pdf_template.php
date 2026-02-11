@@ -4,11 +4,20 @@
 <head>
     <meta charset="UTF-8">
     <style>
+        @font-face {
+            font-family: 'TamilFont';
+            /* Ensure the path below is correct for your XAMPP/server setup */
+            src: url('<?php echo FCPATH; ?>assets/fonts/Nirmala.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
         body {
-            font-family: 'Helvetica', sans-serif;
-            font-size: 13px;
+            /* Fallback to DejaVu Sans for English, TamilFont for Tamil */
+            font-family: 'TamilFont', 'DejaVu Sans', sans-serif;
+            font-size: 12px;
             color: #000;
-            line-height: 1.4;
+            line-height: 1.3;
         }
 
         table {
@@ -22,6 +31,10 @@
             border-radius: 5px;
             padding: 10px;
             margin-bottom: 15px;
+        }
+
+        .header-table td {
+            vertical-align: middle;
         }
 
         /* Medicine Table Styles */
@@ -63,12 +76,170 @@
         .mt-2 {
             margin-top: 10px;
         }
+
+        /* Add this inside your <style> tag */
+        @page {
+            margin: 180px 25px 80px 25px;
+        }
+
+        header {
+            position: fixed;
+            top: -160px;
+            left: 0px;
+            right: 0px;
+            height: 150px;
+            font-size: 12px;
+        }
+
+        footer {
+            position: fixed;
+            bottom: -60px;
+            left: 0px;
+            right: 0px;
+            height: 60px;
+            text-align: center;
+            font-size: 10px;
+            border-top: 1px solid #000;
+            padding-top: 5px;
+        }
+
+        .logo-box {
+            border: 2px solid #000;
+            padding: 5px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 14px;
+            line-height: 1;
+            width: 50px;
+        }
+
+        .hospital-title {
+            font-size: 22px;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin: 0;
+            color: #333;
+            /* Dark Grey/Black */
+        }
+
+        .doc-header {
+            border-top: 2px solid #000;
+            border-bottom: 1px solid #000;
+            margin-top: 5px;
+            padding: 5px 0;
+            text-align: left;
+        }
+
+        .header-box {
+            border: 1px solid #cec8c8;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 15px;
+        }
+
+        .med-table {
+            width: 100%;
+            border: 1px solid #000;
+            margin: 15px 0;
+            font-size: 11px;
+        }
+
+        .med-table th {
+            border: 1px solid #000;
+            padding: 5px;
+            background-color: #f0f0f0;
+            font-weight: bold;
+        }
+
+        .med-table td {
+            border: 1px solid #000;
+            padding: 5px;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .text-bold {
+            font-weight: bold;
+        }
+
+        .text-right {
+            text-align: right;
+        }
+
+        .mb-0 {
+            margin-bottom: 0;
+        }
     </style>
 </head>
 
 <body>
+    <header>
+        <table class="header-table">
+            <tr>
+                <td style="width: 60px;">
+                    <div class="logo-box">
+                        M M<br>C H
+                    </div>
+                </td>
 
-    <div class="header-box">
+                <td style="text-align: center;">
+                    <h1 class="hospital-title">MAARUTHI MEDICAL CENTRE AND HOSPITALS</h1>
+                    <p style="margin: 2px 0;">Perundurai Road, Erode - 11. &nbsp; ✆ : 0424 - 2264949, 2250517, 2266768,
+                        2257091.</p>
+                    <p style="margin: 2px 0;">
+                        Web: www.erodediabetesfoundation.org &nbsp;&nbsp;
+                        mail: a.s.senthilvelu@gmail.com
+                    </p>
+                </td>
+
+                <td style="width: 60px; text-align: right;">
+                    <?php
+                    $logoPath = FCPATH . 'assets/edf_logo.png'; // Use local file path
+                    if (file_exists($logoPath)):
+                        $logoData = base64_encode(file_get_contents($logoPath));
+                        $logoSrc = 'data:image/png;base64,' . $logoData;
+                        ?>
+                        <img src="<?= $logoSrc ?>" style="height: 40px;" alt="EDF">
+                    <?php else: ?>
+                        <div style="font-weight:bold; font-size:10px;">EDF</div>
+                    <?php endif; ?>
+                </td>
+            </tr>
+        </table>
+
+        <div class="doc-header">
+            <table style="width: 100%;" style="margin-bottom: 10px;>
+                <tr>
+                    <td>
+                        <span style=" font-size: 14px; font-weight: bold;">Dr. A.S. SENTHIL VELU,</span> <span
+                    style="font-size: 10px;">M.D., FICP</span><br>
+                <span style="font-size: 10px; color: #555;">
+                    Consultant Physician, Diabetologist, Ultrasound, Whole body color Doppler applications,
+                    Echocardiography, Critical care physician
+                </span><br>
+                <span style="font-size: 10px; font-weight: bold;">
+                    ERODE DIABETES FOUNDATION (EDF). REGIONAL FACULTY FOR CERTIFICATE COURSE IN EVIDENCE BASED DIABETES
+                    MANAGEMENT
+                </span>
+                </td>
+                </tr>
+            </table>
+        </div>
+    </header>
+    <footer>
+        <div>
+            Kindly fix prior appointment by <br>
+            Please book an appointment before meeting the doctor. &nbsp; ✆ : 97894 94299
+        </div>
+        <div style="margin-top: 3px;">
+            Consultation Timings: 8:00 AM – 2:00 PM & 6:00 PM – 9:00 PM
+        </div>
+        <div style="margin-top: 3px; font-weight: bold;">
+            FOR ONLINE/TELECONSULT VISIT &nbsp;|&nbsp; consult.edftech.in / DR.A.S.SENTHILVELU
+        </div>
+    </footer>
+
+    <div class="header-box" style="margin-top: 20px;">
         <table style="width: 100%;">
             <tr>
                 <td style="width: 65%; vertical-align: top;">

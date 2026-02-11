@@ -367,11 +367,14 @@ class Patient extends CI_Controller
         date_default_timezone_set('Asia/Kolkata');
 
         $appointment = $this->db->select('
-                appointment_details.*, 
+                 appointment_details.*, 
                 patient_details.firstName, 
                 patient_details.lastName, 
+                patient_details.patientId, 
                 hcp_details.hcpName,
-                cc_details.doctorName as chiefName
+                 hcp_details.hcpId,
+                cc_details.doctorName as chiefName,
+                cc_details.ccId as ccId
             ')
             ->from('appointment_details')
             ->join('patient_details', 'patient_details.id = appointment_details.patientDbId', 'inner')
@@ -397,10 +400,10 @@ class Patient extends CI_Controller
             'temp_token' => $token,
             'channel_name' => $unique_meeting_id,
             'uid' => $uid,
-            'local_name' => ($appointment->firstName ?? 'Patient') . ' ' . ($appointment->lastName ?? ''),
-            'patient_name' => ($appointment->firstName ?? 'Patient') . ' ' . ($appointment->lastName ?? ''),
-            'hcp_name' => $appointment->hcpName ?? 'Doctor',
-            'chief_name' => $appointment->chiefName ?? 'Chief doctor',
+            'local_name' => ($appointment->firstName ?? 'Patient') . ' ' . ($appointment->lastName ?? '') . ' ' . ($appointment->patientId ?? ''),
+            'patient_name' => ($appointment->firstName ?? 'Patient') . ' ' . ($appointment->lastName ?? '') . ' ' . ($appointment->patientId ?? ''),
+            'hcp_name' => ($appointment->hcpName . ' ' . $appointment->hcpId) ?? 'Doctor',
+            'chief_name' => ($appointment->chiefName . ' ' . $appointment->ccId) ?? 'Chief doctor',
             'consult_mode' => $appointment->modeOfConsultant ?? 'video',
             'role' => 'patient',
             'is_doctor' => false

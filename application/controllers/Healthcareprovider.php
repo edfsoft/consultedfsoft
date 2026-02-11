@@ -581,7 +581,8 @@ class Healthcareprovider extends CI_Controller
         header("Content-Length: 0");
         header("Connection: close");
 
-        if (ob_get_level()) ob_end_clean();
+        if (ob_get_level())
+            ob_end_clean();
         flush();
 
         if (function_exists('fastcgi_finish_request')) {
@@ -625,7 +626,7 @@ class Healthcareprovider extends CI_Controller
     {
         $details = $this->HcpModel->getAppointmentAndPatientDetails($id);
 
-            if ($this->HcpModel->delete_appointment($id)) {
+        if ($this->HcpModel->delete_appointment($id)) {
             // 1. Prepare the success message
             if ($details && $details['appointmentType'] === 'PATIENT' && !empty($details['mailId'])) {
                 $this->session->set_flashdata('showSuccessMessage', 'Appointment Canceled. Cancellation email is being sent in the background.');
@@ -640,7 +641,8 @@ class Healthcareprovider extends CI_Controller
             header("Content-Length: 0");
             header("Connection: close");
 
-            if (ob_get_level()) ob_end_clean();
+            if (ob_get_level())
+                ob_end_clean();
             flush();
 
             if (function_exists('fastcgi_finish_request')) {
@@ -673,7 +675,7 @@ class Healthcareprovider extends CI_Controller
                 $this->email->message($message);
                 $this->email->send();
 
-            } 
+            }
 
         } else {
             $this->session->set_flashdata('showErrorMessage', 'Failed to cancel appointment.');
@@ -740,7 +742,8 @@ class Healthcareprovider extends CI_Controller
             header("Content-Length: 0");
             header("Connection: close");
 
-            if (ob_get_level()) ob_end_clean();
+            if (ob_get_level())
+                ob_end_clean();
             flush();
 
             if (function_exists('fastcgi_finish_request')) {
@@ -780,7 +783,7 @@ class Healthcareprovider extends CI_Controller
             redirect('Healthcareprovider/appointments');
         }
 
-        
+
     }
 
     public function appointmentReschedule()

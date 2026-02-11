@@ -5,20 +5,20 @@
     <meta charset="UTF-8">
     <style>
         @font-face {
-        font-family: 'TamilFont';
-        /* Ensure the path below is correct for your XAMPP/server setup */
-        src: url('<?php echo FCPATH; ?>assets/fonts/Nirmala.ttf') format('truetype');
-        font-weight: normal;
-        font-style: normal;
-    }
+            font-family: 'TamilFont';
+            /* Ensure the path below is correct for your XAMPP/server setup */
+            src: url('<?php echo FCPATH; ?>assets/fonts/Nirmala.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
 
-    body {
-        /* Fallback to DejaVu Sans for English, TamilFont for Tamil */
-        font-family: 'TamilFont', 'DejaVu Sans', sans-serif;
-        font-size: 12px;
-        color: #000;
-        line-height: 1.3;
-    }
+        body {
+            /* Fallback to DejaVu Sans for English, TamilFont for Tamil */
+            font-family: 'TamilFont', 'DejaVu Sans', sans-serif;
+            font-size: 12px;
+            color: #000;
+            line-height: 1.3;
+        }
 
         table {
             width: 100%;
@@ -33,7 +33,9 @@
             margin-bottom: 15px;
         }
 
-        .header-table td { vertical-align: middle; }
+        .header-table td {
+            vertical-align: middle;
+        }
 
         /* Medicine Table Styles */
         .med-table {
@@ -76,11 +78,11 @@
         }
 
         /* Add this inside your <style> tag */
-@page {
-            margin: 180px 25px 80px 25px; 
+        @page {
+            margin: 180px 25px 80px 25px;
         }
 
-header {
+        header {
             position: fixed;
             top: -160px;
             left: 0px;
@@ -89,7 +91,7 @@ header {
             font-size: 12px;
         }
 
-footer {
+        footer {
             position: fixed;
             bottom: -60px;
             left: 0px;
@@ -99,8 +101,8 @@ footer {
             font-size: 10px;
             border-top: 1px solid #000;
             padding-top: 5px;
-        } 
-        
+        }
+
         .logo-box {
             border: 2px solid #000;
             padding: 5px;
@@ -116,8 +118,10 @@ footer {
             font-weight: bold;
             text-transform: uppercase;
             margin: 0;
-            color: #333; /* Dark Grey/Black */
+            color: #333;
+            /* Dark Grey/Black */
         }
+
         .doc-header {
             border-top: 2px solid #000;
             border-bottom: 1px solid #000;
@@ -125,24 +129,51 @@ footer {
             padding: 5px 0;
             text-align: left;
         }
+
         .header-box {
             border: 1px solid #cec8c8;
             border-radius: 5px;
             padding: 10px;
             margin-bottom: 15px;
         }
-        .med-table { width: 100%; border: 1px solid #000; margin: 15px 0; font-size: 11px; }
-        .med-table th { border: 1px solid #000; padding: 5px; background-color: #f0f0f0; font-weight: bold; }
-        .med-table td { border: 1px solid #000; padding: 5px; text-align: center; vertical-align: middle; }
-        
-        .text-bold { font-weight: bold; }
-        .text-right { text-align: right; }
-        .mb-0 { margin-bottom: 0; }
-        </style>
+
+        .med-table {
+            width: 100%;
+            border: 1px solid #000;
+            margin: 15px 0;
+            font-size: 11px;
+        }
+
+        .med-table th {
+            border: 1px solid #000;
+            padding: 5px;
+            background-color: #f0f0f0;
+            font-weight: bold;
+        }
+
+        .med-table td {
+            border: 1px solid #000;
+            padding: 5px;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .text-bold {
+            font-weight: bold;
+        }
+
+        .text-right {
+            text-align: right;
+        }
+
+        .mb-0 {
+            margin-bottom: 0;
+        }
+    </style>
 </head>
 
 <body>
-<header>
+    <header>
         <table class="header-table">
             <tr>
                 <td style="width: 60px;">
@@ -150,12 +181,13 @@ footer {
                         M M<br>C H
                     </div>
                 </td>
-                
+
                 <td style="text-align: center;">
                     <h1 class="hospital-title">MAARUTHI MEDICAL CENTRE AND HOSPITALS</h1>
-                    <p style="margin: 2px 0;">Perundurai Road, Erode - 11. &nbsp; ✆ : 0424 - 2264949, 2250517, 2266768, 2257091.</p>
+                    <p style="margin: 2px 0;">Perundurai Road, Erode - 11. &nbsp; ✆ : 0424 - 2264949, 2250517, 2266768,
+                        2257091.</p>
                     <p style="margin: 2px 0;">
-                        Web: www.erodediabetesfoundation.org &nbsp;&nbsp; 
+                        Web: www.erodediabetesfoundation.org &nbsp;&nbsp;
                         mail: a.s.senthilvelu@gmail.com
                     </p>
                 </td>
@@ -166,10 +198,10 @@ footer {
                     if (file_exists($logoPath)):
                         $logoData = base64_encode(file_get_contents($logoPath));
                         $logoSrc = 'data:image/png;base64,' . $logoData;
-                    ?>
+                        ?>
                         <img src="<?= $logoSrc ?>" style="height: 40px;" alt="EDF">
                     <?php else: ?>
-                        <div style="font-weight:bold; font-size:10px;">EDF</div> 
+                        <div style="font-weight:bold; font-size:10px;">EDF</div>
                     <?php endif; ?>
                 </td>
             </tr>
@@ -179,14 +211,17 @@ footer {
             <table style="width: 100%;" style="margin-bottom: 10px;>
                 <tr>
                     <td>
-                        <span style="font-size: 14px; font-weight: bold;">Dr. A.S. SENTHIL VELU,</span> <span style="font-size: 10px;">M.D., FICP</span><br>
-                        <span style="font-size: 10px; color: #555;">
-                            Consultant Physician, Diabetologist, Ultrasound, Whole body color Doppler applications, Echocardiography, Critical care physician
-                        </span><br>
-                        <span style="font-size: 10px; font-weight: bold;">
-                            ERODE DIABETES FOUNDATION (EDF). REGIONAL FACULTY FOR CERTIFICATE COURSE IN EVIDENCE BASED DIABETES MANAGEMENT
-                        </span>
-                    </td>
+                        <span style=" font-size: 14px; font-weight: bold;">Dr. A.S. SENTHIL VELU,</span> <span
+                    style="font-size: 10px;">M.D., FICP</span><br>
+                <span style="font-size: 10px; color: #555;">
+                    Consultant Physician, Diabetologist, Ultrasound, Whole body color Doppler applications,
+                    Echocardiography, Critical care physician
+                </span><br>
+                <span style="font-size: 10px; font-weight: bold;">
+                    ERODE DIABETES FOUNDATION (EDF). REGIONAL FACULTY FOR CERTIFICATE COURSE IN EVIDENCE BASED DIABETES
+                    MANAGEMENT
+                </span>
+                </td>
                 </tr>
             </table>
         </div>
@@ -204,7 +239,8 @@ footer {
         </div>
     </footer>
 
-    <div class="header-box" style="margin-top: 20px;"> <table style="width: 100%;">
+    <div class="header-box" style="margin-top: 20px;">
+        <table style="width: 100%;">
             <tr>
                 <td style="width: 65%; vertical-align: top;">
                     <p class="mb-0"><span class="text-bold">Name:</span>

@@ -1165,36 +1165,36 @@
                                                     <?php echo $value['patientComplaint'] != '' ? $value['patientComplaint'] : "-"; ?>
                                                             </td>
                                                             <td style="font-size: 16px" class="d-flex d-lg-block appointment-action-cell"
-                                                                data-date="<?php echo $value['dateOfAppoint']; ?>" 
+                                                                data-date="<?php echo $value['dateOfAppoint']; ?>"
                                                                 data-time="<?php echo $value['timeOfAppoint']; ?>"
                                                                 data-link="<?php echo base_url() . 'chiefconsultant/join/' . ltrim($value['appointmentLink'], '/'); ?>">
-                                                                
-                                                                <?php
-                                                                date_default_timezone_set('Asia/Kolkata');
-                                                                $dateOfAppoint = $value['dateOfAppoint'];
-                                                                $timeOfAppoint = $value['timeOfAppoint'];
-                                                                $today = date('Y-m-d');
-                                                                $currentTime = date('H:i:s');
 
-                                                                $appointmentDateTime = strtotime("$dateOfAppoint $timeOfAppoint");
-                                                                $currentDateTime = strtotime("$today $currentTime");
-                                                                $isToday = ($dateOfAppoint == $today);
+                                                        <?php
+                                                        date_default_timezone_set('Asia/Kolkata');
+                                                        $dateOfAppoint = $value['dateOfAppoint'];
+                                                        $timeOfAppoint = $value['timeOfAppoint'];
+                                                        $today = date('Y-m-d');
+                                                        $currentTime = date('H:i:s');
 
-                                                                // Logic: Current time must be >= Appointment Time AND <= Appointment Time + 20 mins
-                                                                $isWithin20Minutes = ($currentDateTime <= strtotime('+20 minutes', $appointmentDateTime)) &&
-                                                                                    ($currentDateTime >= $appointmentDateTime);
-                                                                
-                                                                $shouldEnableButton = $isToday && $isWithin20Minutes;
-                                                                ?>
+                                                        $appointmentDateTime = strtotime("$dateOfAppoint $timeOfAppoint");
+                                                        $currentDateTime = strtotime("$today $currentTime");
+                                                        $isToday = ($dateOfAppoint == $today);
 
-                                                                <?php if ($shouldEnableButton) { ?>
+                                                        // Logic: Current time must be >= Appointment Time AND <= Appointment Time + 20 mins
+                                                        $isWithin20Minutes = ($currentDateTime <= strtotime('+20 minutes', $appointmentDateTime)) &&
+                                                            ($currentDateTime >= $appointmentDateTime);
+
+                                                        $shouldEnableButton = $isToday && $isWithin20Minutes;
+                                                        ?>
+
+                                                    <?php if ($shouldEnableButton) { ?>
                                                                     <a href="<?php echo base_url() . 'chiefconsultant/join/' . ltrim($value['appointmentLink'], '/'); ?>"
-                                                                    target="_self" rel="noopener" class="join-btn-link">
+                                                                        target="_self" rel="noopener" class="join-btn-link">
                                                                         <button class="btn btn-success">Join</button>
                                                                     </a>
-                                                                <?php } else { ?>
+                                                    <?php } else { ?>
                                                                     <button class="btn btn-success" disabled>Join</button>
-                                                                <?php } ?>
+                                                    <?php } ?>
                                                             </td>
                                                         </tr>
                                         <?php } ?>
@@ -1282,13 +1282,13 @@
                                         const fullLink = cell.getAttribute('data-link');
 
                                         const apptDate = new Date(dateStr + 'T' + timeStr);
-                                        
+
                                         // 20 minutes in milliseconds = 20 * 60 * 1000 = 1200000
                                         const endTime = new Date(apptDate.getTime() + 1200000);
 
                                         const isStarted = now >= apptDate;
                                         const isNotExpired = now <= endTime;
-                                        
+
                                         if (isStarted && isNotExpired) {
                                             if (!cell.querySelector('a.join-btn-link')) {
                                                 cell.innerHTML = `

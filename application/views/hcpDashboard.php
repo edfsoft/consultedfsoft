@@ -846,42 +846,37 @@
                                 <div class="mb-4">
                                     <i class="bi bi-check2-circle text-success" style="font-size: 80px; line-height: 1;"></i>
                                 </div>
-                                
+
                                 <h5 class="fw-bold mb-2">Finish Appointment?</h5>
                                 <p class="text-muted small px-3">Mark this appointment as completed in the system.</p>
-                                
+
                                 <div class="my-4 d-flex justify-content-center align-items-center">
                                     <div class="form-check p-0 text-center">
-                                        <input type="checkbox" id="modalBigTick" class="form-check-input border-success" 
-                                            style="width: 50px; height: 50px; cursor: pointer; float: none; margin: 0 auto; 
+                                        <input type="checkbox" id="modalBigTick" class="form-check-input border-success" style="width: 50px; height: 50px; cursor: pointer; float: none; margin: 0 auto; 
                                                 display: block; background-color: #fff;
                                                 transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
-                                                box-shadow: 0 4px 10px rgba(25, 135, 84, 0.2);" 
-                                            
-                                            onmouseover="this.style.transform='scale(1.15) translateY(-5px)'; 
-                                                        this.style.boxShadow='0 12px 20px rgba(25, 135, 84, 0.4)';" 
-                                            
+                                                box-shadow: 0 4px 10px rgba(25, 135, 84, 0.2);" onmouseover="this.style.transform='scale(1.15) translateY(-5px)'; 
+                                                        this.style.boxShadow='0 12px 20px rgba(25, 135, 84, 0.4)';"
                                             onmouseout="this.style.transform='scale(1) translateY(0)'; 
                                                         this.style.boxShadow='0 4px 10px rgba(25, 135, 84, 0.2)';"
-                                            
                                             onclick="initiateCompletion(${row.id}, this)">
-                                            
-                                        <label class="d-block mt-3 text-success fw-bold" for="modalBigTick" style="letter-spacing: 0.5px;">
+
+                                        <label class="d-block mt-3 text-success fw-bold" for="modalBigTick"
+                                            style="letter-spacing: 0.5px;">
                                             Tick to Complete
                                         </label>
                                     </div>
                                 </div>
 
                                 <input type="hidden" id="pendingAppointmentId">
-                                
-                                    <button type="button" 
-                                    class="btn w-100 mt-2" 
-                                    style="background-color: transparent; border: 2px solid #aab1b8; color: #6c757d; transition: all 0.2s ease-in-out; font-weight: 500;" 
-                                    onmouseover="this.style.transform='scale(1.05)'; this.style.backgroundColor='#aab1b8'; this.style.color='#ffffff';" 
+
+                                <button type="button" class="btn w-100 mt-2"
+                                    style="background-color: transparent; border: 2px solid #aab1b8; color: #6c757d; transition: all 0.2s ease-in-out; font-weight: 500;"
+                                    onmouseover="this.style.transform='scale(1.05)'; this.style.backgroundColor='#aab1b8'; this.style.color='#ffffff';"
                                     onmouseout="this.style.transform='scale(1)'; this.style.backgroundColor='transparent'; this.style.color='#6c757d';"
                                     data-bs-dismiss="modal">
-                                Cancel and Close
-                            </button>
+                                    Cancel and Close
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -892,7 +887,7 @@
                     const appointmentList = <?php echo json_encode($appointmentList, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>;
                     const baseUrl = '<?php echo base_url(); ?>';
 
-                    let activeCheckboxElement = null; 
+                    let activeCheckboxElement = null;
                     let completionModalInstance = null;
 
                     let filteredList = [...appointmentList];
@@ -1080,13 +1075,13 @@
                         const shouldShowCheckbox = isToday && isWithin10Minutes;
 
                         const joinBtn = shouldEnableJoin
-                        ? `
+                            ? `
                             <a href="${safeUrl(fullJoinUrl)}"
                                 target="_blank" rel="noopener noreferrer">
                                 <button class="btn btn-success">Join</button>
                             </a>
                             `
-                        : `
+                            : `
                             <div
                                 style="display:inline-block; position:relative; cursor:not-allowed;"
                                 onmouseenter="this.querySelector('.ban').style.display='block'"
@@ -1138,11 +1133,11 @@
                     function initiateCompletion(id, element) {
                         if (element.checked) {
                             element.checked = false;
-                            
+
                             document.getElementById('pendingAppointmentId').value = id;
                             document.getElementById('modalBigTick').checked = false;
-                            activeCheckboxElement = element; 
-                            
+                            activeCheckboxElement = element;
+
                             const modalEl = document.getElementById('completionModal');
                             if (!completionModalInstance) {
                                 completionModalInstance = new bootstrap.Modal(modalEl);
@@ -1151,7 +1146,7 @@
                         }
                     }
 
-                    document.getElementById('modalBigTick').onchange = function() {
+                    document.getElementById('modalBigTick').onchange = function () {
                         if (this.checked) {
                             const id = document.getElementById('pendingAppointmentId').value;
                             const status = '1';
@@ -1163,33 +1158,33 @@
                                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                                 body: `id=${id}&status=${status}`
                             })
-                            .then(res => res.json())
-                            .then(data => {
-                                console.log("Server Response:", data);
-                                
-                                if (data.success) {
-                                    if(activeCheckboxElement) {
-                                        activeCheckboxElement.checked = true;
-                                        activeCheckboxElement.disabled = true;
-                                    }
+                                .then(res => res.json())
+                                .then(data => {
+                                    console.log("Server Response:", data);
 
-                                    const app = appointmentList.find(a => a.id == id);
-                                    if (app) app.appStatus = '1';
+                                    if (data.success) {
+                                        if (activeCheckboxElement) {
+                                            activeCheckboxElement.checked = true;
+                                            activeCheckboxElement.disabled = true;
+                                        }
 
-                                    if (completionModalInstance) {
-                                        completionModalInstance.hide();
+                                        const app = appointmentList.find(a => a.id == id);
+                                        if (app) app.appStatus = '1';
+
+                                        if (completionModalInstance) {
+                                            completionModalInstance.hide();
+                                        }
+                                        window.location.reload();
+                                    } else {
+                                        alert("Failed to update status. Server responded with error.");
+                                        this.checked = false;
                                     }
-                                    window.location.reload();
-                                } else {
-                                    alert("Failed to update status. Server responded with error.");
+                                })
+                                .catch(err => {
+                                    console.error("Fetch Error:", err);
+                                    alert("Error connecting to server.");
                                     this.checked = false;
-                                }
-                            })
-                            .catch(err => {
-                                console.error("Fetch Error:", err);
-                                alert("Error connecting to server.");
-                                this.checked = false;
-                            });
+                                });
                         }
                     };
                     function formatTimeAMPM(timeStr) {
@@ -1255,7 +1250,7 @@
                             const appointmentDateTime = new Date(r.dateOfAppoint + ' ' + r.timeOfAppoint);
                             const diffMinutes = (now - appointmentDateTime) / (1000 * 60);
                             const isToday = now.toISOString().slice(0, 10) === r.dateOfAppoint;
-                            
+
                             const shouldShowCheckbox = isToday && diffMinutes >= -0 && diffMinutes <= 20;
 
                             tbody.insertAdjacentHTML('beforeend', `
@@ -1272,10 +1267,10 @@
                                         <td class="align-middle">
                                             <div class="text-center"
                                                 title="${r.appStatus === '1'
-                                                ? 'Completed'
-                                                : (shouldShowCheckbox
-                                                    ? 'Mark as Done'
-                                                    : 'Available during appointment time')}">
+                            ? 'Completed'
+                            : (shouldShowCheckbox
+                                ? 'Mark as Done'
+                                : 'Available during appointment time')}">
 
                                                 <div
                                                 style="position:relative; display:inline-block; width:24px; height:24px;"
@@ -1284,33 +1279,32 @@
                                                 <!-- Actual checkbox -->
                                                 <input type="checkbox"
                                                     class="form-check-input ${r.appStatus === '1'
-                                                    ? 'bg-success border-success'
-                                                    : 'border-secondary'}"
+                            ? 'bg-success border-success'
+                            : 'border-secondary'}"
                                                     style=" width:24px; height:24px;
                                                     cursor:${shouldShowCheckbox || r.appStatus === '1'
-                                                        ? 'pointer'
-                                                        : 'not-allowed'};
+                            ? 'pointer'
+                            : 'not-allowed'};
                                                     "
                                                     ${r.appStatus === '1'
-                                                    ? 'checked disabled'
-                                                    : (shouldShowCheckbox ? '' : 'disabled')}
+                            ? 'checked disabled'
+                            : (shouldShowCheckbox ? '' : 'disabled')}
                                                     onclick="initiateCompletion(${r.id}, this)"
                                                 >
 
-                                                ${
-                                                    (!shouldShowCheckbox && r.appStatus !== '1')
-                                                    ? `
+                                                ${(!shouldShowCheckbox && r.appStatus !== '1')
+                            ? `
                                                     <!-- Hover catcher -->
                                                     <div
                                                         style="position:absolute;top:0;left:0;width:24px;height:24px;cursor:not-allowed;
-                                                        "
+                                                                "
                                                         onmouseenter="this.nextElementSibling.style.display='flex'"
                                                         onmouseleave="this.nextElementSibling.style.display='none'"
                                                     ></div>
 
                                                     `
-                                                    : ''
-                                                }
+                            : ''
+                        }
 
                                                 </div>
                                             </div>
@@ -1401,7 +1395,7 @@
                     }
 
                     // Start the timer
-                    
+
                 </script>
 
             <?php if (isset($appointmentReschedule[0]['id'])) { ?>
@@ -1767,26 +1761,35 @@
                                             name="patientDetails" onsubmit="return validateAppointment()"
                                             oninput="clearErrorAppointment()">
 
-                                        <div class="form-group pb-3">
-                                            <label class="form-label fw-bold">Appointment With <span class="text-danger">*</span></label>
-                                            
-                                            <select class="form-select" id="appointmentType" name="appointmentType"
+                                            <div class="form-group pb-3">
+                                                <label class="form-label fw-bold">Appointment With <span
+                                                        class="text-danger">*</span></label>
+
+                                                <select class="form-select" id="appointmentType" name="appointmentType"
                                                     onchange="toggleAppointmentFields()"
                                                     style="border: 2px solid #cfddf0;#c5d1e4 animation: pulse-blue 2s infinite ease-in-out;">
-                                                <option value="">Select Appointment With</option>
-                                                <option value="CC">CC & HCP Appointment</option>
-                                                <option value="PATIENT">PATIENT & HCP Appointment</option>
-                                            </select>
-                                            
-                                            <style>
-                                                @keyframes pulse-blue {
-                                                    0% { box-shadow: 0 0 0 0 rgba(13, 110, 253, 0.7); }
-                                                    70% { box-shadow: 0 0 0 10px rgba(13, 110, 253, 0); }
-                                                    100% { box-shadow: 0 0 0 0 rgba(13, 110, 253, 0); }
-                                                }
-                                            </style>
-                                            <small id="appointmentType_err" class="text-danger pt-1"></small>
-                                        </div>
+                                                    <option value="">Select Appointment With</option>
+                                                    <option value="CC">CC & HCP Appointment</option>
+                                                    <option value="PATIENT">PATIENT & HCP Appointment</option>
+                                                </select>
+
+                                                <style>
+                                                    @keyframes pulse-blue {
+                                                        0% {
+                                                            box-shadow: 0 0 0 0 rgba(13, 110, 253, 0.7);
+                                                        }
+
+                                                        70% {
+                                                            box-shadow: 0 0 0 10px rgba(13, 110, 253, 0);
+                                                        }
+
+                                                        100% {
+                                                            box-shadow: 0 0 0 0 rgba(13, 110, 253, 0);
+                                                        }
+                                                    }
+                                                </style>
+                                                <small id="appointmentType_err" class="text-danger pt-1"></small>
+                                            </div>
 
                                             <fieldset id="appointmentFormFields" disabled>
 
@@ -1836,18 +1839,22 @@
 
                                                 <div class="form-group pb-3" id="modeSection">
                                                     <label class="form-label" for="patientId">Enable Video? </label>
-                                                    
+
                                                     <div class="d-flex gap-2" style="max-width: 160px;">
                                                         <div class="flex-fill">
-                                                            <input type="radio" class="btn-check" name="appConsult" id="video" value="video" autocomplete="off" checked>
-                                                            <label class="btn btn-sm btn-outline-success w-100 fw-bold" for="video">Yes</label>
+                                                            <input type="radio" class="btn-check" name="appConsult" id="video"
+                                                                value="video" autocomplete="off" checked>
+                                                            <label class="btn btn-sm btn-outline-success w-100 fw-bold"
+                                                                for="video">Yes</label>
                                                         </div>
                                                         <div class="flex-fill">
-                                                            <input type="radio" class="btn-check" name="appConsult" id="audio" value="audio" autocomplete="off">
-                                                            <label class="btn btn-sm btn-outline-secondary w-100 fw-bold" for="audio">No</label>
+                                                            <input type="radio" class="btn-check" name="appConsult" id="audio"
+                                                                value="audio" autocomplete="off">
+                                                            <label class="btn btn-sm btn-outline-secondary w-100 fw-bold"
+                                                                for="audio">No</label>
                                                         </div>
                                                     </div>
-                                                    
+
                                                     <div id="appConsult_err" class="text-danger pt-1 small"></div>
                                                 </div>
                                                 <!-- <div class="form-group pb-3">
@@ -1924,18 +1931,20 @@
 
                                                 <div class="form-group pb-3">
                                                     <label class="form-label">Date <span class="text-danger">*</span></label>
-                                                    <input type="date" class="form-control" id="appDate" name="appDate" onchange="generateAllTimeSlots()">
+                                                    <input type="date" class="form-control" id="appDate" name="appDate"
+                                                        onchange="generateAllTimeSlots()">
                                                     <small id="appDate_err" class="text-danger pt-1"></small>
                                                 </div>
 
                                                 <div class="form-group pb-1">
                                                     <label class="form-label">Time <span class="text-danger">*</span></label>
-                                                    <input type="text" class="form-control bg-light" id="appTime" name="appTime" placeholder="Choose a slot below" readonly>
+                                                    <input type="text" class="form-control bg-light" id="appTime" name="appTime"
+                                                        placeholder="Choose a slot below" readonly>
                                                     <small id="appTime_err" class="text-danger pt-1"></small>
                                                 </div>
 
                                                 <div id="allTimeSlotsWrapper" class="mt-1">
-                                                    </div>
+                                                </div>
 
                                                 <div class="form-group py-3">
                                                     <label class="form-label" for="appReason">Complaint <span
@@ -2375,10 +2384,10 @@
                             } else {
                                 // Enable form
                                 if (fieldset) fieldset.disabled = false;
-                                                            
-                                    appointmentField.style.animation = "none";
-                                    appointmentField.style.boxShadow = "none";
-                                    appointmentField.style.borderColor = "#ebeff3"; // Reset to standard gray
+
+                                appointmentField.style.animation = "none";
+                                appointmentField.style.boxShadow = "none";
+                                appointmentField.style.borderColor = "#ebeff3"; // Reset to standard gray
 
                                 if (type === "PATIENT") {
                                     // Hide Referral & Mode sections for Only HCP
@@ -2435,7 +2444,7 @@
                             var patientId = document.getElementById("patientId").value;
                             var referalDr = document.getElementById("referalDoctor").value;
                             var date = document.getElementById("appDate").value;
-                           // var dayTime = document.getElementById("dayTime").value;
+                            // var dayTime = document.getElementById("dayTime").value;
                             var time = document.getElementById("appTime").value;
                             var Reason = document.getElementById("appReason").value;
 
@@ -2505,7 +2514,7 @@
 
                             return true;
                         }
-                        window.addEventListener('load', function() {
+                        window.addEventListener('load', function () {
                             toggleAppointmentFields();
                         });
                     </script>
@@ -2837,15 +2846,16 @@
                                                         method="POST" name="patientDetails" onsubmit="return validateAppointment()"
                                                         oninput="clearErrorAppointment()">
                                                         <div class="form-group pb-3">
-                                                            <label class="form-label">Appointment With <span class="text-danger">*</span></label>
-                                                            
+                                                            <label class="form-label">Appointment With <span
+                                                                    class="text-danger">*</span></label>
+
                                                             <div class="form-group pb-1">
-                                                                <input type="text" class="form-control" name="appointmentType" id="appointmentType"
-                                                                    value="<?= $value['appointmentType'] === 'CC' ? 'CC & HCP Appointment' : 'PATIENT & HCP Appointment' ?>" 
+                                                                <input type="text" class="form-control" name="appointmentType"
+                                                                    id="appointmentType"
+                                                                    value="<?= $value['appointmentType'] === 'CC' ? 'CC & HCP Appointment' : 'PATIENT & HCP Appointment' ?>"
                                                                     disabled
                                                                     style="background-color: <?= $value['appointmentType'] === 'CC' ? '#67c298' : '#87aee0' ?>; 
-                                                                    color: white !important; cursor: no-drop; opacity: 1;"
-                                                                >
+                                                                    color: white !important; cursor: no-drop; opacity: 1;">
                                                             </div>
                                                             <small id="appointmentType_err" class="text-danger pt-1"></small>
                                                         </div>
@@ -2870,25 +2880,27 @@
                                                         </div>
                                                         <div class="form-group pb-3" id="modeSection">
                                                             <label class="form-label" for="patientId">Enable Video?</label>
-                                                            
+
                                                             <div class="d-flex gap-2 pb-3" style="max-width: 160px;">
                                                                 <div class="flex-fill">
-                                                                    <input type="radio" class="btn-check" name="appConsult" id="video" value="video" autocomplete="off" 
-                                                                        <?php echo ($value['modeOfConsultant'] == 'video') ? 'checked' : ''; ?>
-                                                                        style="cursor: pointer;"disabled
-                                                                onmouseover="style='cursor: no-drop;'" onmouseout="style='cursor: ns-resize;">
-                                                                    <label class="btn btn-sm btn-outline-success w-100 fw-bold" for="video">Yes</label>
+                                                                    <input type="radio" class="btn-check" name="appConsult" id="video"
+                                                                        value="video" autocomplete="off" <?php echo ($value['modeOfConsultant'] == 'video') ? 'checked' : ''; ?>
+                                                                        style="cursor: pointer;" disabled onmouseover="style='cursor: no-drop;'"
+                                                                        onmouseout="style='cursor: ns-resize;">
+                                                                    <label class="btn btn-sm btn-outline-success w-100 fw-bold"
+                                                                        for="video">Yes</label>
                                                                 </div>
-                                                                
+
                                                                 <div class="flex-fill">
-                                                                    <input type="radio" class="btn-check" name="appConsult" id="audio" value="audio" autocomplete="off" 
-                                                                        <?php echo ($value['modeOfConsultant'] == 'audio') ? 'checked' : ''; ?>
-                                                                        style="cursor: pointer;"disabled
-                                                                onmouseover="style='cursor: no-drop;'" onmouseout="style='cursor: ns-resize;">
-                                                                    <label class="btn btn-sm btn-outline-secondary w-100 fw-bold" for="audio">No</label>
+                                                                    <input type="radio" class="btn-check" name="appConsult" id="audio"
+                                                                        value="audio" autocomplete="off" <?php echo ($value['modeOfConsultant'] == 'audio') ? 'checked' : ''; ?>
+                                                                        style="cursor: pointer;" disabled onmouseover="style='cursor: no-drop;'"
+                                                                        onmouseout="style='cursor: ns-resize;">
+                                                                    <label class="btn btn-sm btn-outline-secondary w-100 fw-bold"
+                                                                        for="audio">No</label>
                                                                 </div>
                                                             </div>
-                                                        <!-- <div class="form-group pb-3">
+                                                            <!-- <div class="form-group pb-3">
                                                             <label class="form-label pb-2" for="appConsult">Mode of consult</label><br>
                                                             <input type="radio" id="audio" name="appConsult" value="audio" checked>
                                                             <label for="audio">Audio</label>
@@ -2896,7 +2908,7 @@
                                                             <label for="video">Video</label><br>
                                                         </div> -->
 
-                                                        <!-- <div class="form-group pb-3">
+                                                            <!-- <div class="form-group pb-3">
                                                             <label class="form-label" for="appDate">Date <span
                                                                     class="text-danger">*</span></label>
                                                             <input type="date" class="form-control" id="appDate" name="appDate"
@@ -2904,7 +2916,7 @@
                                                             <div id="appDate_err" class="text-danger pt-1"></div>
                                                         </div> -->
 
-                                                        <!-- <div class="form-group pb-3">
+                                                            <!-- <div class="form-group pb-3">
                                                             <label class="form-label" for="dayTime">Part of a day <span
                                                                     class="text-danger">*</span></label>
                                                             <select class="form-select" id="dayTime" name="dayTime"
@@ -2967,39 +2979,41 @@
                                             <?php endforeach; ?>
                                                         </div> -->
 
-                                                <div class="form-group pb-3">
-                                                    <label class="form-label">Date <span class="text-danger">*</span></label>
-                                                    <input type="date" class="form-control" id="appDate" name="appDate" onchange="generateAllTimeSlots()">
-                                                    <small id="appDate_err" class="text-danger pt-1"></small>
-                                                </div>
+                                                            <div class="form-group pb-3">
+                                                                <label class="form-label">Date <span class="text-danger">*</span></label>
+                                                                <input type="date" class="form-control" id="appDate" name="appDate"
+                                                                    onchange="generateAllTimeSlots()">
+                                                                <small id="appDate_err" class="text-danger pt-1"></small>
+                                                            </div>
 
-                                                <div class="form-group pb-1">
-                                                    <label class="form-label">Time <span class="text-danger">*</span></label>
-                                                    <input type="text" class="form-control bg-light" id="appTime" name="appTime" placeholder="Choose a slot below" readonly>
-                                                    <small id="appTime_err" class="text-danger pt-1"></small>
-                                                </div>
+                                                            <div class="form-group pb-1">
+                                                                <label class="form-label">Time <span class="text-danger">*</span></label>
+                                                                <input type="text" class="form-control bg-light" id="appTime" name="appTime"
+                                                                    placeholder="Choose a slot below" readonly>
+                                                                <small id="appTime_err" class="text-danger pt-1"></small>
+                                                            </div>
 
-                                                <div id="allTimeSlotsWrapper" class="mt-1">
-                                                    </div>
+                                                            <div id="allTimeSlotsWrapper" class="mt-1">
+                                                            </div>
 
-                                                        <div class="form-group py-3">
-                                                            <label class="form-label" for="appReason">Complaint</label>
-                                                            <input type="text" class="form-control" id="appReason" name="appReason"
-                                                                value="<?php echo $value['patientComplaint'] != '' ? $value['patientComplaint'] : "-"; ?>"
-                                                                disabled onmouseover="style='cursor: no-drop;'"
-                                                                onmouseout="style='cursor: ns-resize;">
-                                                        </div>
+                                                            <div class="form-group py-3">
+                                                                <label class="form-label" for="appReason">Complaint</label>
+                                                                <input type="text" class="form-control" id="appReason" name="appReason"
+                                                                    value="<?php echo $value['patientComplaint'] != '' ? $value['patientComplaint'] : "-"; ?>"
+                                                                    disabled onmouseover="style='cursor: no-drop;'"
+                                                                    onmouseout="style='cursor: ns-resize;">
+                                                            </div>
 
-                                                        <!-- <div class="form-group pb-3">
+                                                            <!-- <div class="form-group pb-3">
                                                             <label class="form-label" for="pay">Payment Status</label>
                                                             <input type="text" class="form-control" id="pay" name="pay" value="Paid" disabled
                                                                 onmouseover="style='cursor: no-drop;'" onmouseout="style='cursor: ns-resize;">
                                                         </div> -->
-                                                        <div class="d-flex justify-content-between mt-2">
-                                                            <button type="reset" class="btn btn-secondary">Reset</button>
-                                                            <button type="submit" id="ReSubmit" class="btn text-light"
-                                                                style="background-color: #00ad8e;">Submit</button>
-                                                        </div>
+                                                            <div class="d-flex justify-content-between mt-2">
+                                                                <button type="reset" class="btn btn-secondary">Reset</button>
+                                                                <button type="submit" id="ReSubmit" class="btn text-light"
+                                                                    style="background-color: #00ad8e;">Submit</button>
+                                                            </div>
                                                     </form>
                                 <?php } ?>
                                             </div>
@@ -3262,11 +3276,11 @@
                                     } else {
                                         document.getElementById("appTime_err").innerHTML = "";
                                     }
-                                        var submitBtn = document.getElementById("ReSubmit");
-                                        if (submitBtn) {
-                                            submitBtn.disabled = true;
-                                            submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Processing...';
-                                        }
+                                    var submitBtn = document.getElementById("ReSubmit");
+                                    if (submitBtn) {
+                                        submitBtn.disabled = true;
+                                        submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Processing...';
+                                    }
                                     return true;
                                 }
                             </script>
@@ -3984,7 +3998,7 @@
                                                 </script>
             <?php
         } ?>
-        
+
         <!-- All modal files -->
         <?php include 'hcpModals.php'; ?>
 
@@ -4030,10 +4044,10 @@
             interval: 20,      // Minutes per slot
             bufferMins: 20,    // Lead time buffer (+30 mins from now)
             schedule: [
-                { label: 'Morning',   start: 9,  end: 11, icon: 'bi-brightness-alt-high' },
+                { label: 'Morning', start: 9, end: 11, icon: 'bi-brightness-alt-high' },
                 { label: 'Afternoon', start: 12, end: 15, icon: 'bi-sun' },
-                { label: 'Evening',   start: 16, end: 19, icon: 'bi-brightness-high' },
-                { label: 'Night',     start: 20, end: 22, icon: 'bi-moon-stars' }
+                { label: 'Evening', start: 16, end: 19, icon: 'bi-brightness-high' },
+                { label: 'Night', start: 20, end: 22, icon: 'bi-moon-stars' }
             ]
         };
 
@@ -4051,13 +4065,13 @@
             const referalCcValue = document.getElementById('referalDoctor').value;
             const referalCcId = referalCcValue ? referalCcValue.split('|')[0] : '';
             const container = document.getElementById('allTimeSlotsWrapper');
-            
+
             if (!dateInput) return;
 
             const currentDate = new Date();
             const selectedDateObj = new Date(dateInput);
             const isToday = currentDate.toDateString() === selectedDateObj.toDateString();
-            
+
             const cutoffTime = new Date();
             cutoffTime.setMinutes(cutoffTime.getMinutes() + APP_CONFIG.bufferMins);
 
@@ -4065,7 +4079,7 @@
 
             APP_CONFIG.schedule.forEach(part => {
                 let sectionHtml = "";
-                
+
                 for (let h = part.start; h <= part.end; h++) {
                     for (let m = 0; m < 60; m += APP_CONFIG.interval) {
                         let slotDate = new Date(dateInput);
@@ -4080,36 +4094,36 @@
                         let displayMin = m < 10 ? '0' + m : m;
                         let timeString = `${displayHour}:${displayMin} ${ampm}`; //Script Generated Time
 
-                    // --- Below Logic To CHECK IF BOOKED ---
-                    let isBooked = false;
+                        // --- Below Logic To CHECK IF BOOKED ---
+                        let isBooked = false;
 
-                    appBookedDetails.forEach(appointment => {
-                        // 1. Format the database date to match your input date (YYYY-MM-DD)
-                        const bookedDate = formatDate(appointment.dateOfAppoint);
-                        
-                        // 2. CONVERT 24h DB TIME TO 12h AM/PM FORMAT
-                        let dbTime = appointment.timeOfAppoint; // e.g., "14:20"
-                        let bookedTime12h = "";
-                        
-                        if (dbTime) {
-                            let [hours, minutes] = dbTime.split(':');
-                            hours = parseInt(hours);
-                            let ampm = hours >= 12 ? 'PM' : 'AM';
-                            let displayHour = hours % 12 || 12;
-                            bookedTime12h = `${displayHour}:${minutes} ${ampm}`; // Results in "02:20 PM"
-                        }
+                        appBookedDetails.forEach(appointment => {
+                            // 1. Format the database date to match your input date (YYYY-MM-DD)
+                            const bookedDate = formatDate(appointment.dateOfAppoint);
 
-                        const bookedCcDoctor = appointment.referalDoctor;
-                        const bookedHcpId = appointment.hcpDbId;
+                            // 2. CONVERT 24h DB TIME TO 12h AM/PM FORMAT
+                            let dbTime = appointment.timeOfAppoint; // e.g., "14:20"
+                            let bookedTime12h = "";
 
-                        const conditionCC = (bookedDate === dateInput && referalCcId !== '' && bookedCcDoctor === referalCcId);
-                        
-                        const conditionHCP = (bookedDate === dateInput && bookedHcpId === currentHcpId);
+                            if (dbTime) {
+                                let [hours, minutes] = dbTime.split(':');
+                                hours = parseInt(hours);
+                                let ampm = hours >= 12 ? 'PM' : 'AM';
+                                let displayHour = hours % 12 || 12;
+                                bookedTime12h = `${displayHour}:${minutes} ${ampm}`; // Results in "02:20 PM"
+                            }
 
-                        if ((conditionCC || conditionHCP) && bookedTime12h === timeString) {
-                            isBooked = true;
-                        }
-                    });
+                            const bookedCcDoctor = appointment.referalDoctor;
+                            const bookedHcpId = appointment.hcpDbId;
+
+                            const conditionCC = (bookedDate === dateInput && referalCcId !== '' && bookedCcDoctor === referalCcId);
+
+                            const conditionHCP = (bookedDate === dateInput && bookedHcpId === currentHcpId);
+
+                            if ((conditionCC || conditionHCP) && bookedTime12h === timeString) {
+                                isBooked = true;
+                            }
+                        });
 
                         // Set styles and text based on booking status
                         const btnClass = isBooked ? 'btn-secondary disabled' : 'btn-outline-secondary';
@@ -4154,22 +4168,22 @@
         }
 
         // Set initial listeners to trigger the generator 
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             document.getElementById('appDate').addEventListener('change', generateAllTimeSlots);
             document.getElementById('referalDoctor').addEventListener('change', generateAllTimeSlots);
         });
         //Disable previouse Date on 'appDate field'
-        window.addEventListener('load', function() {
+        window.addEventListener('load', function () {
             const dateInput = document.getElementById('appDate');
             const today = new Date();
-            
+
             // Format date to YYYY-MM-DD
             const yyyy = today.getFullYear();
             const mm = String(today.getMonth() + 1).padStart(2, '0');
             const dd = String(today.getDate()).padStart(2, '0');
-            
+
             const minDate = `${yyyy}-${mm}-${dd}`;
-            
+
             // Set the min attribute to disable past dates
             dateInput.setAttribute('min', minDate);
         });

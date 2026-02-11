@@ -541,7 +541,7 @@
                     function formatDisplayDate(date) {
                         return date.toLocaleDateString('en-GB', {
                             day: '2-digit', month: 'short', year: 'numeric'
-                        }).replace(/ /g, '-');
+                        }).replace(/ /g, ' ');
                     }
 
                     function formatApiDate(date) {
@@ -646,7 +646,7 @@
                     function formatDate(date) {
                         return date.toLocaleDateString('en-GB', {
                             day: '2-digit', month: 'short', year: 'numeric'
-                        }).replace(/ /g, '-');
+                        }).replace(/ /g, ' ');
                     }
 
                     function formatApiDate(date) {
@@ -745,6 +745,7 @@
         } else if ($method == "appointments") {
             ?>
                 <section>
+                    <!-- Appointments List -->
                     <div class="card rounded">
                         <div class="d-sm-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
                             <p style="font-size: 24px; font-weight: 500">
@@ -797,7 +798,9 @@
                                             <tr>
                                                 <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">S.NO</th>
                                                 <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">
-                                                    APPOINTMENT WITH</th>
+                                                    APP WITH</th>
+                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">CC ID</th>
+                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">VIDEO</th>
                                                 <th scope="col"
                                                     style="font-size:16px; font-weight:500; color:#00ad8e; cursor:pointer;"
                                                     id="sortPatientId">
@@ -815,12 +818,12 @@
                                                     </span>
                                                 </th>
                                                 <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">TIME</th>
-                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">CC ID</th>
+
                                                 <!-- <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">PURPOSE
                                                 </th> -->
                                                 <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">ACTION
                                                 </th>
-                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">Completed
+                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">COMPLETED
                                                 </th>
                                             </tr>
                                         </thead>
@@ -838,7 +841,7 @@
                     </div>
                 </section>
 
-                <!-- Tick Box Model -->
+                <!-- Tick Box Model - Appointment Completed -->
                 <div class="modal fade" id="completionModal" data-bs-backdrop="static" tabindex="-1" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered" style="max-width: 350px;">
                         <div class="modal-content border-0 shadow-lg">
@@ -897,7 +900,6 @@
                     let sortBy = 'patientId';
                     let sortOrder = 'asc';
 
-                    // Elements
                     const itemsDropdown = document.getElementById('itemsPerPageDropdown');
                     const searchBar = document.getElementById('searchBar');
                     const clearSearch = document.getElementById('clearSearch');
@@ -910,13 +912,12 @@
 
                     itemsDropdown.value = itemsPerPageAppointment;
 
-                    //Delete Appointments
                     function confirmDeleteApp(id) {
                         const app = appointmentList.find(item => item.id == id);
-                        let formattedTime = app.timeOfAppoint; // Default to original if something fails
+                        let formattedTime = app.timeOfAppoint;
 
                         if (app.timeOfAppoint) {
-                            const timeParts = app.timeOfAppoint.split(':'); // Split "14:30:00"
+                            const timeParts = app.timeOfAppoint.split(':');
                             let hours = parseInt(timeParts[0]);
                             let minutes = timeParts[1];
 
@@ -929,8 +930,7 @@
                         }
                         let formattedDate = app.dateOfAppoint;
                         if (app.dateOfAppoint) {
-                            const dateParts = app.dateOfAppoint.split('-'); // Split 2026-01-30
-                            // Reassemble as DD-MM-YYYY (30-01-2026)
+                            const dateParts = app.dateOfAppoint.split('-');
                             if (dateParts.length === 3) {
                                 formattedDate = `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`;
                             }
@@ -975,7 +975,6 @@
                             console.error("Appointment not found in list");
                         }
                     }
-                    //Block XSS Attacks
                     function escapeHTML(value) {
                         return String(value)
                             .replace(/&/g, '&amp;')
@@ -985,7 +984,6 @@
                             .replace(/'/g, '&#039;');
                     }
 
-                    // EVENTS
                     itemsDropdown.onchange = e => {
                         itemsPerPageAppointment = parseInt(e.target.value);
                         localStorage.setItem('itemsPerPageAppointment', itemsPerPageAppointment);
@@ -1005,7 +1003,6 @@
 
                     filterDropdown.onchange = applyFilters;
 
-                    // SORT EVENTS
                     sortPatientId.onclick = () => toggleSort('patientId');
                     sortDate.onclick = () => toggleSort('dateOfAppoint');
 
@@ -1025,7 +1022,6 @@
                         dateIndicator.textContent = sortBy === 'dateOfAppoint' ? (sortOrder === 'asc' ? '🡱' : '🡳') : '';
                     }
 
-                    // CORE FILTER
                     function applyFilters() {
                         const search = searchBar.value.toLowerCase();
                         const typeFilter = filterDropdown.value;
@@ -1096,7 +1092,6 @@
                                 </button>
                             </div>
                             `;
-
 
                         const isTooLateToDelete = diffMinutes > -0;
                         const deleteBtn = isTooLateToDelete
@@ -1213,7 +1208,6 @@
                         return /^https?:\/\//i.test(url) ? url : '#';
                     }
 
-                    // PAGINATION
                     function displayAppointmentPage(page) {
                         currentPageAppointment = page;
 
@@ -1246,6 +1240,11 @@
                             onmouseout="this.style.textDecoration='none'">${escapeHTML(r.referalDoctor)}</a>`;
                             }
 
+                            let videoMode = 'YES';
+                            if (r.modeOfConsultant !== 'video' && r.modeOfConsultant === 'audio') {
+                                videoMode = 'NO';
+                            }
+
                             const now = new Date();
                             const appointmentDateTime = new Date(r.dateOfAppoint + ' ' + r.timeOfAppoint);
                             const diffMinutes = (now - appointmentDateTime) / (1000 * 60);
@@ -1258,11 +1257,12 @@
                                         data-bs-placement="top"
                                         title="${complaintText}">
                                         <td class="align-middle">${start + i + 1}.</td>
-                                        <td class="align-middle">${escapeHTML(r.appointmentType)}</td>
+                                        <td class="align-middle">${escapeHTML(r.appointmentType)}</td> 
+                                        <td class="align-middle">${ccLink}</td>
+                                        <td class="align-middle">${videoMode}</td>
                                         <td class="align-middle">${patientLink}</td>
                                         <td class="align-middle">${formatDateOrToday(r.dateOfAppoint)}</td>
                                         <td class="align-middle">${formatTimeAMPM(r.timeOfAppoint)}</td>
-                                        <td class="align-middle">${ccLink}</td>
                                         <td class="d-flex d-lg-block">${renderActionButtons(r)}</td>
                                         <td class="align-middle">
                                             <div class="text-center"
@@ -1301,7 +1301,6 @@
                                                         onmouseenter="this.nextElementSibling.style.display='flex'"
                                                         onmouseleave="this.nextElementSibling.style.display='none'"
                                                     ></div>
-
                                                     `
                             : ''
                         }
@@ -1332,7 +1331,6 @@
                         const ul = document.createElement('ul');
                         ul.className = 'pagination';
 
-                        // Previous
                         const prev = document.createElement('li');
                         prev.innerHTML = `<button class="bg-light border px-3 py-2" ${currentPage === 1 ? 'disabled' : ''}>Previous</button>`;
                         prev.onclick = () => currentPage > 1 && displayAppointmentPage(currentPage - 1);
@@ -1349,7 +1347,6 @@
                             ul.appendChild(li);
                         }
 
-                        // Next
                         const next = document.createElement('li');
                         next.innerHTML = `<button class="border px-3 py-2" ${currentPage === totalPages ? 'disabled' : ''}>Next</button>`;
                         next.onclick = () => currentPage < totalPages && displayAppointmentPage(currentPage + 1);
@@ -1357,8 +1354,7 @@
 
                         container.appendChild(ul);
                     }
-                    startLiveUpdates();//calling function to refresh appointments container each minute. 
-                    // INIT
+                    startLiveUpdates();
                     displayAppointmentPage(1);
 
                     function initBootstrapTooltips() {
@@ -1367,7 +1363,6 @@
                         );
 
                         tooltipTriggerList.forEach(el => {
-                            // Dispose old instance (important for pagination)
                             if (bootstrap.Tooltip.getInstance(el)) {
                                 bootstrap.Tooltip.getInstance(el).dispose();
                             }
@@ -1380,17 +1375,15 @@
                             });
                         });
                     }
-                    // NEW: Sync refresh to the start of every minute
                     function startLiveUpdates() {
                         const refreshUI = () => displayAppointmentPage(currentPageAppointment);
 
-                        // Calculate ms until the next full minute
                         const now = new Date();
                         const delay = 60000 - (now.getSeconds() * 1000 + now.getMilliseconds());
 
                         setTimeout(() => {
-                            refreshUI(); // Run once at the start of the minute
-                            setInterval(refreshUI, 60000); // Then repeat every 60s
+                            refreshUI();
+                            setInterval(refreshUI, 60000);
                         }, delay);
                     }
 
@@ -1398,6 +1391,7 @@
 
                 </script>
 
+                <!-- Reschedule Appointment Section -->
             <?php if (isset($appointmentReschedule[0]['id'])) { ?>
                     <section>
                         <div class="card rounded mt-4">
@@ -1442,8 +1436,11 @@
                                                 <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">S.NO
                                                 </th>
                                                 <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">
-                                                    APPOINTMENT WITH</th>
-
+                                                    APP WITH</th>
+                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">CC ID
+                                                </th>
+                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">VIDEO
+                                                </th>
                                                 <th scope="col"
                                                     style="font-size: 16px; font-weight: 500; color: #00ad8e; cursor:pointer;"
                                                     id="sortPatientIdReschedule">
@@ -1464,8 +1461,7 @@
 
                                                 <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">TIME
                                                 </th>
-                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">CC ID
-                                                </th>
+
                                                 <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">ACTION
                                                 </th>
                                             </tr>
@@ -1485,6 +1481,7 @@
                     </section>
             <?php } ?>
 
+                <!-- Reschedule Display Appointments -->
                 <script>
                     const rescheduleList = <?php echo json_encode($appointmentReschedule, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>;
 
@@ -1513,7 +1510,6 @@
                         </a>
                         `;
 
-                        // Delete Button (Triggers Modal via new function)
                         const deleteBtn = `
                             <button class="btn btn-danger" onclick="confirmDeleteReschedule(${row.id})" title="Delete">
                                 <i class="bi bi-trash"></i>
@@ -1598,16 +1594,22 @@
                             onmouseout="this.style.textDecoration='none'">${escapeHTML(r.referalDoctor)}</a>`;
                             }
 
+                            let videoMode = 'YES';
+                            if (r.modeOfConsultant !== 'video' && r.modeOfConsultant === 'Nil') {
+                                videoMode = 'NO';
+                            }
+
                             tbody.insertAdjacentHTML('beforeend', `
                                 <tr data-bs-toggle="tooltip"
                                         data-bs-placement="top"
                                         title="${complaintText}">
                                     <td class="align-middle">${start + i + 1}.</td>
                                     <td class="align-middle">${r.appointmentType}</td>
+                                    <td class="align-middle">${ccLink}</td>
+                                    <td class="align-middle">${videoMode}</td>
                                     <td class="align-middle">${patientLink}</td>
                                     <td class="align-middle">${formatDateOrToday(r.dateOfAppoint)}</td>
                                     <td class="align-middle">${formatTimeAMPM(r.timeOfAppoint)}</td>
-                                    <td class="align-middle">${ccLink}</td>
                                     <td class="align-middle">${renderRescheduleActions(r)}</td>
                                 </tr>
                             `);
@@ -1646,7 +1648,6 @@
                             ul.appendChild(li);
                         }
 
-                        // Next
                         const next = document.createElement('li');
                         next.innerHTML = `<button class="border px-3 py-2" ${currentPage === totalPages ? 'disabled' : ''}>Next</button>`;
                         next.onclick = () => currentPage < totalPages && displayReschedulePage(currentPage + 1);
@@ -1655,7 +1656,6 @@
                         container.appendChild(ul);
                     }
 
-                    // 7. FILTER & SORT LOGIC
                     function applyRescheduleFilters() {
                         const search = searchBarRes.value.toLowerCase();
                         const typeFilter = filterDropdownRes.value; // 'All', 'PATIENT', 'CC'
@@ -1670,7 +1670,6 @@
                             return matchSearch && matchType;
                         });
 
-                        // Sort
                         if (sortByReschedule) {
                             filteredRescheduleList.sort((a, b) => {
                                 let x = a[sortByReschedule] || '';
@@ -1690,14 +1689,12 @@
                             sortOrderReschedule = 'asc';
                         }
 
-                        // Update Icons
                         pidIndRes.textContent = sortByReschedule === 'patientId' ? (sortOrderReschedule === 'asc' ? '🡱' : '🡳') : '';
                         dateIndRes.textContent = sortByReschedule === 'dateOfAppoint' ? (sortOrderReschedule === 'asc' ? '🡱' : '🡳') : '';
 
                         applyRescheduleFilters();
                     }
 
-                    // 8. EVENT LISTENERS
                     itemsDropdownRes.onchange = e => {
                         itemsPerPageReschedule = parseInt(e.target.value);
                         displayReschedulePage(1);
@@ -1719,7 +1716,6 @@
                     sortPidRes.onclick = () => toggleRescheduleSort('patientId');
                     sortDateRes.onclick = () => toggleRescheduleSort('dateOfAppoint');
 
-                    // 9. INITIALIZE
                     displayReschedulePage(1);
 
                     function initRescheduleTooltips() {
@@ -1728,7 +1724,6 @@
                         );
 
                         tooltipTriggerList.forEach(el => {
-                            // Dispose old instance (important for pagination)
                             if (bootstrap.Tooltip.getInstance(el)) {
                                 bootstrap.Tooltip.getInstance(el).dispose();
                             }
@@ -1741,6 +1736,187 @@
                             });
                         });
                     }
+                </script>
+
+                <!-- Completed Appointment Section -->
+                <section>
+                    <div class="card rounded mt-4">
+                        <div class="d-sm-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
+                            <p style="font-size: 24px; font-weight: 500">
+                                Completed Appointments </p>
+                            <p class="px-3 pt-1" id="completedCount"
+                                style="font-size:16px;color: #00ad8e;border:2px solid #00ad8e;border-radius:50%;">
+                                0 </p>
+                        </div>
+
+                        <div class="card-body px-4">
+                            <!-- Date Header -->
+                            <div class="col-md-6 mx-auto d-flex justify-content-between align-items-center mb-3"
+                                style="background-color:#fff;color:#00ad8e;border-radius:12px;padding:10px 20px;border:2px solid #00ad8e;">
+
+                                <button id="prevDayBtnCompleted" class="btn btn-link fw-bold p-0"
+                                    style="font-size:1.5rem;color:#00ad8e;">
+                                    <i class="bi bi-chevron-left"></i>
+                                </button>
+
+                                <div class="text-center">
+                                    <h5 class="mb-0 fw-semibold d-flex align-items-center gap-2 justify-content-center">
+                                        <span id="completedAppointmentsDate"></span>
+                                        <input type="date" id="completedCalendar"
+                                            style="opacity:0;position:absolute;pointer-events:none">
+                                        <i class="bi bi-calendar-event ms-md-3 ms-1" id="completedCalendarIcon"
+                                            style="cursor:pointer;font-size:1.5rem"></i>
+                                    </h5>
+                                    <small id="completedAppointmentsDay"></small>
+                                </div>
+
+                                <button id="nextDayBtnCompleted" class="btn btn-link fw-bold p-0"
+                                    style="font-size:1.5rem;color:#00ad8e;">
+                                    <i class="bi bi-chevron-right"></i>
+                                </button>
+                            </div>
+
+                            <!-- Table -->
+                            <div class="table-responsive" style="max-height:300px;">
+                                <table class="table text-center table-hoverr">
+                                    <thead>
+                                        <tr style="color:#000;font-weight:700;">
+                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">S.NO
+                                            </th>
+                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">APP
+                                                WITH</th>
+                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">CC ID
+                                            </th>
+                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">VIDEO
+                                            </th>
+                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">
+                                                PATIENT ID
+                                            </th>
+                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">DATE
+                                            </th>
+                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">TIME
+                                            </th>
+                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">
+                                                COMPLAINT
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="completedTableBody">
+                                        <!-- Data loaded here -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Completed Appointments Script -->
+                <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                        const dateEl = document.getElementById('completedAppointmentsDate');
+                        const dayEl = document.getElementById('completedAppointmentsDay');
+                        const prevBtn = document.getElementById('prevDayBtnCompleted');
+                        const nextBtn = document.getElementById('nextDayBtnCompleted');
+                        const tbody = document.getElementById('completedTableBody');
+                        const countEl = document.getElementById('completedCount');
+                        const calIn = document.getElementById('completedCalendar');
+                        const calIcon = document.getElementById('completedCalendarIcon');
+
+                        let currentDate = new Date();
+
+                        const baseUrl = '<?= base_url("Healthcareprovider/getCompletedAppointments") ?>';
+
+                        function formatDate(date) {
+                            return date.toLocaleDateString('en-GB', {
+                                day: '2-digit', month: 'short', year: 'numeric'
+                            }).replace(/ /g, ' ');
+                        }
+
+                        function formatApiDate(date) {
+                            return date.toISOString().split('T')[0];
+                        }
+
+                        function formatConsultDate(dateStr) {
+                            if (!dateStr) return '-';
+                            const date = new Date(dateStr + 'T00:00:00');
+                            return date.toLocaleDateString('en-GB', {
+                                day: '2-digit', month: 'short', year: 'numeric'
+                            }).replace(/ /g, '-');
+                        }
+
+                        function updateHeader() {
+                            dateEl.textContent = formatDate(currentDate);
+                            dayEl.textContent = currentDate.toLocaleDateString('en-US', { weekday: 'long' });
+                            calIn.value = formatApiDate(currentDate);
+                        }
+
+                        function loadCompletedAppointments() {
+                            updateHeader();
+                            tbody.innerHTML = `<tr><td colspan="5" class="text-center py-4">Loading...</td></tr>`;
+                            countEl.textContent = 0;
+
+                            fetch(`${baseUrl}?date=${formatApiDate(currentDate)}`)
+                                .then(r => r.json())
+                                .then(res => {
+                                    if (res.success && res.data.length > 0) {
+                                        renderTable(res.data);
+                                        countEl.textContent = res.data.length;
+                                    } else {
+                                        tbody.innerHTML = `
+                        <tr>
+                            <td colspan="8" class="text-center text-muted py-4">
+                                No completed appointments
+                            </td>
+                        </tr>`;
+                                    }
+                                })
+                                .catch(() => {
+                                    tbody.innerHTML = `
+                    <tr>
+                        <td colspan="8" class="text-center text-danger py-4">
+                            Error loading data
+                        </td>
+                    </tr>`;
+                                });
+                        }
+
+                        function renderTable(data) {
+                            tbody.innerHTML = '';
+                            data.forEach((row, i) => {
+                                const tr = document.createElement('tr');
+                                tr.innerHTML = `
+                <td class="align-middle py-3">${i + 1}.</td>
+                <td class="align-middle">${row.appointmentType}</td>
+                <td class="align-middle">${row.referalDoctor}</td>
+                <td class="align-middle"> ${row.modeOfConsultant}</td>
+                <td class="align-middle"> ${row.patientId}</td>                
+                <td class="align-middle"> ${row.date_formatted}</td>
+                <td class="align-middle"> ${row.time_12hr}</td>
+                <td class="align-middle"> ${row.patientComplaint}</td>
+            `;
+                                tbody.appendChild(tr);
+                            });
+                        }
+
+                        prevBtn.onclick = () => {
+                            currentDate.setDate(currentDate.getDate() - 1);
+                            loadCompletedAppointments();
+                        };
+
+                        nextBtn.onclick = () => {
+                            currentDate.setDate(currentDate.getDate() + 1);
+                            loadCompletedAppointments();
+                        };
+
+                        calIcon.onclick = () => calIn.showPicker();
+
+                        calIn.onchange = () => {
+                            currentDate = new Date(calIn.value);
+                            loadCompletedAppointments();
+                        };
+
+                        loadCompletedAppointments();
+                    });
                 </script>
 
             <?php
@@ -1811,7 +1987,7 @@
                                                     <small id="referalDoctor_err" class="text-danger pt-1"></small>
                                                 </div>
 
-                                                <div class="form-group pb-2">
+                                                <div class="form-group pb-3">
                                                     <label class="form-label" for="patientId">Patient Id <span
                                                             class="text-danger">*</span></label>
                                                     <div class="input-group mb-1">
@@ -2410,7 +2586,6 @@
                             }
                         }
                         function clearErrorAppointment() {
-                            // 1. Get the new Appointment Type
                             var type = document.getElementById("appointmentType").value;
                             var patientId = document.getElementById("patientId").value;
                             var referalDr = document.getElementById("referalDoctor").value;
@@ -2418,7 +2593,6 @@
                             //var dayTime = document.getElementById("dayTime").value;
                             var time = document.getElementById("appTime").value;
 
-                            // 2. Clear error for Appointment Type
                             if (type != "") {
                                 document.getElementById("appointmentType_err").innerHTML = "";
                             }
@@ -2458,7 +2632,7 @@
 
                             if (type !== "PATIENT") {
                                 if (referalDr == "") {
-                                    document.getElementById("referalDoctor_err").innerHTML = "Please Select the referral doctor’s name.";
+                                    document.getElementById("referalDoctor_err").innerHTML = "Please select the referral doctor’s name.";
                                     document.getElementById("referalDoctor").focus();
                                     return false;
                                 } else {
@@ -2499,7 +2673,7 @@
                             }
 
                             if (Reason == "") {
-                                document.getElementById("appReason_err").innerHTML = "Please fill the compliant section";
+                                document.getElementById("appReason_err").innerHTML = "Please enter the compliant.";
                                 document.getElementById("appReason").focus();
                                 return false;
 
@@ -2846,20 +3020,13 @@
                                                         method="POST" name="patientDetails" onsubmit="return validateAppointment()"
                                                         oninput="clearErrorAppointment()">
                                                         <div class="form-group pb-3">
-                                                            <label class="form-label">Appointment With <span
-                                                                    class="text-danger">*</span></label>
-
-                                                            <div class="form-group pb-1">
-                                                                <input type="text" class="form-control" name="appointmentType"
-                                                                    id="appointmentType"
-                                                                    value="<?= $value['appointmentType'] === 'CC' ? 'CC & HCP Appointment' : 'PATIENT & HCP Appointment' ?>"
-                                                                    disabled
-                                                                    style="background-color: <?= $value['appointmentType'] === 'CC' ? '#67c298' : '#87aee0' ?>; 
+                                                            <label class="form-label">Appointment With </label>
+                                                            <input type="text" class="form-control" name="appointmentType" id="appointmentType"
+                                                                value="<?= $value['appointmentType'] === 'CC' ? 'CC & HCP Appointment' : 'PATIENT & HCP Appointment' ?>"
+                                                                disabled
+                                                                style="background-color: <?= $value['appointmentType'] === 'CC' ? '#67c298' : '#87aee0' ?>; 
                                                                     color: white !important; cursor: no-drop; opacity: 1;">
-                                                            </div>
-                                                            <small id="appointmentType_err" class="text-danger pt-1"></small>
                                                         </div>
-
                                                         <input type="hidden" id="appTableId" name="appTableId"
                                                             value="<?php echo $value['id'] ?>">
                                                         <div class="form-group pb-3">
@@ -3254,7 +3421,7 @@
                                     var time = document.getElementById("appTime").value;
 
                                     if (date == "") {
-                                        document.getElementById("appDate_err").innerHTML = "Please fill the date.";
+                                        document.getElementById("appDate_err").innerHTML = "Please select a date.";
                                         document.getElementById("appDate").focus();
                                         return false;
                                     } else {
@@ -3270,7 +3437,7 @@
                                     } */
 
                                     if (time == "") {
-                                        document.getElementById("appTime_err").innerHTML = "Please select the time.";
+                                        document.getElementById("appTime_err").innerHTML = "Please select a time.";
                                         document.getElementById("appTime").focus();
                                         return false;
                                     } else {
@@ -4025,6 +4192,7 @@
 
     </main>
 
+    <!-- Sidebar Active -->
     <script>
         <?php if ($method == "dashboard") { ?>
             document.getElementById('dashboard').style.color = "#87F7E3";
@@ -4035,14 +4203,14 @@
         <?php } ?>
     </script>
 
-    <!-- New Logic Appointment booking Script GENERATED Morning, evening...Logics-->
+    <!-- Appointment - New Booking and Reschedule -->
     <script>
         var appBookedDetails = <?php echo json_encode($appBookedDetails); ?>;
         var currentHcpId = "<?php echo $_SESSION['hcpIdDb']; ?>";
 
         const APP_CONFIG = {
             interval: 20,      // Minutes per slot
-            bufferMins: 20,    // Lead time buffer (+30 mins from now)
+            bufferMins: 20,    // Lead time buffer
             schedule: [
                 { label: 'Morning', start: 9, end: 11, icon: 'bi-brightness-alt-high' },
                 { label: 'Afternoon', start: 12, end: 15, icon: 'bi-sun' },
@@ -4051,7 +4219,6 @@
             ]
         };
 
-        // Helper to match date formats
         function formatDate(dateString) {
             const date = new Date(dateString);
             const yyyy = date.getFullYear();
@@ -4085,24 +4252,19 @@
                         let slotDate = new Date(dateInput);
                         slotDate.setHours(h, m, 0);
 
-                        // Skip past slots for today's date
                         if (isToday && slotDate < cutoffTime) continue;
 
-                        // Format Time to 12-hour AM/PM string (matches DB format)
                         let ampm = h >= 12 ? 'PM' : 'AM';
                         let displayHour = h % 12 || 12;
                         let displayMin = m < 10 ? '0' + m : m;
-                        let timeString = `${displayHour}:${displayMin} ${ampm}`; //Script Generated Time
+                        let timeString = `${displayHour}:${displayMin} ${ampm}`;
 
-                        // --- Below Logic To CHECK IF BOOKED ---
                         let isBooked = false;
 
                         appBookedDetails.forEach(appointment => {
-                            // 1. Format the database date to match your input date (YYYY-MM-DD)
                             const bookedDate = formatDate(appointment.dateOfAppoint);
 
-                            // 2. CONVERT 24h DB TIME TO 12h AM/PM FORMAT
-                            let dbTime = appointment.timeOfAppoint; // e.g., "14:20"
+                            let dbTime = appointment.timeOfAppoint;
                             let bookedTime12h = "";
 
                             if (dbTime) {
@@ -4110,7 +4272,7 @@
                                 hours = parseInt(hours);
                                 let ampm = hours >= 12 ? 'PM' : 'AM';
                                 let displayHour = hours % 12 || 12;
-                                bookedTime12h = `${displayHour}:${minutes} ${ampm}`; // Results in "02:20 PM"
+                                bookedTime12h = `${displayHour}:${minutes} ${ampm}`;
                             }
 
                             const bookedCcDoctor = appointment.referalDoctor;
@@ -4125,7 +4287,6 @@
                             }
                         });
 
-                        // Set styles and text based on booking status
                         const btnClass = isBooked ? 'btn-secondary disabled' : 'btn-outline-secondary';
                         const btnText = isBooked ? `${timeString} Booked` : timeString;
                         const btnStyle = isBooked ? 'font-size: 12px;' : 'font-size: 16px;';
@@ -4157,7 +4318,6 @@
         function selectTimeSlot(time, btn) {
             document.getElementById('appTime').value = time;
             document.querySelectorAll('.timeButton').forEach(b => {
-                // Only reset non-booked buttons [cite: 399]
                 if (!b.classList.contains('disabled')) {
                     b.classList.remove('btn-primary', 'text-white', 'shadow-sm');
                     b.classList.add('btn-outline-secondary');
@@ -4167,24 +4327,21 @@
             btn.classList.add('btn-primary', 'text-white', 'shadow-sm');
         }
 
-        // Set initial listeners to trigger the generator 
         document.addEventListener('DOMContentLoaded', function () {
             document.getElementById('appDate').addEventListener('change', generateAllTimeSlots);
             document.getElementById('referalDoctor').addEventListener('change', generateAllTimeSlots);
         });
-        //Disable previouse Date on 'appDate field'
+
         window.addEventListener('load', function () {
             const dateInput = document.getElementById('appDate');
             const today = new Date();
 
-            // Format date to YYYY-MM-DD
             const yyyy = today.getFullYear();
             const mm = String(today.getMonth() + 1).padStart(2, '0');
             const dd = String(today.getDate()).padStart(2, '0');
 
             const minDate = `${yyyy}-${mm}-${dd}`;
 
-            // Set the min attribute to disable past dates
             dateInput.setAttribute('min', minDate);
         });
     </script>

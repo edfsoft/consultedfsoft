@@ -303,7 +303,7 @@ class AdminModel extends CI_Model
 
     public function insertDosageUnit($name)
     {
-          $name = strtolower(trim($name));
+        $name = strtolower(trim($name));
         return $this->db->insert('dosage_units', ['units_name' => $name]);
     }
 

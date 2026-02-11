@@ -330,8 +330,16 @@
                                         <tbody>
                                             <tr>
                                                 <td>
+                                                    <?php
+                                                    if (!empty($appointmentList[0]['derived_dob'])) {
+                                                        $dob = new DateTime($appointmentList[0]['derived_dob']);
+                                                        $today = new DateTime();
+                                                        $currentAge = $today->diff($dob)->y;
+                                                    } else {
+                                                        $currentAge = $appointmentList[0]['age'];
+                                                    } ?>
                                                     <span
-                                                        style="font-size: 16px; font-weight: 400"><?php echo $appointmentList[0]['age']; ?></span>
+                                                        style="font-size: 16px; font-weight: 400"><?php echo $currentAge; ?></span>
                                                 </td>
                                                 <td>
                                                     <span
@@ -556,15 +564,31 @@
                             patientContainer.appendChild(noMatchesRow);
                         } else {
                             itemsToShow.forEach((value, index) => {
-                                const patientRow = document.createElement('tr');
+                                let currentAge = value.age;
 
+                                if (value.derived_dob) {
+                                    const dob = new Date(value.derived_dob);
+                                    const today = new Date();
+
+                                    let yearsDiff = today.getFullYear() - dob.getFullYear();
+
+                                    const hasBirthdayPassed =
+                                        today.getMonth() > dob.getMonth() ||
+                                        (today.getMonth() === dob.getMonth() && today.getDate() >= dob.getDate());
+
+                                    if (!hasBirthdayPassed) {
+                                        yearsDiff -= 1;
+                                    }
+                                    currentAge = yearsDiff;
+                                }
+                                const patientRow = document.createElement('tr');
                                 patientRow.innerHTML = `
                 <td class="pt-3">${start + index + 1}.</td>
                 <td style="font-size: 16px" class="pt-3">${value.patientId}</td>
                 <td style="font-size: 16px" class="pt-3">${value.firstName} ${value.lastName}</td>
                 <td style="font-size: 16px" class="pt-3">${value.mobileNumber}</td>
                 <td style="font-size: 16px" class="pt-3">${value.gender}</td>
-                <td style="font-size: 16px" class="pt-3">${value.age}</td>
+                <td style="font-size: 16px" class="pt-3">${currentAge}</td>
                 <td style="font-size: 16px" class="pt-3">
                     <a href="<?php echo base_url(); ?>Chiefconsultant/healthCareProvidersProfile/${value.patientHcpDbId}" class="text-dark" onmouseover="style='text-decoration:underline'" onmouseout="style='text-decoration:none'">${value.patientHcp}</a>
                 </td>
@@ -653,7 +677,15 @@
                                             <p class="fs-4 fw-bolder"> <?php echo $value['firstName'] ?>
                                         <?php echo $value['lastName'] ?>
                                             </p>
-                                            <p> <?php echo $value['gender'] ?> | <?php echo $value['age'] ?> Year(s)</p>
+                                        <?php
+                                        if (!empty($value['derived_dob'])) {
+                                            $dob = new DateTime($value['derived_dob']);
+                                            $today = new DateTime();
+                                            $currentAge = $today->diff($dob)->y;
+                                        } else {
+                                            $currentAge = $value['age'];
+                                        } ?>
+                                            <p> <?php echo $value['gender'] ?> | <?php echo $currentAge ?> Year(s)</p>
                                             <!-- <p class="text-dark" style="font-weight:500;font-size:20px;">
                                         <?php echo $value['diagonsis'] ?>
                                                     </p> -->
@@ -685,7 +717,7 @@
                                     </div>
                                     <div class="d-md-flex">
                                         <p class="col-sm-6"><span class="text-secondary ">Age </span> :
-                                    <?php echo $value['age']; ?>
+                                    <?php echo $currentAge; ?>
                                         </p>
                                         <p><span class="text-secondary ">Married status</span> :
                                     <?php echo $value['maritalStatus'] ? $value['maritalStatus'] . " " . $value['marriedSince'] : "Not provided"; ?>

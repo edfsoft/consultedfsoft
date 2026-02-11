@@ -179,20 +179,21 @@ class Edfadmin extends CI_Controller
         }
     }
 
-    public function addAppLink()
-    {
-        if (isset($_SESSION['adminIdDb'])) {
-            $ccIdDb = $this->uri->segment(3);
-            if ($this->CcModel->addAppLinkCc($ccIdDb)) {
-                $this->session->set_flashdata('showSuccessMessage', 'Appointment link added successfully');
-            } else {
-                $this->session->set_flashdata('showErrorMessage', 'Error in adding appointment link');
-            }
-            redirect('Edfadmin/ccDetails/' . $ccIdDb);
-        } else {
-            redirect('Edfadmin/');
-        }
-    }
+    // Not in use
+    // public function addAppLink()
+    // {
+    //     if (isset($_SESSION['adminIdDb'])) {
+    //         $ccIdDb = $this->uri->segment(3);
+    //         if ($this->CcModel->addAppLinkCc($ccIdDb)) {
+    //             $this->session->set_flashdata('showSuccessMessage', 'Appointment link added successfully');
+    //         } else {
+    //             $this->session->set_flashdata('showErrorMessage', 'Error in adding appointment link');
+    //         }
+    //         redirect('Edfadmin/ccDetails/' . $ccIdDb);
+    //     } else {
+    //         redirect('Edfadmin/');
+    //     }
+    // }
 
     public function deleteCc()
     {

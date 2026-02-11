@@ -776,7 +776,8 @@
                                                         style="font-size:16px;font-weight:400;" class="text-decoration-none text-dark fs-6">
                                             <?php echo $value['doctorMail']; ?>
                                                     </a></p>
-                                                <p class="pt-3"><?php echo $value['gMeetLink']; ?></p>
+                                                <!-- Google meet link is not in use -->
+                                                <!-- <p class="pt-3"><?php echo $value['gMeetLink']; ?></p> -->
                                             </div>
                                         </div>
 
@@ -844,7 +845,8 @@
                                             </p>
                                         </div>
 
-                                        <p class="my-3 mt-3 fs-5 fw-semibold">Appointment Link</p>
+                                        <!-- Below section is no need -->
+                                        <!-- <p class="my-3 mt-3 fs-5 fw-semibold">Appointment Link</p>
                                         <form action="<?php echo base_url() . "Edfadmin/addAppLink/" . $value['id'] ?>" method="POST"
                                             class="col-md-6 mb-5" name="appLinkForm" onsubmit="return validateLink()">
                                             <label for="appLink" class="form-label pb-2">Add Link <span
@@ -860,7 +862,8 @@
                                                 <button type="submit" style="background-color: #2b353bf5;"
                                                     class="btn text-light my-2 float-end">Update</button>
                                 <?php } ?>
-                                        </form>
+                                        </form> -->
+
                                         <p class="my-3 mt-3 fs-5 fw-semibold">Profile Approval Process</p>
                                         <!--<p>Please review the details and approve the Chief Consultant for login :
                                                   <a href="<?php echo base_url() . "Edfadmin/approveCc/" . $value['id'] ?>"
@@ -1752,6 +1755,23 @@
                                                     patientTableBody.appendChild(noMatchesRow);
                                                 } else {
                                                     itemsToShow.forEach((patient, index) => {
+                                                        let currentAge = patient.age;
+
+                                                        if (patient.derived_dob) {
+                                                            const dob = new Date(patient.derived_dob);
+                                                            const today = new Date();
+
+                                                            let yearsDiff = today.getFullYear() - dob.getFullYear();
+
+                                                            const hasBirthdayPassed =
+                                                                today.getMonth() > dob.getMonth() ||
+                                                                (today.getMonth() === dob.getMonth() && today.getDate() >= dob.getDate());
+
+                                                            if (!hasBirthdayPassed) {
+                                                                yearsDiff -= 1;
+                                                            }
+                                                            currentAge = yearsDiff;
+                                                        }
                                                         const patientRow = document.createElement('tr');
                                                         patientRow.innerHTML = `
                                                                     <td class="pt-3">${start + index + 1}.</td>
@@ -1759,7 +1779,7 @@
                                                                     <td style="font-size: 16px; text-align:left" class="pt-3">${patient.firstName} ${patient.lastName}</td>
                                                                     <td style="font-size: 16px" class="pt-3">${patient.mobileNumber}</td>
                                                                     <td style="font-size: 16px text-align:left" class="pt-3">${patient.gender}</td>
-                                                                    <td style="font-size: 16px" class="pt-3">${patient.age}</td>
+                                                                    <td style="font-size: 16px" class="pt-3">${currentAge}</td>
                                                                     <td style="font-size: 16px" class="pt-3">
                                                                         <a href="${baseUrl}Edfadmin/hcpDetails/${patient.patientHcpDbId}" class="text-dark" onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'">${patient.patientHcp}</a>
                                                                     </td>
@@ -1856,7 +1876,15 @@
                                                                     <p class="fs-4 fw-bolder"> <?php echo $value['firstName'] ?>
                                         <?php echo $value['lastName'] ?>
                                                                     </p>
-                                                                    <p> <?php echo $value['gender'] ?> | <?php echo $value['age'] ?> Year(s)</p>
+                                        <?php
+                                        if (!empty($value['derived_dob'])) {
+                                            $dob = new DateTime($value['derived_dob']);
+                                            $today = new DateTime();
+                                            $currentAge = $today->diff($dob)->y;
+                                        } else {
+                                            $currentAge = $value['age'];
+                                        } ?>
+                                                                    <p> <?php echo $value['gender'] ?> | <?php echo $currentAge ?> Year(s)</p>
                                                                     <!-- <p class="text-dark" style="font-weight:500;font-size:20px;">
                                         <?php echo $value['diagonsis'] ?>
                                                     </p> -->
@@ -1886,9 +1914,17 @@
                                     <?php echo $value['bloodGroup'] ? $value['bloodGroup'] : "Not provided"; ?>
                                                                 </p>
                                                             </div>
+                                <?php
+                                if (!empty($value['derived_dob'])) {
+                                    $dob = new DateTime($value['derived_dob']);
+                                    $today = new DateTime();
+                                    $currentAge = $today->diff($dob)->y;
+                                } else {
+                                    $currentAge = $value['age'];
+                                } ?>
                                                             <div class="d-md-flex">
                                                                 <p class="col-sm-6"><span class="text-secondary ">Age </span> :
-                                    <?php echo $value['age']; ?>
+                                    <?php echo $currentAge; ?>
                                                                 </p>
                                                                 <p><span class="text-secondary ">Married status</span> :
                                     <?php echo $value['maritalStatus'] ? $value['maritalStatus'] . " " . $value['marriedSince'] : "Not provided"; ?>

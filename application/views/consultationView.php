@@ -1683,7 +1683,8 @@
                                         <?php
                                         $emailAvailable = !empty($patientDetails[0]['mailId']); ?>
                                         <div class="form-check">
-                                            <input type="hidden" id="consultationSendEmail" name="consultationSendEmail" value="0">
+                                            <input type="hidden" id="consultationSendEmail" name="consultationSendEmail"
+                                                value="0">
                                             <!-- <input class="form-check-input border-dark" type="checkbox"
                                                 id="consultationSendEmail" name="consultationSendEmail" value="1"
                                                 <?= $emailAvailable ? '' : 'disabled'; ?>>
@@ -2380,7 +2381,7 @@
                     </div>
             </section>
 
-                
+
             <!-------------------------- Edit Consultant -->
         <?php } elseif ($method == "editConsult") { ?>
             <section>
@@ -2983,9 +2984,14 @@
                         }
                     }
 
-                    // This function is called by the buttons inside the modal
-                    function submitConsultation(sendEmailValue) {
-                        document.getElementById('consultationSendEmail').value = sendEmailValue;
+                if (isEmailAvailable) {
+                    var myModal = new bootstrap.Modal(document.getElementById('confirmSaveModal'));
+                    myModal.show();
+                } else {
+                    // 3. No email, so auto-submit with value 0
+                    submitConsultation(0);
+                }
+            }
 
                         document.getElementById('consultationForm').submit();
                     }

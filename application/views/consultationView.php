@@ -359,18 +359,23 @@
     <?php $this->load->view('hcpHeader'); ?>
 
     <main id="main" class="main">
-        <?php if ($this->session->flashdata('showSuccessMessage')) { ?>
-            <div id="display_message"
-                style="position: absolute;top: 2px;left: 50%;transform: translateX(-50%);background-color: #d4edda;color: #155724;padding: 20px 30px;border: 1px solid #c3e6cb;border-radius: 5px;text-align: center;z-index: 9999;">
-                <?php echo $this->session->flashdata('showSuccessMessage'); ?>
-            </div>
-        <?php } elseif ($this->session->flashdata('showErrorMessage')) { ?>
-            <div id="display_message"
-                style="position: absolute;top: 2px;left: 50%;transform: translateX(-50%);background-color:rgb(237, 212, 212);color:rgb(87, 21, 21);padding: 20px 30px;border: 1px solid #c3e6cb;border-radius: 5px;text-align: center;z-index: 9999;">
-                <?php echo $this->session->flashdata('showErrorMessage'); ?>
-            </div>
-            <?php
-        }
+        <?php 
+    // 1. Get the message from either Flashdata OR Tempdata
+    $successMsg = $this->session->flashdata('showSuccessMessage') ?: $this->session->tempdata('showSuccessMessage');
+    $errorMsg   = $this->session->flashdata('showErrorMessage')   ?: $this->session->tempdata('showErrorMessage');
+    ?>
+
+    <?php if ($successMsg) { ?>
+        <div id="display_message"
+            style="position: absolute;top: 2px;left: 50%;transform: translateX(-50%);background-color: #d4edda;color: #155724;padding: 20px 30px;border: 1px solid #c3e6cb;border-radius: 5px;text-align: center;z-index: 9999;">
+            <?php echo $successMsg; ?>
+        </div>
+    <?php } elseif ($errorMsg) { ?>
+        <div id="display_message"
+            style="position: absolute;top: 2px;left: 50%;transform: translateX(-50%);background-color:rgb(237, 212, 212);color:rgb(87, 21, 21);padding: 20px 30px;border: 1px solid #c3e6cb;border-radius: 5px;text-align: center;z-index: 9999;">
+            <?php echo $errorMsg; ?>
+        </div>
+    <?php } 
         if ($method == "consultDashboard") { ?>
             <section>
                 <div class="card rounded pb-3">
@@ -1170,19 +1175,29 @@
 
                                                                 </div>
                                                             </div>
+                                                            <div class="modal-footer d-flex justify-content-between">
+                                                                <a href="<?= base_url('consultation/resendEmail/' . $consultation['id']) ?>" 
+                                                                class="btn btn-warning btn-sm"
+                                                                style="padding: 2px 4px; width:45px; height:45px;"
+                                                                onclick="return confirm('Are you sure you want to send the consultation email to the patient?');"
+                                                                title="Send Email to Patient">
+                                                                    <i class="bi bi-envelope" style="font-size: 20px;"></i>
+                                                                </a>
 
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-secondary download-pdf-btn"
-                                                                    style="padding: 2px 4px; width:45px; height:45px;"
-                                                                    data-content-id="consultationDetails<?= $consultation['id'] ?>"
-                                                                    data-filename="Consultation_<?= $patientDetails[0]['patientId'] ?>_<?= $consultation['id'] ?>.pdf">
-                                                                    <i class="bi bi-download"></i>
-                                                                </button>
-                                                                <button type="button" class="btn btn-primary btn-sm"
-                                                                    style="padding: 2px 4px; width:45px; height:45px;"
-                                                                    onclick="printDiv('consultationDetails<?= $consultation['id'] ?>', 'Consultation_<?= $patientDetails[0]['patientId'] ?>_<?= $consultation['id'] ?>')">
-                                                                    <i class="bi bi-printer"></i>
-                                                                </button>
+                                                                <div class="d-flex gap-2">
+                                                                    <button type="button" class="btn btn-secondary download-pdf-btn"
+                                                                            style="padding: 2px 4px; width:45px; height:45px;"
+                                                                            data-content-id="consultationDetails<?= $consultation['id'] ?>"
+                                                                            data-filename="Consultation_<?= $patientDetails[0]['patientId'] ?>_<?= $consultation['id'] ?>.pdf">
+                                                                        <i class="bi bi-download" style="font-size: 20px;"></i>
+                                                                    </button>
+                                                                    
+                                                                    <button type="button" class="btn btn-primary btn-sm"
+                                                                            style="padding: 2px 4px; width:45px; height:45px;"
+                                                                            onclick="printDiv('consultationDetails<?= $consultation['id'] ?>', 'Consultation_<?= $patientDetails[0]['patientId'] ?>_<?= $consultation['id'] ?>')">
+                                                                        <i class="bi bi-printer" style="font-size: 20px;"></i>
+                                                                    </button>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1676,8 +1691,8 @@
                                                 Send consultation details to patient's email
                                             </label> -->
                                         </div>
-                                            <button type="button" class="float-end btn text-light" style="background-color: #00ad8e;" 
-                                            onclick="handleSaveProcess()">Save</button>
+                                            <button type="submit" class="float-end btn text-light" style="background-color: #00ad8e;" 
+                                            >Save</button>
                                     </div>
                                 </form>
                                 <!---------------------------------------------------- Image Edit Modal -------------------------->
@@ -2277,8 +2292,8 @@
                                 <div id="nextFollowUpDate_err" class="text-danger pt-1"></div>
                             </div>
                             <input type="hidden" id="consultationSendEmail" name="consultationSendEmail" value="0">
-                            <button type="button" class="float-end btn text-light" style="background-color: #00ad8e;" 
-                                onclick="handleSaveProcess()">Save as new</button>
+                            <button type="submit" class="float-end btn text-light" style="background-color: #00ad8e;" 
+                            >Save as new</button>
                         </form>
                         <!---------------------------------------------------- Image Edit Modal -------------------------->
                         <div class="modal fade" id="imageEditModal" tabindex="-1" aria-labelledby="imageEditModalLabel"
@@ -2842,8 +2857,8 @@
                                 <div id="nextFollowUpDate_err" class="text-danger pt-1"></div>
                             </div>
                                 <input type="hidden" id="consultationSendEmail" name="consultationSendEmail" value="0">
-                            <button type="button" class="float-end btn text-light" style="background-color: #00ad8e;" 
-                                onclick="handleSaveProcess()">Update</button>
+                            <button type="submit" class="float-end btn text-light" style="background-color: #00ad8e;" 
+                                >Update</button>
                         </form>
                         <!---------------------------------------------------- Image Edit Modal -------------------------->
                         <div class="modal fade" id="imageEditModal" tabindex="-1" aria-labelledby="imageEditModalLabel"
@@ -2923,7 +2938,7 @@
         <?php } ?>
 
         <!-- Popup Model select save or email with save -->
-                <div class="modal fade" id="confirmSaveModal" tabindex="-1" aria-hidden="true">
+                <!-- <div class="modal fade" id="confirmSaveModal" tabindex="-1" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content border-0 shadow-lg" style="border-radius: 12px;">
                             <div class="modal-body text-center p-4">
@@ -2952,10 +2967,10 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
 
                 <!-- Script to save consultation with email send or Just save -->
-                <script>
+                <!-- <script>
                     function handleSaveProcess() {
                         const isEmailAvailable = <?php echo !empty($patientDetails[0]['mailId']) ? 'true' : 'false'; ?>;
                         
@@ -2974,7 +2989,7 @@
 
                         document.getElementById('consultationForm').submit();
                     }
-                </script>
+                </script> -->
 
         <!-- ******************************************************************************************************************************************** -->
 
@@ -8067,12 +8082,17 @@
 
             async function generateVirtualPages(source) {
                 const pages = [];
-
                 const PAGE_WIDTH = 794;  // Standard A4 Web Width (px)
                 const PAGE_HEIGHT = 1122; // Standard A4 Web Height (px)
-                const MARGIN = 30;
 
-                const CONTENT_LIMIT = 1010;
+                // 1. SET YOUR CUSTOM MARGINS HERE
+                const MARGIN_TOP = 200;     // 100px Top Space
+                const MARGIN_BOTTOM = 200;   // 50px Bottom Space
+                const MARGIN_SIDES = 30;    // Keep 30px for Left/Right
+
+                // 2. CALCULATE SAFE CONTENT HEIGHT
+                // Total Height - (Top Space + Bottom Space) = Usable Area
+                const CONTENT_LIMIT = PAGE_HEIGHT - MARGIN_TOP - MARGIN_BOTTOM;
 
                 function createNewPage() {
                     const div = document.createElement('div');
@@ -8082,7 +8102,13 @@
                     div.style.left = '-10000px';
                     div.style.top = '0';
                     div.style.backgroundColor = '#fff';
-                    div.style.padding = `${MARGIN}px`;
+
+                    // 3. APPLY SPECIFIC PADDING
+                    div.style.paddingTop = `${MARGIN_TOP}px`;
+                    div.style.paddingBottom = `${MARGIN_BOTTOM}px`;
+                    div.style.paddingLeft = `${MARGIN_SIDES}px`;
+                    div.style.paddingRight = `${MARGIN_SIDES}px`;
+
                     div.style.boxSizing = 'border-box';
                     div.style.fontFamily = "'Noto Sans', sans-serif";
                     div.style.color = '#000';

@@ -1097,12 +1097,12 @@ class Consultation extends CI_Controller
 
     private function sendConsultationEmail($consultationId, $symptoms, $diagnoses, $medicines, $post)
     {
-        // Fetch patient details using the ID from post data
         $patient = $this->ConsultModel->getPatientDetails($post['patientIdDb']);
         $email = $patient[0]['mailId'];
 
         // Format instructions for the PDF template
-        $rawInstructions = $this->input->post('instructions');
+        // Use instructions from $post array if available, otherwise check standard POST input
+        $rawInstructions = isset($post['instructions']) ? $post['instructions'] : $this->input->post('instructions');
         $pdfInstructions = [];
         if (!empty($rawInstructions) && is_array($rawInstructions)) {
             foreach ($rawInstructions as $ins) {
@@ -1165,4 +1165,43 @@ class Consultation extends CI_Controller
 
         return $result;
     }
+
+public function resendEmail($consultationId)
+{
+    $consultation = $this->ConsultModel->get_consultation_by_id($consultationId);
+    $symptoms  = $this->ConsultModel->get_symptoms_by_consultation_id($consultationId);
+    $diagnoses = $this->ConsultModel->get_diagnosis_by_consultation_id($consultationId);
+    $medicines = $this->ConsultModel->get_medicines_by_consultation_id($consultationId);
+    $instructionsRaw = $this->ConsultModel->get_instructions_by_consultation_id($consultationId);
+    
+    $instructionList = [];
+    foreach($instructionsRaw as $ins) {
+        $instructionList[] = $ins['instruction_name'];
+    }
+
+    $postData = [
+        'patientIdDb'      => $consultation['patient_id'],
+        'nextFollowUpDate' => $consultation['next_follow_up'],
+        'instructions'     => $instructionList
+    ];
+
+    // Use 'showSuccessMessage' to match your view
+$this->session->set_tempdata('showSuccessMessage', 'Email is being sent to the patient in the background.', 5);
+    session_write_close();
+
+    $redirectUrl = $_SERVER['HTTP_REFERER'] ?? base_url('Chiefconsultant/appointments');
+    header("Location: " . $redirectUrl);
+    header("Content-Encoding: none");
+    header("Content-Length: 0");
+    header("Connection: close");
+
+    if (ob_get_level()) ob_end_clean();
+    flush();
+
+    if (function_exists('fastcgi_finish_request')) {
+        fastcgi_finish_request();
+    }
+
+    $this->sendConsultationEmail($consultationId, $symptoms, $diagnoses, $medicines, $postData);
+}
 }

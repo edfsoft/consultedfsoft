@@ -1147,6 +1147,9 @@
                                                     <th scope="col" style="font-size: 16px; font-weight: 500; color: #0079AD">
                                                         GENDER
                                                     </th> -->
+                                                    <th scope="col" style="font-size: 16px; font-weight: 500; color: #0079AD">
+                                                            VIDEO
+                                                        </th>
                                                         <th scope="col" style="font-size: 16px; font-weight: 500; color: #0079AD">
                                                             DATE
                                                         </th>
@@ -1176,6 +1179,9 @@
                                                                     href="<?php echo base_url() . "Chiefconsultant/patientDetails/" . $value['patientDbId']; ?>"
                                                                     class="text-dark" onmouseover="style='text-decoration:underline'"
                                                                     onmouseout="style='text-decoration:none'"><?php echo $value['patientId'] ?></a>
+                                                            </td>
+                                                            <td style="font-size: 16px" class="pt-3">
+                                                    <?php echo $value['modeOfConsultant'] == 'video' ? 'YES': 'NO'; ?>
                                                             </td>
                                                             <!-- <td class="px-4"><?php echo $value['patientName'] ?></td> -->
                                                             <td style="font-size: 16px" class="pt-3">

@@ -597,8 +597,10 @@ class HcpModel extends CI_Model
         $this->db->select('
             ad.id,
             ad.appointmentType,
+            ad.referalDoctorDbId,
             ad.referalDoctor,
             ad.modeOfConsultant,
+            ad.patientDbId,
             ad.patientId,
             ad.dateOfAppoint,
             ad.timeOfAppoint,

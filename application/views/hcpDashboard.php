@@ -1297,7 +1297,7 @@
                                                     <!-- Hover catcher -->
                                                     <div
                                                         style="position:absolute;top:0;left:0;width:24px;height:24px;cursor:not-allowed;
-                                                                "
+                                                                                "
                                                         onmouseenter="this.nextElementSibling.style.display='flex'"
                                                         onmouseleave="this.nextElementSibling.style.display='none'"
                                                     ></div>
@@ -1852,7 +1852,7 @@
 
                         function loadCompletedAppointments() {
                             updateHeader();
-                            tbody.innerHTML = `<tr><td colspan="5" class="text-center py-4">Loading...</td></tr>`;
+                            tbody.innerHTML = `<tr><td colspan="8" class="text-center py-4">Loading...</td></tr>`;
                             countEl.textContent = 0;
 
                             fetch(`${baseUrl}?date=${formatApiDate(currentDate)}`)
@@ -1884,16 +1884,24 @@
                             tbody.innerHTML = '';
                             data.forEach((row, i) => {
                                 const tr = document.createElement('tr');
+                                const baseLink = '<?php echo base_url(); ?>';
+                                const patientLink = `<a href="${baseLink}Healthcareprovider/patientdetails/${row.patientDbId}" 
+                                    class="text-dark" onmouseover="this.style.textDecoration='underline'" 
+                                    onmouseout="this.style.textDecoration='none'">${escapeHTML(row.patientId)}</a>`;
+                                const ccLink = `<a href="${baseLink}Healthcareprovider/chiefDoctorsProfile/${row.referalDoctorDbId}" 
+                                    class="text-dark" onmouseover="this.style.textDecoration='underline'" 
+                                    onmouseout="this.style.textDecoration='none'">${escapeHTML(row.referalDoctor)}</a>`;
+
                                 tr.innerHTML = `
-                <td class="align-middle py-3">${i + 1}.</td>
-                <td class="align-middle">${row.appointmentType}</td>
-                <td class="align-middle">${row.referalDoctor}</td>
-                <td class="align-middle"> ${row.modeOfConsultant}</td>
-                <td class="align-middle"> ${row.patientId}</td>                
-                <td class="align-middle"> ${row.date_formatted}</td>
-                <td class="align-middle"> ${row.time_12hr}</td>
-                <td class="align-middle"> ${row.patientComplaint}</td>
-            `;
+                                    <td class="align-middle py-3">${i + 1}.</td>
+                                    <td class="align-middle">${row.appointmentType}</td>
+                                    <td class="align-middle">${ccLink}</td>
+                                    <td class="align-middle"> ${row.modeOfConsultant}</td>
+                                    <td class="align-middle"> ${patientLink}</td>                
+                                    <td class="align-middle"> ${row.date_formatted}</td>
+                                    <td class="align-middle"> ${row.time_12hr}</td>
+                                    <td class="align-middle"> ${row.patientComplaint}</td>
+                                `;
                                 tbody.appendChild(tr);
                             });
                         }

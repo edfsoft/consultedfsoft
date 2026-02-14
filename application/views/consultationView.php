@@ -1165,7 +1165,7 @@
 
                                                                             <img src="<?= base_url('assets/Signature.jpeg') ?>"
                                                                                 alt="Doctor's Signature"
-                                                                                style="height: 60px; width: auto; display: block;margin: 0 auto;">
+                                                                                style="height: 60px; width: auto; display: block; margin: 0 auto;">
 
                                                                             <div style="text-align: left; margin-top: 5px;">
                                                                                 <p

@@ -790,7 +790,7 @@
 
                                                                     <img src="<?= base_url('assets/Signature.jpeg') ?>"
                                                                         alt="Doctor's Signature"
-                                                                        style="height: 60px; width: auto; display: block; margin-right: 30px;">
+                                                                        style="height: 60px; width: auto; display: block; margin: 0 auto;">
 
                                                                     <div style="text-align: left; margin-top: 5px;">
                                                                         <p style="margin: 0; font-weight: bold; font-size: 14px;">
@@ -2008,19 +2008,22 @@
                 if (modalElement) {
                     const modalInstance = bootstrap.Modal.getInstance(modalElement);
                     if (modalInstance) modalInstance.hide();
-                    // Ensure backdrop is removed
-                    document.querySelector('.modal-backdrop')?.remove();
                 }
             }
 
             async function generateVirtualPages(source) {
                 const pages = [];
-
                 const PAGE_WIDTH = 794;  // Standard A4 Web Width (px)
                 const PAGE_HEIGHT = 1122; // Standard A4 Web Height (px)
-                const MARGIN = 30;
 
-                const CONTENT_LIMIT = 1010;
+                // 1. SET YOUR CUSTOM MARGINS HERE
+                const MARGIN_TOP = 200;     // 100px Top Space
+                const MARGIN_BOTTOM = 200;   // 50px Bottom Space
+                const MARGIN_SIDES = 30;    // Keep 30px for Left/Right
+
+                // 2. CALCULATE SAFE CONTENT HEIGHT
+                // Total Height - (Top Space + Bottom Space) = Usable Area
+                const CONTENT_LIMIT = PAGE_HEIGHT - MARGIN_TOP - MARGIN_BOTTOM;
 
                 function createNewPage() {
                     const div = document.createElement('div');
@@ -2030,7 +2033,13 @@
                     div.style.left = '-10000px';
                     div.style.top = '0';
                     div.style.backgroundColor = '#fff';
-                    div.style.padding = `${MARGIN}px`;
+
+                    // 3. APPLY SPECIFIC PADDING
+                    div.style.paddingTop = `${MARGIN_TOP}px`;
+                    div.style.paddingBottom = `${MARGIN_BOTTOM}px`;
+                    div.style.paddingLeft = `${MARGIN_SIDES}px`;
+                    div.style.paddingRight = `${MARGIN_SIDES}px`;
+
                     div.style.boxSizing = 'border-box';
                     div.style.fontFamily = "'Noto Sans', sans-serif";
                     div.style.color = '#000';
@@ -2136,11 +2145,35 @@
             var originalContents = document.body.innerHTML;
             var originalTitle = document.title;
 
-            document.body.innerHTML = printContents;
+            document.body.innerHTML = `
+                <div id="print-wrapper">
+                    ${printContents}
+                </div>
+            `;
 
             if (title) {
                 document.title = title;
             }
+
+            var style = document.createElement('style');
+            // Adjust style based on requirement to print on Letterpad with header and footer space
+            style.innerHTML = `
+                @media print {
+                    @page {
+                        margin: 10mm;
+                    }
+
+                    body {
+                        margin: 0;
+                    }
+
+                    #print-wrapper {
+                        padding-top: 100px;   /* Letterpad Header Space */
+                        padding-bottom: 50px; /* Letterpad Footer Space */
+                    }
+                }
+            `;
+            document.head.appendChild(style);
 
             window.print();
 

@@ -467,7 +467,8 @@
                                                                     <i class="bi bi-eye"></i>
                                                                 </button>
 
-                                                                <button type="button" class="btn btn-danger" title="Delete Consultation"
+                                                                <button type="button" class="btn btn-danger"
+                                                                    title="Delete Consultation"
                                                                     onclick="confirmDeleteConsult('<?php echo $patientDetails[0]['id']; ?>','<?php echo $consultation['id']; ?>', '<?php echo date('d M Y', strtotime($consultation['consult_date'])); ?>', '<?php echo date('h:i A', strtotime($consultation['consult_time'])); ?>')">
                                                                     <i class="bi bi-trash"></i>
                                                                 </button>
@@ -477,7 +478,8 @@
                                                                     <i class="bi bi-pen"></i>
                                                                 </button>
 
-                                                                <button class="btn text-light" style="background-color: #00ad8e;" title="Follow-up Consultation"
+                                                                <button class="btn text-light" style="background-color: #00ad8e;"
+                                                                    title="Follow-up Consultation"
                                                                     onclick="window.location.href='<?php echo site_url('Consultation/followupConsultation/' . $consultation['id']); ?>'">
                                                                     Follow-up / Repeat
                                                                 </button>
@@ -8238,11 +8240,35 @@
             var originalContents = document.body.innerHTML;
             var originalTitle = document.title;
 
-            document.body.innerHTML = printContents;
+            document.body.innerHTML = `
+                <div id="print-wrapper">
+                    ${printContents}
+                </div>
+            `;
 
             if (title) {
                 document.title = title;
             }
+
+            var style = document.createElement('style');
+            // Adjust style based on requirement to print on Letterpad with header and footer space
+            style.innerHTML = `
+                @media print {
+                    @page {
+                        margin: 10mm;
+                    }
+
+                    body {
+                        margin: 0;
+                    }
+
+                    #print-wrapper {
+                        padding-top: 100px;   /* Letterpad Header Space */
+                        padding-bottom: 50px; /* Letterpad Footer Space */
+                    }
+                }
+            `;
+            document.head.appendChild(style);
 
             window.print();
 

@@ -16,6 +16,12 @@ class Patient extends CI_Controller
         $this->load->library('session');
         $this->load->library('email');
         $this->check_session_timeout();
+         //Notify Pending Appointments
+        if ($this->session->has_userdata('patientIdDb')) {
+            $this->data['todayCount'] = $this->PatientModel->getTodayPendingCount();
+        } else {
+            $this->data['todayCount'] = 0;
+        }
     }
 
     private function check_session_timeout()
@@ -180,7 +186,8 @@ class Patient extends CI_Controller
     {
         if (isset($_SESSION['patientIdDb'])) {
             $this->data['method'] = "appointments";
-
+$appointmentList = $this->PatientModel->getAppointmentList();
+            $this->data['appointmentList'] = $appointmentList['response'];
             $this->load->view('patientDashboard.php', $this->data);
         } else {
             redirect('Patient/');

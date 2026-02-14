@@ -1595,7 +1595,7 @@
                             }
 
                             let videoMode = 'YES';
-                            if (r.modeOfConsultant !== 'video' && r.modeOfConsultant === 'Nil') {
+                            if (r.modeOfConsultant !== 'video' && r.modeOfConsultant === 'audio') {
                                 videoMode = 'NO';
                             }
 

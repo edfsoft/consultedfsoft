@@ -1297,7 +1297,7 @@
                                                     <!-- Hover catcher -->
                                                     <div
                                                         style="position:absolute;top:0;left:0;width:24px;height:24px;cursor:not-allowed;
-                                                                                        "
+                                                                                                "
                                                         onmouseenter="this.nextElementSibling.style.display='flex'"
                                                         onmouseleave="this.nextElementSibling.style.display='none'"
                                                     ></div>
@@ -1455,7 +1455,7 @@
                                                     id="sortDateReschedule">
                                                     <span onmouseover="this.style.textDecoration='underline'"
                                                         onmouseout="this.style.textDecoration='none'">
-                                                        DATE <span id="sortDateIndicatorReschedule">🡱</span>
+                                                        DATE <span id="sortDateIndicatorReschedule">🡳</span>
                                                     </span>
                                                 </th>
 
@@ -1489,7 +1489,7 @@
                     let itemsPerPageReschedule = 10;
                     let currentPageReschedule = 1;
                     let sortByReschedule = 'dateOfAppoint';
-                    let sortOrderReschedule = 'asc';
+                    let sortOrderReschedule = 'desc';
 
                     const itemsDropdownRes = document.getElementById('itemsPerPageDropdownReschedule');
                     const searchBarRes = document.getElementById('searchBarReschedule');
@@ -1572,7 +1572,7 @@
                         tbody.innerHTML = '';
 
                         if (rows.length === 0) {
-                            tbody.innerHTML = '<tr><td colspan="7" class="py-4">No appointments found</td></tr>';
+                            tbody.innerHTML = '<tr><td colspan="8" class="py-4">No appointments found</td></tr>';
                             document.getElementById('entriesInfoReschedule').textContent = '';
                             document.getElementById('paginationContainerReschedule').innerHTML = '';
                             return;
@@ -1594,10 +1594,7 @@
                             onmouseout="this.style.textDecoration='none'">${escapeHTML(r.referalDoctor)}</a>`;
                             }
 
-                            let videoMode = 'YES';
-                            if (r.modeOfConsultant !== 'video' && r.modeOfConsultant === 'audio') {
-                                videoMode = 'NO';
-                            }
+                            let videoMode = (r.modeOfConsultant === 'audio') ? 'NO' : 'YES';
 
                             tbody.insertAdjacentHTML('beforeend', `
                                 <tr data-bs-toggle="tooltip"
@@ -1672,6 +1669,13 @@
 
                         if (sortByReschedule) {
                             filteredRescheduleList.sort((a, b) => {
+
+                                if (sortByReschedule === 'dateOfAppoint') {
+                                    return sortOrderReschedule === 'asc'
+                                        ? new Date(a.dateOfAppoint) - new Date(b.dateOfAppoint)
+                                        : new Date(b.dateOfAppoint) - new Date(a.dateOfAppoint);
+                                }
+
                                 let x = a[sortByReschedule] || '';
                                 let y = b[sortByReschedule] || '';
                                 return sortOrderReschedule === 'asc' ? x.localeCompare(y) : y.localeCompare(x);
@@ -1686,7 +1690,7 @@
                             sortOrderReschedule = sortOrderReschedule === 'asc' ? 'desc' : 'asc';
                         } else {
                             sortByReschedule = field;
-                            sortOrderReschedule = 'asc';
+                            sortOrderReschedule = 'desc';
                         }
 
                         pidIndRes.textContent = sortByReschedule === 'patientId' ? (sortOrderReschedule === 'asc' ? '🡱' : '🡳') : '';
@@ -1716,7 +1720,7 @@
                     sortPidRes.onclick = () => toggleRescheduleSort('patientId');
                     sortDateRes.onclick = () => toggleRescheduleSort('dateOfAppoint');
 
-                    displayReschedulePage(1);
+                    applyRescheduleFilters();
 
                     function initRescheduleTooltips() {
                         const tooltipTriggerList = [].slice.call(

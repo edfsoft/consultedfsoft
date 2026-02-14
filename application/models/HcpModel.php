@@ -664,7 +664,6 @@ class HcpModel extends CI_Model
         $post = $this->input->post(null, true);
 
         $updatedata = array(
-            'modeOfConsultant' => $post['appConsult'],
             'dateOfAppoint' => $post['appDate'],
             //'partOfDay' => $post['dayTime'],
             'timeOfAppoint' => date('H:i', strtotime($post['appTime'])),

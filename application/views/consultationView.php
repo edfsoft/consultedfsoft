@@ -462,22 +462,22 @@
                                                             </h5>
                                                             <div class="mt-md-3 mb-4 mb-md-0">
                                                                 <button type="button" class="btn btn-secondary"
-                                                                    data-bs-toggle="modal"
+                                                                    data-bs-toggle="modal" title="Preview Consultation"
                                                                     data-bs-target="#consultationModal<?= $consultation['id'] ?>">
                                                                     <i class="bi bi-eye"></i>
                                                                 </button>
 
-                                                                <button type="button" class="btn btn-danger"
+                                                                <button type="button" class="btn btn-danger" title="Delete Consultation"
                                                                     onclick="confirmDeleteConsult('<?php echo $patientDetails[0]['id']; ?>','<?php echo $consultation['id']; ?>', '<?php echo date('d M Y', strtotime($consultation['consult_date'])); ?>', '<?php echo date('h:i A', strtotime($consultation['consult_time'])); ?>')">
                                                                     <i class="bi bi-trash"></i>
                                                                 </button>
 
-                                                                <button class="btn btn-secondary"
+                                                                <button class="btn btn-secondary" title="Edit Consultation"
                                                                     onclick="window.location.href='<?php echo site_url('Consultation/editConsultation/' . $consultation['id']); ?>'">
                                                                     <i class="bi bi-pen"></i>
                                                                 </button>
 
-                                                                <button class="btn text-light" style="background-color: #00ad8e;"
+                                                                <button class="btn text-light" style="background-color: #00ad8e;" title="Follow-up Consultation"
                                                                     onclick="window.location.href='<?php echo site_url('Consultation/followupConsultation/' . $consultation['id']); ?>'">
                                                                     Follow-up / Repeat
                                                                 </button>

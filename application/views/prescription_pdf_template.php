@@ -79,7 +79,9 @@
 
         /* Add this inside your <style> tag */
         @page {
-            margin: 180px 25px 80px 25px;
+            /* margin: 180px 25px 80px 25px; */
+            /* old one */
+            margin: 180px 40px 80px 40px;
         }
 
         header {
@@ -114,11 +116,15 @@
         }
 
         .hospital-title {
-            font-size: 22px;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 28px;
+            color: #2F6F5F;
+
+            /* font-size: 22px; */
             font-weight: bold;
             text-transform: uppercase;
             margin: 0;
-            color: #333;
+            /* color: #333; */
             /* Dark Grey/Black */
         }
 
@@ -212,16 +218,17 @@
                 <tr>
                     <td>
                         <span style=" font-size: 14px; font-weight: bold;">Dr. A.S. SENTHIL VELU,</span> <span
-                    style="font-size: 10px;">M.D., FICP</span><br>
-                <span style="font-size: 10px; color: #555;">
-                    Consultant Physician, Diabetologist, Ultrasound, Whole body color Doppler applications,
-                    Echocardiography, Critical care physician
-                </span><br>
-                <span style="font-size: 10px; font-weight: bold;">
-                    ERODE DIABETES FOUNDATION (EDF). REGIONAL FACULTY FOR CERTIFICATE COURSE IN EVIDENCE BASED DIABETES
-                    MANAGEMENT
-                </span>
-                </td>
+                            style="font-size: 10px;">M.D., FICP</span><br>
+                        <span style="font-size: 10px; color: #555;">
+                            Consultant Physician, Diabetologist, Ultrasound, Whole body color Doppler applications,
+                            Echocardiography, Critical care physician
+                        </span><br>
+                        <span style="font-size: 10px; font-weight: bold;">
+                            ERODE DIABETES FOUNDATION (EDF). REGIONAL FACULTY FOR CERTIFICATE COURSE IN EVIDENCE BASED
+                            DIABETES
+                            MANAGEMENT
+                        </span>
+                    </td>
                 </tr>
             </table>
         </div>

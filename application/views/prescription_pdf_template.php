@@ -37,29 +37,6 @@
             vertical-align: middle;
         }
 
-        /* Medicine Table Styles */
-        .med-table {
-            width: 100%;
-            border: 1px solid #000;
-            margin-top: 15px;
-            margin-bottom: 15px;
-        }
-
-        .med-table th {
-            border: 1px solid #000;
-            padding: 6px;
-            text-align: center;
-            font-weight: bold;
-            background-color: #f0f0f0;
-        }
-
-        .med-table td {
-            border: 1px solid #000;
-            padding: 6px;
-            text-align: center;
-            vertical-align: middle;
-        }
-
         /* Helpers */
         .text-bold {
             font-weight: bold;
@@ -77,7 +54,7 @@
             margin-top: 10px;
         }
 
-        /* Add this inside your <style> tag */
+        /* PDF Page Layout */
         @page {
             margin: 180px 40px 80px 40px;
         }
@@ -85,8 +62,8 @@
         header {
             position: fixed;
             top: -160px;
-            left: 0px;
-            right: 0px;
+            left: 0;
+            right: 0;
             height: 150px;
             font-size: 12px;
         }
@@ -94,8 +71,8 @@
         footer {
             position: fixed;
             bottom: -60px;
-            left: 0px;
-            right: 0px;
+            left: 0;
+            right: 0;
             height: 60px;
             text-align: center;
             font-size: 10px;
@@ -134,13 +111,7 @@
             text-align: left;
         }
 
-        .header-box {
-            border: 1px solid #cec8c8;
-            border-radius: 5px;
-            padding: 10px;
-            margin-bottom: 15px;
-        }
-
+        /* Medicine Table */
         .med-table {
             width: 100%;
             border: 1px solid #000;

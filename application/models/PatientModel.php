@@ -154,6 +154,29 @@ class PatientModel extends CI_Model
         return $select->result_array();
     }
 
+    public function getTodayPendingCount()
+    {
+        date_default_timezone_set('Asia/Kolkata');
+        $patientIdDb = $_SESSION['patientIdDb'];
+        $today = date('Y-m-d');
+        $currentTime = date('H:i');
+        $this->db->where('patientDbId', $patientIdDb);
+        $this->db->where('appointmentType', 'PATIENT');
+        $this->db->where('dateOfAppoint', $today);
+        $this->db->where('appStatus', '0');
+        $this->db->where("ADDTIME(timeOfAppoint, '00:20:00') >=", $currentTime);
+        return $this->db->count_all_results('appointment_details');
+    }
+
+    public function getAppointmentList()
+    {
+        $patientIdDb = $_SESSION['patientIdDb'];
+        $details = "SELECT * FROM `appointment_details` WHERE `patientDbId` = '$patientIdDb' AND `appointmentType` = 'PATIENT' AND `appStatus` = '0' AND ( `dateOfAppoint` > CURDATE() OR 
+        ( `dateOfAppoint` = CURDATE() AND ADDTIME(`timeOfAppoint`, '00:20:00') >= CURTIME() ) ) ORDER BY `dateOfAppoint`, `timeOfAppoint`;";
+        $select = $this->db->query($details);
+        return array("response" => $select->result_array(), "totalRows" => $select->num_rows());
+    }
+
     public function updateProfileDetails()
     {
         $post = $this->input->post(null, true);

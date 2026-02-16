@@ -27,6 +27,11 @@
             font-weight: 500;
         }
 
+        .table-hoverr tbody tr:hover td,
+        .table-hoverr tbody tr:hover th {
+            background-color: rgba(47, 128, 237, 0.1) !important;
+        }
+
         /* Consultation arrows container style */
         .consultation-container {
             position: relative;
@@ -790,7 +795,7 @@
 
                                                                     <img src="<?= base_url('assets/Signature.jpeg') ?>"
                                                                         alt="Doctor's Signature"
-                                                                        style="height: 60px; width: auto; display: block; margin-right: 30px;">
+                                                                        style="height: 60px; width: auto; display: block; margin: 0 auto;">
 
                                                                     <div style="text-align: left; margin-top: 5px;">
                                                                         <p style="margin: 0; font-weight: bold; font-size: 14px;">
@@ -837,10 +842,214 @@
                             <p style="font-size: 24px; font-weight: 500"> Appointments</p>
                         </div>
                         <div class="card-body p-3 p-sm-4">
+                            <?php
+                            $current_page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
+                            $items_per_page = 10;
 
+                            $total_items = count($appointmentList);
+                            $total_pages = ceil($total_items / $items_per_page);
+
+                            $offset = ($current_page - 1) * $items_per_page;
+
+                            $current_page_items = array_slice($appointmentList, $offset, $items_per_page);
+
+                            if (isset($appointmentList[0]['id'])) {
+                                ?>
+                                <div class="table-responsive">
+                                    <table class="table text-center table-hoverr text-center" class=" pt-3" id="appointmentTable">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #2F80ED">
+                                                    S.NO
+                                                </th>
+                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #2F80ED">
+                                                    HCP ID
+                                                </th>
+                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #2F80ED">
+                                                    VIDEO
+                                                </th>
+                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #2F80ED">
+                                                    DATE
+                                                </th>
+                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #2F80ED">
+                                                    TIME
+                                                </th>
+                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #2F80ED">
+                                                    COMPLAINT
+                                                </th>
+                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #2F80ED">
+                                                    ACTION
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php
+                                            $count = $offset;
+                                            foreach ($current_page_items as $key => $value) {
+                                                $count++;
+                                                ?>
+                                                <tr>
+                                                    <td class="pt-3"><?php echo $count; ?>. </td>
+                                                    <td style="font-size: 16px" class="pt-3"><a
+                                                            href="<?php echo base_url() . "Patient/healthCareProvidersProfile/" . $value['hcpDbId']; ?>"
+                                                            class="text-dark" onmouseover="style='text-decoration:underline'"
+                                                            onmouseout="style='text-decoration:none'"><?php echo $value['patientHcp'] ?></a>
+                                                    </td>
+                                                    <td style="font-size: 16px" class="pt-3">
+                                                    <?php echo $value['modeOfConsultant'] == 'video' ? 'YES' : 'NO'; ?>
+                                                    </td>
+                                                    <td style="font-size: 16px" class="pt-3">
+                                                    <?php if (date('Y-m-d', strtotime($value['dateOfAppoint'])) == date('Y-m-d')) {
+                                                        echo "<b>Today</b>";
+                                                    } else {
+                                                        echo date("d-M-Y", strtotime($value['dateOfAppoint']));
+                                                    } ?>
+                                                    </td>
+                                                    <td style="font-size: 16px" class="pt-3">
+                                                    <?php echo date('h:i A', strtotime($value['timeOfAppoint'])); ?>
+                                                    </td>
+
+                                                    <td style="font-size: 16px" class="pt-3">
+                                                    <?php echo $value['patientComplaint'] != '' ? $value['patientComplaint'] : "-"; ?>
+                                                    </td>
+                                                    <td style="font-size: 16px" class="d-flex d-lg-block appointment-action-cell"
+                                                        data-date="<?php echo $value['dateOfAppoint']; ?>"
+                                                        data-time="<?php echo $value['timeOfAppoint']; ?>"
+                                                        data-link="<?php echo base_url() . 'Patient/join/' . ltrim($value['appointmentLink'], '/'); ?>">
+
+                                                        <?php
+                                                        date_default_timezone_set('Asia/Kolkata');
+                                                        $dateOfAppoint = $value['dateOfAppoint'];
+                                                        $timeOfAppoint = $value['timeOfAppoint'];
+                                                        $today = date('Y-m-d');
+                                                        $currentTime = date('H:i:s');
+
+                                                        $appointmentDateTime = strtotime("$dateOfAppoint $timeOfAppoint");
+                                                        $currentDateTime = strtotime("$today $currentTime");
+                                                        $isToday = ($dateOfAppoint == $today);
+
+                                                        // Logic: Current time must be >= Appointment Time AND <= Appointment Time + 20 mins
+                                                        $isWithin20Minutes = ($currentDateTime <= strtotime('+20 minutes', $appointmentDateTime)) &&
+                                                            ($currentDateTime >= $appointmentDateTime);
+
+                                                        $shouldEnableButton = $isToday && $isWithin20Minutes;
+                                                        ?>
+
+                                                    <?php if ($shouldEnableButton) { ?>
+                                                            <a href="<?php echo base_url() . 'Patient/join/' . ltrim($value['appointmentLink'], '/'); ?>"
+                                                                target="_self" rel="noopener" class="join-btn-link">
+                                                                <button class="btn btn-success">Join</button>
+                                                            </a>
+                                                    <?php } else { ?>
+                                                            <button class="btn btn-success" disabled>Join</button>
+                                                    <?php } ?>
+                                                    </td>
+                                                </tr>
+                                        <?php } ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <nav aria-label="Page navigation">
+                                    <ul class="pagination justify-content-center">
+                                    <?php if ($current_page > 1): ?>
+                                            <li>
+                                                <a href="?page=<?php echo $current_page - 1; ?>" aria-label="Previous">
+                                                    <button type="button" class="bg-light border px-3 py-2">
+                                                        < </button>
+                                                </a>
+                                            </li>
+                                    <?php endif; ?>
+
+                                        <?php
+                                        $start_page = max(1, $current_page - 2);
+                                        $end_page = min($total_pages, $current_page + 2);
+
+                                        if ($start_page == 1) {
+                                            $end_page = min($total_pages, 5);
+                                        }
+                                        if ($end_page == $total_pages) {
+                                            $start_page = max(1, $total_pages - 4);
+                                        }
+
+                                        for ($i = $start_page; $i <= $end_page; $i++): ?>
+                                            <li>
+                                                <a href="?page=<?php echo $i; ?>">
+                                                    <button type="button"
+                                                        class="btn border px-3 py-2 <?php echo ($i == $current_page) ? 'btn-secondary text-light' : " "; ?>">
+                                                    <?php echo $i; ?></button>
+                                                </a>
+                                            </li>
+                                    <?php endfor; ?>
+
+                                    <?php if ($current_page < $total_pages): ?>
+                                            <li>
+                                                <a href="?page=<?php echo $current_page + 1; ?>" aria-label="Next">
+                                                    <button type="button" class="bg-light border px-3 py-2">
+                                                        ></button>
+                                                </a>
+                                            </li>
+                                    <?php endif; ?>
+                                    </ul>
+                                </nav>
+
+                        <?php } else { ?>
+                                <h5 class="text-center my-5"><b> No Appointments Found.</b> </h5>
+                        <?php } ?>
                         </div>
                     </div>
                 </section>
+
+                <script>
+                    function updateAppointmentButtons() {
+                        const actionCells = document.querySelectorAll('.appointment-action-cell');
+                        const now = new Date();
+
+                        actionCells.forEach(cell => {
+                            const dateStr = cell.getAttribute('data-date');
+                            const timeStr = cell.getAttribute('data-time');
+                            const fullLink = cell.getAttribute('data-link');
+
+                            const apptDate = new Date(dateStr + 'T' + timeStr);
+
+                            // 20 minutes in milliseconds = 20 * 60 * 1000 = 1200000
+                            const endTime = new Date(apptDate.getTime() + 1200000);
+
+                            const isStarted = now >= apptDate;
+                            const isNotExpired = now <= endTime;
+
+                            if (isStarted && isNotExpired) {
+                                if (!cell.querySelector('a.join-btn-link')) {
+                                    cell.innerHTML = `
+                                                    <a href="${fullLink}" target="_self" rel="noopener" class="join-btn-link">
+                                                        <button class="btn btn-success">Join</button>
+                                                    </a>`;
+                                }
+                            } else {
+                                if (cell.querySelector('a.join-btn-link') || !cell.querySelector('button[disabled]')) {
+                                    cell.innerHTML = `<button class="btn btn-success" disabled>Join</button>`;
+                                }
+                            }
+                        });
+                    }
+
+                    function startLiveUpdates() {
+                        const refreshUI = () => updateAppointmentButtons();
+
+                        refreshUI();
+
+                        const now = new Date();
+                        const delay = 60000 - (now.getSeconds() * 1000 + now.getMilliseconds());
+
+                        setTimeout(() => {
+                            refreshUI();
+                            setInterval(refreshUI, 60000);
+                        }, delay);
+                    }
+
+                    document.addEventListener('DOMContentLoaded', () => {
+                        startLiveUpdates();
+                    });
+                </script>
 
             <?php
         } else if ($method == "myProfile") {
@@ -1885,6 +2094,7 @@
 
     </main>
 
+    <!-- Sidebar active script -->
     <script>
         <?php if ($method == "dashboard") { ?>
             document.getElementById('dashboard').style.color = "#bbd3f2";
@@ -1901,8 +2111,6 @@
 
     <!-- Common Script -->
     <script src="<?php echo base_url(); ?>application/views/js/script.js"></script>
-
-    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script> -->
 
     <!-- Previous and Next arrows script in consulation dashboard page -->
     <script>
@@ -2008,19 +2216,22 @@
                 if (modalElement) {
                     const modalInstance = bootstrap.Modal.getInstance(modalElement);
                     if (modalInstance) modalInstance.hide();
-                    // Ensure backdrop is removed
-                    document.querySelector('.modal-backdrop')?.remove();
                 }
             }
 
             async function generateVirtualPages(source) {
                 const pages = [];
-
                 const PAGE_WIDTH = 794;  // Standard A4 Web Width (px)
                 const PAGE_HEIGHT = 1122; // Standard A4 Web Height (px)
-                const MARGIN = 30;
 
-                const CONTENT_LIMIT = 1010;
+                // 1. SET YOUR CUSTOM MARGINS HERE
+                const MARGIN_TOP = 200;     // 100px Top Space
+                const MARGIN_BOTTOM = 200;   // 50px Bottom Space
+                const MARGIN_SIDES = 30;    // Keep 30px for Left/Right
+
+                // 2. CALCULATE SAFE CONTENT HEIGHT
+                // Total Height - (Top Space + Bottom Space) = Usable Area
+                const CONTENT_LIMIT = PAGE_HEIGHT - MARGIN_TOP - MARGIN_BOTTOM;
 
                 function createNewPage() {
                     const div = document.createElement('div');
@@ -2030,7 +2241,13 @@
                     div.style.left = '-10000px';
                     div.style.top = '0';
                     div.style.backgroundColor = '#fff';
-                    div.style.padding = `${MARGIN}px`;
+
+                    // 3. APPLY SPECIFIC PADDING
+                    div.style.paddingTop = `${MARGIN_TOP}px`;
+                    div.style.paddingBottom = `${MARGIN_BOTTOM}px`;
+                    div.style.paddingLeft = `${MARGIN_SIDES}px`;
+                    div.style.paddingRight = `${MARGIN_SIDES}px`;
+
                     div.style.boxSizing = 'border-box';
                     div.style.fontFamily = "'Noto Sans', sans-serif";
                     div.style.color = '#000';
@@ -2136,11 +2353,35 @@
             var originalContents = document.body.innerHTML;
             var originalTitle = document.title;
 
-            document.body.innerHTML = printContents;
+            document.body.innerHTML = `
+                <div id="print-wrapper">
+                    ${printContents}
+                </div>
+            `;
 
             if (title) {
                 document.title = title;
             }
+
+            var style = document.createElement('style');
+            // Adjust style based on requirement to print on Letterpad with header and footer space
+            style.innerHTML = `
+                @media print {
+                    @page {
+                        margin: 10mm;
+                    }
+
+                    body {
+                        margin: 0;
+                    }
+
+                    #print-wrapper {
+                        padding-top: 100px;   /* Letterpad Header Space */
+                        padding-bottom: 50px; /* Letterpad Footer Space */
+                    }
+                }
+            `;
+            document.head.appendChild(style);
 
             window.print();
 
@@ -2248,7 +2489,6 @@
             });
         });
     </script>
-
 
     <!-- Vendor JS Files -->
     <script src="<?php echo base_url(); ?>assets/vendor/apexcharts/apexcharts.min.js"></script>

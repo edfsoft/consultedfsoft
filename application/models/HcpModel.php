@@ -587,7 +587,7 @@ class HcpModel extends CI_Model
     public function getAppointmentReschedule()
     {
         $hcpIdDb = $_SESSION['hcpIdDb'];
-        $details = "SELECT * FROM `appointment_details` WHERE `hcpDbId` = $hcpIdDb AND ( `dateOfAppoint` < CURDATE() OR ( `dateOfAppoint` = CURDATE() AND `timeOfAppoint` <= SUBTIME(CURTIME(), '00:10:00') ) ) AND `appStatus`= '0' ORDER BY `dateOfAppoint`, `timeOfAppoint`; ";
+        $details = "SELECT * FROM `appointment_details` WHERE `hcpDbId` = $hcpIdDb AND ( `dateOfAppoint` < CURDATE() OR ( `dateOfAppoint` = CURDATE() AND `timeOfAppoint` <= SUBTIME(CURTIME(), '00:20:00') ) ) AND `appStatus`= '0' ORDER BY `dateOfAppoint`, `timeOfAppoint`; ";
         $select = $this->db->query($details);
         return array("response" => $select->result_array(), "totalRows" => $select->num_rows());
     }
@@ -597,8 +597,10 @@ class HcpModel extends CI_Model
         $this->db->select('
             ad.id,
             ad.appointmentType,
+            ad.referalDoctorDbId,
             ad.referalDoctor,
             ad.modeOfConsultant,
+            ad.patientDbId,
             ad.patientId,
             ad.dateOfAppoint,
             ad.timeOfAppoint,
@@ -662,7 +664,6 @@ class HcpModel extends CI_Model
         $post = $this->input->post(null, true);
 
         $updatedata = array(
-            'modeOfConsultant' => $post['appConsult'],
             'dateOfAppoint' => $post['appDate'],
             //'partOfDay' => $post['dayTime'],
             'timeOfAppoint' => date('H:i', strtotime($post['appTime'])),

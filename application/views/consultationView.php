@@ -359,23 +359,23 @@
     <?php $this->load->view('hcpHeader'); ?>
 
     <main id="main" class="main">
-        <?php 
-    // 1. Get the message from either Flashdata OR Tempdata
-    $successMsg = $this->session->flashdata('showSuccessMessage') ?: $this->session->tempdata('showSuccessMessage');
-    $errorMsg   = $this->session->flashdata('showErrorMessage')   ?: $this->session->tempdata('showErrorMessage');
-    ?>
+        <?php
+        // 1. Get the message from either Flashdata OR Tempdata
+        $successMsg = $this->session->flashdata('showSuccessMessage') ?: $this->session->tempdata('showSuccessMessage');
+        $errorMsg = $this->session->flashdata('showErrorMessage') ?: $this->session->tempdata('showErrorMessage');
+        ?>
 
-    <?php if ($successMsg) { ?>
-        <div id="display_message"
-            style="position: absolute;top: 2px;left: 50%;transform: translateX(-50%);background-color: #d4edda;color: #155724;padding: 20px 30px;border: 1px solid #c3e6cb;border-radius: 5px;text-align: center;z-index: 9999;">
-            <?php echo $successMsg; ?>
-        </div>
-    <?php } elseif ($errorMsg) { ?>
-        <div id="display_message"
-            style="position: absolute;top: 2px;left: 50%;transform: translateX(-50%);background-color:rgb(237, 212, 212);color:rgb(87, 21, 21);padding: 20px 30px;border: 1px solid #c3e6cb;border-radius: 5px;text-align: center;z-index: 9999;">
-            <?php echo $errorMsg; ?>
-        </div>
-    <?php } 
+        <?php if ($successMsg) { ?>
+            <div id="display_message"
+                style="position: absolute;top: 2px;left: 50%;transform: translateX(-50%);background-color: #d4edda;color: #155724;padding: 20px 30px;border: 1px solid #c3e6cb;border-radius: 5px;text-align: center;z-index: 9999;">
+                <?php echo $successMsg; ?>
+            </div>
+        <?php } elseif ($errorMsg) { ?>
+            <div id="display_message"
+                style="position: absolute;top: 2px;left: 50%;transform: translateX(-50%);background-color:rgb(237, 212, 212);color:rgb(87, 21, 21);padding: 20px 30px;border: 1px solid #c3e6cb;border-radius: 5px;text-align: center;z-index: 9999;">
+                <?php echo $errorMsg; ?>
+            </div>
+        <?php }
         if ($method == "consultDashboard") { ?>
             <section>
                 <div class="card rounded pb-3">
@@ -462,22 +462,24 @@
                                                             </h5>
                                                             <div class="mt-md-3 mb-4 mb-md-0">
                                                                 <button type="button" class="btn btn-secondary"
-                                                                    data-bs-toggle="modal"
+                                                                    data-bs-toggle="modal" title="Preview Consultation"
                                                                     data-bs-target="#consultationModal<?= $consultation['id'] ?>">
                                                                     <i class="bi bi-eye"></i>
                                                                 </button>
 
                                                                 <button type="button" class="btn btn-danger"
+                                                                    title="Delete Consultation"
                                                                     onclick="confirmDeleteConsult('<?php echo $patientDetails[0]['id']; ?>','<?php echo $consultation['id']; ?>', '<?php echo date('d M Y', strtotime($consultation['consult_date'])); ?>', '<?php echo date('h:i A', strtotime($consultation['consult_time'])); ?>')">
                                                                     <i class="bi bi-trash"></i>
                                                                 </button>
 
-                                                                <button class="btn btn-secondary"
+                                                                <button class="btn btn-secondary" title="Edit Consultation"
                                                                     onclick="window.location.href='<?php echo site_url('Consultation/editConsultation/' . $consultation['id']); ?>'">
                                                                     <i class="bi bi-pen"></i>
                                                                 </button>
 
                                                                 <button class="btn text-light" style="background-color: #00ad8e;"
+                                                                    title="Follow-up Consultation"
                                                                     onclick="window.location.href='<?php echo site_url('Consultation/followupConsultation/' . $consultation['id']); ?>'">
                                                                     Follow-up / Repeat
                                                                 </button>
@@ -933,8 +935,8 @@
                                                                                     <div class="mb-0" style="white-space: nowrap;">
                                                                                         <strong>Date:</strong>
                                                                                         <span><?= date('d M Y', strtotime($consultation['consult_date'])) ?></span>
-                                                                                        <span style="margin: 0 5px;">|</span>
-                                                                                        <span><?= date('h:i A', strtotime($consultation['consult_time'])) ?></span>
+                                                                                        <!-- <span style="margin: 0 5px;">|</span>
+                                                                                        <span><?= date('h:i A', strtotime($consultation['consult_time'])) ?></span> -->
                                                                                     </div>
                                                                                     <div class="mb-0">
                                                                                         <strong>Mobile:</strong>
@@ -1163,7 +1165,7 @@
 
                                                                             <img src="<?= base_url('assets/Signature.jpeg') ?>"
                                                                                 alt="Doctor's Signature"
-                                                                                style="height: 60px; width: auto; display: block; margin-right: 30px;">
+                                                                                style="height: 60px; width: auto; display: block; margin: 0 auto;">
 
                                                                             <div style="text-align: left; margin-top: 5px;">
                                                                                 <p
@@ -1176,25 +1178,43 @@
                                                                 </div>
                                                             </div>
                                                             <div class="modal-footer d-flex justify-content-between">
-                                                                <a href="<?= base_url('consultation/resendEmail/' . $consultation['id']) ?>" 
-                                                                class="btn btn-warning btn-sm"
-                                                                style="padding: 2px 4px; width:45px; height:45px;"
-                                                                onclick="return confirm('Are you sure you want to send the consultation email to the patient?');"
-                                                                title="Send Email to Patient">
-                                                                    <i class="bi bi-envelope" style="font-size: 20px;"></i>
-                                                                </a>
+
+                                                                <?php
+                                                                $patientEmail = isset($patientDetails[0]['mailId']) ? $patientDetails[0]['mailId'] : '';
+                                                                ?>
+
+                                                                <?php if (!empty($patientEmail)): ?>
+                                                                    <a href="<?= base_url('consultation/resendEmail/' . $consultation['id']) ?>"
+                                                                        class="btn btn-warning btn-sm pt-2"
+                                                                        style="padding: 2px 4px; width:45px; height:45px;"
+                                                                        onclick="return confirm('Are you sure you want to send the consultation email to the patient?');"
+                                                                        title="Send Email to Patient">
+                                                                        <i class="bi bi-envelope" style="font-size: 20px;"></i>
+                                                                    </a>
+                                                                <?php else: ?>
+                                                                    <span style="cursor: not-allowed;"
+                                                                        title="Email address not available for this patient">
+                                                                        <button type="button" class="btn btn-warning btn-sm"
+                                                                            style="padding: 2px 4px; width:45px; height:45px; opacity: 0.6; pointer-events: none;"
+                                                                            disabled>
+                                                                            <i class="bi bi-envelope" style="font-size: 20px;"></i>
+                                                                        </button>
+                                                                    </span>
+                                                                <?php endif; ?>
 
                                                                 <div class="d-flex gap-2">
                                                                     <button type="button" class="btn btn-secondary download-pdf-btn"
-                                                                            style="padding: 2px 4px; width:45px; height:45px;"
-                                                                            data-content-id="consultationDetails<?= $consultation['id'] ?>"
-                                                                            data-filename="Consultation_<?= $patientDetails[0]['patientId'] ?>_<?= $consultation['id'] ?>.pdf">
+                                                                        style="padding: 2px 4px; width:45px; height:45px;"
+                                                                        data-content-id="consultationDetails<?= $consultation['id'] ?>"
+                                                                        data-filename="Consultation_<?= $patientDetails[0]['patientId'] ?>_<?= $consultation['id'] ?>.pdf"
+                                                                        title="Download Consultation PDF">
                                                                         <i class="bi bi-download" style="font-size: 20px;"></i>
                                                                     </button>
-                                                                    
+
                                                                     <button type="button" class="btn btn-primary btn-sm"
-                                                                            style="padding: 2px 4px; width:45px; height:45px;"
-                                                                            onclick="printDiv('consultationDetails<?= $consultation['id'] ?>', 'Consultation_<?= $patientDetails[0]['patientId'] ?>_<?= $consultation['id'] ?>')">
+                                                                        style="padding: 2px 4px; width:45px; height:45px;"
+                                                                        onclick="printDiv('consultationDetails<?= $consultation['id'] ?>', 'Consultation_<?= $patientDetails[0]['patientId'] ?>_<?= $consultation['id'] ?>')"
+                                                                        title="Print Consultation">
                                                                         <i class="bi bi-printer" style="font-size: 20px;"></i>
                                                                     </button>
                                                                 </div>
@@ -1692,8 +1712,8 @@
                                                 Send consultation details to patient's email
                                             </label> -->
                                         </div>
-                                            <button type="submit" class="float-end btn text-light" style="background-color: #00ad8e;" 
-                                            >Save</button>
+                                        <button type="submit" class="float-end btn text-light"
+                                            style="background-color: #00ad8e;">Save</button>
                                     </div>
                                 </form>
                                 <!---------------------------------------------------- Image Edit Modal -------------------------->
@@ -2293,8 +2313,8 @@
                                 <div id="nextFollowUpDate_err" class="text-danger pt-1"></div>
                             </div>
                             <input type="hidden" id="consultationSendEmail" name="consultationSendEmail" value="0">
-                            <button type="submit" class="float-end btn text-light" style="background-color: #00ad8e;" 
-                            >Save as new</button>
+                            <button type="submit" class="float-end btn text-light" style="background-color: #00ad8e;">Save
+                                as new</button>
                         </form>
                         <!---------------------------------------------------- Image Edit Modal -------------------------->
                         <div class="modal fade" id="imageEditModal" tabindex="-1" aria-labelledby="imageEditModalLabel"
@@ -2857,9 +2877,9 @@
                                     value="<?= isset($consultation['next_follow_up']) ? $consultation['next_follow_up'] : '' ?>">
                                 <div id="nextFollowUpDate_err" class="text-danger pt-1"></div>
                             </div>
-                                <input type="hidden" id="consultationSendEmail" name="consultationSendEmail" value="0">
-                            <button type="submit" class="float-end btn text-light" style="background-color: #00ad8e;" 
-                                >Update</button>
+                            <input type="hidden" id="consultationSendEmail" name="consultationSendEmail" value="0">
+                            <button type="submit" class="float-end btn text-light"
+                                style="background-color: #00ad8e;">Update</button>
                         </form>
                         <!---------------------------------------------------- Image Edit Modal -------------------------->
                         <div class="modal fade" id="imageEditModal" tabindex="-1" aria-labelledby="imageEditModalLabel"
@@ -2939,7 +2959,7 @@
         <?php } ?>
 
         <!-- Popup Model select save or email with save -->
-                <!-- <div class="modal fade" id="confirmSaveModal" tabindex="-1" aria-hidden="true">
+        <!-- <div class="modal fade" id="confirmSaveModal" tabindex="-1" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content border-0 shadow-lg" style="border-radius: 12px;">
                             <div class="modal-body text-center p-4">
@@ -2970,8 +2990,8 @@
                     </div>
                 </div> -->
 
-                <!-- Script to save consultation with email send or Just save -->
-                <!-- <script>
+        <!-- Script to save consultation with email send or Just save -->
+        <!-- <script>
                     function handleSaveProcess() {
                         const isEmailAvailable = <?php echo !empty($patientDetails[0]['mailId']) ? 'true' : 'false'; ?>;
                         
@@ -8220,11 +8240,35 @@
             var originalContents = document.body.innerHTML;
             var originalTitle = document.title;
 
-            document.body.innerHTML = printContents;
+            document.body.innerHTML = `
+                <div id="print-wrapper">
+                    ${printContents}
+                </div>
+            `;
 
             if (title) {
                 document.title = title;
             }
+
+            var style = document.createElement('style');
+            // Adjust style based on requirement to print on Letterpad with header and footer space
+            style.innerHTML = `
+                @media print {
+                    @page {
+                        margin: 10mm;
+                    }
+
+                    body {
+                        margin: 0;
+                    }
+
+                    #print-wrapper {
+                        padding-top: 100px;   /* Letterpad Header Space */
+                        padding-bottom: 50px; /* Letterpad Footer Space */
+                    }
+                }
+            `;
+            document.head.appendChild(style);
 
             window.print();
 

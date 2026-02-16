@@ -1129,7 +1129,7 @@
                             if (isset($appointmentList[0]['id'])) {
                                 ?>
                                         <div class="table-responsive">
-                                            <table class="table table-hoverr class=" pt-3" text-center" id="appointmentTable">
+                                            <table class="table table-hoverr text-center" class=" pt-3" id="appointmentTable">
                                                 <thead>
                                                     <tr>
                                                         <th scope="col" style="font-size: 16px; font-weight: 500; color: #0079AD">
@@ -1147,6 +1147,9 @@
                                                     <th scope="col" style="font-size: 16px; font-weight: 500; color: #0079AD">
                                                         GENDER
                                                     </th> -->
+                                                        <th scope="col" style="font-size: 16px; font-weight: 500; color: #0079AD">
+                                                            VIDEO
+                                                        </th>
                                                         <th scope="col" style="font-size: 16px; font-weight: 500; color: #0079AD">
                                                             DATE
                                                         </th>
@@ -1176,6 +1179,9 @@
                                                                     href="<?php echo base_url() . "Chiefconsultant/patientDetails/" . $value['patientDbId']; ?>"
                                                                     class="text-dark" onmouseover="style='text-decoration:underline'"
                                                                     onmouseout="style='text-decoration:none'"><?php echo $value['patientId'] ?></a>
+                                                            </td>
+                                                            <td style="font-size: 16px" class="pt-3">
+                                                    <?php echo $value['modeOfConsultant'] == 'video' ? 'YES' : 'NO'; ?>
                                                             </td>
                                                             <!-- <td class="px-4"><?php echo $value['patientName'] ?></td> -->
                                                             <td style="font-size: 16px" class="pt-3">
@@ -1282,80 +1288,59 @@
                                 </div>
                             </div>
 
+                        </section>
 
-                            <script>
-                                // 1. Initialize Tooltips (Your requested function)
-                                function initBootstrapTooltips() {
-                                    const tooltipTriggerList = [].slice.call(
-                                        document.querySelectorAll('[data-bs-toggle="tooltip"]')
-                                    );
+                        <script>
+                            function updateAppointmentButtons() {
+                                const actionCells = document.querySelectorAll('.appointment-action-cell');
+                                const now = new Date();
 
-                                    tooltipTriggerList.forEach(el => {
-                                        if (bootstrap.Tooltip.getInstance(el)) {
-                                            bootstrap.Tooltip.getInstance(el).dispose();
-                                        }
-                                        new bootstrap.Tooltip(el, {
-                                            placement: 'top',
-                                            html: false,
-                                            trigger: 'hover',
-                                            container: 'body'
-                                        });
-                                    });
-                                }
+                                actionCells.forEach(cell => {
+                                    const dateStr = cell.getAttribute('data-date');
+                                    const timeStr = cell.getAttribute('data-time');
+                                    const fullLink = cell.getAttribute('data-link');
 
-                                // 2. Logic to check time and update buttons without reloading
-                                function updateAppointmentButtons() {
-                                    const actionCells = document.querySelectorAll('.appointment-action-cell');
-                                    const now = new Date();
+                                    const apptDate = new Date(dateStr + 'T' + timeStr);
 
-                                    actionCells.forEach(cell => {
-                                        const dateStr = cell.getAttribute('data-date');
-                                        const timeStr = cell.getAttribute('data-time');
-                                        const fullLink = cell.getAttribute('data-link');
+                                    // 20 minutes in milliseconds = 20 * 60 * 1000 = 1200000
+                                    const endTime = new Date(apptDate.getTime() + 1200000);
 
-                                        const apptDate = new Date(dateStr + 'T' + timeStr);
+                                    const isStarted = now >= apptDate;
+                                    const isNotExpired = now <= endTime;
 
-                                        // 20 minutes in milliseconds = 20 * 60 * 1000 = 1200000
-                                        const endTime = new Date(apptDate.getTime() + 1200000);
-
-                                        const isStarted = now >= apptDate;
-                                        const isNotExpired = now <= endTime;
-
-                                        if (isStarted && isNotExpired) {
-                                            if (!cell.querySelector('a.join-btn-link')) {
-                                                cell.innerHTML = `
+                                    if (isStarted && isNotExpired) {
+                                        if (!cell.querySelector('a.join-btn-link')) {
+                                            cell.innerHTML = `
                                                     <a href="${fullLink}" target="_self" rel="noopener" class="join-btn-link">
                                                         <button class="btn btn-success">Join</button>
                                                     </a>`;
-                                            }
-                                        } else {
-                                            if (cell.querySelector('a.join-btn-link') || !cell.querySelector('button[disabled]')) {
-                                                cell.innerHTML = `<button class="btn btn-success" disabled>Join</button>`;
-                                            }
                                         }
-                                    });
-                                }
-
-                                function startLiveUpdates() {
-                                    const refreshUI = () => updateAppointmentButtons();
-
-                                    refreshUI();
-
-                                    const now = new Date();
-                                    const delay = 60000 - (now.getSeconds() * 1000 + now.getMilliseconds());
-
-                                    setTimeout(() => {
-                                        refreshUI();
-                                        setInterval(refreshUI, 60000);
-                                    }, delay);
-                                }
-
-                                document.addEventListener('DOMContentLoaded', () => {
-                                    initBootstrapTooltips();
-                                    startLiveUpdates();
+                                    } else {
+                                        if (cell.querySelector('a.join-btn-link') || !cell.querySelector('button[disabled]')) {
+                                            cell.innerHTML = `<button class="btn btn-success" disabled>Join</button>`;
+                                        }
+                                    }
                                 });
-                            </script>
-                        </section>
+                            }
+
+                            function startLiveUpdates() {
+                                const refreshUI = () => updateAppointmentButtons();
+
+                                refreshUI();
+
+                                const now = new Date();
+                                const delay = 60000 - (now.getSeconds() * 1000 + now.getMilliseconds());
+
+                                setTimeout(() => {
+                                    refreshUI();
+                                    setInterval(refreshUI, 60000);
+                                }, delay);
+                            }
+
+                            document.addEventListener('DOMContentLoaded', () => {
+                                startLiveUpdates();
+                            });
+                        </script>
 
             <?php
         } else if ($method == "hcps") {

@@ -79,8 +79,6 @@
 
         /* Add this inside your <style> tag */
         @page {
-            /* margin: 180px 25px 80px 25px; */
-            /* old one */
             margin: 180px 40px 80px 40px;
         }
 
@@ -117,10 +115,10 @@
 
         .hospital-title {
             font-family: Arial, Helvetica, sans-serif;
-            font-size: 28px;
+            /* font-size: 28px; */
             color: #2F6F5F;
 
-            /* font-size: 22px; */
+            font-size: 22px;
             font-weight: bold;
             text-transform: uppercase;
             margin: 0;
@@ -263,7 +261,7 @@
 
                 <td style="width: 35%; vertical-align: top; text-align: right;">
                     <p class="mb-0">
-                        <span class="text-bold">Date:</span> <?php echo date('d M Y'); ?> | <?php echo date('h:i A'); ?>
+                        <span class="text-bold">Date:</span> <?php echo date('d M Y'); ?>
                     </p>
                     <p class="mb-0">
                         <span class="text-bold">Mobile:</span> <?php echo $patientDetails[0]['mobileNumber'] ?? '-'; ?>
@@ -403,16 +401,18 @@
     <table style="width: 100%; margin-top: 40px;">
         <tr>
             <td style="text-align: right; vertical-align: bottom;">
-                <?php
-                $sigPath = FCPATH . 'assets/Signature.jpeg';
-                if (file_exists($sigPath)):
-                    $sigData = base64_encode(file_get_contents($sigPath));
-                    $src = 'data:image/jpeg;base64,' . $sigData;
-                    ?>
-                    <img src="<?= $src ?>" style="height: 60px; width: auto; margin-bottom: 5px;">
-                <?php endif; ?>
+                <div style="display: inline-block; text-align: center;">
+                    <?php
+                    $sigPath = FCPATH . 'assets/Signature.jpeg';
+                    if (file_exists($sigPath)):
+                        $sigData = base64_encode(file_get_contents($sigPath));
+                        $src = 'data:image/jpeg;base64,' . $sigData;
+                        ?>
+                        <img src="<?= $src ?>" style="height: 60px; width: auto; display: block; margin: 0 auto 5px;">
+                    <?php endif; ?>
 
-                <p style="margin: 0; font-weight: bold;">Dr. A. S. Senthilvelu</p>
+                    <p style="margin: 0; font-weight: bold;">Dr. A. S. Senthilvelu</p>
+                </div>
             </td>
         </tr>
     </table>

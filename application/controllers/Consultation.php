@@ -1145,7 +1145,7 @@ class Consultation extends CI_Controller
 
         // Email Configuration and Sending
         $message = "
-            Dear {$patient[0]['firstName']},<br><br>
+            Dear {$patient[0]['firstName']} {$patient[0]['lastName']},<br><br>
             Please find your prescription attached to this email.<br><br>
             Regards,<br><b>EDF Healthcare Team</b>";
 
@@ -1206,7 +1206,7 @@ class Consultation extends CI_Controller
         $this->sendConsultationEmail($consultationId, $symptoms, $diagnoses, $medicines, $postData);
     }
 
-    
+
 
 
 

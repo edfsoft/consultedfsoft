@@ -848,7 +848,6 @@
                                                             </ul>
                                                         <?php endif; ?>
 
-
                                                         <!-- Notes -->
                                                         <?php if (!empty($consultation['notes'])): ?>
                                                             <p><strong>Notes:</strong></p>
@@ -868,7 +867,7 @@
                                                     </div>
                                                 </div>
 
-                                                <!-- preview for consultaion model  -->
+                                                <!-- Preview for consultaion model  -->
                                                 <div class="modal fade" id="consultationModal<?= $consultation['id'] ?>"
                                                     tabindex="-1" aria-labelledby="consultationModalLabel<?= $consultation['id'] ?>"
                                                     aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
@@ -1700,8 +1699,8 @@
                                     </div>
 
                                     <div class="d-flex justify-content-between mt-5">
-                                        <?php
-                                        $emailAvailable = !empty($patientDetails[0]['mailId']); ?>
+                                        <!-- Send mail in form is not in use and function removed in controller -->
+                                        <?php $emailAvailable = !empty($patientDetails[0]['mailId']); ?>
                                         <div class="form-check">
                                             <input type="hidden" id="consultationSendEmail" name="consultationSendEmail"
                                                 value="0">
@@ -2958,65 +2957,6 @@
             </section>
         <?php } ?>
 
-        <!-- Popup Model select save or email with save -->
-        <!-- <div class="modal fade" id="confirmSaveModal" tabindex="-1" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered">
-                        <div class="modal-content border-0 shadow-lg" style="border-radius: 12px;">
-                            <div class="modal-body text-center p-4">
-                                <div class="mb-3">
-                                    <i class="bi bi-question-circle text-primary" style="font-size: 3rem;"></i>
-                                </div>
-                                <h4 class="fw-bold mb-3">Save Consultation</h4>
-                                <p class="text-muted">Would you like to send the consultation details to the patient's email as well?</p>
-                                
-                                <div class="d-grid gap-2 mt-4">
-                                    <button type="button" class="btn btn-success py-2 fw-bold" 
-                                            onclick="submitConsultation(1)"
-                                            <?= !empty($patientDetails[0]['mailId']) ? '' : 'disabled'; ?>>
-                                        <i class="bi bi-envelope-check me-2"></i> Save and Send Mail
-                                    </button>
-
-                                    <button type="button" class="btn btn-primary py-2 fw-bold" 
-                                            onclick="submitConsultation(0)">
-                                        <i class="bi bi-save me-2"></i> Just Save
-                                    </button>
-
-                                    <button type="button" class="btn btn-link text-decoration-none text-muted mt-2" data-bs-dismiss="modal">
-                                        Cancel
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div> -->
-
-        <!-- Script to save consultation with email send or Just save -->
-        <!-- <script>
-                    function handleSaveProcess() {
-                        const isEmailAvailable = <?php echo !empty($patientDetails[0]['mailId']) ? 'true' : 'false'; ?>;
-                        
-                        if (isEmailAvailable) {
-                            var myModal = new bootstrap.Modal(document.getElementById('confirmSaveModal'));
-                            myModal.show();
-                        } else {
-                            // 3. No email, so auto-submit with value 0
-                            submitConsultation(0);
-                        }
-                    }
-
-                if (isEmailAvailable) {
-                    var myModal = new bootstrap.Modal(document.getElementById('confirmSaveModal'));
-                    myModal.show();
-                } else {
-                    // 3. No email, so auto-submit with value 0
-                    submitConsultation(0);
-                }
-            }
-
-                        document.getElementById('consultationForm').submit();
-                    }
-                </script> -->
-
         <!-- ******************************************************************************************************************************************** -->
 
         <!-- Symptoms Modal -->
@@ -3528,7 +3468,7 @@
             </div>
         </div>
 
-        <!--  Add/Edit Model for all -->
+        <!--  Add/Edit Modal for all -->
         <div class="modal fade" id="universalAddMasterModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static"
             data-bs-keyboard="false">
             <div class="modal-dialog">
@@ -3555,7 +3495,7 @@
             </div>
         </div>
 
-        <!--  Delete Model for all -->
+        <!--  Delete Modal for all -->
         <div class="modal fade" id="universalDeleteModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static"
             data-bs-keyboard="false">
             <div class="modal-dialog">

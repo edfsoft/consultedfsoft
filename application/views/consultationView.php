@@ -1569,35 +1569,7 @@
                                             </div>
                                         </div>
                                         <input type="hidden" name="medicinesJson" id="medicinesJson">
-
-                                        <!-- <div class="mb-3">
-                                            <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
-                                                style="background-color: rgb(206, 206, 206);" role="button">
-                                                <span><strong><i class="bi bi-chat-square-text me-2"></i>
-                                                        Advice</strong></span>
-                                                <span class="toggle-icon">+</span>
-                                            </div>
-
-                                            <div class="collapse field-container mt-2">
-                                                <div id="adviceWrapper">
-                                                    <div class="input-group mb-2">
-                                                        <input type="text" class="form-control" id="adviceSearch"
-                                                            placeholder="Search Advice">
-
-                                                        <button type="button" class="btn btn-outline-secondary"
-                                                            id="clearAdviceSearch" style="display: none;">✖</button>
-
-                                                        <button type="button" class="btn btn-outline-primary"
-                                                            id="addAdviceBtn" style="display: none;">+ Add</button>
-                                                    </div>
-
-                                                    <div id="adviceList" class="mt-2"
-                                                        style="max-height: 200px; overflow-y: auto;">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
- -->
+                                        
                                         <div class="mb-3">
                                             <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
                                                 style="background-color: rgb(206, 206, 206);" role="button">

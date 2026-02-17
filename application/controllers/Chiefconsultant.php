@@ -376,22 +376,7 @@ class Chiefconsultant extends CI_Controller
         redirect('Chiefconsultant/myProfile');
     }
 
-    public function logout()
-    {
-        // $this->session->unset_userdata('LoggedInDetails');
-        $this->session->unset_userdata('ccIdDb');
-        $this->session->unset_userdata('ccId');
-        $this->session->unset_userdata('ccName');
-        $this->session->unset_userdata('ccMailId');
-        $this->session->unset_userdata('ccMobileNum');
-        $this->session->unset_userdata('firstLogin');
-        $this->session->unset_userdata('last_activity_time');
-
-        $this->session->sess_regenerate(TRUE);
-
-        redirect('Chiefconsultant/');
-    }
-
+    // Function to join on online consultation meeting using Agora SDK
     public function join($unique_meeting_id = null)
     {
         if (!$this->session->userdata('ccName')) {
@@ -450,4 +435,23 @@ class Chiefconsultant extends CI_Controller
 
         $this->load->view('customMeeting', $data);
     }
+
+    public function logout()
+    {
+        // $this->session->unset_userdata('LoggedInDetails');
+        $this->session->unset_userdata('ccIdDb');
+        $this->session->unset_userdata('ccId');
+        $this->session->unset_userdata('ccName');
+        $this->session->unset_userdata('ccMailId');
+        $this->session->unset_userdata('ccMobileNum');
+        $this->session->unset_userdata('firstLogin');
+        $this->session->unset_userdata('last_activity_time');
+
+        $this->session->sess_regenerate(TRUE);
+
+        redirect('Chiefconsultant/');
+    }
+
+
+
 }

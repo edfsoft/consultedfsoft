@@ -232,7 +232,8 @@
 
                 <td style="width: 35%; vertical-align: top; text-align: right;">
                     <p class="mb-0">
-                        <span class="text-bold">Date:</span> <?php echo date('d M Y'); ?>
+                        <span class="text-bold">Consult Date:</span>
+                        <?php echo date('d M Y', strtotime($consultation['consult_date'])); ?>
                     </p>
                     <p class="mb-0">
                         <span class="text-bold">Mobile:</span> <?php echo $patientDetails[0]['mobileNumber'] ?? '-'; ?>

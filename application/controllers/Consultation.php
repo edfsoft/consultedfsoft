@@ -983,11 +983,11 @@ class Consultation extends CI_Controller
             fastcgi_finish_request();
         }
 
-        $this->sendConsultationEmail($consultationId, $symptoms, $diagnoses, $medicines, $postData);
+        $this->sendConsultationEmail($consultation, $symptoms, $diagnoses, $medicines, $postData);
     }
 
     // Send consultation email with pdf attachment - from preview page
-    private function sendConsultationEmail($consultationId, $symptoms, $diagnoses, $medicines, $post)
+    private function sendConsultationEmail($consultation, $symptoms, $diagnoses, $medicines, $post)
     {
         $patient = $this->ConsultModel->getPatientDetails($post['patientIdDb']);
         $email = $patient[0]['mailId'];
@@ -1004,8 +1004,8 @@ class Consultation extends CI_Controller
         $consultationData = [
             'patientDetails' => $patient,
             'consultation' => [
-                'consult_date' => date('Y-m-d'),
-                'consult_time' => date('H:i:s'),
+                'consult_date' => $consultation['consult_date'],
+                'consult_time' => $consultation['consult_time'],
                 'symptoms' => $symptoms,
                 'diagnosis' => $diagnoses,
                 'medicines' => $medicines,
@@ -1013,6 +1013,10 @@ class Consultation extends CI_Controller
                 'next_follow_up' => $this->input->post('nextFollowUpDate')
             ]
         ];
+
+        $date = date('d-m-Y', strtotime($consultation['consult_date']));
+        $time = date('h-i_A', strtotime($consultation['consult_time']));
+        $tempFileName = 'Consultation_' . $date . '_' . $time . '_' . $consultation['consultation_id'] . '.pdf';
 
         // Generate PDF using Dompdf
         require_once FCPATH . 'vendor/autoload.php';
@@ -1024,7 +1028,9 @@ class Consultation extends CI_Controller
         $dompdf->render();
 
         $output = $dompdf->output();
-        $tempFileName = 'Consultation_' . date('d-m-Y_h-i_A') . '_' . $consultationId . '.pdf';
+        $date = date('d-m-Y', strtotime($consultation['consult_date']));
+        $time = date('h-i_A', strtotime($consultation['consult_time']));
+        $tempFileName = 'Consultation_' . $date . '_' . $time . '_' . $consultation['consultation_id'] . '.pdf';
         $tempFilePath = FCPATH . 'uploads/temp/' . $tempFileName;
 
         if (!is_dir(FCPATH . 'uploads/temp/')) {

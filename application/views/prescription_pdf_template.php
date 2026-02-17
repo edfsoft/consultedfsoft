@@ -12,6 +12,13 @@
             font-style: normal;
         }
 
+        @font-face {
+            font-family: 'Mitra';
+            src: url('<?php echo FCPATH; ?>assets/fonts/Mitra-Bold.ttf') format('truetype');
+            font-weight: bold;
+            font-style: normal;
+        }
+
         body {
             /* Fallback to DejaVu Sans for English, TamilFont for Tamil */
             font-family: 'TamilFont', 'DejaVu Sans', sans-serif;
@@ -91,16 +98,13 @@
         }
 
         .hospital-title {
-            font-family: Arial, Helvetica, sans-serif;
+            font-family: 'Mitra', Arial, Helvetica, sans-serif;
             /* font-size: 28px; */
-            color: #2F6F5F;
-
+            color: #2F6E4D;
             font-size: 22px;
             font-weight: bold;
             text-transform: uppercase;
             margin: 0;
-            /* color: #333; */
-            /* Dark Grey/Black */
         }
 
         .doc-header {
@@ -159,9 +163,9 @@
 
                 <td style="text-align: center;">
                     <h1 class="hospital-title">MAARUTHI MEDICAL CENTRE AND HOSPITALS</h1>
-                    <p style="margin: 2px 0;">Perundurai Road, Erode - 11. &nbsp; ✆ : 0424 - 2264949, 2250517, 2266768,
+                    <p style="margin: 1px 0;">Perundurai Road, Erode - 11. &nbsp; ✆ : 0424 - 2264949, 2250517, 2266768,
                         2257091.</p>
-                    <p style="margin: 2px 0;">
+                    <p style="margin: 1px 0;">
                         Web: www.erodediabetesfoundation.org &nbsp;&nbsp;
                         mail: a.s.senthilvelu@gmail.com
                     </p>
@@ -186,31 +190,28 @@
             <table style="width: 100%;" style="margin-bottom: 10px;">
                 <tr>
                     <td>
-                        <span style=" font-size: 14px; font-weight: bold;">Dr. A.S. SENTHIL VELU,</span> <span
-                            style="font-size: 10px;">M.D., FICP</span><br>
-                        <span style="font-size: 10px; color: #555;">
-                            Consultant Physician, Diabetologist, Ultrasound, Whole body color Doppler applications,
-                            Echocardiography, Critical care physician
-                        </span><br>
-                        <span style="font-size: 10px; font-weight: bold;">
+                        <span style=" font-size: 14px; font-weight: bold; color: #2F6E4D;">Dr. A.S. SENTHIL VELU,</span>
+                        <span style="font-size: 10px; color: #2F6E4D;">M.D., FICP</span><br>
+                        <span style="font-size: 10px; color: #646464;"><!-- Nimbus Sans Std T Italic -->
+                            <i>Consultant Physician, Diabetologist, Ultrasound, Whole body color Doppler applications,
+                                Echocardiography, Critical care physician</i></span><br>
+                        <span style="font-size: 10px; font-weight: 500;"><!-- Iwata Gothic Old Pro Bold -->
                             ERODE DIABETES FOUNDATION (EDF). REGIONAL FACULTY FOR CERTIFICATE COURSE IN EVIDENCE BASED
-                            DIABETES
-                            MANAGEMENT
-                        </span>
+                            DIABETES MANAGEMENT </span>
                     </td>
                 </tr>
             </table>
         </div>
     </header>
     <footer>
-        <div>
-            Kindly fix prior appointment by <br>
-            Please book an appointment before meeting the doctor. &nbsp; ✆ : 97894 94299
+        <div style="color: #307352;">
+            <i>Kindly fix prior appointment by</i> <br>
+            Please book an appointment before meeting the doctor. &nbsp; ✆ : <b>97894 94299</b>
         </div>
         <div style="margin-top: 3px;">
             Consultation Timings: 8:00 AM – 2:00 PM & 6:00 PM – 9:00 PM
         </div>
-        <div style="margin-top: 3px; font-weight: bold;">
+        <div style="margin-top: 3px; font-weight: semi bold;color: #307352; border-top: 2px solid #000;">
             FOR ONLINE/TELECONSULT VISIT &nbsp;|&nbsp; consult.edftech.in / DR.A.S.SENTHILVELU
         </div>
     </footer>

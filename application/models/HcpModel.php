@@ -448,13 +448,18 @@ class HcpModel extends CI_Model
     public function getAppointmentListDash()
     {
         $hcpIdDb = $_SESSION['hcpIdDb'];
-        $details = "SELECT pd.id, pd.patientId, pd.firstName, pd.lastName , pd.mobileNumber , pd.gender , pd.age , pd.bloodGroup, pd.profilePhoto,
-        ad.referalDoctor, ad.referalDoctorDbId , ad.dateOfAppoint , DATE_FORMAT(ad.timeOfAppoint, '%h:%i %p') AS timeOfAppoint12, ad.patientComplaint , ad.patientHcp, ad.appointmentType
-        FROM patient_details AS pd
-        LEFT JOIN appointment_details AS ad ON pd.id = ad.patientDbId
-        WHERE hcpDbId = $hcpIdDb AND  `dateOfAppoint` = CURDATE()   AND `timeOfAppoint` >= CURTIME() ORDER BY `dateOfAppoint`, `timeOfAppoint`;";
+        /* Currently commented */
+        // $details = "SELECT pd.id, pd.patientId, pd.firstName, pd.lastName , pd.mobileNumber , pd.gender , pd.age , pd.bloodGroup, pd.profilePhoto,
+        // ad.referalDoctor, ad.referalDoctorDbId , ad.dateOfAppoint , DATE_FORMAT(ad.timeOfAppoint, '%h:%i %p') AS timeOfAppoint12, ad.patientComplaint , ad.patientHcp, ad.appointmentType
+        // FROM patient_details AS pd
+        // LEFT JOIN appointment_details AS ad ON pd.id = ad.patientDbId
+        // WHERE hcpDbId = $hcpIdDb AND  `dateOfAppoint` = CURDATE()   AND `timeOfAppoint` >= CURTIME() ORDER BY `dateOfAppoint`, `timeOfAppoint`;";
+        // $select = $this->db->query($details);
+        // return array("response" => $select->result_array(), "totalRows" => $select->num_rows());
+        $details = "SELECT COUNT(*) AS totalCCAppointments FROM appointment_details WHERE hcpDbId = $hcpIdDb AND appointmentType = 'CC' AND dateOfAppoint = CURDATE() AND timeOfAppoint >= CURTIME()";
         $select = $this->db->query($details);
-        return array("response" => $select->result_array(), "totalRows" => $select->num_rows());
+        return $select->row()->totalCCAppointments;
+
     }
 
     public function insertAppointment()

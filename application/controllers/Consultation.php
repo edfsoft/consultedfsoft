@@ -1014,11 +1014,7 @@ class Consultation extends CI_Controller
             ]
         ];
 
-        $date = date('d-m-Y', strtotime($consultation['consult_date']));
-        $time = date('h-i_A', strtotime($consultation['consult_time']));
-        $tempFileName = 'Consultation_' . $date . '_' . $time . '_' . $consultation['consultation_id'] . '.pdf';
-
-        // Generate PDF using Dompdf
+       // Generate PDF using Dompdf
         require_once FCPATH . 'vendor/autoload.php';
         $dompdf = new \Dompdf\Dompdf();
         $html = $this->load->view('prescription_pdf_template', $consultationData, true);

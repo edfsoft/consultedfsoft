@@ -749,7 +749,7 @@
                     <div class="card rounded">
                         <div class="d-sm-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
                             <p style="font-size: 24px; font-weight: 500">
-                                Appointments
+                                Online Appointments
                             </p>
                             <a href="<?php echo base_url() . "Healthcareprovider/appointmentsForm" ?>"> <button
                                     style="background-color: #00ad8e;" class="float-end text-light border-0 rounded p-2">
@@ -760,9 +760,7 @@
 
                     <?php if (isset($appointmentList[0]['id'])) {
                         ?>
-
                             <div id="entriesPerPage" class="d-md-flex align-items-center justify-content-between mx-4">
-
                                 <!-- FILTER -->
                                 <select id="filterDropdown" class="form-select border border-2 rounded-3 px-3 py-2"
                                     style="height: 50px; width: 280px;">
@@ -836,7 +834,7 @@
                                 </div>
                             </div>
                     <?php } else { ?>
-                            <h5 class="text-center my-5"><b> No Appointments Found.</b> </h5>
+                            <h5 class="text-center my-5"><b> No Online Appointments Found.</b> </h5>
                     <?php } ?>
                     </div>
                 </section>
@@ -1297,7 +1295,7 @@
                                                     <!-- Hover catcher -->
                                                     <div
                                                         style="position:absolute;top:0;left:0;width:24px;height:24px;cursor:not-allowed;
-                                                                                                                                        "
+                                                                                                                                                        "
                                                         onmouseenter="this.nextElementSibling.style.display='flex'"
                                                         onmouseleave="this.nextElementSibling.style.display='none'"
                                                     ></div>
@@ -1397,7 +1395,7 @@
                         <div class="card rounded mt-4">
                             <div class="d-sm-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
                                 <p style="font-size: 24px; font-weight: 500">
-                                    Reschedule Appointments
+                                    Reschedule Online Appointments
                                 </p>
                             </div>
 
@@ -1572,7 +1570,7 @@
                         tbody.innerHTML = '';
 
                         if (rows.length === 0) {
-                            tbody.innerHTML = '<tr><td colspan="8" class="py-4">No appointments found</td></tr>';
+                            tbody.innerHTML = '<tr><td colspan="8" class="py-4">No online appointments found</td></tr>';
                             document.getElementById('entriesInfoReschedule').textContent = '';
                             document.getElementById('paginationContainerReschedule').innerHTML = '';
                             return;
@@ -1747,7 +1745,7 @@
                     <div class="card rounded mt-4">
                         <div class="d-sm-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
                             <p style="font-size: 24px; font-weight: 500">
-                                Completed Appointments </p>
+                                Completed Online Appointments </p>
                             <p class="px-3 pt-1" id="completedCount"
                                 style="font-size:16px;color: #00ad8e;border:2px solid #00ad8e;border-radius:50%;">
                                 0 </p>
@@ -1869,7 +1867,7 @@
                                         tbody.innerHTML = `
                         <tr>
                             <td colspan="8" class="text-center text-muted py-4">
-                                No completed appointments
+                                No completed online appointments
                             </td>
                         </tr>`;
                                     }
@@ -1937,7 +1935,7 @@
                     <section>
                         <div class="card rounded">
                             <div class="d-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
-                                <p style="font-size: 24px; font-weight: 500"> New Appointment</p>
+                                <p style="font-size: 24px; font-weight: 500"> New Online Appointment</p>
                                 <a href="<?php echo base_url() . "Healthcareprovider/appointments" ?>"
                                     class="float-end text-dark mt-2"><i class="bi bi-arrow-left"></i> Back</a>
                             </div>
@@ -2228,7 +2226,7 @@
                         <section>
                             <div class="card rounded">
                                 <div class="d-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
-                                    <p style="font-size: 24px; font-weight: 500">Reschedule Appoitment</p>
+                                    <p style="font-size: 24px; font-weight: 500">Reschedule Online Appoitment</p>
                                     <a href="<?php echo base_url() . "Healthcareprovider/appointments" ?>"
                                         class="float-end text-dark mt-2"><i class="bi bi-arrow-left"></i> Back</a>
                                 </div>

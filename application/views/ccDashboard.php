@@ -184,7 +184,7 @@
                     <div class="card col-12 col-lg-5 rounded-5 mx-1">
                         <div class="card-body p-4">
                             <p style="font-size: 20px; font-weight: 500; color: #0079AD">
-                                <i class="bi bi-calendar2-check pe-3"></i> Today Appointments
+                                <i class="bi bi-calendar2-check pe-3"></i> Today Online Appointments
                             </p>
                             <div class="table-responsive">
                                 <?php if (isset($appointmentList[0]['id'])) { ?>
@@ -276,7 +276,7 @@
                                         </tbody>
                                     </table>
                                 <?php } else { ?>
-                                    <p class="m-md-5 px-md-5"><b> No Appointments Today.</b></p>
+                                    <p class="m-md-5 px-md-5"><b> No Online Appointments Today.</b></p>
                                 <?php } ?>
                             </div>
                             <?php if (isset($appointmentList[3]['id'])) { ?>
@@ -392,7 +392,7 @@
                                         </button></a>
                                 </div>
                             <?php } else { ?>
-                                <p class="m-md-5 px-md-5"><b> No Appointments Today.</b></p>
+                                <p class="m-md-5 px-md-5"><b> No Online Appointments Today.</b></p>
                             <?php } ?>
                         </div>
                     </div>
@@ -1111,7 +1111,7 @@
                                 <div class="card-body p-3 p-sm-4">
                                     <div class="d-flex justify-content-between mt-2 mb-3">
                                         <p style="font-size: 24px; font-weight: 500">
-                                            Appointments
+                                            Online Appointments
                                         </p>
                                     </div>
 

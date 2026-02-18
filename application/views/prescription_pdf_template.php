@@ -36,7 +36,7 @@
         .header-box {
             border: 1px solid #cec8c8;
             border-radius: 5px;
-            padding: 10px;
+            padding: 0 10px;
             margin-bottom: 15px;
         }
 
@@ -63,7 +63,7 @@
 
         /* PDF Page Layout */
         @page {
-            margin: 180px 40px 80px 40px;
+            margin: 180px 40px 100px 40px;
         }
 
         header {
@@ -88,7 +88,7 @@
         }
 
         .logo-box {
-            border: 2px solid #000;
+            border: 2px solid #2F6E4D;
             padding: 5px;
             text-align: center;
             font-weight: bold;
@@ -108,7 +108,7 @@
         }
 
         .doc-header {
-            border-top: 2px solid #000;
+            border-top: 1px solid #000;
             border-bottom: 1px solid #000;
             margin-top: 5px;
             padding: 5px 0;
@@ -163,11 +163,11 @@
 
                 <td style="text-align: center;">
                     <h1 class="hospital-title">MAARUTHI MEDICAL CENTRE AND HOSPITALS</h1>
-                    <p style="margin: 1px 0;">Perundurai Road, Erode - 11. &nbsp; ✆ : 0424 - 2264949, 2250517, 2266768,
+                    <p style="margin: 0px;">Perundurai Road, Erode - 11. &nbsp; ✆ : 0424 - 2264949, 2250517, 2266768,
                         2257091.</p>
-                    <p style="margin: 1px 0;">
+                    <p style="margin: 0px;">
                         Web: www.erodediabetesfoundation.org &nbsp;&nbsp;
-                        mail: a.s.senthilvelu@gmail.com
+                        mail:- a.s.senthilvelu@gmail.com
                     </p>
                 </td>
 
@@ -192,10 +192,10 @@
                     <td>
                         <span style=" font-size: 14px; font-weight: bold; color: #2F6E4D;">Dr. A.S. SENTHIL VELU,</span>
                         <span style="font-size: 10px; color: #2F6E4D;">M.D., FICP</span><br>
-                        <span style="font-size: 10px; color: #646464;"><!-- Nimbus Sans Std T Italic -->
+                        <span style="font-size: 10px;">
                             <i>Consultant Physician, Diabetologist, Ultrasound, Whole body color Doppler applications,
                                 Echocardiography, Critical care physician</i></span><br>
-                        <span style="font-size: 10px; font-weight: 500;"><!-- Iwata Gothic Old Pro Bold -->
+                        <span style="font-size: 10px; font-weight: 500;">
                             ERODE DIABETES FOUNDATION (EDF). REGIONAL FACULTY FOR CERTIFICATE COURSE IN EVIDENCE BASED
                             DIABETES MANAGEMENT </span>
                     </td>
@@ -211,12 +211,19 @@
         <div style="margin-top: 3px;">
             Consultation Timings: 8:00 AM – 2:00 PM & 6:00 PM – 9:00 PM
         </div>
-        <div style="margin-top: 3px; font-weight: semi bold;color: #307352; border-top: 2px solid #000;">
-            FOR ONLINE/TELECONSULT VISIT &nbsp;|&nbsp; consult.edftech.in / DR.A.S.SENTHILVELU
+        <?php
+        $logoPath1 = FCPATH . 'assets/edfTitleLogo.png'; // Use local file path
+        $logoData = base64_encode(file_get_contents($logoPath1));
+        $logoSrc1 = 'data:image/png;base64,' . $logoData;
+        ?>
+        <div style="margin-top: 3px; padding-top: 5px; font-weight: 500; color: #307352; border-top: 1px solid #000;">
+            FOR ONLINE / TELECONSULT VISIT &nbsp;|&nbsp; <img src="<?= $logoSrc1 ?>" width="15" height="15"
+                alt="EDF Logo" style="position: relative; top: 3px;">
+            consult.edftech.in / DR.A.S.SENTHILVELU
         </div>
     </footer>
 
-    <div class="header-box" style="margin-top: 20px;">
+    <div class="header-box" style="margin-top: 0px;">
         <table style="width: 100%;">
             <tr>
                 <td style="width: 65%; vertical-align: top;">
@@ -333,9 +340,9 @@
 
                             <strong style="font-size: 13px;"><?= htmlspecialchars($medicine['medicine_name']) ?></strong>
 
-                            <?php if (!empty($medicine['composition']) && strtolower($medicine['composition']) !== 'nil'): ?>
+                            <?php if (!empty($medicine['composition_name']) && strtolower($medicine['composition_name']) !== 'nil'): ?>
                                 <br><span
-                                    style="font-size: 11px; font-style: italic; color: #444;"><?= htmlspecialchars($medicine['composition']) ?></span>
+                                    style="font-size: 11px; font-style: italic; color: #444;"><?= htmlspecialchars($medicine['composition_name']) ?></span>
                             <?php endif; ?>
                         </td>
                         <td><?= htmlspecialchars($medicine['quantity'] ?? '-') ?></td>

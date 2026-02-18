@@ -36,7 +36,7 @@
         .header-box {
             border: 1px solid #cec8c8;
             border-radius: 5px;
-            padding: 0 10px;
+            padding: 10px;
             margin-bottom: 15px;
         }
 
@@ -47,14 +47,6 @@
         /* Helpers */
         .text-bold {
             font-weight: bold;
-        }
-
-        .text-right {
-            text-align: right;
-        }
-
-        .mb-0 {
-            margin-bottom: 0;
         }
 
         .mt-2 {
@@ -87,22 +79,13 @@
             padding-top: 5px;
         }
 
-        .logo-box {
-            border: 2px solid #2F6E4D;
-            padding: 5px;
-            text-align: center;
-            font-weight: bold;
-            font-size: 14px;
-            line-height: 1;
-            width: 50px;
-        }
-
         .hospital-title {
             font-family: 'Mitra', Arial, Helvetica, sans-serif;
             /* font-size: 28px; */
             color: #2F6E4D;
             font-size: 22px;
-            font-weight: bold;
+            /* font-weight: bold; */
+            font-weight: 700;
             text-transform: uppercase;
             margin: 0;
         }
@@ -137,16 +120,8 @@
             vertical-align: middle;
         }
 
-        .text-bold {
-            font-weight: bold;
-        }
-
         .text-right {
             text-align: right;
-        }
-
-        .mb-0 {
-            margin-bottom: 0;
         }
     </style>
 </head>
@@ -155,10 +130,13 @@
     <header>
         <table class="header-table">
             <tr>
-                <td style="width: 60px;">
-                    <div class="logo-box">
-                        M M<br>C H
-                    </div>
+                <td style="">
+                    <?php
+                    $logommch = FCPATH . 'assets/mmchlogo.png'; // Use local file path
+                    $mmchLogoData = base64_encode(file_get_contents($logommch));
+                    $logommch1 = 'data:image/png;base64,' . $mmchLogoData;
+                    ?>
+                    <img src="<?= $logommch1 ?>" width="60" height="60" alt="MMCH">
                 </td>
 
                 <td style="text-align: center;">
@@ -190,12 +168,12 @@
             <table style="width: 100%;" style="margin-bottom: 10px;">
                 <tr>
                     <td>
-                        <span style=" font-size: 14px; font-weight: bold; color: #2F6E4D;">Dr. A.S. SENTHIL VELU,</span>
-                        <span style="font-size: 10px; color: #2F6E4D;">M.D., FICP</span><br>
+                        <span style=" font-size: 16px; font-weight: bold; color: #2F6E4D;">Dr. A.S. SENTHIL VELU,</span>
+                        <span style="font-size: 10px; color: #2F6E4D; font-weight:600;">M.D., FICP</span><br>
                         <span style="font-size: 10px;">
                             <i>Consultant Physician, Diabetologist, Ultrasound, Whole body color Doppler applications,
                                 Echocardiography, Critical care physician</i></span><br>
-                        <span style="font-size: 10px; font-weight: 500;">
+                        <span style="font-size: 10px; font-weight: 600;">
                             ERODE DIABETES FOUNDATION (EDF). REGIONAL FACULTY FOR CERTIFICATE COURSE IN EVIDENCE BASED
                             DIABETES MANAGEMENT </span>
                     </td>
@@ -227,23 +205,23 @@
         <table style="width: 100%;">
             <tr>
                 <td style="width: 65%; vertical-align: top;">
-                    <p class="mb-0"><span class="text-bold">Name:</span>
+                    <p style="margin:0px;"><span class="text-bold">Name:</span>
                         <?php echo $patientDetails[0]['firstName'] . ' ' . $patientDetails[0]['lastName']; ?>
                     </p>
-                    <p class="mb-0"><span class="text-bold">Age & Sex:</span>
+                    <p style="margin:0px;"><span class="text-bold">Age & Sex:</span>
                         <?php echo $patientDetails[0]['age']; ?> Year(s) / <?php echo $patientDetails[0]['gender']; ?>
                     </p>
-                    <p class="mb-0"><span class="text-bold">Patient ID:</span>
+                    <p style="margin:0px;" <span class="text-bold">Patient ID:</span>
                         <?php echo $patientDetails[0]['patientId']; ?>
                     </p>
                 </td>
 
                 <td style="width: 35%; vertical-align: top; text-align: right;">
-                    <p class="mb-0">
+                    <p style="margin:0px;">
                         <span class="text-bold">Consult Date:</span>
                         <?php echo date('d M Y', strtotime($consultation['consult_date'])); ?>
                     </p>
-                    <p class="mb-0">
+                    <p style="margin:0px;">
                         <span class="text-bold">Mobile:</span> <?php echo $patientDetails[0]['mobileNumber'] ?? '-'; ?>
                     </p>
                 </td>
@@ -362,7 +340,7 @@
 
     <?php if (!empty($consultation['instructions'])): ?>
         <div style="margin-bottom: 15px;">
-            <p class="mb-0 text-bold">Instructions:</p>
+            <p class="text-bold">Instructions:</p>
             <ul style="margin-top: 5px; padding-left: 20px;">
                 <?php foreach ($consultation['instructions'] as $ins): ?>
                     <li><?= $ins['instruction_name'] ?></li>

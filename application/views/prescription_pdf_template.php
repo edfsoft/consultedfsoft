@@ -4,26 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <style>
-        /* @font-face {
-            font-family: 'TamilFont';
-            src: url('<?php echo FCPATH; ?>assets/fonts/Nirmala.ttf') format('truetype');
-            font-weight: normal;
-            font-style: normal;
-        } */
-
-        @font-face {
-            font-family: 'Optima';
-            font-style: normal;
-            font-weight: bold;
-            src: local('Optima Bold'),
-                url('<?php echo FCPATH; ?>assets/fonts/OPTIMA_B.woff') format('woff');
-        }
-
         body {
-            /* Fallback to DejaVu Sans for English, TamilFont for Tamil */
-            /* font-family: 'TamilFont', 'DejaVu Sans', sans-serif; */
-            /* font-family: Arial, Helvetica, sans-serif; */
-            font-family: 'Optima', sans-serif;
+            font-family: Arial, Helvetica, sans-serif;
             font-size: 12px;
             color: #000;
             line-height: 1.2;
@@ -59,7 +41,7 @@
 
         header {
             position: fixed;
-            top: -130px;
+            top: -140px;
             left: 0;
             right: 0;
             /* height: 100px; */
@@ -78,18 +60,15 @@
             padding-top: 5px;
         }
 
-        .hospital-title {
-            /* font-family: Arial, Helvetica, sans-serif; */
-            /* font-size: 28px; */
-            font-family: 'Optima', sans-serif;
+        /* .hospital-title {
+            font-family: Arial, Helvetica, sans-serif;
             font-weight: bold;
             color: #2F6E4D;
             font-size: 22px;
-            /* font-weight: bold; */
-            /* font-weight: 700; */
+            font-weight: bold;
             text-transform: uppercase;
             margin: 0;
-        }
+        } */
 
         .doc-header {
             border-top: 1px solid #000;
@@ -125,11 +104,11 @@
 
 <body>
     <header>
-        <table class="header-table">
+        <!-- <table class="header-table">
             <tr>
                 <td style="">
                     <?php
-                    $logommch = FCPATH . 'assets/mmchlogo.png'; // Use local file path
+                    $logommch = FCPATH . 'assets/mmchlogo.png';
                     $mmchLogoData = base64_encode(file_get_contents($logommch));
                     $logommch1 = 'data:image/png;base64,' . $mmchLogoData;
                     ?>
@@ -148,7 +127,7 @@
 
                 <td style="width: 60px; text-align: right;">
                     <?php
-                    $logoPath = FCPATH . 'assets/edf_logo.png'; // Use local file path
+                    $logoPath = FCPATH . 'assets/edf_logo.png';
                     if (file_exists($logoPath)):
                         $logoData = base64_encode(file_get_contents($logoPath));
                         $logoSrc = 'data:image/png;base64,' . $logoData;
@@ -159,7 +138,13 @@
                     <?php endif; ?>
                 </td>
             </tr>
-        </table>
+        </table> -->
+        <?php
+        $header = FCPATH . 'assets/prescriptionHeader.png';
+        $headerData = base64_encode(file_get_contents($header));
+        $headerSrc = 'data:image/png;base64,' . $headerData;
+        ?>
+        <img src="<?= $headerSrc ?>" width="710" height="70" alt="Prescription Header">
 
         <div class="doc-header">
             <table style="width: 100%;" style="margin-bottom: 10px;">
@@ -336,9 +321,9 @@
     <?php endif; ?>
 
     <?php if (!empty($consultation['advices'])): ?>
-        <div style="margin-bottom: 10px;">
-            <p class="text-bold">Advices:</p>
-            <ul style="margin-top: 5px; padding-left: 20px;">
+        <div style="">
+            <p class="text-bold" style="margin: 10px 0 2px 0; padding: 0;">Advices:</p>
+            <ul style="padding-left: 20px; margin: 0;">
                 <?php foreach ($consultation['advices'] as $adv): ?>
                     <li><?= $adv['advice_name'] ?>
                         <?php if (!empty($adv['note'])): ?>
@@ -351,9 +336,9 @@
     <?php endif; ?>
 
     <?php if (!empty($consultation['instructions'])): ?>
-        <div style="margin-bottom: 15px;">
-            <p class="text-bold">Instructions:</p>
-            <ul style="margin-top: 5px; padding-left: 20px;">
+        <div style="">
+            <p class="text-bold" style="margin: 15px 0 2px 0;">Instructions:</p>
+            <ul style="padding-left: 20px; margin: 0;">
                 <?php foreach ($consultation['instructions'] as $ins): ?>
                     <li><?= $ins['instruction_name'] ?></li>
                 <?php endforeach; ?>
@@ -362,13 +347,13 @@
     <?php endif; ?>
 
     <?php if (!empty($consultation['next_follow_up'])): ?>
-        <div>
+        <div style="margin-top: 15px;">
             <span class="text-bold">Next Follow-Up Date:</span>
             <?= date("d M Y", strtotime($consultation['next_follow_up'])) ?>
         </div>
     <?php endif; ?>
 
-    <table style="width: 100%; margin-top: 40px;">
+    <table style="width: 100%; margin-top: 0px;">
         <tr>
             <td style="text-align: right; vertical-align: bottom;">
                 <div style="display: inline-block; text-align: center;">

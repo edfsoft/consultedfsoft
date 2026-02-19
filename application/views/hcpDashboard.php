@@ -926,7 +926,7 @@ Your appointment has been successfully booked.
 
 📅 Date: ${fDate}
 ⏰ Time: ${fTime}
-Video : ${videoMode}
+🎥 Video : ${videoMode}
 
 🔗 Join Meeting:
 ${joinUrl}
@@ -935,7 +935,7 @@ Please join the meeting at the scheduled time.
 
 Thank you.`;
 
-                            navigator.clipboard.writeText(textToCopy).then(() => {
+                        navigator.clipboard.writeText(textToCopy).then(() => {
                             const originalContent = btn.innerHTML;
                             btn.innerHTML = '<small>Copied!</small>';
                             btn.classList.replace('btn-outline-info', 'btn-success');
@@ -1339,7 +1339,7 @@ Thank you.`;
                                                     <!-- Hover catcher -->
                                                     <div
                                                         style="position:absolute;top:0;left:0;width:24px;height:24px;cursor:not-allowed;
-                                                                                                                                                        "
+                                                                                                                                                                "
                                                         onmouseenter="this.nextElementSibling.style.display='flex'"
                                                         onmouseleave="this.nextElementSibling.style.display='none'"
                                                     ></div>

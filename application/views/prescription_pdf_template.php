@@ -4,27 +4,29 @@
 <head>
     <meta charset="UTF-8">
     <style>
-        @font-face {
+        /* @font-face {
             font-family: 'TamilFont';
-            /* Ensure the path below is correct for your XAMPP/server setup */
             src: url('<?php echo FCPATH; ?>assets/fonts/Nirmala.ttf') format('truetype');
             font-weight: normal;
             font-style: normal;
-        }
+        } */
 
         @font-face {
-            font-family: 'Mitra';
-            src: url('<?php echo FCPATH; ?>assets/fonts/Mitra-Bold.ttf') format('truetype');
-            font-weight: bold;
+            font-family: 'Optima';
             font-style: normal;
+            font-weight: bold;
+            src: local('Optima Bold'),
+                url('<?php echo FCPATH; ?>assets/fonts/OPTIMA_B.woff') format('woff');
         }
 
         body {
             /* Fallback to DejaVu Sans for English, TamilFont for Tamil */
-            font-family: 'TamilFont', 'DejaVu Sans', sans-serif;
+            /* font-family: 'TamilFont', 'DejaVu Sans', sans-serif; */
+            /* font-family: Arial, Helvetica, sans-serif; */
+            font-family: 'Optima', sans-serif;
             font-size: 12px;
             color: #000;
-            line-height: 1.3;
+            line-height: 1.2;
         }
 
         table {
@@ -37,6 +39,7 @@
             border: 1px solid #cec8c8;
             border-radius: 5px;
             padding: 10px;
+            margin-top: 0px;
             margin-bottom: 15px;
         }
 
@@ -49,10 +52,6 @@
             font-weight: bold;
         }
 
-        .mt-2 {
-            margin-top: 10px;
-        }
-
         /* PDF Page Layout */
         @page {
             margin: 180px 40px 100px 40px;
@@ -60,10 +59,10 @@
 
         header {
             position: fixed;
-            top: -160px;
+            top: -130px;
             left: 0;
             right: 0;
-            height: 150px;
+            /* height: 100px; */
             font-size: 12px;
         }
 
@@ -80,12 +79,14 @@
         }
 
         .hospital-title {
-            font-family: 'Mitra', Arial, Helvetica, sans-serif;
+            /* font-family: Arial, Helvetica, sans-serif; */
             /* font-size: 28px; */
+            font-family: 'Optima', sans-serif;
+            font-weight: bold;
             color: #2F6E4D;
             font-size: 22px;
             /* font-weight: bold; */
-            font-weight: 700;
+            /* font-weight: 700; */
             text-transform: uppercase;
             margin: 0;
         }
@@ -119,10 +120,6 @@
             text-align: center;
             vertical-align: middle;
         }
-
-        .text-right {
-            text-align: right;
-        }
     </style>
 </head>
 
@@ -136,7 +133,7 @@
                     $mmchLogoData = base64_encode(file_get_contents($logommch));
                     $logommch1 = 'data:image/png;base64,' . $mmchLogoData;
                     ?>
-                    <img src="<?= $logommch1 ?>" width="60" height="60" alt="MMCH">
+                    <img src="<?= $logommch1 ?>" width="45" height="45" alt="MMCH">
                 </td>
 
                 <td style="text-align: center;">
@@ -156,7 +153,7 @@
                         $logoData = base64_encode(file_get_contents($logoPath));
                         $logoSrc = 'data:image/png;base64,' . $logoData;
                         ?>
-                        <img src="<?= $logoSrc ?>" style="height: 40px;" alt="EDF">
+                        <img src="<?= $logoSrc ?>" style="height: 45px;" alt="EDF">
                     <?php else: ?>
                         <div style="font-weight:bold; font-size:10px;">EDF</div>
                     <?php endif; ?>
@@ -169,13 +166,13 @@
                 <tr>
                     <td>
                         <span style=" font-size: 16px; font-weight: bold; color: #2F6E4D;">Dr. A.S. SENTHIL VELU,</span>
-                        <span style="font-size: 10px; color: #2F6E4D; font-weight:600;">M.D., FICP</span><br>
+                        <span style="font-size: 10px; color: #2F6E4D; font-weight:bold;">M.D., FICP</span><br>
                         <span style="font-size: 10px;">
                             <i>Consultant Physician, Diabetologist, Ultrasound, Whole body color Doppler applications,
                                 Echocardiography, Critical care physician</i></span><br>
-                        <span style="font-size: 10px; font-weight: 600;">
+                        <p style="font-size: 10px; font-weight: bold; margin: 0px; padding: 0px;">
                             ERODE DIABETES FOUNDATION (EDF). REGIONAL FACULTY FOR CERTIFICATE COURSE IN EVIDENCE BASED
-                            DIABETES MANAGEMENT </span>
+                            DIABETES MANAGEMENT </p>
                     </td>
                 </tr>
             </table>
@@ -194,14 +191,14 @@
         $logoData = base64_encode(file_get_contents($logoPath1));
         $logoSrc1 = 'data:image/png;base64,' . $logoData;
         ?>
-        <div style="margin-top: 3px; padding-top: 5px; font-weight: 500; color: #307352; border-top: 1px solid #000;">
+        <div style="margin-top: 3px; padding-top: 5px; font-weight: bold; color: #307352; border-top: 1px solid #000;">
             FOR ONLINE / TELECONSULT VISIT &nbsp;|&nbsp; <img src="<?= $logoSrc1 ?>" width="15" height="15"
                 alt="EDF Logo" style="position: relative; top: 3px;">
-            consult.edftech.in / DR.A.S.SENTHILVELU
+            consult.edftech.in / DR.A.S.SENTHIL VELU
         </div>
     </footer>
 
-    <div class="header-box" style="margin-top: 0px;">
+    <div class="header-box">
         <table style="width: 100%;">
             <tr>
                 <td style="width: 65%; vertical-align: top;">
@@ -369,7 +366,7 @@
                         <img src="<?= $src ?>" style="height: 60px; width: auto; display: block; margin: 0 auto 5px;">
                     <?php endif; ?>
 
-                    <p style="margin: 0; font-weight: bold;">Dr. A. S. Senthilvelu</p>
+                    <p style="margin: 0; font-weight: bold;">Dr. A. S. Senthil velu</p>
                 </div>
             </td>
         </tr>

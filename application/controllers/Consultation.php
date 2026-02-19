@@ -953,18 +953,10 @@ class Consultation extends CI_Controller
         $symptoms = $this->ConsultModel->get_symptoms_by_consultation_id($consultationId);
         $diagnoses = $this->ConsultModel->get_diagnosis_by_consultation_id($consultationId);
         $medicines = $this->ConsultModel->get_medicines_by_consultation_id($consultationId);
-        $instructionsRaw = $this->ConsultModel->get_instructions_by_consultation_id($consultationId);
+        $advices = $this->ConsultModel->get_advices_by_consultation_id($consultationId);
+        $instructions = $this->ConsultModel->get_instructions_by_consultation_id($consultationId);
 
-        $instructionList = [];
-        foreach ($instructionsRaw as $ins) {
-            $instructionList[] = $ins['instruction_name'];
-        }
-
-        $postData = [
-            'patientIdDb' => $consultation['patient_id'],
-            'nextFollowUpDate' => $consultation['next_follow_up'],
-            'instructions' => $instructionList
-        ];
+        $patientIdDb = $consultation['patient_id'];
 
         $this->session->set_tempdata('showSuccessMessage', 'Email is being sent to the patient in the background.', 5);
         session_write_close();
@@ -983,22 +975,14 @@ class Consultation extends CI_Controller
             fastcgi_finish_request();
         }
 
-        $this->sendConsultationEmail($consultation, $symptoms, $diagnoses, $medicines, $postData);
+        $this->sendConsultationEmail($patientIdDb, $consultation, $symptoms, $diagnoses, $medicines, $advices, $instructions);
     }
 
     // Send consultation email with pdf attachment - from preview page
-    private function sendConsultationEmail($consultation, $symptoms, $diagnoses, $medicines, $post)
+    private function sendConsultationEmail($patientIdDb, $consultation, $symptoms, $diagnoses, $medicines, $advices, $instructions)
     {
-        $patient = $this->ConsultModel->getPatientDetails($post['patientIdDb']);
+        $patient = $this->ConsultModel->getPatientDetails($patientIdDb);
         $email = $patient[0]['mailId'];
-
-        $rawInstructions = isset($post['instructions']) ? $post['instructions'] : $this->input->post('instructions');
-        $pdfInstructions = [];
-        if (!empty($rawInstructions) && is_array($rawInstructions)) {
-            foreach ($rawInstructions as $ins) {
-                $pdfInstructions[] = ['instruction_name' => $ins];
-            }
-        }
 
         date_default_timezone_set('Asia/Kolkata');
         $consultationData = [
@@ -1006,11 +990,12 @@ class Consultation extends CI_Controller
             'consultation' => [
                 'consult_date' => $consultation['consult_date'],
                 'consult_time' => $consultation['consult_time'],
+                'next_follow_up' => $consultation['next_follow_up'],
                 'symptoms' => $symptoms,
                 'diagnosis' => $diagnoses,
                 'medicines' => $medicines,
-                'instructions' => $pdfInstructions,
-                'next_follow_up' => $this->input->post('nextFollowUpDate')
+                'advices' => $advices,
+                'instructions' => $instructions,
             ]
         ];
 

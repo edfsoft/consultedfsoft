@@ -335,6 +335,21 @@
         </table>
     <?php endif; ?>
 
+    <?php if (!empty($consultation['advices'])): ?>
+        <div style="margin-bottom: 10px;">
+            <p class="text-bold">Advices:</p>
+            <ul style="margin-top: 5px; padding-left: 20px;">
+                <?php foreach ($consultation['advices'] as $adv): ?>
+                    <li><?= $adv['advice_name'] ?>
+                        <?php if (!empty($adv['note'])): ?>
+                            - <?= htmlspecialchars($adv['note']) ?>
+                        <?php endif; ?>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
+        </div>
+    <?php endif; ?>
+
     <?php if (!empty($consultation['instructions'])): ?>
         <div style="margin-bottom: 15px;">
             <p class="text-bold">Instructions:</p>
@@ -347,7 +362,7 @@
     <?php endif; ?>
 
     <?php if (!empty($consultation['next_follow_up'])): ?>
-        <div style="margin-bottom: 20px;">
+        <div>
             <span class="text-bold">Next Follow-Up Date:</span>
             <?= date("d M Y", strtotime($consultation['next_follow_up'])) ?>
         </div>

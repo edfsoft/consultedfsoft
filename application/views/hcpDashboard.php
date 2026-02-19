@@ -819,7 +819,7 @@
 
                                                 <!-- <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">PURPOSE
                                                 </th> -->
-                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">ACTION
+                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">ACTIONS
                                                 </th>
                                                 <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">COMPLETED
                                                 </th>
@@ -919,18 +919,21 @@
                         const videoMode = (app.modeOfConsultant !== 'video' && app.modeOfConsultant === 'audio') ? 'No' : 'Yes';
                         const joinUrl = `${baseUrl}patient/join/${app.appointmentLink}`;
 
+                        // Don't indent the below temmplate
                         const textToCopy = `Dear ${app.firstName} ${app.lastName},
-                                Your appointment has been successfully booked. 
 
-                                📅 Date: ${fDate}
-                                ⏰ Time: ${fTime}
-                                Video : ${videoMode}
+Your appointment has been successfully booked. 
 
-                                🔗 Join Meeting:
-                                ${joinUrl}
+📅 Date: ${fDate}
+⏰ Time: ${fTime}
+Video : ${videoMode}
 
-                                Please join the meeting at the scheduled time.
-                                Thank you.`;
+🔗 Join Meeting:
+${joinUrl}
+
+Please join the meeting at the scheduled time.
+
+Thank you.`;
 
                             navigator.clipboard.writeText(textToCopy).then(() => {
                             const originalContent = btn.innerHTML;
@@ -1085,7 +1088,7 @@
                         const fullJoinUrl = `${baseUrl}healthcareprovider/join/${row.appointmentLink}`;
 
                         const copyBtn = `
-                            <button class="btn btn-outline-info mx-1" onclick="copyAppointmentDetails(${row.id}, this)" title="Copy Appointment Details">
+                            <button class="btn btn-outline-primary mx-1" onclick="copyAppointmentDetails(${row.id}, this)" title="Copy Appointment Details">
                                 <i class="bi bi-clipboard"></i>
                             </button>
                         `;
@@ -1093,7 +1096,7 @@
                         const consultBtn = `
                                 <a href="${baseUrl}Consultation/consultation/${row.patientDbId}">
                                     <button class="btn btn-secondary mx-1"
-                                        style="cursor:pointer;">
+                                        style="cursor:pointer;" title="Consult Patient">
                                         <i class="bi bi-calendar-check"></i>
                                     </button>
                                 </a>
@@ -1150,7 +1153,7 @@
                                     </div>
                                 `
                             : `
-                                    <button class="btn btn-danger" 
+                                    <button class="btn btn-danger" title="Delete Appointment"
                                         onclick="confirmDeleteApp(${row.id})">
                                         <i class="bi bi-trash"></i>
                                     </button>
@@ -1426,7 +1429,7 @@
                         }, delay);
                     }
 
-                 </script>
+                </script>
 
                 <!-- Reschedule Appointment Section -->
             <?php if (isset($appointmentReschedule[0]['id'])) { ?>

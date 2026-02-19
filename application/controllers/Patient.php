@@ -16,7 +16,7 @@ class Patient extends CI_Controller
         $this->load->library('session');
         $this->load->library('email');
         $this->check_session_timeout();
-         //Notify Pending Appointments
+        //Notify Pending Appointments
         if ($this->session->has_userdata('patientIdDb')) {
             $this->data['todayCount'] = $this->PatientModel->getTodayPendingCount();
         } else {
@@ -186,7 +186,7 @@ class Patient extends CI_Controller
     {
         if (isset($_SESSION['patientIdDb'])) {
             $this->data['method'] = "appointments";
-$appointmentList = $this->PatientModel->getAppointmentList();
+            $appointmentList = $this->PatientModel->getAppointmentList();
             $this->data['appointmentList'] = $appointmentList['response'];
             $this->load->view('patientDashboard.php', $this->data);
         } else {
@@ -395,8 +395,8 @@ $appointmentList = $this->PatientModel->getAppointmentList();
             return;
         }
 
-        $appID = 'f891d97665524065b626ea324f06942f';
-        $appCertificate = '3b5229b39c254ce9b03f5a64966fa5c9';
+        $appID = '7c04c3a5f72541c7b711c1424fd47a63';/* f891d97665524065b626ea324f06942f */
+        $appCertificate = '11a6779624fb4f6b922da171ec9850ff';/* 3b5229b39c254ce9b03f5a64966fa5c9 */
         $uid = rand(100000, 199999);
         $privilegeExpiredTs = time() + 3600;
 

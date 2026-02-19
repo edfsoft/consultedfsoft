@@ -162,12 +162,6 @@ class ConsultModel extends CI_Model
         }
     }
 
-    public function delete_investigations($consultationId)
-    {
-        $this->db->where('consultation_id', $consultationId);
-        return $this->db->delete('consult_investigations');
-    }
-
     public function save_investigation($data)
     {
         $this->db->insert('consult_investigations', $data);
@@ -193,12 +187,6 @@ class ConsultModel extends CI_Model
         }
     }
 
-    public function delete_instructions($consultationId)
-    {
-        $this->db->where('consultation_id', $consultationId);
-        return $this->db->delete('consult_instructions');
-    }
-
     public function save_instruction($post)
     {
         $instructions = $this->input->post('instructions');
@@ -217,10 +205,10 @@ class ConsultModel extends CI_Model
         return ($rowsInserted > 0);
     }
 
-    public function delete_procedures($consultationId)
+    public function delete_instructions($consultationId)
     {
         $this->db->where('consultation_id', $consultationId);
-        return $this->db->delete('consult_procedures');
+        return $this->db->delete('consult_instructions');
     }
 
     public function save_procedure($post)
@@ -241,34 +229,22 @@ class ConsultModel extends CI_Model
         return ($rowsInserted > 0);
     }
 
-    public function delete_advices($consultationId)
+    public function delete_procedures($consultationId)
     {
         $this->db->where('consultation_id', $consultationId);
-        return $this->db->delete('consult_advices');
+        return $this->db->delete('consult_procedures');
     }
-
-    // public function save_advice($post)
-    // {
-    //     $advices = $this->input->post('advices');
-    //     $rowsInserted = 0;
-    //     if (!empty($advices) && is_array($advices)) {
-    //         foreach ($advices as $advice) {
-    //             $this->db->insert('consult_advices', [
-    //                 'consultation_id' => $post['consultationId'],
-    //                 'advice_name' => $advice
-    //             ]);
-    //             if ($this->db->affected_rows() > 0) {
-    //                 $rowsInserted++;
-    //             }
-    //         }
-    //     }
-    //     return ($rowsInserted > 0);
-    // }
 
     public function save_advice($data)
     {
         $this->db->insert('consult_advices', $data);
         return $this->db->insert_id();
+    }
+
+    public function delete_advices($consultationId)
+    {
+        $this->db->where('consultation_id', $consultationId);
+        return $this->db->delete('consult_advices');
     }
 
     public function save_medicine($data)
@@ -514,7 +490,6 @@ class ConsultModel extends CI_Model
     }
 
 
-
     /* Symptoms in consultaion form */
     public function getSymptoms()
     {
@@ -642,6 +617,7 @@ class ConsultModel extends CI_Model
         return $this->db->delete('findings_list');
     }
 
+    /* Diagnosis in consultation form */
     public function getDiagnosis()
     {
         $hcpIdDb = isset($_SESSION['hcpIdDb']) ? $_SESSION['hcpIdDb'] : 0;
@@ -671,8 +647,6 @@ class ConsultModel extends CI_Model
         return $result;
     }
 
-
-    /* Diagnosis in consultation form */
     public function insertNewDiagnosis($name)
     {
         $hcpIdDb = isset($_SESSION['hcpIdDb']) ? $_SESSION['hcpIdDb'] : 0;
@@ -887,6 +861,7 @@ class ConsultModel extends CI_Model
         $this->db->where('id', $id);
         return $this->db->update('advices_list', ['adviceName' => $name]);
     }
+
     public function update_advice($id, $data)
     {
         $this->db->where('id', $id);
@@ -973,8 +948,6 @@ class ConsultModel extends CI_Model
         $this->db->where('id', $id);
         return $this->db->delete('instructions_list');
     }
-
-
 
     //Medicine for consultaion form
     public function getMedicines()

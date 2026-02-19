@@ -376,22 +376,7 @@ class Chiefconsultant extends CI_Controller
         redirect('Chiefconsultant/myProfile');
     }
 
-    public function logout()
-    {
-        // $this->session->unset_userdata('LoggedInDetails');
-        $this->session->unset_userdata('ccIdDb');
-        $this->session->unset_userdata('ccId');
-        $this->session->unset_userdata('ccName');
-        $this->session->unset_userdata('ccMailId');
-        $this->session->unset_userdata('ccMobileNum');
-        $this->session->unset_userdata('firstLogin');
-        $this->session->unset_userdata('last_activity_time');
-
-        $this->session->sess_regenerate(TRUE);
-
-        redirect('Chiefconsultant/');
-    }
-
+    // Function to join on online consultation meeting using Agora SDK
     public function join($unique_meeting_id = null)
     {
         if (!$this->session->userdata('ccName')) {
@@ -427,8 +412,8 @@ class Chiefconsultant extends CI_Controller
             return;
         }
 
-        $appID = 'f891d97665524065b626ea324f06942f';
-        $appCertificate = '3b5229b39c254ce9b03f5a64966fa5c9';
+        $appID = '7c04c3a5f72541c7b711c1424fd47a63';/* f891d97665524065b626ea324f06942f */
+        $appCertificate = '11a6779624fb4f6b922da171ec9850ff';/* 3b5229b39c254ce9b03f5a64966fa5c9 */
         $uid = rand(300000, 399999);
         $privilegeExpiredTs = time() + 3600;
 
@@ -450,4 +435,23 @@ class Chiefconsultant extends CI_Controller
 
         $this->load->view('customMeeting', $data);
     }
+
+    public function logout()
+    {
+        // $this->session->unset_userdata('LoggedInDetails');
+        $this->session->unset_userdata('ccIdDb');
+        $this->session->unset_userdata('ccId');
+        $this->session->unset_userdata('ccName');
+        $this->session->unset_userdata('ccMailId');
+        $this->session->unset_userdata('ccMobileNum');
+        $this->session->unset_userdata('firstLogin');
+        $this->session->unset_userdata('last_activity_time');
+
+        $this->session->sess_regenerate(TRUE);
+
+        redirect('Chiefconsultant/');
+    }
+
+
+
 }

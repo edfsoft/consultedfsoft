@@ -839,7 +839,7 @@
                 <section>
                     <div class="card rounded">
                         <div class="mt-2 p-3 pt-sm-4 px-sm-4">
-                            <p style="font-size: 24px; font-weight: 500"> Appointments</p>
+                            <p style="font-size: 24px; font-weight: 500">Online Appointments</p>
                         </div>
                         <div class="card-body p-3 p-sm-4">
                             <?php
@@ -993,7 +993,7 @@
                                 </nav>
 
                         <?php } else { ?>
-                                <h5 class="text-center my-5"><b> No Appointments Found.</b> </h5>
+                                <h5 class="text-center my-5"><b> No Online Appointments Found.</b> </h5>
                         <?php } ?>
                         </div>
                     </div>

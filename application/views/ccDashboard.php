@@ -184,7 +184,7 @@
                     <div class="card col-12 col-lg-5 rounded-5 mx-1">
                         <div class="card-body p-4">
                             <p style="font-size: 20px; font-weight: 500; color: #0079AD">
-                                <i class="bi bi-calendar2-check pe-3"></i> Today Appointments
+                                <i class="bi bi-calendar2-check pe-3"></i> Today Online Appointments
                             </p>
                             <div class="table-responsive">
                                 <?php if (isset($appointmentList[0]['id'])) { ?>
@@ -276,7 +276,7 @@
                                         </tbody>
                                     </table>
                                 <?php } else { ?>
-                                    <p class="m-md-5 px-md-5"><b> No Appointments Today.</b></p>
+                                    <p class="m-md-5 px-md-5"><b> No Online Appointments Today.</b></p>
                                 <?php } ?>
                             </div>
                             <?php if (isset($appointmentList[3]['id'])) { ?>
@@ -392,7 +392,7 @@
                                         </button></a>
                                 </div>
                             <?php } else { ?>
-                                <p class="m-md-5 px-md-5"><b> No Appointments Today.</b></p>
+                                <p class="m-md-5 px-md-5"><b> No Online Appointments Today.</b></p>
                             <?php } ?>
                         </div>
                     </div>
@@ -1111,7 +1111,7 @@
                                 <div class="card-body p-3 p-sm-4">
                                     <div class="d-flex justify-content-between mt-2 mb-3">
                                         <p style="font-size: 24px; font-weight: 500">
-                                            Appointments
+                                            Online Appointments
                                         </p>
                                     </div>
 
@@ -1750,8 +1750,7 @@
                             foreach ($ccDetails as $key => $value) {
                                 ?>
                                                         <form action="<?php echo base_url() . "Chiefconsultant/updateMyProfile" ?>" name="profileEditForm"
-                                                            enctype="multipart/form-data" method="POST" onsubmit="return validateDetails()"
-                                                            oninput="clearErrorDetails()" class="">
+                                                            enctype="multipart/form-data" method="POST" onsubmit="return validateDetails()">
                                                             <div class="position-relative">
                                                                 <img id="previewImage"
                                                                     src="<?= isset($value['ccPhoto']) && $value['ccPhoto'] !== "No data"
@@ -1868,86 +1867,6 @@
                                                 </div>
                                             </div>
                                         </section>
-
-                                        <script>
-                                            function clearErrorDetails() {
-                                                var doctorName = document.getElementById("drName").value;
-                                                var doctorMobile = document.getElementById("drMobile").value;
-                                                var doctorEmail = document.getElementById("drEmail").value;
-                                                // var doctorpassword = document.getElementById("drPassword").value;
-                                                // var photo = document.getElementById("profilePhoto").value;
-
-                                                if (doctorName != "") {
-                                                    document.getElementById("drName_err").innerHTML = "";
-                                                }
-                                                if (doctorMobile != "") {
-                                                    document.getElementById("drMobile_err").innerHTML = "";
-                                                }
-                                                if (doctorEmail != "") {
-                                                    document.getElementById("drEmail_err").innerHTML = "";
-                                                }
-                                                if (doctorpassword != "") {
-                                                    document.getElementById("drPassword_err").innerHTML = "";
-                                                }
-                                                // if (photo != "") {
-                                                //     document.getElementById("profilePhoto_err").innerHTML = "";
-                                                // }
-                                            }
-                                        </script>
-                                        <script>
-                                            function validateDetails() {
-                                                var doctorNmae = document.getElementById("drName").value;
-                                                var doctorMobile = document.getElementById("drMobile").value;
-                                                var doctorEmail = document.getElementById("drEmail").value;
-                                                // var doctorPassword = document.getElementById("drPassword").value;
-                                                // var photo = document.getElementById("profilePhoto").value;
-
-                                                if (doctorNmae == "") {
-                                                    document.getElementById("drName_err").innerHTML = "A name can't be blank.";
-                                                    document.getElementById("drName").focus();
-                                                    return false;
-                                                } else {
-                                                    document.getElementById("drName_err").innerHTML = "";
-                                                }
-
-                                                if (doctorMobile == "") {
-                                                    document.getElementById("drMobile_err").innerHTML = "A mobile number can't be blank.";
-                                                    document.getElementById("drMobile").focus();
-                                                    return false;
-                                                } else {
-                                                    document.getElementById("drMobile_err").innerHTML = "";
-                                                }
-
-                                                if (doctorEmail == "") {
-                                                    document.getElementById("drEmail_err").innerHTML = "A email id can't be blank.";
-                                                    document.getElementById("drEmail").focus();
-                                                    return false;
-                                                } else {
-                                                    document.getElementById("drEmail_err").innerHTML = "";
-                                                }
-
-                                                // if (doctorPassword == "") {
-                                                //     document.getElementById("drPassword_err").innerHTML = "A password can't be blank.";
-                                                //     document.getElementById("drPassword").focus();
-                                                //     return false;
-                                                // } else if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(doctorPassword)) {
-                                                //     document.getElementById("drPassword_err").innerHTML = "Passwords must contain atleast 1 uppercase, 1 lowercase, 1 special character, 1 number and a minimum of 8 characters.";
-                                                //     document.getElementById("drPassword").focus();
-                                                //     return false;
-                                                // } else {
-                                                //     document.getElementById("drPassword_err").innerHTML = "";
-                                                // }
-
-                                                // if (photo == "") {
-                                                //     document.getElementById("profilePhoto_err").innerHTML = "Photo must be uploaded.";
-                                                //     document.getElementById("profilePhoto").focus();
-                                                //     return false;
-                                                // } else {
-                                                //     document.getElementById("profilePhoto_err").innerHTML = "";
-                                                // }
-                                            }
-                                        </script>
-
 
             <?php
         } else if ($method == "passwordChange") {

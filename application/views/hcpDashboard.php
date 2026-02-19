@@ -910,6 +910,40 @@
 
                     itemsDropdown.value = itemsPerPageAppointment;
 
+                    function copyAppointmentDetails(id, btn) {
+                        const app = appointmentList.find(item => item.id == id);
+                        if (!app) return;
+
+                        const fDate = formatDateOrToday(app.dateOfAppoint).replace(/<\/?b>/g, '');
+                        const fTime = formatTimeAMPM(app.timeOfAppoint);
+                        const videoMode = (app.modeOfConsultant !== 'video' && app.modeOfConsultant === 'audio') ? 'No' : 'Yes';
+                        const joinUrl = `${baseUrl}patient/join/${app.appointmentLink}`;
+
+                        const textToCopy = `Dear ${app.firstName} ${app.lastName},
+                                Your appointment has been successfully booked. 
+
+                                📅 Date: ${fDate}
+                                ⏰ Time: ${fTime}
+                                Video : ${videoMode}
+
+                                🔗 Join Meeting:
+                                ${joinUrl}
+
+                                Please join the meeting at the scheduled time.
+                                Thank you.`;
+
+                            navigator.clipboard.writeText(textToCopy).then(() => {
+                            const originalContent = btn.innerHTML;
+                            btn.innerHTML = '<small>Copied!</small>';
+                            btn.classList.replace('btn-outline-info', 'btn-success');
+
+                            setTimeout(() => {
+                                btn.innerHTML = originalContent;
+                                btn.classList.replace('btn-success', 'btn-outline-info');
+                            }, 3000);
+                        });
+                    }
+
                     function confirmDeleteApp(id) {
                         const app = appointmentList.find(item => item.id == id);
                         let formattedTime = app.timeOfAppoint;
@@ -1049,6 +1083,13 @@
 
                     function renderActionButtons(row) {
                         const fullJoinUrl = `${baseUrl}healthcareprovider/join/${row.appointmentLink}`;
+
+                        const copyBtn = `
+                            <button class="btn btn-outline-info mx-1" onclick="copyAppointmentDetails(${row.id}, this)" title="Copy Appointment Details">
+                                <i class="bi bi-clipboard"></i>
+                            </button>
+                        `;
+
                         const consultBtn = `
                                 <a href="${baseUrl}Consultation/consultation/${row.patientDbId}">
                                     <button class="btn btn-secondary mx-1"
@@ -1066,7 +1107,6 @@
                         const isToday = now.toISOString().slice(0, 10) === row.dateOfAppoint;
                         const isWithin10Minutes = diffMinutes >= -0 && diffMinutes <= 20;
                         const shouldEnableJoin = isToday && isWithin10Minutes;
-                        const shouldShowCheckbox = isToday && isWithin10Minutes;
 
                         const joinBtn = shouldEnableJoin
                             ? `
@@ -1117,6 +1157,7 @@
                                 `;
 
                         return `
+                                ${copyBtn}
                                 ${deleteBtn}
                                 ${consultBtn}
                                 ${joinBtn}
@@ -1385,9 +1426,7 @@
                         }, delay);
                     }
 
-                    // Start the timer
-
-                </script>
+                 </script>
 
                 <!-- Reschedule Appointment Section -->
             <?php if (isset($appointmentReschedule[0]['id'])) { ?>

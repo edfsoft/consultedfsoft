@@ -1137,6 +1137,21 @@
                                                                             </tbody>
                                                                         </table>
                                                                     <?php endif; ?>
+                                                                    <?php if (!empty($consultation['advices'])): ?>
+                                                                        <div class="mb-3 px-2">
+                                                                            <p class="mb-1"><strong>Advices:</strong></p>
+                                                                            <ul
+                                                                                style="margin-top: 0; padding-left: 20px; margin-bottom: 5px;">
+                                                                                <?php foreach ($consultation['advices'] as $adv): ?>
+                                                                                    <li><?= $adv['advice_name'] ?>
+                                                                                        <?php if (!empty($adv['note'])): ?>
+                                                                                            - <?= htmlspecialchars($adv['note']) ?>
+                                                                                        <?php endif; ?>
+                                                                                    </li>
+                                                                                <?php endforeach; ?>
+                                                                            </ul>
+                                                                        </div>
+                                                                    <?php endif; ?>
                                                                     <?php if (!empty($consultation['instructions'])): ?>
                                                                         <div class="mb-3 px-2">
                                                                             <p class="mb-1"><strong>Instructions:</strong></p>
@@ -1169,7 +1184,7 @@
                                                                             <div style="text-align: left; margin-top: 5px;">
                                                                                 <p
                                                                                     style="margin: 0; font-weight: bold; font-size: 14px;">
-                                                                                    Dr. A. S. Senthilvelu</p>
+                                                                                    Dr. A. S. Senthil velu</p>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -1569,12 +1584,12 @@
                                             </div>
                                         </div>
                                         <input type="hidden" name="medicinesJson" id="medicinesJson">
-                                        
+
                                         <div class="mb-3">
                                             <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
                                                 style="background-color: rgb(206, 206, 206);" role="button">
                                                 <span><strong><i class="bi bi-chat-square-text me-2"></i>
-                                                        Advice</strong></span>
+                                                        Advices</strong></span>
                                                 <span class="toggle-icon">+</span>
                                             </div>
 
@@ -2190,7 +2205,7 @@
                                     <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
                                         style="background-color: rgb(206, 206, 206);" role="button">
                                         <span><strong><i class="bi bi-chat-square-text me-2"></i>
-                                                Advice</strong></span>
+                                                Advices</strong></span>
                                         <span class="toggle-icon">+</span>
                                     </div>
 
@@ -2754,7 +2769,7 @@
                                     <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
                                         style="background-color: rgb(206, 206, 206);" role="button">
                                         <span><strong><i class="bi bi-chat-square-text me-2"></i>
-                                                Advice</strong></span>
+                                                Advices</strong></span>
                                         <span class="toggle-icon">+</span>
                                     </div>
 

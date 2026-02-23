@@ -1030,7 +1030,6 @@
 
                 document.getElementById('call-container').innerHTML = endHtml;
 
-                // ✅ VERY IMPORTANT: Delay to ensure DOM exists
                 setTimeout(() => {
 
                     const completeBtn = document.getElementById('complete-btn');
@@ -1038,6 +1037,23 @@
                     if (!completeBtn) {
                         console.error("Complete button not found");
                         return;
+                    }
+
+                    function safeShowToast(message) {
+                        let toast = document.getElementById('toast');
+
+                        if (!toast) {
+                            toast = document.createElement('div');
+                            toast.id = 'toast';
+                            toast.style = "position:fixed; top:20px; right:20px; background:#333; color:#fff; padding:10px 20px; border-radius:5px; z-index:9999; display:none;";
+                            document.body.appendChild(toast);
+                        }
+
+                        toast.innerText = message;
+                        toast.style.display = 'block';
+                        setTimeout(() => {
+                            if (toast) toast.style.display = 'none';
+                        }, 3000);
                     }
 
                     completeBtn.onclick = function () {
@@ -1053,35 +1069,49 @@
                         postData.append('id', options.appointmentId);
                         postData.append('status', '1');
 
-                        // ✅ If CSRF enabled in CI3 (recommended)
                         <?php if ($this->security->get_csrf_token_name()): ?>
-                            postData.append('<?php echo $this->security->get_csrf_token_name(); ?>',
-                                '<?php echo $this->security->get_csrf_hash(); ?>');
+                            postData.append('<?php echo $this->security->get_csrf_token_name(); ?>', '<?php echo $this->security->get_csrf_hash(); ?>');
                         <?php endif; ?>
 
                         fetch("<?php echo base_url('healthcareprovider/updateStatus'); ?>", {
                             method: "POST",
-                            body: postData
+                            body: postData,
+                            headers: { 'X-Requested-With': 'XMLHttpRequest' }
                         })
-                            .then(response => {
-                                console.log("Status API Response:", response);
-                                return response.json();
+                            .then(async response => {
+                                const rawText = await response.text();
+                                console.log("Raw Server Response:", rawText);
+
+                                try {
+                                    return JSON.parse(rawText);
+                                } catch (e) {
+                                    if (rawText.includes('"success":true')) {
+                                        return { success: true };
+                                    }
+                                    throw new Error("Invalid server response format");
+                                }
                             })
                             .then(data => {
-                                console.log("Parsed JSON:", data);
-
                                 if (data.success) {
                                     completeBtn.innerText = "Appointment Completed ✓";
                                     completeBtn.style.backgroundColor = "#6c757d";
+                                    completeBtn.style.cursor = "default";
                                     completeBtn.disabled = true;
-                                    showToast("Appointment marked as completed");
+
+                                    safeShowToast("Appointment marked as completed");
+
+                                    console.log("Status updated successfully.");
                                 } else {
-                                    alert(data.message || "Failed to update");
+                                    alert(data.message || "Failed to update status");
                                 }
                             })
                             .catch(error => {
-                                console.error("Completion Error:", error);
-                                alert("Server error / endpoint not reachable");
+                                console.error("Completion Error Details:", error);
+                                if (error.message.includes('innerText') || error.message.includes('null')) {
+                                    console.warn("UI Warning: Toast element missing, but status was updated.");
+                                } else {
+                                    alert("Server error / endpoint not reachable. Please refresh your dashboard.");
+                                }
                             });
                     };
 

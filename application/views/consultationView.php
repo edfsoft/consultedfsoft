@@ -961,8 +961,8 @@
                                                                                             $details[] = "Since: " . trim($symptom['since']);
                                                                                         if (!empty($symptom['severity']))
                                                                                             $details[] = trim($symptom['severity']);
-                                                                                         if (!empty($symptom['note']))
-                                                                                            $details[] =  "Note: " . trim($symptom['note']);
+                                                                                        if (!empty($symptom['note']))
+                                                                                            $details[] = "Note: " . trim($symptom['note']);
                                                                                         if (!empty($details)) {
                                                                                             $items[] = $name . " (" . implode(', ', $details) . ")";
                                                                                         } else {
@@ -7073,7 +7073,7 @@
                 nextBtn: document.getElementById('nextAttachment')
             } : {};
 
-            const MAX_FILES = 10;
+            const MAX_FILES = 20;
             let cropper;
             let newFiles = [];
             let existingFiles = [];

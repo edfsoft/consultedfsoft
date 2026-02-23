@@ -60,10 +60,22 @@ class CcModel extends CI_Model
     {
         $existingFields = [];
 
-        if ($this->db->where('doctorMobile', $mobileNumber)->get('cc_details')->num_rows() > 0) {
+        if (
+            $this->db
+                ->where('doctorMobile', $mobileNumber)
+                ->where('deleteStatus', "0")
+                ->get('cc_details')
+                ->num_rows() > 0
+        ) {
             $existingFields[] = 'Mobile Number';
         }
-        if ($this->db->where('doctorMail', $mailId)->get('cc_details')->num_rows() > 0) {
+        if (
+            $this->db
+                ->where('doctorMail', $mailId)
+                ->where('deleteStatus', "0")
+                ->get('cc_details')
+                ->num_rows() > 0
+        ) {
             $existingFields[] = 'Mail Id';
         }
 

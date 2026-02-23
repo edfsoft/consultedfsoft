@@ -227,7 +227,7 @@ class Edfadmin extends CI_Controller
 
         $response = [
             'mobile_exists' => in_array('Mobile Number', $existing_errors),
-            'email_exists' => in_array('Mail Address', $existing_errors)
+            'email_exists' => in_array('Mail Id', $existing_errors)
         ];
 
         header('Content-Type: application/json');

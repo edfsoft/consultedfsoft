@@ -30,10 +30,22 @@ class HcpModel extends CI_Model
     {
         $existingFields = [];
 
-        if ($this->db->where('hcpMobile', $mobileNumber)->get('hcp_details')->num_rows() > 0) {
+        if (
+            $this->db
+                ->where('hcpMobile', $mobileNumber)
+                ->where('deleteStatus', "0")
+                ->get('hcp_details')
+                ->num_rows() > 0
+        ) {
             $existingFields[] = 'Mobile Number';
         }
-        if ($this->db->where('hcpMail', $mailId)->get('hcp_details')->num_rows() > 0) {
+        if (
+            $this->db
+                ->where('hcpMail', $mailId)
+                ->where('deleteStatus', "0")
+                ->get('hcp_details')
+                ->num_rows() > 0
+        ) {
             $existingFields[] = 'Mail Id';
         }
 

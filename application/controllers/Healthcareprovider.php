@@ -151,6 +151,7 @@ class Healthcareprovider extends CI_Controller
         } else {
             $this->HcpModel->register();
             $this->HcpModel->generatehcpid();
+            $this->session->set_flashdata('successMessage', 'HCP registered successfully. You can now log in.');
             redirect('Healthcareprovider/');
         }
     }

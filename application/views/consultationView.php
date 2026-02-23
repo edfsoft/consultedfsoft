@@ -958,9 +958,11 @@
                                                                                         $name = trim($symptom['symptom_name']);
                                                                                         $details = [];
                                                                                         if (!empty($symptom['since']))
-                                                                                            $details[] = "since " . trim($symptom['since']);
+                                                                                            $details[] = "Since: " . trim($symptom['since']);
                                                                                         if (!empty($symptom['severity']))
                                                                                             $details[] = trim($symptom['severity']);
+                                                                                         if (!empty($symptom['note']))
+                                                                                            $details[] =  "Note: " . trim($symptom['note']);
                                                                                         if (!empty($details)) {
                                                                                             $items[] = $name . " (" . implode(', ', $details) . ")";
                                                                                         } else {
@@ -984,9 +986,11 @@
                                                                                         $name = trim($diagnosis['diagnosis_name']);
                                                                                         $details = [];
                                                                                         if (!empty($diagnosis['since']))
-                                                                                            $details[] = "since " . trim($diagnosis['since']);
+                                                                                            $details[] = "Location: " . trim($diagnosis['since']);
                                                                                         if (!empty($diagnosis['severity']))
                                                                                             $details[] = trim($diagnosis['severity']);
+                                                                                        if (!empty($diagnosis['note']))
+                                                                                            $details[] = "Note: " . trim($diagnosis['note']);
                                                                                         if (!empty($details)) {
                                                                                             $items[] = $name . " (" . implode(', ', $details) . ")";
                                                                                         } else {

@@ -53,7 +53,7 @@
             bottom: -60px;
             left: 0;
             right: 0;
-            height: 60px;
+            /* height: 60px; */
             text-align: center;
             font-size: 10px;
             border-top: 1px solid #000;
@@ -177,9 +177,12 @@
         $logoSrc1 = 'data:image/png;base64,' . $logoData;
         ?>
         <div style="margin-top: 3px; padding-top: 5px; font-weight: bold; color: #307352; border-top: 1px solid #000;">
-            FOR ONLINE / TELECONSULT VISIT &nbsp;|&nbsp; <img src="<?= $logoSrc1 ?>" width="15" height="15"
-                alt="EDF Logo" style="position: relative; top: 3px;">
-            consult.edftech.in / DR. A. S. SENTHILVELU
+            FOR ONLINE / TELECONSULT VISIT &nbsp;|&nbsp; <a href="https://consult.edftech.in/"><img
+                    src="<?= $logoSrc1 ?>" width="15" height="15" alt="EDF Logo" style="position: relative; top: 3px;">
+                consult.edftech.in</a> / DR. A. S. SENTHILVELU
+        </div>
+        <div style="margin-top: 10px;"> Get More Information @ <a href="https://erodediabetesfoundation.org/"
+                target="_blank" rel="noopener noreferrer">erodediabetesfoundation</a>
         </div>
     </footer>
 
@@ -221,9 +224,11 @@
                     $name = trim($symptom['symptom_name'] ?? $symptom['symptom']);
                     $details = [];
                     if (!empty($symptom['since']))
-                        $details[] = "since " . trim($symptom['since']);
+                        $details[] = "Since: " . trim($symptom['since']);
                     if (!empty($symptom['severity']))
                         $details[] = trim($symptom['severity']);
+                    if (!empty($symptom['note']))
+                        $details[] = "Note: " . trim($symptom['note']);
 
                     if (!empty($details)) {
                         $items[] = $name . " (" . implode(', ', $details) . ")";
@@ -249,9 +254,11 @@
 
                     $details = [];
                     if (!empty($diagnosis['since']))
-                        $details[] = "since " . trim($diagnosis['since']);
+                        $details[] = "Location: " . trim($diagnosis['since']);
                     if (!empty($diagnosis['severity']))
                         $details[] = trim($diagnosis['severity']);
+                    if (!empty($diagnosis['note']))
+                        $details[] = "Note: " . trim($diagnosis['note']);
 
                     if (!empty($details)) {
                         $items[] = $name . " (" . implode(', ', $details) . ")";

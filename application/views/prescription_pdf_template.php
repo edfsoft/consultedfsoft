@@ -150,7 +150,7 @@
             <table style="width: 100%;" style="margin-bottom: 10px;">
                 <tr>
                     <td>
-                        <span style=" font-size: 16px; font-weight: bold; color: #2F6E4D;">Dr. A.S. SENTHIL VELU,</span>
+                        <span style=" font-size: 16px; font-weight: bold; color: #2F6E4D;">Dr. A. S. SENTHILVELU,</span>
                         <span style="font-size: 10px; color: #2F6E4D; font-weight:bold;">M.D., FICP</span><br>
                         <span style="font-size: 10px;">
                             <i>Consultant Physician, Diabetologist, Ultrasound, Whole body color Doppler applications,
@@ -179,7 +179,7 @@
         <div style="margin-top: 3px; padding-top: 5px; font-weight: bold; color: #307352; border-top: 1px solid #000;">
             FOR ONLINE / TELECONSULT VISIT &nbsp;|&nbsp; <img src="<?= $logoSrc1 ?>" width="15" height="15"
                 alt="EDF Logo" style="position: relative; top: 3px;">
-            consult.edftech.in / DR.A.S.SENTHIL VELU
+            consult.edftech.in / DR. A. S. SENTHILVELU
         </div>
     </footer>
 
@@ -366,7 +366,7 @@
                         <img src="<?= $src ?>" style="height: 60px; width: auto; display: block; margin: 0 auto 5px;">
                     <?php endif; ?>
 
-                    <p style="margin: 0; font-weight: bold;">Dr. A. S. Senthil velu</p>
+                    <p style="margin: 0; font-weight: bold;">Dr. A. S. Senthilvelu</p>
                 </div>
             </td>
         </tr>

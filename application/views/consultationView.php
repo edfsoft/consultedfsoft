@@ -1184,7 +1184,7 @@
                                                                             <div style="text-align: left; margin-top: 5px;">
                                                                                 <p
                                                                                     style="margin: 0; font-weight: bold; font-size: 14px;">
-                                                                                    Dr. A. S. Senthil velu</p>
+                                                                                    Dr. A. S. Senthilvelu</p>
                                                                             </div>
                                                                         </div>
                                                                     </div>

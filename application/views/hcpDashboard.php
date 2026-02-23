@@ -1339,7 +1339,7 @@ Thank you.`;
                                                     <!-- Hover catcher -->
                                                     <div
                                                         style="position:absolute;top:0;left:0;width:24px;height:24px;cursor:not-allowed;
-                                                                                                                                                                "
+                                                                                                                                                                                        "
                                                         onmouseenter="this.nextElementSibling.style.display='flex'"
                                                         onmouseleave="this.nextElementSibling.style.display='none'"
                                                     ></div>
@@ -2310,23 +2310,20 @@ Thank you.`;
                                                     <div class="form-group pb-3" id="modeSection">
                                                         <label class="form-label" for="patientId">Enable Video?</label>
 
-                                                        <div class="d-flex gap-2 pb-3" style="max-width: 160px;">
-                                                            <div class="flex-fill">
-                                                                <input type="radio" class="btn-check" name="appConsult" id="video"
-                                                                    value="video" autocomplete="off" <?php echo ($value['modeOfConsultant'] == 'video') ? 'checked' : ''; ?>
-                                                                    style="cursor: pointer;" disabled onmouseover="style='cursor: no-drop;'"
-                                                                    onmouseout="style='cursor: ns-resize;">
-                                                                <label class="btn btn-sm btn-outline-success w-100 fw-bold"
-                                                                    for="video">Yes</label>
-                                                            </div>
-                                                            <div class="flex-fill">
-                                                                <input type="radio" class="btn-check" name="appConsult" id="audio"
-                                                                    value="audio" autocomplete="off" <?php echo ($value['modeOfConsultant'] == 'audio') ? 'checked' : ''; ?>
-                                                                    style="cursor: pointer;" disabled onmouseover="style='cursor: no-drop;'"
-                                                                    onmouseout="style='cursor: ns-resize;">
-                                                                <label class="btn btn-sm btn-outline-secondary w-100 fw-bold"
-                                                                    for="audio">No</label>
-                                                            </div>
+                                                        <div class="d-flex gap-2 pb-3" style="max-width: 100px; cursor: no-drop;">
+                                                            <?php if ($value['modeOfConsultant'] == 'video'): ?>
+                                                                <div class="flex-fill">
+                                                                    <input type="radio" class="btn-check" checked disabled>
+                                                                    <label class="btn btn-sm btn-outline-success w-100 fw-bold"
+                                                                        style="cursor: no-drop;">Yes</label>
+                                                                </div>
+                                                <?php else: ?>
+                                                                <div class="flex-fill">
+                                                                    <input type="radio" class="btn-check" checked disabled>
+                                                                    <label class="btn btn-sm btn-outline-secondary w-100 fw-bold"
+                                                                       style="cursor: no-drop;">No</label>
+                                                                </div>
+                                                <?php endif; ?>
                                                         </div>
 
                                                         <div class="form-group pb-3">

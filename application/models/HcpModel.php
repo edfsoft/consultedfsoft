@@ -583,6 +583,7 @@ class HcpModel extends CI_Model
             a.timeOfAppoint, 
             a.appointmentLink, 
             a.appointmentType,
+             a.modeOfConsultant,
 
             p.firstName, 
             p.lastName, 

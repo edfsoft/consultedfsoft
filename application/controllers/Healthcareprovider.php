@@ -742,13 +742,15 @@ class Healthcareprovider extends CI_Controller
                 $formattedTime = date('h:i A', strtotime($details['timeOfAppoint']));
                 $meetingBaseUrl = 'https://consult.edftech.in/patient/join/';
                 $joinUrl = $meetingBaseUrl . ltrim($details['appointmentLink'], '/');
+                $videoMode = ($details['modeOfConsultant'] == 'audio') ? 'No' : 'Yes';
 
                 $message = "
                     Dear {$details['firstName']} {$details['lastName']},<br><br>
                     Your appointment with <b>Dr. {$details['hcpName']}</b> has been 
                     successfully <b>rescheduled</b>.<br><br>
                     <b>📅 Date:</b> {$formattedDate}<br>
-                    <b>⏰ Time:</b> {$formattedTime}<br><br>
+                    <b>⏰ Time:</b> {$formattedTime}<br>
+                    <b>🎥 Video:</b> {$videoMode}<br><br><br>
                     <b>🔗 Join Meeting:</b><br>
                     <a href='{$joinUrl}' target='_blank'>{$joinUrl}</a><br><br>
                     Please join the meeting at the scheduled time. <br><br>

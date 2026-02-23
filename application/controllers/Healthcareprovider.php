@@ -957,7 +957,8 @@ class Healthcareprovider extends CI_Controller
             'chief_name' => ($appointment->chiefName . ' ' . $appointment->ccId) ?? 'N/A',
             'consult_mode' => $appointment->modeOfConsultant ?? 'video',
             'role' => 'hcp',
-            'is_doctor' => true
+            'is_doctor' => true,
+            'appointmentDbId' => $appointment->id
         ];
 
         $this->load->view('customMeeting', $data);

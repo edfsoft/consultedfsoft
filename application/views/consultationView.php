@@ -848,7 +848,15 @@
                                                             </ul>
                                                         <?php endif; ?>
 
-                                                        <!-- Notes -->
+                                                        <!-- Diet Plan -->
+                                                        <?php if (!empty($consultation['dietPlan'])): ?>
+                                                            <p><strong>Diet Plan:</strong></p>
+                                                            <ul>
+                                                                <li><?= $consultation['dietPlan'] ?></li>
+                                                            </ul>
+                                                        <?php endif; ?>
+
+                                                         <!-- Notes -->
                                                         <?php if (!empty($consultation['notes'])): ?>
                                                             <p><strong>Notes:</strong></p>
                                                             <ul>
@@ -958,9 +966,11 @@
                                                                                         $name = trim($symptom['symptom_name']);
                                                                                         $details = [];
                                                                                         if (!empty($symptom['since']))
-                                                                                            $details[] = "since " . trim($symptom['since']);
+                                                                                            $details[] = "Since: " . trim($symptom['since']);
                                                                                         if (!empty($symptom['severity']))
                                                                                             $details[] = trim($symptom['severity']);
+                                                                                        if (!empty($symptom['note']))
+                                                                                            $details[] = "Note: " . trim($symptom['note']);
                                                                                         if (!empty($details)) {
                                                                                             $items[] = $name . " (" . implode(', ', $details) . ")";
                                                                                         } else {
@@ -984,9 +994,11 @@
                                                                                         $name = trim($diagnosis['diagnosis_name']);
                                                                                         $details = [];
                                                                                         if (!empty($diagnosis['since']))
-                                                                                            $details[] = "since " . trim($diagnosis['since']);
+                                                                                            $details[] = "Location: " . trim($diagnosis['since']);
                                                                                         if (!empty($diagnosis['severity']))
                                                                                             $details[] = trim($diagnosis['severity']);
+                                                                                        if (!empty($diagnosis['note']))
+                                                                                            $details[] = "Note: " . trim($diagnosis['note']);
                                                                                         if (!empty($details)) {
                                                                                             $items[] = $name . " (" . implode(', ', $details) . ")";
                                                                                         } else {
@@ -1184,7 +1196,7 @@
                                                                             <div style="text-align: left; margin-top: 5px;">
                                                                                 <p
                                                                                     style="margin: 0; font-weight: bold; font-size: 14px;">
-                                                                                    Dr. A. S. Senthil velu</p>
+                                                                                    Dr. A. S. Senthilvelu</p>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -1668,6 +1680,14 @@
                                         <div class="fileList" style="margin-top: 0.5rem;"></div>
                                         <div class="fileError text-danger pt-1"></div>
                                         <input type="hidden" class="removedFiles" name="removedFiles" value="">
+                                    </div>
+
+                                    <div class="form-group pb-3">
+                                        <label class="form-label fieldLabel" for="dietPlan">Diet Plan <span
+                                                class="text-danger">*</span></label>
+                                        <textarea class="form-control" name="dietPlan" id="dietPlan"
+                                            placeholder="Enter the diet plan"></textarea>
+                                        <div id="dietPlan_err" class="text-danger pt-1"></div>
                                     </div>
 
                                     <div class="form-group pb-3">
@@ -2285,6 +2305,14 @@
                             </div>
 
                             <div class="form-group pb-3">
+                                <label class="form-label fieldLabel" for="dietPlan">Diet Plan <span
+                                        class="text-danger">*</span></label>
+                                <textarea class="form-control" name="dietPlan" id="dietPlan"
+                                    placeholder="Enter the diet plan"><?= isset($consultation['dietPlan']) ? $consultation['dietPlan'] : '' ?></textarea>
+                                <div id="dietPlan_err" class="text-danger pt-1"></div>
+                            </div>
+
+                            <div class="form-group pb-3">
                                 <label class="form-label fieldLabel" for="notes">Notes <span
                                         class="text-danger">*</span></label>
                                 <textarea class="form-control" name="notes" id="notes"
@@ -2847,6 +2875,14 @@
                                 <div id="fileList" style="margin-top: 0.5rem;"></div>
                                 <div id="fileError" class="text-danger pt-1"></div>
                                 <input type="hidden" id="removedFiles" name="removedFiles" value="">
+                            </div>
+
+                            <div class="form-group pb-3">
+                                <label class="form-label fieldLabel" for="dietPlan">Diet Plan <span
+                                        class="text-danger">*</span></label>
+                                <textarea class="form-control" name="dietPlan" id="dietPlan"
+                                    placeholder="Enter the diet plan"><?= isset($consultation['dietPlan']) ? $consultation['dietPlan'] : '' ?></textarea>
+                                <div id="dietPlan_err" class="text-danger pt-1"></div>
                             </div>
 
                             <div class="form-group pb-3">
@@ -7069,7 +7105,7 @@
                 nextBtn: document.getElementById('nextAttachment')
             } : {};
 
-            const MAX_FILES = 10;
+            const MAX_FILES = 20;
             let cropper;
             let newFiles = [];
             let existingFiles = [];

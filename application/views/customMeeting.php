@@ -652,7 +652,8 @@
             patientName: "<?php echo addslashes($patient_name ?: 'Patient'); ?>",
             hcpName: "<?php echo addslashes($hcp_name ?: 'Doctor'); ?>",
             chiefName: "<?php echo addslashes($chief_name ?: 'Chief Doctor'); ?>",
-            role: "<?php echo $role ?: 'patient'; ?>"
+            role: "<?php echo $role ?: 'patient'; ?>",
+            appointmentId: Number(<?php echo isset($appointmentDbId) ? (int) $appointmentDbId : 0; ?>),
         };
 
         const isDoctor = <?php echo $is_doctor ? 'true' : 'false'; ?>;
@@ -1008,24 +1009,113 @@
                 window.location.href = "<?php echo base_url('Chiefconsultant/appointments'); ?>";
             }
             else if (options.role === 'hcp') {
-                let endHtml = '<div style="height:100vh; display:flex; align-items:center; justify-content:center; flex-direction:column; background-color:#ffffff; color:#000000; font-family: \'Poppins\', sans-serif;">';
+
+                let endHtml = '<div style="height:100vh; display:flex; align-items:center; justify-content:center; flex-direction:column; background-color:#ffffff; color:#000000; font-family:\'Poppins\', sans-serif;">';
 
                 endHtml += '<div class="logo-container" style="margin-bottom: 30px;">';
-                endHtml += '    <a href="https://erodediabetesfoundation.org/" target="_blank" class="logo">';
-                endHtml += '        <img src="<?php echo base_url(); ?>assets/edf_logo.png" alt="EDF Logo" style="height: 67px; width: auto;" />';
+                endHtml += '    <a href="https://erodediabetesfoundation.org/" target="_blank">';
+                endHtml += '        <img src="<?php echo base_url(); ?>assets/edf_logo.png" style="height:67px; width:auto;" />';
                 endHtml += '    </a>';
                 endHtml += '</div>';
 
-                endHtml += '<h1 style="margin-bottom:20px; font-weight:600; font-family: \'Poppins\', sans-serif;">Call Ended</h1>';
+                endHtml += '<h1 style="margin-bottom:10px; font-weight:600;">Call Ended</h1>';
 
-                endHtml += '<button onclick="window.close(); setTimeout(function(){ window.location.href=\'<?php echo base_url('healthcareprovider/appointments'); ?>
-                \'; }, 100);" class="home-btn" style="background-color:#28a745; color:#ffffff; padding:14px 32px; font-size:18px; border:none; border-radius:8px; cursor:pointer; font-weight:500; font-family: \'Poppins\', sans-serif; transition: background-color 0.2s;">Close and Back to Appointments</button>';
+                endHtml += '<button id="complete-btn" style="background-color:#007bff; color:#fff; padding:12px 26px; font-size:16px; border:none; border-radius:8px; cursor:pointer; margin-top:15px;">Mark as Completed</button>';
 
-                endHtml += '<p style="margin-top:16px; font-size:14px; color:#5f6368; font-family: \'Poppins\', sans-serif;">(Click to return to your dashboard)</p>';
+                endHtml += '<button onclick="window.close(); setTimeout(function(){ window.location.href=\'<?php echo base_url('healthcareprovider/appointments'); ?>\'; }, 100);" style="background-color:#28a745; color:#ffffff; padding:14px 32px; font-size:18px; border:none; border-radius:8px; cursor:pointer; font-weight:500; margin-top:15px;">Close and Back to Appointments</button>';
+
+                endHtml += '<p style="margin-top:16px; font-size:14px; color:#5f6368;">(Click to return to your dashboard)</p>';
 
                 endHtml += '</div>';
 
                 document.getElementById('call-container').innerHTML = endHtml;
+
+                setTimeout(() => {
+
+                    const completeBtn = document.getElementById('complete-btn');
+
+                    if (!completeBtn) {
+                        console.error("Complete button not found");
+                        return;
+                    }
+
+                    function safeShowToast(message) {
+                        let toast = document.getElementById('toast');
+
+                        if (!toast) {
+                            toast = document.createElement('div');
+                            toast.id = 'toast';
+                            toast.style = "position:fixed; top:20px; right:20px; background:#333; color:#fff; padding:10px 20px; border-radius:5px; z-index:9999; display:none;";
+                            document.body.appendChild(toast);
+                        }
+
+                        toast.innerText = message;
+                        toast.style.display = 'block';
+                        setTimeout(() => {
+                            if (toast) toast.style.display = 'none';
+                        }, 3000);
+                    }
+
+                    completeBtn.onclick = function () {
+
+                        console.log("Appointment ID:", options.appointmentId);
+
+                        if (!options.appointmentId || options.appointmentId === 0) {
+                            alert("Invalid appointment ID");
+                            return;
+                        }
+
+                        const postData = new URLSearchParams();
+                        postData.append('id', options.appointmentId);
+                        postData.append('status', '1');
+
+                        <?php if ($this->security->get_csrf_token_name()): ?>
+                            postData.append('<?php echo $this->security->get_csrf_token_name(); ?>', '<?php echo $this->security->get_csrf_hash(); ?>');
+                        <?php endif; ?>
+
+                        fetch("<?php echo base_url('healthcareprovider/updateStatus'); ?>", {
+                            method: "POST",
+                            body: postData,
+                            headers: { 'X-Requested-With': 'XMLHttpRequest' }
+                        })
+                            .then(async response => {
+                                const rawText = await response.text();
+                                console.log("Raw Server Response:", rawText);
+
+                                try {
+                                    return JSON.parse(rawText);
+                                } catch (e) {
+                                    if (rawText.includes('"success":true')) {
+                                        return { success: true };
+                                    }
+                                    throw new Error("Invalid server response format");
+                                }
+                            })
+                            .then(data => {
+                                if (data.success) {
+                                    completeBtn.innerText = "Appointment Completed ✓";
+                                    completeBtn.style.backgroundColor = "#6c757d";
+                                    completeBtn.style.cursor = "default";
+                                    completeBtn.disabled = true;
+
+                                    safeShowToast("Appointment marked as completed");
+
+                                    console.log("Status updated successfully.");
+                                } else {
+                                    alert(data.message || "Failed to update status");
+                                }
+                            })
+                            .catch(error => {
+                                console.error("Completion Error Details:", error);
+                                if (error.message.includes('innerText') || error.message.includes('null')) {
+                                    console.warn("UI Warning: Toast element missing, but status was updated.");
+                                } else {
+                                    alert("Server error / endpoint not reachable. Please refresh your dashboard.");
+                                }
+                            });
+                    };
+
+                }, 100);
             } else {
                 window.close();
             }

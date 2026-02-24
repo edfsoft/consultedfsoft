@@ -151,6 +151,7 @@ class Healthcareprovider extends CI_Controller
         } else {
             $this->HcpModel->register();
             $this->HcpModel->generatehcpid();
+            $this->session->set_flashdata('successMessage', 'HCP registered successfully. You can now log in.');
             redirect('Healthcareprovider/');
         }
     }
@@ -741,13 +742,15 @@ class Healthcareprovider extends CI_Controller
                 $formattedTime = date('h:i A', strtotime($details['timeOfAppoint']));
                 $meetingBaseUrl = 'https://consult.edftech.in/patient/join/';
                 $joinUrl = $meetingBaseUrl . ltrim($details['appointmentLink'], '/');
+                $videoMode = ($details['modeOfConsultant'] == 'audio') ? 'No' : 'Yes';
 
                 $message = "
                     Dear {$details['firstName']} {$details['lastName']},<br><br>
                     Your appointment with <b>Dr. {$details['hcpName']}</b> has been 
                     successfully <b>rescheduled</b>.<br><br>
                     <b>📅 Date:</b> {$formattedDate}<br>
-                    <b>⏰ Time:</b> {$formattedTime}<br><br>
+                    <b>⏰ Time:</b> {$formattedTime}<br>
+                    <b>🎥 Video:</b> {$videoMode}<br><br><br>
                     <b>🔗 Join Meeting:</b><br>
                     <a href='{$joinUrl}' target='_blank'>{$joinUrl}</a><br><br>
                     Please join the meeting at the scheduled time. <br><br>
@@ -954,7 +957,8 @@ class Healthcareprovider extends CI_Controller
             'chief_name' => ($appointment->chiefName . ' ' . $appointment->ccId) ?? 'N/A',
             'consult_mode' => $appointment->modeOfConsultant ?? 'video',
             'role' => 'hcp',
-            'is_doctor' => true
+            'is_doctor' => true,
+            'appointmentDbId' => $appointment->id
         ];
 
         $this->load->view('customMeeting', $data);

@@ -143,8 +143,9 @@ class Chiefconsultant extends CI_Controller
             redirect('Chiefconsultant/register');
             exit();
         } else {
-            $register = $this->CcModel->register();
-            $generateid = $this->CcModel->generateCcId();
+            $this->CcModel->register();
+            $this->CcModel->generateCcId();
+            $this->session->set_flashdata('successMessage', 'CC registered successfully. You can now log in.');
             redirect('Chiefconsultant/');
         }
     }

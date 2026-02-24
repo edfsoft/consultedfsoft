@@ -848,7 +848,15 @@
                                                             </ul>
                                                         <?php endif; ?>
 
-                                                        <!-- Notes -->
+                                                        <!-- Diet Plan -->
+                                                        <?php if (!empty($consultation['dietPlan'])): ?>
+                                                            <p><strong>Diet Plan:</strong></p>
+                                                            <ul>
+                                                                <li><?= $consultation['dietPlan'] ?></li>
+                                                            </ul>
+                                                        <?php endif; ?>
+
+                                                         <!-- Notes -->
                                                         <?php if (!empty($consultation['notes'])): ?>
                                                             <p><strong>Notes:</strong></p>
                                                             <ul>
@@ -1675,6 +1683,14 @@
                                     </div>
 
                                     <div class="form-group pb-3">
+                                        <label class="form-label fieldLabel" for="dietPlan">Diet Plan <span
+                                                class="text-danger">*</span></label>
+                                        <textarea class="form-control" name="dietPlan" id="dietPlan"
+                                            placeholder="Enter the diet plan"></textarea>
+                                        <div id="dietPlan_err" class="text-danger pt-1"></div>
+                                    </div>
+
+                                    <div class="form-group pb-3">
                                         <label class="form-label fieldLabel" for="notes">Notes <span
                                                 class="text-danger">*</span></label>
                                         <textarea class="form-control" name="notes" id="notes"
@@ -2289,6 +2305,14 @@
                             </div>
 
                             <div class="form-group pb-3">
+                                <label class="form-label fieldLabel" for="dietPlan">Diet Plan <span
+                                        class="text-danger">*</span></label>
+                                <textarea class="form-control" name="dietPlan" id="dietPlan"
+                                    placeholder="Enter the diet plan"><?= isset($consultation['dietPlan']) ? $consultation['dietPlan'] : '' ?></textarea>
+                                <div id="dietPlan_err" class="text-danger pt-1"></div>
+                            </div>
+
+                            <div class="form-group pb-3">
                                 <label class="form-label fieldLabel" for="notes">Notes <span
                                         class="text-danger">*</span></label>
                                 <textarea class="form-control" name="notes" id="notes"
@@ -2851,6 +2875,14 @@
                                 <div id="fileList" style="margin-top: 0.5rem;"></div>
                                 <div id="fileError" class="text-danger pt-1"></div>
                                 <input type="hidden" id="removedFiles" name="removedFiles" value="">
+                            </div>
+
+                            <div class="form-group pb-3">
+                                <label class="form-label fieldLabel" for="dietPlan">Diet Plan <span
+                                        class="text-danger">*</span></label>
+                                <textarea class="form-control" name="dietPlan" id="dietPlan"
+                                    placeholder="Enter the diet plan"><?= isset($consultation['dietPlan']) ? $consultation['dietPlan'] : '' ?></textarea>
+                                <div id="dietPlan_err" class="text-danger pt-1"></div>
                             </div>
 
                             <div class="form-group pb-3">

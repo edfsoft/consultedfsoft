@@ -2245,6 +2245,13 @@
                                                                                     </ul>
                                                 <?php endif; ?>
 
+                                                                                <!-- Diet Plan -->
+                                                <?php if (!empty($consultation['dietPlan'])): ?>
+                                                                                    <p><strong>Diet Plan:</strong></p>
+                                                                                    <ul>
+                                                                                        <li><?= $consultation['dietPlan'] ?></li>
+                                                                                    </ul>
+                                                <?php endif; ?>
 
                                                                                 <!-- Notes -->
                                                 <?php if (!empty($consultation['notes'])): ?>

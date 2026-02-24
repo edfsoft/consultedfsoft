@@ -23,6 +23,7 @@ class ConsultModel extends CI_Model
             'consult_time' => $post['consultTime'],
             'patient_id' => $post['patientIdDb'],
             'doctor_id' => $hcpIdDb,
+            'dietPlan' => trim($post['dietPlan']),
             'notes' => trim($post['notes']),
             'next_follow_up' => $post['nextFollowUpDate'],
         );
@@ -37,6 +38,7 @@ class ConsultModel extends CI_Model
         $consultData = array(
             'consult_date' => $post['consultDate'],
             'consult_time' => $post['consultTime'],
+            'dietPlan' => trim($post['dietPlan']),
             'notes' => trim($post['notes']),
             'next_follow_up' => $post['nextFollowUpDate'],
         );

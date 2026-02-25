@@ -337,12 +337,13 @@ class Healthcareprovider extends CI_Controller
         return str_shuffle($password);
     }
 
-    private function sendPatientCredentials($patientMail, $tempPassword)
+    private function sendPatientCredentials($patientMail, $tempPassword, $patientId, $fullName)
     {
         $message = "
-                    Hi there,<br><br>
+                    Hi {$fullName},<br><br>
                     Your account has been created as <b>Patient</b>.<br><br>
                     Login URL: <b>https://consult.edftech.in/</b><br>
+                    EDF Id: <b>{$patientId}</b><br>
                     Email Address: <b>{$patientMail}</b><br>
                     Temporary Password: <b>{$tempPassword}</b><br><br>
                     You will be required to change your password upon first login.
@@ -380,10 +381,11 @@ class Healthcareprovider extends CI_Controller
             redirect('Consultation/consultation');
             return;
         }
-        $this->HcpModel->generatePatientId($register);
+        $patientId = $this->HcpModel->generatePatientId($register);
 
         if (!empty($patientMail)) {
-            $this->sendPatientCredentials($patientMail, $tempPassword);
+            $fullName = $post['patientName'] . ' ' . $post['patientLastName'];
+            $this->sendPatientCredentials($patientMail, $tempPassword, $patientId, $fullName);
         }
         $this->session->set_flashdata('showSuccessMessage', 'Patient added successfully');
         redirect('Consultation/consultation/' . $register);
@@ -429,7 +431,9 @@ class Healthcareprovider extends CI_Controller
                     'password' => password_hash($tempPassword, PASSWORD_BCRYPT)
                 ]);
                 if ($this->db->affected_rows() > 0) {
-                    $this->sendPatientCredentials($patientMail, $tempPassword);
+                    $patientId = $post['patientId'];
+                    $fullName = $post['patientName'] . ' ' . $post['patientLastName'];
+                    $this->sendPatientCredentials($patientMail, $tempPassword, $patientId, $fullName);
                 }
             }
         }
@@ -547,7 +551,8 @@ class Healthcareprovider extends CI_Controller
         $this->HcpModel->updatePatientId($insertId, ['patientId' => $patientId]);
 
         if (!empty($data['mailId'])) {
-            $this->sendPatientCredentials($data['mailId'], $tempPassword);
+            $fullName = $data['firstName'] . ' ' . $data['lastName'];
+            $this->sendPatientCredentials($data['mailId'], $tempPassword, $patientId, $fullName);
         }
 
         echo json_encode([

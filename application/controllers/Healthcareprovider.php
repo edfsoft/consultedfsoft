@@ -516,6 +516,10 @@ class Healthcareprovider extends CI_Controller
         $tempPassword = $this->generateTempPassword(8);
         $hashedPassword = password_hash($tempPassword, PASSWORD_BCRYPT);
 
+        $enteredAge = (int) $input['age'];
+        $today = new DateTime();
+        $derivedDob = $today->modify("-{$enteredAge} years")->format('Y-m-d');
+
         $data = [
             'firstName' => $input['firstName'],
             'lastName' => $input['lastName'],
@@ -523,6 +527,7 @@ class Healthcareprovider extends CI_Controller
             'mailId' => $input['email'],
             'gender' => $input['gender'],
             'age' => $input['age'],
+            'derived_dob' => $derivedDob,
             'patientHcp' => $_SESSION['hcpId'],
             'patientHcpDbId' => $_SESSION['hcpIdDb'],
             'password' => $hashedPassword,

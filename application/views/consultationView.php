@@ -1206,12 +1206,10 @@
                                                                     <div class="mt-4 px-2"
                                                                         style="display: flex; justify-content: flex-end; margin-top: 40px; margin-bottom: 20px;">
                                                                         <div style="text-align: center; width: auto;">
-
-                                                                            <img src="<?= base_url('assets/Signature.jpeg') ?>"
+                                                                            <!-- <img src="<?= base_url('assets/Signature.jpeg') ?>"
                                                                                 alt="Doctor's Signature"
-                                                                                style="height: 60px; width: auto; display: block; margin: 0 auto;">
-
-                                                                            <div style="text-align: left; margin-top: 5px;">
+                                                                                style="height: 60px; width: auto; display: block; margin: 0 auto;"> -->
+                                                                            <div style="text-align: left; margin-top: 50px;">
                                                                                 <p
                                                                                     style="margin: 0; font-weight: bold; font-size: 14px;">
                                                                                     Dr. A. S. Senthilvelu</p>

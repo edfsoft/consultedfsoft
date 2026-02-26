@@ -647,7 +647,7 @@
                                                                             S.No</th>
                                                                         <th rowspan="2"
                                                                             style="border: 1px solid #000; padding: 6px;  text-align: center;">
-                                                                            Name</th>
+                                                                            Medicine</th>
                                                                         <th rowspan="2"
                                                                             style="border: 1px solid #000; padding: 6px;  text-align: center;">
                                                                             Quantity</th>

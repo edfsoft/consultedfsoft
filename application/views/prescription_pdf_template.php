@@ -6,14 +6,14 @@
     <style>
         body {
             font-family: Arial, Helvetica, sans-serif;
-            font-size: 13px;
+            font-size: 14px;
             color: #000;
             line-height: 1.2;
         }
 
         /* PDF Page Layout */
         @page {
-            margin: 160px 40px 60px 40px;
+            margin: 160px 35px 110px 35px;
         }
 
         header {
@@ -21,21 +21,20 @@
             top: -140px;
             left: 0;
             right: 0;
-            font-size: 12px;
         }
 
         footer {
             position: fixed;
-            bottom: -40px;
+            bottom: -90px;
             left: 0;
             right: 0;
             text-align: center;
-            font-size: 12px;
+            font-size: 14px;
             border-top: 1.2px solid #000;
             padding-top: 5px;
         }
 
-         /* .doc-header {
+        /* .doc-header {
             border-top: 1px solid #000;
             border-bottom: 1px solid #000;
             margin-top: 5px;
@@ -140,7 +139,7 @@
         <table style="width: 100%;">
             <tr>
                 <td style="width: 65%; vertical-align: top;">
-                    <p style="margin:3px;"><span class="text-bold">Name:</span>
+                    <p style="margin:3px;"><span class="text-bold">Medicine:</span>
                         <?php echo $patientDetails[0]['firstName'] . ' ' . $patientDetails[0]['lastName']; ?>
                     </p>
                     <p style="margin:3px;"><span class="text-bold">Age & Sex:</span>

@@ -2393,16 +2393,14 @@
             style.innerHTML = `
                 @media print {
                     @page {
-                        margin: 10mm;
+                        margin-top: 150px;    /* Header space on EVERY page */
+                        margin-bottom: 150px;  /* Footer space on EVERY page */
+                        margin-left: 10mm;
+                        margin-right: 10mm;
                     }
 
                     body {
                         margin: 0;
-                    }
-
-                    #print-wrapper {
-                        padding-top: 100px;   /* Letterpad Header Space */
-                        padding-bottom: 50px; /* Letterpad Footer Space */
                     }
                 }
             `;

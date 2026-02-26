@@ -19,10 +19,8 @@
         header {
             position: fixed;
             top: -140px;
-            /* 90 */
             left: 0;
             right: 0;
-            /* height: 280px; */
             font-size: 12px;
         }
 
@@ -31,12 +29,19 @@
             bottom: -40px;
             left: 0;
             right: 0;
-            /* height: 60px; */
             text-align: center;
             font-size: 12px;
             border-top: 1.2px solid #000;
             padding-top: 5px;
         }
+
+         /* .doc-header {
+            border-top: 1px solid #000;
+            border-bottom: 1px solid #000;
+            margin-top: 5px;
+            padding: 5px 0;
+            text-align: left;
+        } */
 
         table {
             width: 100%;
@@ -87,6 +92,23 @@
         $headerSrc = 'data:image/png;base64,' . $headerData;
         ?>
         <img src="<?= $headerSrc ?>" width="720" height="140" alt="Prescription Header">
+        <!-- Not in use - change style as per new design. -->
+        <!-- <div class="doc-header">
+            <table style="width: 100%;" style="margin-bottom: 10px;">
+                <tr>
+                    <td>
+                        <span style=" font-size: 16px; font-weight: bold; color: #2F6E4D;">Dr. A. S. SENTHILVELU,</span>
+                        <span style="font-size: 10px; color: #2F6E4D; font-weight:bold;">M.D., FICP</span><br>
+                        <span style="font-size: 10px;">
+                            <i>Consultant Physician, Diabetologist, Ultrasound, Whole body color Doppler applications,
+                                Echocardiography, Critical care physician</i></span><br>
+                        <p style="font-size: 10px; font-weight: bold; margin: 0px; padding: 0px;">
+                            ERODE DIABETES FOUNDATION (EDF). REGIONAL FACULTY FOR CERTIFICATE COURSE IN EVIDENCE BASED
+                            DIABETES MANAGEMENT </p>
+                    </td>
+                </tr>
+            </table>
+        </div> -->
     </header>
 
     <footer>

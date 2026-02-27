@@ -337,6 +337,31 @@ class Healthcareprovider extends CI_Controller
         return str_shuffle($password);
     }
 
+    private function sendPatientCredentials($patientMail, $tempPassword, $patientId, $fullName)
+    {
+        $message = "
+                    Hi {$fullName},<br><br>
+                    Your account has been created as <b>Patient</b>.<br><br>
+                    Login URL: <b>https://consult.edftech.in/</b><br>
+                    EDF Id: <b>{$patientId}</b><br>
+                    Email Address: <b>{$patientMail}</b><br>
+                    Temporary Password: <b>{$tempPassword}</b><br><br>
+                    You will be required to change your password upon first login.
+                    <br><br>
+                    Regards,<br>
+                    <b>EDF Healthcare Team</b>
+                ";
+
+        $this->email->set_newline("\r\n");
+        $this->email->from('noreply@consult.edftech.in', 'Consult EDF');
+        $this->email->to($patientMail);
+        $this->email->subject('Your Account Login Credentials');
+        $this->email->message($message);
+
+        $result = $this->email->send();
+        return $result;
+    }
+
     public function addPatientsForm()
     {
         $post = $this->input->post(null, true);
@@ -356,30 +381,11 @@ class Healthcareprovider extends CI_Controller
             redirect('Consultation/consultation');
             return;
         }
-        $this->HcpModel->generatePatientId($register);
+        $patientId = $this->HcpModel->generatePatientId($register);
 
         if (!empty($patientMail)) {
-            $message = "
-                    Hi there,<br><br>
-                    Your account has been created as <b>Patient</b>.<br><br>
-                    Login URL: <b>https://consult.edftech.in/</b><br>
-                    Email Address: <b>{$patientMail}</b><br>
-                    Temporary Password: <b>{$tempPassword}</b><br><br>
-                    You will be required to change your password upon first login.
-                    <br><br>
-                    Regards,<br>
-                    <b>EDF Healthcare Team</b>
-                ";
-
-            $this->email->set_newline("\r\n");
-            $this->email->from('noreply@consult.edftech.in', 'Consult EDF');
-            $this->email->to($patientMail);
-            $this->email->subject('Your Account Login Credentials');
-            $this->email->message($message);
-
-            if (!$this->email->send()) {
-                log_message('error', 'Patient email failed: ' . $this->email->print_debugger());
-            }
+            $fullName = $post['patientName'] . ' ' . $post['patientLastName'];
+            $this->sendPatientCredentials($patientMail, $tempPassword, $patientId, $fullName);
         }
         $this->session->set_flashdata('showSuccessMessage', 'Patient added successfully');
         redirect('Consultation/consultation/' . $register);
@@ -413,13 +419,31 @@ class Healthcareprovider extends CI_Controller
 
     public function updatePatientsForm()
     {
-        $updatePatient = $this->HcpModel->updatePatientsDetails();
-        if ($updatePatient) {
+        $post = $this->input->post(null, true);
+        $patientMail = $post['patientEmail'] ?? '';
+        $updatePatientResult = $this->HcpModel->updatePatientsDetails();
+
+        if (!empty($patientMail) && $updatePatientResult['result']) {
+            if (empty($updatePatientResult['password'])) {
+                $tempPassword = $this->generateTempPassword(8);
+                $this->db->where('id', $post['patientIdDb']);
+                $this->db->update('patient_details', [
+                    'password' => password_hash($tempPassword, PASSWORD_BCRYPT)
+                ]);
+                if ($this->db->affected_rows() > 0) {
+                    $patientId = $post['patientId'];
+                    $fullName = $post['patientName'] . ' ' . $post['patientLastName'];
+                    $this->sendPatientCredentials($patientMail, $tempPassword, $patientId, $fullName);
+                }
+            }
+        }
+
+        if ($updatePatientResult['result']) {
             $this->session->set_flashdata('showSuccessMessage', 'Patient details updated successfully');
         } else {
             $this->session->set_flashdata('showErrorMessage', 'Error in updating patient details');
         }
-        redirect('Consultation/consultation/' . $updatePatient);
+        redirect('Consultation/consultation/' . $post['patientIdDb']);
     }
 
     public function appointments()
@@ -492,6 +516,10 @@ class Healthcareprovider extends CI_Controller
         $tempPassword = $this->generateTempPassword(8);
         $hashedPassword = password_hash($tempPassword, PASSWORD_BCRYPT);
 
+        $enteredAge = (int) $input['age'];
+        $today = new DateTime();
+        $derivedDob = $today->modify("-{$enteredAge} years")->format('Y-m-d');
+
         $data = [
             'firstName' => $input['firstName'],
             'lastName' => $input['lastName'],
@@ -499,6 +527,7 @@ class Healthcareprovider extends CI_Controller
             'mailId' => $input['email'],
             'gender' => $input['gender'],
             'age' => $input['age'],
+            'derived_dob' => $derivedDob,
             'patientHcp' => $_SESSION['hcpId'],
             'patientHcpDbId' => $_SESSION['hcpIdDb'],
             'password' => $hashedPassword,
@@ -527,27 +556,8 @@ class Healthcareprovider extends CI_Controller
         $this->HcpModel->updatePatientId($insertId, ['patientId' => $patientId]);
 
         if (!empty($data['mailId'])) {
-            $message = "
-            Hi there,<br><br>
-            Your account has been created as <b>Patient</b>.<br><br>
-            Login URL: <b>https://consult.edftech.in/</b><br>
-            Email Address: <b>{$data['mailId']}</b><br>
-            Temporary Password: <b>{$tempPassword}</b><br><br>
-            You will be required to change your password upon first login.
-            <br><br>
-            Regards,<br>
-            <b>EDF Healthcare Team</b>
-        ";
-
-            $this->email->set_newline("\r\n");
-            $this->email->from('noreply@consult.edftech.in', 'Consult EDF');
-            $this->email->to($data['mailId']);
-            $this->email->subject('Your Account Login Credentials');
-            $this->email->message($message);
-
-            if (!$this->email->send()) {
-                log_message('error', 'Patient email failed: ' . $this->email->print_debugger());
-            }
+            $fullName = $data['firstName'] . ' ' . $data['lastName'];
+            $this->sendPatientCredentials($data['mailId'], $tempPassword, $patientId, $fullName);
         }
 
         echo json_encode([

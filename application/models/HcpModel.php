@@ -269,7 +269,7 @@ class HcpModel extends CI_Model
             'partnerBlood' => $post['partnerBlood']
         );
         $this->db->where('id', $post['patientIdDb']);
-        $this->db->update('patient_details', $updateData);
+        $updateResult = $this->db->update('patient_details', $updateData);
 
         $uploadPath = './uploads/';
         $allowedTypes = ['jpg', 'jpeg', 'png'];
@@ -303,7 +303,24 @@ class HcpModel extends CI_Model
             $this->db->update('patient_details', ['profilePhoto' => $fileName]);
         }
 
-        return $post['patientIdDb'];
+        if ($updateResult) {
+            $password = $this->db
+                ->select('password')
+                ->where('id', $post['patientIdDb'])
+                ->get('patient_details')
+                ->row()
+                ->password;
+            return [
+                'result' => $updateResult,
+                'password' => $password
+            ];
+        } else {
+            return [
+                'result' => $updateResult,
+                'password' => null
+            ];
+        }
+
     }
 
     /* public function generatePatientId($dbid)

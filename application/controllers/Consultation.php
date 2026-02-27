@@ -990,6 +990,8 @@ class Consultation extends CI_Controller
             'consultation' => [
                 'consult_date' => $consultation['consult_date'],
                 'consult_time' => $consultation['consult_time'],
+                'diet_plan' => $consultation['dietPlan'],
+                'notes' => $consultation['notes'],
                 'next_follow_up' => $consultation['next_follow_up'],
                 'symptoms' => $symptoms,
                 'diagnosis' => $diagnoses,

@@ -482,27 +482,29 @@
 
                                                 <!-- Diet Plan -->
                                                 <?php if (!empty($consultation['dietPlan'])): ?>
-                                                    <p><strong>Diet Plan:</strong></p>
-                                                    <ul>
-                                                        <li><?= $consultation['dietPlan'] ?></li>
-                                                    </ul>
+                                                    <div style="margin-bottom: 15px;"><strong>Diet Plan:</strong>
+                                                        <p class="m-0 ps-3 pt-1">
+                                                            <?= nl2br(htmlspecialchars($consultation['dietPlan'])) ?>
+                                                        </p>
+                                                    </div>
                                                 <?php endif; ?>
 
                                                 <!-- Notes -->
                                                 <?php if (!empty($consultation['notes'])): ?>
-                                                    <p><strong>Notes:</strong></p>
-                                                    <ul>
-                                                        <li><?= $consultation['notes'] ?></li>
-                                                    </ul>
+                                                    <div style="margin-bottom: 15px;"><strong>Notes:</strong>
+                                                        <p class="m-0 ps-3 pt-1">
+                                                            <?= nl2br(htmlspecialchars($consultation['notes'])) ?>
+                                                        </p>
+                                                    </div>
                                                 <?php endif; ?>
 
                                                 <!-- Next Follow-Up -->
                                                 <?php if (!empty($consultation['next_follow_up'])): ?>
-                                                    <p><strong>Next Follow-Up Date:</strong></p>
-                                                    <ul>
-                                                        <li><?= date("d M Y", strtotime($consultation['next_follow_up'])) ?>
-                                                        </li>
-                                                    </ul>
+                                                    <div style="margin-bottom: 15px;"><strong>Next Follow-Up Date:</strong>
+                                                        <p class="m-0 ps-3 pt-1">
+                                                            <?= date("d M Y", strtotime($consultation['next_follow_up'])) ?>
+                                                        </p>
+                                                    </div>
                                                 <?php endif; ?>
                                             </div>
                                         </div>
@@ -784,6 +786,22 @@
                                                                             <li><?= $ins['instruction_name'] ?></li>
                                                                         <?php endforeach; ?>
                                                                     </ul>
+                                                                </div>
+                                                            <?php endif; ?>
+                                                            <?php if (!empty($consultation['dietPlan'])): ?>
+                                                                <div class="mt-3 px-2">
+                                                                    <p style="margin: 0;"><strong>Diet Plan:</strong></p>
+                                                                    <p class="m-0 ps-3 pt-1">
+                                                                        <?= nl2br(htmlspecialchars($consultation['dietPlan'])) ?>
+                                                                    </p>
+                                                                </div>
+                                                            <?php endif; ?>
+                                                            <?php if (!empty($consultation['notes'])): ?>
+                                                                <div class="mt-3 px-2">
+                                                                    <p style="margin: 0;"><strong>Notes:</strong> </p>
+                                                                    <p class="m-0 ps-3 pt-1">
+                                                                        <?= nl2br(htmlspecialchars($consultation['notes'])) ?>
+                                                                    </p>
                                                                 </div>
                                                             <?php endif; ?>
                                                             <?php if (!empty($consultation['next_follow_up'])): ?>
@@ -2375,16 +2393,14 @@
             style.innerHTML = `
                 @media print {
                     @page {
-                        margin: 10mm;
+                        margin-top: 150px;    /* Header space on EVERY page */
+                        margin-bottom: 150px;  /* Footer space on EVERY page */
+                        margin-left: 10mm;
+                        margin-right: 10mm;
                     }
 
                     body {
                         margin: 0;
-                    }
-
-                    #print-wrapper {
-                        padding-top: 100px;   /* Letterpad Header Space */
-                        padding-bottom: 50px; /* Letterpad Footer Space */
                     }
                 }
             `;

@@ -6,37 +6,16 @@
     <style>
         body {
             font-family: Arial, Helvetica, sans-serif;
-            font-size: 12px;
+            font-size: 14px;
             color: #000;
             line-height: 1.2;
         }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        /* Header Box Style */
-        .header-box {
-            border: 1px solid #cec8c8;
-            border-radius: 5px;
-            padding: 10px;
-            margin-top: 0px;
-            margin-bottom: 15px;
-        }
-
-        .header-table td {
-            vertical-align: middle;
-        }
-
-        /* Helpers */
-        .text-bold {
-            font-weight: bold;
-        }
-
         /* PDF Page Layout */
         @page {
-            margin: 180px 40px 100px 40px;
+            /* margin: 160px 35px 110px 35px; */
+            size: A4 portrait;
+            margin: 42mm 9mm 29mm 9mm;
         }
 
         header {
@@ -44,45 +23,45 @@
             top: -140px;
             left: 0;
             right: 0;
-            /* height: 100px; */
-            font-size: 12px;
         }
 
         footer {
             position: fixed;
-            bottom: -60px;
+            bottom: -90px;
             left: 0;
             right: 0;
-            /* height: 60px; */
             text-align: center;
-            font-size: 10px;
-            border-top: 1px solid #000;
+            font-size: 14px;
+            border-top: 1.2px solid #000;
             padding-top: 5px;
         }
 
-        /* .hospital-title {
-            font-family: Arial, Helvetica, sans-serif;
-            font-weight: bold;
-            color: #2F6E4D;
-            font-size: 22px;
-            font-weight: bold;
-            text-transform: uppercase;
-            margin: 0;
-        } */
-
-        .doc-header {
+        /* .doc-header {
             border-top: 1px solid #000;
             border-bottom: 1px solid #000;
             margin-top: 5px;
             padding: 5px 0;
             text-align: left;
+        } */
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        /* Patient Details Box Style */
+        .header-box {
+            border: 1px solid #cec8c8;
+            border-radius: 5px;
+            padding: 5px 10px;
+            margin-top: 0px;
+            margin-bottom: 10px;
         }
 
         /* Medicine Table */
         .med-table {
             width: 100%;
             border: 1px solid #000;
-            margin: 15px 0;
             font-size: 11px;
         }
 
@@ -99,54 +78,23 @@
             text-align: center;
             vertical-align: middle;
         }
+
+        .text-bold {
+            font-weight: bold;
+        }
     </style>
 </head>
 
 <body>
     <header>
-        <!-- <table class="header-table">
-            <tr>
-                <td style="">
-                    <?php
-                    $logommch = FCPATH . 'assets/mmchlogo.png';
-                    $mmchLogoData = base64_encode(file_get_contents($logommch));
-                    $logommch1 = 'data:image/png;base64,' . $mmchLogoData;
-                    ?>
-                    <img src="<?= $logommch1 ?>" width="45" height="45" alt="MMCH">
-                </td>
-
-                <td style="text-align: center;">
-                    <h1 class="hospital-title">MAARUTHI MEDICAL CENTRE AND HOSPITALS</h1>
-                    <p style="margin: 0px;">Perundurai Road, Erode - 11. &nbsp; ✆ : 0424 - 2264949, 2250517, 2266768,
-                        2257091.</p>
-                    <p style="margin: 0px;">
-                        Web: www.erodediabetesfoundation.org &nbsp;&nbsp;
-                        mail:- a.s.senthilvelu@gmail.com
-                    </p>
-                </td>
-
-                <td style="width: 60px; text-align: right;">
-                    <?php
-                    $logoPath = FCPATH . 'assets/edf_logo.png';
-                    if (file_exists($logoPath)):
-                        $logoData = base64_encode(file_get_contents($logoPath));
-                        $logoSrc = 'data:image/png;base64,' . $logoData;
-                        ?>
-                        <img src="<?= $logoSrc ?>" style="height: 45px;" alt="EDF">
-                    <?php else: ?>
-                        <div style="font-weight:bold; font-size:10px;">EDF</div>
-                    <?php endif; ?>
-                </td>
-            </tr>
-        </table> -->
         <?php
-        $header = FCPATH . 'assets/prescriptionHeader.png';
+        $header = FCPATH . 'assets/prescriptionTop.png';
         $headerData = base64_encode(file_get_contents($header));
         $headerSrc = 'data:image/png;base64,' . $headerData;
         ?>
-        <img src="<?= $headerSrc ?>" width="710" height="70" alt="Prescription Header">
-
-        <div class="doc-header">
+        <img src="<?= $headerSrc ?>" width="720" height="140" alt="Prescription Header">
+        <!-- Not in use - change style as per new design. -->
+        <!-- <div class="doc-header">
             <table style="width: 100%;" style="margin-bottom: 10px;">
                 <tr>
                     <td>
@@ -161,8 +109,9 @@
                     </td>
                 </tr>
             </table>
-        </div>
+        </div> -->
     </header>
+
     <footer>
         <div style="color: #307352;">
             <i>Kindly fix prior appointment by</i> <br>
@@ -176,13 +125,15 @@
         $logoData = base64_encode(file_get_contents($logoPath1));
         $logoSrc1 = 'data:image/png;base64,' . $logoData;
         ?>
-        <div style="margin-top: 3px; padding-top: 5px; font-weight: bold; color: #307352; border-top: 1px solid #000;">
+        <div
+            style="margin-top: 3px; padding-top: 5px; font-weight: bold; color: #307352; border-top: 1.2px solid #000;">
             FOR ONLINE / TELECONSULT VISIT &nbsp;|&nbsp; <a href="https://consult.edftech.in/"><img
                     src="<?= $logoSrc1 ?>" width="15" height="15" alt="EDF Logo" style="position: relative; top: 3px;">
                 consult.edftech.in</a> / DR. A. S. SENTHILVELU
         </div>
-        <div style="margin-top: 10px;"> Get More Information @ <a href="https://erodediabetesfoundation.org/"
-                target="_blank" rel="noopener noreferrer">erodediabetesfoundation</a>
+        <div style="margin-top: 3px; font-weight: bold; color: #000;"> Get More Information @ <a
+                href="https://erodediabetesfoundation.org/" target="_blank"
+                rel="noopener noreferrer">erodediabetesfoundation</a>
         </div>
     </footer>
 
@@ -190,23 +141,23 @@
         <table style="width: 100%;">
             <tr>
                 <td style="width: 65%; vertical-align: top;">
-                    <p style="margin:0px;"><span class="text-bold">Name:</span>
+                    <p style="margin:3px;"><span class="text-bold">Name:</span>
                         <?php echo $patientDetails[0]['firstName'] . ' ' . $patientDetails[0]['lastName']; ?>
                     </p>
-                    <p style="margin:0px;"><span class="text-bold">Age & Sex:</span>
+                    <p style="margin:3px;"><span class="text-bold">Age & Sex:</span>
                         <?php echo $patientDetails[0]['age']; ?> Year(s) / <?php echo $patientDetails[0]['gender']; ?>
                     </p>
-                    <p style="margin:0px;" <span class="text-bold">Patient ID:</span>
+                    <p style="margin:3px;"><span class="text-bold">Patient ID:</span>
                         <?php echo $patientDetails[0]['patientId']; ?>
                     </p>
                 </td>
 
                 <td style="width: 35%; vertical-align: top; text-align: right;">
-                    <p style="margin:0px;">
+                    <p style="margin:3px;">
                         <span class="text-bold">Consult Date:</span>
                         <?php echo date('d M Y', strtotime($consultation['consult_date'])); ?>
                     </p>
-                    <p style="margin:0px;">
+                    <p style="margin:3px;">
                         <span class="text-bold">Mobile:</span> <?php echo $patientDetails[0]['mobileNumber'] ?? '-'; ?>
                     </p>
                 </td>
@@ -215,7 +166,7 @@
     </div>
 
     <?php if (!empty($consultation['symptoms'])): ?>
-        <div style="margin-bottom: 10px;">
+        <div style="margin-bottom: 8px;">
             <span class="text-bold">Symptoms:</span>
             <span>
                 <?php
@@ -243,7 +194,7 @@
     <?php endif; ?>
 
     <?php if (!empty($consultation['diagnosis'])): ?>
-        <div style="margin-bottom: 10px;">
+        <div style="margin-bottom: 8px;">
             <span class="text-bold">Diagnosis:</span>
             <span>
                 <?php
@@ -273,11 +224,11 @@
     <?php endif; ?>
 
     <?php if (!empty($consultation['medicines'])): ?>
-        <table class="med-table">
+        <table class="med-table" style="margin-bottom: 8px;">
             <thead>
                 <tr>
                     <th rowspan="2" style="width: 30px;">Rx</th>
-                    <th rowspan="2" style="width: 200px;">Name</th>
+                    <th rowspan="2" style="width: 200px;">Medicine</th>
                     <th rowspan="2" style="width: 40px;">Qty</th>
                     <th rowspan="2">Food<br>Timing</th>
                     <th colspan="4">Frequency</th>
@@ -328,8 +279,8 @@
     <?php endif; ?>
 
     <?php if (!empty($consultation['advices'])): ?>
-        <div style="">
-            <p class="text-bold" style="margin: 10px 0 2px 0; padding: 0;">Advices:</p>
+        <div style="margin-bottom: 8px;">
+            <p class="text-bold" style="margin: 0px; padding: 0;">Advices:</p>
             <ul style="padding-left: 20px; margin: 0;">
                 <?php foreach ($consultation['advices'] as $adv): ?>
                     <li><?= $adv['advice_name'] ?>
@@ -343,8 +294,8 @@
     <?php endif; ?>
 
     <?php if (!empty($consultation['instructions'])): ?>
-        <div style="">
-            <p class="text-bold" style="margin: 15px 0 2px 0;">Instructions:</p>
+        <div style="margin-bottom: 8px;">
+            <p class="text-bold" style="margin:0;">Instructions:</p>
             <ul style="padding-left: 20px; margin: 0;">
                 <?php foreach ($consultation['instructions'] as $ins): ?>
                     <li><?= $ins['instruction_name'] ?></li>
@@ -353,8 +304,23 @@
         </div>
     <?php endif; ?>
 
+    <?php if (!empty($consultation['diet_plan'])): ?>
+        <div style="margin-bottom: 8px;">
+            <p class="text-bold" style="margin:0;">Diet Plan:</p>
+            <p style="padding-left: 20px; margin: 0;"><?= nl2br(htmlspecialchars($consultation['diet_plan'])) ?></p>
+        </div>
+    <?php endif; ?>
+
+    <?php if (!empty($consultation['notes'])): ?>
+        <div style="margin-bottom: 8px;">
+            <!-- <span class="text-bold">:</span> <br> -->
+            <p class="text-bold" style="margin:0;">Notes:</p>
+            <p style="padding-left: 20px; margin: 0;"><?= nl2br(htmlspecialchars($consultation['notes'])) ?></p>
+        </div>
+    <?php endif; ?>
+
     <?php if (!empty($consultation['next_follow_up'])): ?>
-        <div style="margin-top: 15px;">
+        <div style="margin-bottom: 8px;">
             <span class="text-bold">Next Follow-Up Date:</span>
             <?= date("d M Y", strtotime($consultation['next_follow_up'])) ?>
         </div>

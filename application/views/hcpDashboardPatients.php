@@ -820,6 +820,8 @@
                                             </div>
                                             <input type="hidden" id="patientIdDb" name="patientIdDb"
                                                 value="<?php echo $value['id']; ?>">
+                                            <input type="hidden" id="patientId" name="patientId"
+                                                value="<?php echo $value['patientId']; ?>">
                                             <input type="hidden" id="oldMobile" value="<?php echo $value['mobileNumber'] ?? ''; ?>">
                                             <input type="hidden" id="oldAltMobile"
                                                 value="<?php echo $value['alternateMobile'] ?? ''; ?>">

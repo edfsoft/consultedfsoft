@@ -819,15 +819,6 @@
 
                                                         <?php endif; ?>
 
-                                                        <!-- Attachments
-                                                        <?php if (!empty($consultation['attachments'])): ?>
-                                                            <p><strong>Attachments:</strong></p>
-                                                            <ul>
-                                                                <?php foreach ($consultation['attachments'] as $attach): ?>
-                                                                    <li><?= $attach['file_name'] ?></li>
-                                                                <?php endforeach; ?>
-                                                            </ul>
-                                                        <?php endif; ?> -->
                                                         <!-- Attachments -->
                                                         <?php if (!empty($consultation['attachments'])): ?>
                                                             <p><strong>Attachments:</strong></p>
@@ -909,7 +900,7 @@
 
                                                             <div class="modal-body" style="background-color: #ffffffff;">
                                                                 <div id="consultationDetails<?= $consultation['id'] ?>"
-                                                                    style="background: #fff; padding: 1px; width: 100%; margin: 0 auto; min-height: 500px; font-family: 'Noto Sans', sans-serif; font-size: 13px; color: #000; line-height: 1.4; box-sizing: border-box;">
+                                                                    style="background: #fff; padding: 1px; width: 100%; margin: 0 auto; min-height: 500px; font-family: 'Noto Sans', sans-serif; font-size: 12px; color: #000; line-height: 1.4; box-sizing: border-box;">
 
                                                                     <div class="mb-2"
                                                                         style="border: 1px solid #cec8c8ff; border-radius: 5px; padding: 5px; width: 100%; box-sizing: border-box; display: flex; justify-content: space-between; align-items: flex-start;">
@@ -942,7 +933,7 @@
                                                                             <div style="display: flex; justify-content: flex-end;">
                                                                                 <div style="text-align: left;">
                                                                                     <div class="mb-0" style="white-space: nowrap;">
-                                                                                        <strong>Date:</strong>
+                                                                                        <strong>Consult Date:</strong>
                                                                                         <span><?= date('d M Y', strtotime($consultation['consult_date'])) ?></span>
                                                                                         <!-- <span style="margin: 0 5px;">|</span>
                                                                                         <span><?= date('h:i A', strtotime($consultation['consult_time'])) ?></span> -->
@@ -955,7 +946,6 @@
                                                                             </div>
                                                                         </div>
                                                                     </div>
-
 
                                                                     <?php if (!empty($consultation['symptoms'])): ?>
                                                                         <div class="mb-0 px-2">
@@ -1015,46 +1005,44 @@
                                                                     <?php endif; ?>
                                                                     <?php if (!empty($consultation['medicines'])): ?>
                                                                         <table
-                                                                            style="width: 100%; border-collapse: collapse; border: 1px solid #000; margin-top: 15px;"
-                                                                            class="mb-3">
+                                                                            style="width: 100%; border-collapse: collapse; border: 0.5px solid #A9A9A9; margin-top: 15px;font-size: 12px"
+                                                                            class="mb-2">
                                                                             <thead>
                                                                                 <tr>
                                                                                     <th rowspan="2"
-                                                                                        style="border: 1px solid #000; padding: 6px; text-align: center; width: 25px;">
+                                                                                        style="border: 0.5px solid #A9A9A9; padding: 4px; text-align: center; width: 25px;">
                                                                                         Rx</th>
                                                                                     <th rowspan="2"
-                                                                                        style="border: 1px solid #000; padding: 6px; text-align: center; width: 200px; font-size:14px; font-weight: bold;">
-                                                                                        Name</th>
+                                                                                        style="border: 0.5px solid #A9A9A9; padding: 4px; text-align: center; width: 200px; font-size:12px; font-weight: bold;">
+                                                                                        Medicine</th>
                                                                                     <th rowspan="2"
-                                                                                        style="border: 1px solid #000; padding: 6px; text-align: center; width: 35px; font-size:14px; font-weight: bold;">
+                                                                                        style="border: 0.5px solid #A9A9A9; padding: 4px; text-align: center; width: 35px; font-size:12px; font-weight: bold;">
                                                                                         Qty</th>
                                                                                     <th rowspan="2"
-                                                                                        style="border: 1px solid #000; padding: 6px; text-align: center; font-size:14px; font-weight: bold;">
+                                                                                        style="border: 0.5px solid #A9A9A9; padding: 4px; text-align: center; font-size:12px; font-weight: bold;">
                                                                                         Food <br> Timing</th>
                                                                                     <th colspan="4"
-                                                                                        style="border: 1px solid #000; padding: 6px; text-align: center; font-size:14px; font-weight: bold;">
+                                                                                        style="border: 0.5px solid #A9A9A9; padding: 4px; text-align: center; font-size:12px; font-weight: bold;">
                                                                                         Frequency</th>
                                                                                     <th rowspan="2"
-                                                                                        style="border: 1px solid #000; padding: 6px; text-align: center; width: 200px; font-size:14px; font-weight: bold;">
+                                                                                        style="border: 0.5px solid #A9A9A9; padding: 4px; text-align: center; width: 200px; font-size:12px; font-weight: bold;">
                                                                                         Notes</th>
                                                                                 </tr>
-
                                                                                 <tr>
                                                                                     <th
-                                                                                        style="border: 1px solid #000; padding: 6px; text-align: center; font-size:13px; font-weight: bold;">
+                                                                                        style="border: 0.5px solid #A9A9A9; padding: 4px; text-align: center; font-size:12px; font-weight: bold;">
                                                                                         Mrn</th>
                                                                                     <th
-                                                                                        style="border: 1px solid #000; padding: 6px; text-align: center; font-size:13px; font-weight: bold;">
+                                                                                        style="border: 0.5px solid #A9A9A9; padding: 4px; text-align: center; font-size:12px; font-weight: bold;">
                                                                                         Aft</th>
                                                                                     <th
-                                                                                        style="border: 1px solid #000; padding: 6px; text-align: center; font-size:13px; font-weight: bold;">
+                                                                                        style="border: 0.5px solid #A9A9A9; padding: 4px; text-align: center; font-size:12px; font-weight: bold;">
                                                                                         Eve</th>
                                                                                     <th
-                                                                                        style="border: 1px solid #000; padding: 6px; text-align: center; font-size:13px; font-weight: bold;">
+                                                                                        style="border: 0.5px solid #A9A9A9; padding: 4px; text-align: center; font-size:12px; font-weight: bold;">
                                                                                         Ngt</th>
                                                                                 </tr>
                                                                             </thead>
-
 
                                                                             <tbody>
                                                                                 <?php foreach ($consultation['medicines'] as $index => $medicine): ?>
@@ -1066,11 +1054,11 @@
                                                                                     ?>
                                                                                     <tr>
                                                                                         <td
-                                                                                            style="border: 1px solid #000; padding: 6px; text-align: center;">
+                                                                                            style="border: 0.5px solid #A9A9A9; padding: 4px; text-align: center;">
                                                                                             <?= $index + 1 ?>
                                                                                         </td>
-
-                                                                                        <td style="border: 1px solid #000; padding: 6px;">
+                                                                                        <td
+                                                                                            style="border: 0.5px solid #A9A9A9; padding: 4px;">
                                                                                             <div
                                                                                                 style="display: flex; flex-direction: column; justify-content: center;">
                                                                                                 <div
@@ -1103,15 +1091,15 @@
                                                                                         </td>
 
                                                                                         <td
-                                                                                            style="border: 1px solid #000; padding: 6px; text-align: center;">
+                                                                                            style="border: 0.5px solid #A9A9A9; padding: 4px; text-align: center;">
                                                                                             <?= htmlspecialchars($medicine['quantity'] ?? '-') ?>
                                                                                         </td>
                                                                                         <td
-                                                                                            style="border: 1px solid #000; padding: 6px; text-align: center;">
+                                                                                            style="border: 0.5px solid #A9A9A9; padding: 4px; text-align: center;">
                                                                                             <?= htmlspecialchars($medicine['food_timing'] ?? '-') ?>
                                                                                         </td>
                                                                                         <td
-                                                                                            style="border: 1px solid #000; padding: 6px; text-align: center;">
+                                                                                            style="border: 0.5px solid #A9A9A9; padding: 4px; text-align: center;">
                                                                                             <?php if ($morning !== '0' && $morning !== '-'):
                                                                                                 echo $morning;
                                                                                             else:
@@ -1119,7 +1107,7 @@
                                                                                             endif; ?>
                                                                                         </td>
                                                                                         <td
-                                                                                            style="border: 1px solid #000; padding: 6px; text-align: center;">
+                                                                                            style="border: 0.5px solid #A9A9A9; padding: 4px; text-align: center;">
                                                                                             <?php if ($afternoon !== '0' && $afternoon !== '-'):
                                                                                                 echo $afternoon;
                                                                                             else:
@@ -1127,7 +1115,7 @@
                                                                                             endif; ?>
                                                                                         </td>
                                                                                         <td
-                                                                                            style="border: 1px solid #000; padding: 6px; text-align: center;">
+                                                                                            style="border: 0.5px solid #A9A9A9; padding: 4px; text-align: center;">
                                                                                             <?php if ($evening !== '0' && $evening !== '-'):
                                                                                                 echo $evening;
                                                                                             else:
@@ -1135,7 +1123,7 @@
                                                                                             endif; ?>
                                                                                         </td>
                                                                                         <td
-                                                                                            style="border: 1px solid #000; padding: 6px; text-align: center;">
+                                                                                            style="border: 0.5px solid #A9A9A9; padding: 4px; text-align: center;">
                                                                                             <?php if ($night !== '0' && $night !== '-'):
                                                                                                 echo $night;
                                                                                             else:
@@ -1143,7 +1131,7 @@
                                                                                             endif; ?>
                                                                                         </td>
                                                                                         <td
-                                                                                            style="border: 1px solid #000; padding: 6px; line-height: 1.2; font-size: 14px; text-align: <?= !empty($medicine['notes']) ? 'left' : 'center' ?>;">
+                                                                                            style="border: 0.5px solid #A9A9A9; padding: 4px; line-height: 1.2; font-size: 12px; text-align: <?= !empty($medicine['notes']) ? 'left' : 'center' ?>;">
                                                                                             <?= !empty($medicine['notes']) ? htmlspecialchars($medicine['notes']) : '-' ?>
                                                                                         </td>
                                                                                     </tr>
@@ -1152,10 +1140,10 @@
                                                                         </table>
                                                                     <?php endif; ?>
                                                                     <?php if (!empty($consultation['advices'])): ?>
-                                                                        <div class="mb-3 px-2">
-                                                                            <p class="mb-1"><strong>Advices:</strong></p>
-                                                                            <ul
-                                                                                style="margin-top: 0; padding-left: 20px; margin-bottom: 5px;">
+                                                                        <div style="margin-bottom: 8px;">
+                                                                            <p style="margin: 0px; padding: 0;"><strong>
+                                                                                Advices:</p></strong>
+                                                                            <ul style="padding-left: 20px; margin: 0;">
                                                                                 <?php foreach ($consultation['advices'] as $adv): ?>
                                                                                     <li><?= $adv['advice_name'] ?>
                                                                                         <?php if (!empty($adv['note'])): ?>
@@ -1166,40 +1154,40 @@
                                                                             </ul>
                                                                         </div>
                                                                     <?php endif; ?>
+
                                                                     <?php if (!empty($consultation['instructions'])): ?>
-                                                                        <div class="mb-3 px-2">
-                                                                            <p class="mb-1"><strong>Instructions:</strong></p>
-                                                                            <ul
-                                                                                style="margin-top: 0; padding-left: 20px; margin-bottom: 5px;">
+                                                                        <div style="margin-bottom: 8px;">
+                                                                            <p style="margin:0;"><strong>Instructions:</strong></p>
+                                                                            <ul style="padding-left: 20px; margin: 0;">
                                                                                 <?php foreach ($consultation['instructions'] as $ins): ?>
                                                                                     <li><?= $ins['instruction_name'] ?></li>
                                                                                 <?php endforeach; ?>
                                                                             </ul>
                                                                         </div>
                                                                     <?php endif; ?>
+
                                                                     <?php if (!empty($consultation['dietPlan'])): ?>
-                                                                        <div class="mt-3 px-2">
-                                                                            <p style="margin: 0;"><strong>Diet Plan:</strong></p>
-                                                                            <p class="m-0 ps-3 pt-1">
+                                                                        <div style="margin-bottom: 8px;">
+                                                                            <p style="margin:0;"><strong>Diet Plan:</strong></p>
+                                                                            <p style="padding-left: 20px; margin: 0;">
                                                                                 <?= nl2br(htmlspecialchars($consultation['dietPlan'])) ?>
                                                                             </p>
                                                                         </div>
                                                                     <?php endif; ?>
+
                                                                     <?php if (!empty($consultation['notes'])): ?>
-                                                                        <div class="mt-3 px-2">
-                                                                            <p style="margin: 0;"><strong>Notes:</strong> </p>
-                                                                            <p class="m-0 ps-3 pt-1">
+                                                                        <div style="margin-bottom: 8px;">
+                                                                            <p style="margin:0;"><strong>Notes:</strong></p>
+                                                                            <p style="padding-left: 20px; margin: 0;">
                                                                                 <?= nl2br(htmlspecialchars($consultation['notes'])) ?>
                                                                             </p>
                                                                         </div>
                                                                     <?php endif; ?>
+
                                                                     <?php if (!empty($consultation['next_follow_up'])): ?>
-                                                                        <div class="mt-3 px-2">
-                                                                            <p style="margin: 0;">
-                                                                                <strong>Next Follow-Up Date:</strong>
-                                                                                <span
-                                                                                    style="margin-left: 5px;"><?= date("d M Y", strtotime($consultation['next_follow_up'])) ?></span>
-                                                                            </p>
+                                                                        <div style="margin-bottom: 8px;">
+                                                                            <span><strong>Next Follow-Up Date:</strong></span>
+                                                                            <?= date("d M Y", strtotime($consultation['next_follow_up'])) ?>
                                                                         </div>
                                                                     <?php endif; ?>
 
@@ -1219,11 +1207,9 @@
 
                                                                 </div>
                                                             </div>
-                                                            <div class="modal-footer d-flex justify-content-between">
 
-                                                                <?php
-                                                                $patientEmail = isset($patientDetails[0]['mailId']) ? $patientDetails[0]['mailId'] : '';
-                                                                ?>
+                                                            <div class="modal-footer d-flex justify-content-between">
+                                                                <?php $patientEmail = isset($patientDetails[0]['mailId']) ? $patientDetails[0]['mailId'] : ''; ?>
 
                                                                 <?php if (!empty($patientEmail)): ?>
                                                                     <a href="<?= base_url('consultation/resendEmail/' . $consultation['id']) ?>"
@@ -8046,11 +8032,19 @@
 
                             document.body.appendChild(page);
 
+                            // const canvas = await html2canvas(page, {
+                            //     scale: 1,
+                            //     backgroundColor: '#ffffff',
+                            //     logging: false,
+                            //     useCORS: true
+                            // });
+                            await document.fonts.ready;
+
                             const canvas = await html2canvas(page, {
-                                scale: 1,
+                                scale: 2,
                                 backgroundColor: '#ffffff',
-                                logging: false,
-                                useCORS: true
+                                useCORS: true,
+                                logging: false
                             });
 
                             document.body.removeChild(page);
@@ -8091,8 +8085,8 @@
                 const PAGE_HEIGHT = 1122; // Standard A4 Web Height (px)
 
                 // 1. SET YOUR CUSTOM MARGINS HERE
-                const MARGIN_TOP = 200;     // 100px Top Space
-                const MARGIN_BOTTOM = 200;   // 50px Bottom Space
+                const MARGIN_TOP = 200;     // Top Space
+                const MARGIN_BOTTOM = 150;   // Bottom Space
                 const MARGIN_SIDES = 30;    // Keep 30px for Left/Right
 
                 // 2. CALCULATE SAFE CONTENT HEIGHT
@@ -8231,7 +8225,7 @@
 
             var style = document.createElement('style');
             // Adjust style based on requirement to print on Letterpad with header and footer space
-           style.innerHTML = `
+            style.innerHTML = `
                 @media print {
                     @page {
                         margin-top: 150px;    /* Header space on EVERY page */

@@ -8032,12 +8032,6 @@
 
                             document.body.appendChild(page);
 
-                            // const canvas = await html2canvas(page, {
-                            //     scale: 1,
-                            //     backgroundColor: '#ffffff',
-                            //     logging: false,
-                            //     useCORS: true
-                            // });
                             await document.fonts.ready;
 
                             const canvas = await html2canvas(page, {
@@ -8228,8 +8222,8 @@
             style.innerHTML = `
                 @media print {
                     @page {
-                        margin-top: 150px;    /* Header space on EVERY page */
-                        margin-bottom: 150px;  /* Footer space on EVERY page */
+                        margin-top: 40mm;    /* Header space on EVERY page */
+                        margin-bottom: 40mm;  /* Footer space on EVERY page */
                         margin-left: 10mm;
                         margin-right: 10mm;
                     }

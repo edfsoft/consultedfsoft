@@ -13,7 +13,9 @@
 
         /* PDF Page Layout */
         @page {
-            margin: 160px 35px 110px 35px;
+            /* margin: 160px 35px 110px 35px; */
+            size: A4 portrait;
+            margin: 42mm 9mm 29mm 9mm;
         }
 
         header {
@@ -139,7 +141,7 @@
         <table style="width: 100%;">
             <tr>
                 <td style="width: 65%; vertical-align: top;">
-                    <p style="margin:3px;"><span class="text-bold">Medicine:</span>
+                    <p style="margin:3px;"><span class="text-bold">Name:</span>
                         <?php echo $patientDetails[0]['firstName'] . ' ' . $patientDetails[0]['lastName']; ?>
                     </p>
                     <p style="margin:3px;"><span class="text-bold">Age & Sex:</span>
@@ -226,7 +228,7 @@
             <thead>
                 <tr>
                     <th rowspan="2" style="width: 30px;">Rx</th>
-                    <th rowspan="2" style="width: 200px;">Name</th>
+                    <th rowspan="2" style="width: 200px;">Medicine</th>
                     <th rowspan="2" style="width: 40px;">Qty</th>
                     <th rowspan="2">Food<br>Timing</th>
                     <th colspan="4">Frequency</th>

@@ -425,6 +425,18 @@
                                     New Consultation
                                 </button>
                             </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link btn" id="new-tab" data-bs-toggle="tab" data-bs-target="#sugar-chart"
+                                    type="button" role="tab">
+                                    Sugar Chart
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link btn" id="new-tab" data-bs-toggle="tab"
+                                    data-bs-target="#sugarChartForm" type="button" role="tab">
+                                    Sugar Chart Form
+                                </button>
+                            </li>
                         </ul>
 
                         <div class="tab-content border p-4 rounded shadow-sm" id="consultationTabsContent">
@@ -1142,7 +1154,7 @@
                                                                     <?php if (!empty($consultation['advices'])): ?>
                                                                         <div style="margin-bottom: 8px;">
                                                                             <p style="margin: 0px; padding: 0;"><strong>
-                                                                                Advices:</p></strong>
+                                                                                    Advices:</strong></p>
                                                                             <ul style="padding-left: 20px; margin: 0;">
                                                                                 <?php foreach ($consultation['advices'] as $adv): ?>
                                                                                     <li><?= $adv['advice_name'] ?>
@@ -1707,7 +1719,7 @@
                                         <div id="nextFollowUpDate_err" class="text-danger pt-1"></div>
                                     </div>
 
-                                    <div class="d-flex justify-content-between mt-5">
+                                    <div class="d-flex justify-content-between mt-4">
                                         <!-- Send mail in form is not in use and function removed in controller -->
                                         <?php $emailAvailable = !empty($patientDetails[0]['mailId']); ?>
                                         <div class="form-check">
@@ -1809,7 +1821,204 @@
                                 </div>
                                 <!------- end attachment display -->
                             </div>
+
+                            <!-- Sugar Chart -->
+                            <div class="tab-pane fade" id="sugar-chart" role="tabpanel">
+                                <p class="fs-5 fw-semibold mb-3">Sugar Chart:</p>
+                                <?php
+                                $firstMonth = true;
+                                foreach ($monthlyData as $month => $records):
+                                    ?>
+                                    <div class="card mb-3">
+                                        <div class="card-header fw-medium text-white" style="background-color: #00ad8dcb;">
+                                            <?= $month ?>
+                                            <?php if (!$firstMonth): ?>
+                                                <button class="btn btn-sm btn-light float-end toggle-btn">
+                                                    Toggle
+                                                </button>
+                                            <?php endif; ?>
+                                        </div>
+
+                                        <div class="card-body month-content" <?= $firstMonth ? '' : 'style="display:none;"' ?>>
+
+                                            <div class="table-responsive">
+                                                <table class="table table-bordered text-center">
+                                                    <thead class="table-light">
+                                                        <tr>
+                                                            <th rowspan="2">S.No</th>
+                                                            <th rowspan="2">Date</th>
+                                                            <th rowspan="2">FBS</th>
+                                                            <th colspan="2">PP</th>
+                                                            <th colspan="2">Lunch</th>
+                                                            <th colspan="2">Dinner</th>
+                                                            <th colspan="3">
+                                                                Medicine: <?= $records[0]->medicine_name ?>
+                                                            </th>
+                                                              <th rowspan="2">Notes</th>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>1Hr</th>
+                                                            <th>2Hr</th>
+                                                            <th>Before</th>
+                                                            <th>After</th>
+                                                            <th>Before</th>
+                                                            <th>After</th>
+                                                            <th>M</th>
+                                                            <th>A</th>
+                                                            <th>N</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+
+                                                        <?php $i = 1;
+                                                        foreach ($records as $row): ?>
+                                                            <tr>
+                                                                <td><?= $i++ ?></td>
+                                                                <td><?= date('d-m-Y', strtotime($row->record_date)) ?></td>
+                                                                <td><?= $row->fbs ?></td>
+                                                                <td><?= $row->pp_1hr ?></td>
+                                                                <td><?= $row->pp_2hr ?></td>
+                                                                <td><?= $row->lunch_before ?></td>
+                                                                <td><?= $row->lunch_after ?></td>
+                                                                <td><?= $row->dinner_before ?></td>
+                                                                <td><?= $row->dinner_after ?></td>
+                                                                <td><?= $row->morning ?></td>
+                                                                <td><?= $row->afternoon ?></td>
+                                                                <td><?= $row->night ?></td>
+                                                                <td><?= $row->notes ?></td>
+                                                            </tr>
+                                                        <?php endforeach; ?>
+
+                                                    </tbody>
+                                                </table>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <?php
+                                    $firstMonth = false;
+                                endforeach;
+                                ?>
+                            </div>
+                            <script>
+                                document.querySelectorAll('.toggle-btn').forEach(button => {
+                                    button.addEventListener('click', function () {
+                                        let content = this.closest('.card').querySelector('.month-content');
+                                        content.style.display =
+                                            content.style.display === 'none' ? 'block' : 'none';
+                                    });
+                                });
+                            </script>
+
+                            <!-- Sugar Chart Form -->
+                            <div class="tab-pane fade" id="sugarChartForm" role="tabpanel">
+                                <p class="fs-5 fw-semibold mb-3">Sugar Chart Form:</p>
+                                <form method="post" action="<?= base_url('Consultation/saveSugarValues') ?>" class="pb-5">
+                                    <input type="hidden" name="patient_id" value="<?= $patient_id ?>">
+                                    <!-- Date -->
+                                    <div class="col-md-3">
+                                        <label class="form-label"
+                                            style="font-size: 18px; font-weight: 500;color: #00ad8e">Date</label>
+                                        <input type="date" name="record_date" class="form-control" required>
+                                    </div>
+                                    <hr>
+                                    <!-- FBS -->
+                                    <div class="col-md-3">
+                                        <label class="form-label"
+                                            style="font-size: 18px; font-weight: 500;color: #00ad8e">Fasting Blood Sugar
+                                            (FBS)</label>
+                                        <input type="number" min="0" step="0.01" name="fbs" class="form-control"
+                                            placeholder="E.g. 70–99 mg/dL">
+                                    </div>
+                                    <hr>
+                                    <!-- PP Sugar -->
+                                    <p style="font-size: 18px; font-weight: 500;color: #00ad8e">Post
+                                        Prandial (PP Sugar)</p>
+                                    <div class="row mb-3">
+                                        <div class="col-md-3">
+                                            <label class="form-label fieldLabel">PP - 1 Hour</label>
+                                            <input type="number" min="0" step="0.01" name="pp_1hr" class="form-control"
+                                                placeholder="E.g. < 180 mg/dL">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="form-label fieldLabel">PP - 2 Hour</label>
+                                            <input type="number" min="0" step="0.01" name="pp_2hr" class="form-control"
+                                                placeholder="E.g. < 140 mg/dL">
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <!-- Lunch -->
+                                    <p style="font-size: 18px; font-weight: 500;color: #00ad8e">Lunch</p>
+                                    <div class="row mb-3">
+                                        <div class="col-md-3">
+                                            <label class="form-label fieldLabel">Before Lunch</label>
+                                            <input type="number" min="0" step="0.01" name="lunch_before"
+                                                class="form-control" placeholder="E.g. 80–130 mg/dL">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="form-label fieldLabel">After Lunch</label>
+                                            <input type="number" min="0" step="0.01" name="lunch_after" class="form-control"
+                                                placeholder="E.g. < 140 mg/dL">
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <!-- Dinner -->
+                                    <p style="font-size: 18px; font-weight: 500;color: #00ad8e">Dinner</p>
+                                    <div class="row mb-3">
+                                        <div class="col-md-3">
+                                            <label class="form-label fieldLabel">Before Dinner</label>
+                                            <input type="number" min="0" step="0.01" name="dinner_before"
+                                                class="form-control" placeholder="E.g. 80–130 mg/dL">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="form-label fieldLabel">After Dinner</label>
+                                            <input type="number" min="0" step="0.01" name="dinner_after"
+                                                class="form-control" placeholder="E.g. < 140 mg/dL">
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <!-- Medicine -->
+                                    <div class="mb-3">
+                                        <label class="form-label"
+                                            style="font-size: 18px; font-weight: 500;color: #00ad8e">Medicine
+                                            Name</label>
+                                        <input type="text" name="medicine_name" class="form-control mb-3"
+                                            placeholder="E.g. Metformin 500mg + Insulin">
+
+                                        <div class="row mb-4">
+                                            <div class="col-md-4">
+                                                <label class="form-label fieldLabel">Morning (M)</label>
+                                                <input type="number" min="0" step="0.01" name="morning"
+                                                    class="form-control">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="form-label fieldLabel">Afternoon (A)</label>
+                                                <input type="number" min="0" step="0.01" name="afternoon"
+                                                    class="form-control">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="form-label fieldLabel">Night (N)</label>
+                                                <input type="number" min="0" step="0.01" name="night" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <!-- Notes -->
+                                    <div class="">
+                                        <label class="form-label"
+                                            style="font-size: 18px; font-weight: 500;color: #00ad8e">Notes</label>
+                                        <textarea class="form-control" name="notes" id="notes"
+                                            placeholder="Enter the notes"></textarea>
+                                    </div>
+                                    <div class="text-end mt-5">
+                                        <button type="submit" class="float-end btn text-light"
+                                            style="background-color: #00ad8e;">Save</button>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
+
                     </div>
                 </div>
             </section>

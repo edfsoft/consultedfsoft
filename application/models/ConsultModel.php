@@ -1049,5 +1049,30 @@ class ConsultModel extends CI_Model
             ->result_array();
     }
 
+public function saveSugarData($data)
+    {
+        return $this->db->insert('sugar_chart', $data);
+    }
+
+    public function getMonthlyData($patientId)
+    {
+        $this->db->select('*');
+        $this->db->from('sugar_chart');
+        $this->db->where('patient_id', $patientId);
+        $this->db->order_by('record_date', 'DESC');
+
+        $query = $this->db->get();
+        $result = $query->result();
+
+        // Group by month
+        $grouped = [];
+        foreach ($result as $row) {
+            $month = date('F Y', strtotime($row->record_date));
+            $grouped[$month][] = $row;
+        }
+
+        return $grouped;
+    }
+
 
 }

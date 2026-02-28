@@ -1049,7 +1049,7 @@ class ConsultModel extends CI_Model
             ->result_array();
     }
 
-public function saveSugarData($data)
+    public function saveSugarData($data)
     {
         return $this->db->insert('sugar_chart', $data);
     }

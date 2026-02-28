@@ -1830,11 +1830,11 @@
                                 foreach ($monthlyData as $month => $records):
                                     ?>
                                     <div class="card mb-3">
-                                        <div class="card-header fw-medium text-white" style="background-color: #00ad8dcb;">
+                                        <div class="card-header fw-semibold text-dark" style=" background: #bababaff;">
                                             <?= $month ?>
                                             <?php if (!$firstMonth): ?>
                                                 <button class="btn btn-sm btn-light float-end toggle-btn">
-                                                    Toggle
+                                                    +
                                                 </button>
                                             <?php endif; ?>
                                         </div>
@@ -1845,27 +1845,51 @@
                                                 <table class="table table-bordered text-center">
                                                     <thead class="table-light">
                                                         <tr>
-                                                            <th rowspan="2">S.No</th>
-                                                            <th rowspan="2">Date</th>
-                                                            <th rowspan="2">FBS</th>
-                                                            <th colspan="2">PP</th>
-                                                            <th colspan="2">Lunch</th>
-                                                            <th colspan="2">Dinner</th>
-                                                            <th colspan="3">
+                                                            <th rowspan="2"
+                                                                style="font-size: 16px; font-weight: 500; color: #00ad8e;">S.No
+                                                            </th>
+                                                            <th rowspan="2"
+                                                                style="font-size: 16px; font-weight: 500; color: #00ad8e;">Date
+                                                            </th>
+                                                            <th rowspan="2"
+                                                                style="font-size: 16px; font-weight: 500; color: #00ad8e;">FBS
+                                                            </th>
+                                                            <th colspan="2"
+                                                                style="font-size: 16px; font-weight: 500; color: #00ad8e;">PP
+                                                            </th>
+                                                            <th colspan="2"
+                                                                style="font-size: 16px; font-weight: 500; color: #00ad8e;">Lunch
+                                                            </th>
+                                                            <th colspan="2"
+                                                                style="font-size: 16px; font-weight: 500; color: #00ad8e;">
+                                                                Dinner</th>
+                                                            <th colspan="3"
+                                                                style="font-size: 16px; font-weight: 500; color: #00ad8e;">
                                                                 Medicine: <?= $records[0]->medicine_name ?>
                                                             </th>
-                                                              <th rowspan="2">Notes</th>
+                                                            <th rowspan="2"
+                                                                style="font-size: 16px; font-weight: 500; color: #00ad8e;">Notes
+                                                            </th>
                                                         </tr>
                                                         <tr>
-                                                            <th>1Hr</th>
-                                                            <th>2Hr</th>
-                                                            <th>Before</th>
-                                                            <th>After</th>
-                                                            <th>Before</th>
-                                                            <th>After</th>
-                                                            <th>M</th>
-                                                            <th>A</th>
-                                                            <th>N</th>
+                                                            <th style="font-size: 16px; font-weight: 500; color: #00ad8e;">1Hr
+                                                            </th>
+                                                            <th style="font-size: 16px; font-weight: 500; color: #00ad8e;">2Hr
+                                                            </th>
+                                                            <th style="font-size: 16px; font-weight: 500; color: #00ad8e;">
+                                                                Before</th>
+                                                            <th style="font-size: 16px; font-weight: 500; color: #00ad8e;">After
+                                                            </th>
+                                                            <th style="font-size: 16px; font-weight: 500; color: #00ad8e;">
+                                                                Before</th>
+                                                            <th style="font-size: 16px; font-weight: 500; color: #00ad8e;">After
+                                                            </th>
+                                                            <th style="font-size: 16px; font-weight: 500; color: #00ad8e;">M
+                                                            </th>
+                                                            <th style="font-size: 16px; font-weight: 500; color: #00ad8e;">A
+                                                            </th>
+                                                            <th style="font-size: 16px; font-weight: 500; color: #00ad8e;">N
+                                                            </th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -1901,15 +1925,6 @@
                                 endforeach;
                                 ?>
                             </div>
-                            <script>
-                                document.querySelectorAll('.toggle-btn').forEach(button => {
-                                    button.addEventListener('click', function () {
-                                        let content = this.closest('.card').querySelector('.month-content');
-                                        content.style.display =
-                                            content.style.display === 'none' ? 'block' : 'none';
-                                    });
-                                });
-                            </script>
 
                             <!-- Sugar Chart Form -->
                             <div class="tab-pane fade" id="sugarChartForm" role="tabpanel">
@@ -8578,6 +8593,21 @@
             if (editForm) {
                 setupProcessingAnimation(editForm);
             }
+        });
+    </script>
+
+    <!-- Toggle month content visibility and icon -->
+    <script>
+        document.querySelectorAll('.toggle-btn').forEach(button => {
+            button.addEventListener('click', function () {
+
+                let content = this.closest('.card').querySelector('.month-content');
+
+                const isVisible = content.style.display === 'block';
+
+                content.style.display = isVisible ? 'none' : 'block';
+                this.textContent = isVisible ? '+' : '-';
+            });
         });
     </script>
 

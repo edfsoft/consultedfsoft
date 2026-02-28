@@ -1046,8 +1046,6 @@ class Consultation extends CI_Controller
         return $result;
     }
 
-
-    // Need to change the function name
     public function saveSugarValues()
     {
         $post = $this->input->post();

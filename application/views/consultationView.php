@@ -1872,9 +1872,9 @@
                                                             </th>
                                                         </tr>
                                                         <tr>
-                                                            <th style="font-size: 16px; font-weight: 500; color: #00ad8e;">1Hr
+                                                            <th style="font-size: 16px; font-weight: 500; color: #00ad8e;">1 Hr
                                                             </th>
-                                                            <th style="font-size: 16px; font-weight: 500; color: #00ad8e;">2Hr
+                                                            <th style="font-size: 16px; font-weight: 500; color: #00ad8e;">2 Hr
                                                             </th>
                                                             <th style="font-size: 16px; font-weight: 500; color: #00ad8e;">
                                                                 Before</th>
@@ -1897,19 +1897,22 @@
                                                         <?php $i = 1;
                                                         foreach ($records as $row): ?>
                                                             <tr>
-                                                                <td><?= $i++ ?></td>
+                                                                <td><?= $i++ . ". " ?></td>
                                                                 <td><?= date('d-m-Y', strtotime($row->record_date)) ?></td>
-                                                                <td><?= $row->fbs ?></td>
-                                                                <td><?= $row->pp_1hr ?></td>
-                                                                <td><?= $row->pp_2hr ?></td>
-                                                                <td><?= $row->lunch_before ?></td>
-                                                                <td><?= $row->lunch_after ?></td>
-                                                                <td><?= $row->dinner_before ?></td>
-                                                                <td><?= $row->dinner_after ?></td>
-                                                                <td><?= $row->morning ?></td>
-                                                                <td><?= $row->afternoon ?></td>
-                                                                <td><?= $row->night ?></td>
-                                                                <td><?= $row->notes ?></td>
+                                                                <td><?= !empty($row->fbs) ? $row->fbs : '-' ?></td>
+                                                                <td><?= !empty($row->pp_1hr) ? $row->pp_1hr : '-' ?></td>
+                                                                <td><?= !empty($row->pp_2hr) ? $row->pp_2hr : '-' ?></td>
+                                                                <td><?= !empty($row->lunch_before) ? $row->lunch_before : '-' ?>
+                                                                </td>
+                                                                <td><?= !empty($row->lunch_after) ? $row->lunch_after : '-' ?></td>
+                                                                <td><?= !empty($row->dinner_before) ? $row->dinner_before : '-' ?>
+                                                                </td>
+                                                                <td><?= !empty($row->dinner_after) ? $row->dinner_after : '-' ?>
+                                                                </td>
+                                                                <td><?= !empty($row->morning) ? $row->morning : '-' ?></td>
+                                                                <td><?= !empty($row->afternoon) ? $row->afternoon : '-' ?></td>
+                                                                <td><?= !empty($row->night) ? $row->night : '-' ?></td>
+                                                                <td><?= !empty($row->notes) ? $row->notes : '-' ?></td>
                                                             </tr>
                                                         <?php endforeach; ?>
 

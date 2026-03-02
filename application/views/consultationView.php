@@ -1957,7 +1957,8 @@
                                     <!-- Date -->
                                     <div class="col-md-3">
                                         <label class="form-label"
-                                            style="font-size: 18px; font-weight: 500;color: #00ad8e">Date</label>
+                                            style="font-size: 18px; font-weight: 500;color: #00ad8e">Date <span
+                                                class="text-danger">*</span></label>
                                         <input type="date" name="record_date" class="form-control" required>
                                     </div>
                                     <hr>

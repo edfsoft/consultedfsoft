@@ -1870,6 +1870,10 @@
                                                             <th rowspan="2"
                                                                 style="font-size: 16px; font-weight: 500; color: #00ad8e;">Notes
                                                             </th>
+                                                            <th rowspan="2"
+                                                                style="font-size: 16px; font-weight: 500; color: #00ad8e;">
+                                                                Action
+                                                            </th>
                                                         </tr>
                                                         <tr>
                                                             <th style="font-size: 16px; font-weight: 500; color: #00ad8e;">1 Hr
@@ -1897,22 +1901,38 @@
                                                         <?php $i = 1;
                                                         foreach ($records as $row): ?>
                                                             <tr>
-                                                                <td><?= $i++ . ". " ?></td>
-                                                                <td><?= date('d-m-Y', strtotime($row->record_date)) ?></td>
-                                                                <td><?= !empty($row->fbs) ? $row->fbs : '-' ?></td>
-                                                                <td><?= !empty($row->pp_1hr) ? $row->pp_1hr : '-' ?></td>
-                                                                <td><?= !empty($row->pp_2hr) ? $row->pp_2hr : '-' ?></td>
-                                                                <td><?= !empty($row->lunch_before) ? $row->lunch_before : '-' ?>
+                                                                <td class="pt-3"><?= $i++ . ". " ?></td>
+                                                                <td class="pt-3"><?= date('d-m-Y', strtotime($row->record_date)) ?>
                                                                 </td>
-                                                                <td><?= !empty($row->lunch_after) ? $row->lunch_after : '-' ?></td>
-                                                                <td><?= !empty($row->dinner_before) ? $row->dinner_before : '-' ?>
+                                                                <td class="pt-3"><?= !empty($row->fbs) ? $row->fbs : '-' ?></td>
+                                                                <td class="pt-3"><?= !empty($row->pp_1hr) ? $row->pp_1hr : '-' ?>
                                                                 </td>
-                                                                <td><?= !empty($row->dinner_after) ? $row->dinner_after : '-' ?>
+                                                                <td class="pt-3"><?= !empty($row->pp_2hr) ? $row->pp_2hr : '-' ?>
                                                                 </td>
-                                                                <td><?= !empty($row->morning) ? $row->morning : '-' ?></td>
-                                                                <td><?= !empty($row->afternoon) ? $row->afternoon : '-' ?></td>
-                                                                <td><?= !empty($row->night) ? $row->night : '-' ?></td>
-                                                                <td><?= !empty($row->notes) ? $row->notes : '-' ?></td>
+                                                                <td class="pt-3">
+                                                                    <?= !empty($row->lunch_before) ? $row->lunch_before : '-' ?>
+                                                                </td>
+                                                                <td class="pt-3">
+                                                                    <?= !empty($row->lunch_after) ? $row->lunch_after : '-' ?>
+                                                                </td>
+                                                                <td class="pt-3">
+                                                                    <?= !empty($row->dinner_before) ? $row->dinner_before : '-' ?>
+                                                                </td>
+                                                                <td class="pt-3">
+                                                                    <?= !empty($row->dinner_after) ? $row->dinner_after : '-' ?>
+                                                                </td>
+                                                                <td class="pt-3"><?= !empty($row->morning) ? $row->morning : '-' ?>
+                                                                </td>
+                                                                <td class="pt-3">
+                                                                    <?= !empty($row->afternoon) ? $row->afternoon : '-' ?>
+                                                                </td>
+                                                                <td class="pt-3"><?= !empty($row->night) ? $row->night : '-' ?></td>
+                                                                <td class="pt-3"><?= !empty($row->notes) ? $row->notes : '-' ?></td>
+                                                                <td><button type="button" class="btn btn-danger"
+                                                                        title="Delete Sugar Record"
+                                                                        onclick="confirmDeleteSugarRecord('<?php echo $patientDetails[0]['id']; ?>','<?php echo $row->id; ?>', '<?php echo date('d M Y', strtotime($row->record_date)); ?>')">
+                                                                        <i class="bi bi-trash"></i>
+                                                                    </button></td>
                                                             </tr>
                                                         <?php endforeach; ?>
 
@@ -2007,17 +2027,18 @@
                                         <div class="row mb-4">
                                             <div class="col-md-4">
                                                 <label class="form-label fieldLabel">Morning (M)</label>
-                                                <input type="number" min="0" step="0.01" name="morning"
-                                                    class="form-control">
+                                                <input type="number" min="0" step="0.01" name="morning" class="form-control"
+                                                    placeholder="E.g. 1">
                                             </div>
                                             <div class="col-md-4">
                                                 <label class="form-label fieldLabel">Afternoon (A)</label>
                                                 <input type="number" min="0" step="0.01" name="afternoon"
-                                                    class="form-control">
+                                                    class="form-control" placeholder="E.g. 1">
                                             </div>
                                             <div class="col-md-4">
                                                 <label class="form-label fieldLabel">Night (N)</label>
-                                                <input type="number" min="0" step="0.01" name="night" class="form-control">
+                                                <input type="number" min="0" step="0.01" name="night" class="form-control"
+                                                    placeholder="E.g. 1">
                                             </div>
                                         </div>
                                     </div>
@@ -8072,26 +8093,50 @@
         });
     </script>
 
-    <!-- Delete Consultation Script -->
+    <!-- Delete Consultation & Sugar Record Script -->
     <script>
-        let deleteConsultationId = null;
+        let deleteType = null;
         let deletePatientId = null;
+        let deleteRecordId = null;
 
         function confirmDeleteConsult(patientId, consultationId, consultationDate, consultationTime) {
-            deleteConsultationId = consultationId;
+            deleteType = 'consult';
             deletePatientId = patientId;
+            deleteRecordId = consultationId;
 
             document.getElementById('deleteModalBody').innerHTML =
-                `Are you sure you want to delete this consultation done on <strong>${consultationDate} - ${consultationTime}</strong>?`;
+                `Are you sure you want to delete this consultation done on 
+            <strong>${consultationDate} - ${consultationTime}</strong>?`;
+
+            const modal = new bootstrap.Modal(document.getElementById('deleteConfirmModal'));
+            modal.show();
+        }
+
+        function confirmDeleteSugarRecord(patientId, sugarRecordId, recordDate) {
+            deleteType = 'sugar';
+            deletePatientId = patientId;
+            deleteRecordId = sugarRecordId;
+
+            document.getElementById('deleteModalBody').innerHTML =
+                `Are you sure you want to delete this sugar record done on 
+            <strong>${recordDate}</strong>?`;
 
             const modal = new bootstrap.Modal(document.getElementById('deleteConfirmModal'));
             modal.show();
         }
 
         document.getElementById('confirmDeleteBtn').addEventListener('click', function () {
-            if (deleteConsultationId && deletePatientId) {
-                window.location.href = "<?php echo site_url('Consultation/deleteConsultation/'); ?>" +
-                    deletePatientId + "/" + deleteConsultationId;
+
+            if (deleteType === 'consult') {
+                window.location.href =
+                    "<?php echo site_url('Consultation/deleteConsultation/'); ?>" +
+                    deletePatientId + "/" + deleteRecordId;
+            }
+
+            if (deleteType === 'sugar') {
+                window.location.href =
+                    "<?php echo site_url('Consultation/deleteSugarRecord/'); ?>" +
+                    deletePatientId + "/" + deleteRecordId;
             }
         });
     </script>

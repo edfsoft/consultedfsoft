@@ -1074,5 +1074,11 @@ class ConsultModel extends CI_Model
         return $grouped;
     }
 
+    public function deleteSugarRecord($sugarRecordId)
+    {
+        $this->db->where('id', $sugarRecordId);
+        return $this->db->delete('sugar_chart');
+    }
+
 
 }

@@ -1075,6 +1075,16 @@ class Consultation extends CI_Controller
         redirect('Consultation/consultation/' . $post['patient_id']);
     }
 
+    public function deleteSugarRecord($patientId, $sugarRecordId)
+    {
+        if ($this->ConsultModel->deleteSugarRecord($sugarRecordId)) {
+            $this->session->set_flashdata('showSuccessMessage', 'Sugar record deleted successfully.');
+        } else {
+            $this->session->set_flashdata('showErrorMessage', 'Failed to delete sugar record.');
+        }
+
+        redirect('Consultation/consultation/' . $patientId);
+    }
 
 
 }

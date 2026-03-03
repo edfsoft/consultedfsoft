@@ -36,6 +36,8 @@ class Consultation extends CI_Controller
         $this->data['consultations'] = $this->ConsultModel->get_consultations_by_patient($patientIdDb);
         $this->data['patient_id'] = $patientIdDb;
 
+        $this->data['monthlyData'] = $this->ConsultModel->getMonthlyData($patientIdDb);
+
         $this->load->view('consultationView.php', $this->data);
     }
 
@@ -1044,8 +1046,45 @@ class Consultation extends CI_Controller
         return $result;
     }
 
+    public function saveSugarValues()
+    {
+        $post = $this->input->post();
+        $data = [
+            'patient_id' => $post['patient_id'],
+            'record_date' => $post['record_date'],
+            'fbs' => $post['fbs'],
+            'pp_1hr' => $post['pp_1hr'],
+            'pp_2hr' => $post['pp_2hr'],
+            'lunch_before' => $post['lunch_before'],
+            'lunch_after' => $post['lunch_after'],
+            'dinner_before' => $post['dinner_before'],
+            'dinner_after' => $post['dinner_after'],
+            'morning' => $post['morning'],
+            'afternoon' => $post['afternoon'],
+            'night' => $post['night'],
+            'medicine_name' => $post['medicine_name'],
+            'notes' => $post['notes']
+        ];
 
+        if ($this->ConsultModel->saveSugarData($data)) {
+            $this->session->set_flashdata('showSuccessMessage', 'Sugar chart data saved successfully.');
+        } else {
+            $this->session->set_flashdata('showErrorMessage', 'Failed to save sugar chart data.');
+        }
 
+        redirect('Consultation/consultation/' . $post['patient_id']);
+    }
+
+    public function deleteSugarRecord($patientId, $sugarRecordId)
+    {
+        if ($this->ConsultModel->deleteSugarRecord($sugarRecordId)) {
+            $this->session->set_flashdata('showSuccessMessage', 'Sugar record deleted successfully.');
+        } else {
+            $this->session->set_flashdata('showErrorMessage', 'Failed to delete sugar record.');
+        }
+
+        redirect('Consultation/consultation/' . $patientId);
+    }
 
 
 }

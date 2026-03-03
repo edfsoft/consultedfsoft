@@ -1266,7 +1266,7 @@
                                         <?php endforeach; ?>
                                     </div>
                                 <?php else: ?>
-                                    <p>No Previous Consultation.</p>
+                                    <p class="text-muted">No Previous Consultation.</p>
                                 <?php endif; ?>
                             </div>
 
@@ -1825,128 +1825,130 @@
                             <!-- Sugar Chart -->
                             <div class="tab-pane fade" id="sugar-chart" role="tabpanel">
                                 <p class="fs-5 fw-semibold mb-3">Sugar Chart:</p>
-                                <?php
-                                $firstMonth = true;
-                                foreach ($monthlyData as $month => $records):
-                                    ?>
-                                    <div class="card mb-3">
-                                        <div class="card-header fw-semibold text-dark" style=" background: #bababaff;">
-                                            <?= $month ?>
-                                            <?php if (!$firstMonth): ?>
-                                                <button class="btn btn-sm btn-light float-end toggle-btn">
-                                                    +
-                                                </button>
-                                            <?php endif; ?>
-                                        </div>
-
-                                        <div class="card-body month-content" <?= $firstMonth ? '' : 'style="display:none;"' ?>>
-
-                                            <div class="table-responsive">
-                                                <table class="table table-bordered text-center">
-                                                    <thead class="table-light">
-                                                        <tr>
-                                                            <th rowspan="2"
-                                                                style="font-size: 16px; font-weight: 500; color: #00ad8e;">S.No
-                                                            </th>
-                                                            <th rowspan="2"
-                                                                style="font-size: 16px; font-weight: 500; color: #00ad8e;">Date
-                                                            </th>
-                                                            <th rowspan="2"
-                                                                style="font-size: 16px; font-weight: 500; color: #00ad8e;">FBS
-                                                            </th>
-                                                            <th colspan="2"
-                                                                style="font-size: 16px; font-weight: 500; color: #00ad8e;">PP
-                                                            </th>
-                                                            <th colspan="2"
-                                                                style="font-size: 16px; font-weight: 500; color: #00ad8e;">Lunch
-                                                            </th>
-                                                            <th colspan="2"
-                                                                style="font-size: 16px; font-weight: 500; color: #00ad8e;">
-                                                                Dinner</th>
-                                                            <th colspan="3"
-                                                                style="font-size: 16px; font-weight: 500; color: #00ad8e;">
-                                                                Medicine: <?= $records[0]->medicine_name ?>
-                                                            </th>
-                                                            <th rowspan="2"
-                                                                style="font-size: 16px; font-weight: 500; color: #00ad8e;">Notes
-                                                            </th>
-                                                            <th rowspan="2"
-                                                                style="font-size: 16px; font-weight: 500; color: #00ad8e;">
-                                                                Action
-                                                            </th>
-                                                        </tr>
-                                                        <tr>
-                                                            <th style="font-size: 16px; font-weight: 500; color: #00ad8e;">1 Hr
-                                                            </th>
-                                                            <th style="font-size: 16px; font-weight: 500; color: #00ad8e;">2 Hr
-                                                            </th>
-                                                            <th style="font-size: 16px; font-weight: 500; color: #00ad8e;">
-                                                                Before</th>
-                                                            <th style="font-size: 16px; font-weight: 500; color: #00ad8e;">After
-                                                            </th>
-                                                            <th style="font-size: 16px; font-weight: 500; color: #00ad8e;">
-                                                                Before</th>
-                                                            <th style="font-size: 16px; font-weight: 500; color: #00ad8e;">After
-                                                            </th>
-                                                            <th style="font-size: 16px; font-weight: 500; color: #00ad8e;">M
-                                                            </th>
-                                                            <th style="font-size: 16px; font-weight: 500; color: #00ad8e;">A
-                                                            </th>
-                                                            <th style="font-size: 16px; font-weight: 500; color: #00ad8e;">N
-                                                            </th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-
-                                                        <?php $i = 1;
-                                                        foreach ($records as $row): ?>
-                                                            <tr>
-                                                                <td class="pt-3"><?= $i++ . ". " ?></td>
-                                                                <td class="pt-3"><?= date('d-m-Y', strtotime($row->record_date)) ?>
-                                                                </td>
-                                                                <td class="pt-3"><?= !empty($row->fbs) ? $row->fbs : '-' ?></td>
-                                                                <td class="pt-3"><?= !empty($row->pp_1hr) ? $row->pp_1hr : '-' ?>
-                                                                </td>
-                                                                <td class="pt-3"><?= !empty($row->pp_2hr) ? $row->pp_2hr : '-' ?>
-                                                                </td>
-                                                                <td class="pt-3">
-                                                                    <?= !empty($row->lunch_before) ? $row->lunch_before : '-' ?>
-                                                                </td>
-                                                                <td class="pt-3">
-                                                                    <?= !empty($row->lunch_after) ? $row->lunch_after : '-' ?>
-                                                                </td>
-                                                                <td class="pt-3">
-                                                                    <?= !empty($row->dinner_before) ? $row->dinner_before : '-' ?>
-                                                                </td>
-                                                                <td class="pt-3">
-                                                                    <?= !empty($row->dinner_after) ? $row->dinner_after : '-' ?>
-                                                                </td>
-                                                                <td class="pt-3"><?= !empty($row->morning) ? $row->morning : '-' ?>
-                                                                </td>
-                                                                <td class="pt-3">
-                                                                    <?= !empty($row->afternoon) ? $row->afternoon : '-' ?>
-                                                                </td>
-                                                                <td class="pt-3"><?= !empty($row->night) ? $row->night : '-' ?></td>
-                                                                <td class="pt-3"><?= !empty($row->notes) ? $row->notes : '-' ?></td>
-                                                                <td><button type="button" class="btn btn-danger"
-                                                                        title="Delete Sugar Record"
-                                                                        onclick="confirmDeleteSugarRecord('<?php echo $patientDetails[0]['id']; ?>','<?php echo $row->id; ?>', '<?php echo date('d M Y', strtotime($row->record_date)); ?>')">
-                                                                        <i class="bi bi-trash"></i>
-                                                                    </button></td>
-                                                            </tr>
-                                                        <?php endforeach; ?>
-
-                                                    </tbody>
-                                                </table>
+                                <?php if (empty($monthlyData)) { ?>
+                                    <p class="text-muted">No sugar records found.</p>
+                                <?php } else {
+                                    $firstMonth = true;
+                                    foreach ($monthlyData as $month => $records):
+                                        ?>
+                                        <div class="card mb-3">
+                                            <div class="card-header fw-semibold text-dark" style=" background: #bababaff;">
+                                                <?= $month ?>
+                                                <?php if (!$firstMonth): ?>
+                                                    <button class="btn btn-sm btn-light float-end toggle-btn">
+                                                        +
+                                                    </button>
+                                                <?php endif; ?>
                                             </div>
 
-                                        </div>
-                                    </div>
+                                            <div class="card-body month-content" <?= $firstMonth ? '' : 'style="display:none;"' ?>>
 
-                                    <?php
-                                    $firstMonth = false;
-                                endforeach;
-                                ?>
+                                                <div class="table-responsive">
+                                                    <table class="table table-bordered text-center">
+                                                        <thead class="table-light">
+                                                            <tr>
+                                                                <th rowspan="2"
+                                                                    style="font-size: 16px; font-weight: 500; color: #00ad8e;">S.No
+                                                                </th>
+                                                                <th rowspan="2"
+                                                                    style="font-size: 16px; font-weight: 500; color: #00ad8e;">Date
+                                                                </th>
+                                                                <th rowspan="2"
+                                                                    style="font-size: 16px; font-weight: 500; color: #00ad8e;">FBS
+                                                                </th>
+                                                                <th colspan="2"
+                                                                    style="font-size: 16px; font-weight: 500; color: #00ad8e;">PP
+                                                                </th>
+                                                                <th colspan="2"
+                                                                    style="font-size: 16px; font-weight: 500; color: #00ad8e;">Lunch
+                                                                </th>
+                                                                <th colspan="2"
+                                                                    style="font-size: 16px; font-weight: 500; color: #00ad8e;">
+                                                                    Dinner</th>
+                                                                <th colspan="3"
+                                                                    style="font-size: 16px; font-weight: 500; color: #00ad8e;">
+                                                                    Medicine: <?= $records[0]->medicine_name ?>
+                                                                </th>
+                                                                <th rowspan="2"
+                                                                    style="font-size: 16px; font-weight: 500; color: #00ad8e;">Notes
+                                                                </th>
+                                                                <th rowspan="2"
+                                                                    style="font-size: 16px; font-weight: 500; color: #00ad8e;">
+                                                                    Action
+                                                                </th>
+                                                            </tr>
+                                                            <tr>
+                                                                <th style="font-size: 16px; font-weight: 500; color: #00ad8e;">1 Hr
+                                                                </th>
+                                                                <th style="font-size: 16px; font-weight: 500; color: #00ad8e;">2 Hr
+                                                                </th>
+                                                                <th style="font-size: 16px; font-weight: 500; color: #00ad8e;">
+                                                                    Before</th>
+                                                                <th style="font-size: 16px; font-weight: 500; color: #00ad8e;">After
+                                                                </th>
+                                                                <th style="font-size: 16px; font-weight: 500; color: #00ad8e;">
+                                                                    Before</th>
+                                                                <th style="font-size: 16px; font-weight: 500; color: #00ad8e;">After
+                                                                </th>
+                                                                <th style="font-size: 16px; font-weight: 500; color: #00ad8e;">M
+                                                                </th>
+                                                                <th style="font-size: 16px; font-weight: 500; color: #00ad8e;">A
+                                                                </th>
+                                                                <th style="font-size: 16px; font-weight: 500; color: #00ad8e;">N
+                                                                </th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+
+                                                            <?php $i = 1;
+                                                            foreach ($records as $row): ?>
+                                                                <tr>
+                                                                    <td class="pt-3"><?= $i++ . ". " ?></td>
+                                                                    <td class="pt-3"><?= date('d-m-Y', strtotime($row->record_date)) ?>
+                                                                    </td>
+                                                                    <td class="pt-3"><?= !empty($row->fbs) ? $row->fbs : '-' ?></td>
+                                                                    <td class="pt-3"><?= !empty($row->pp_1hr) ? $row->pp_1hr : '-' ?>
+                                                                    </td>
+                                                                    <td class="pt-3"><?= !empty($row->pp_2hr) ? $row->pp_2hr : '-' ?>
+                                                                    </td>
+                                                                    <td class="pt-3">
+                                                                        <?= !empty($row->lunch_before) ? $row->lunch_before : '-' ?>
+                                                                    </td>
+                                                                    <td class="pt-3">
+                                                                        <?= !empty($row->lunch_after) ? $row->lunch_after : '-' ?>
+                                                                    </td>
+                                                                    <td class="pt-3">
+                                                                        <?= !empty($row->dinner_before) ? $row->dinner_before : '-' ?>
+                                                                    </td>
+                                                                    <td class="pt-3">
+                                                                        <?= !empty($row->dinner_after) ? $row->dinner_after : '-' ?>
+                                                                    </td>
+                                                                    <td class="pt-3"><?= !empty($row->morning) ? $row->morning : '-' ?>
+                                                                    </td>
+                                                                    <td class="pt-3">
+                                                                        <?= !empty($row->afternoon) ? $row->afternoon : '-' ?>
+                                                                    </td>
+                                                                    <td class="pt-3"><?= !empty($row->night) ? $row->night : '-' ?></td>
+                                                                    <td class="pt-3"><?= !empty($row->notes) ? $row->notes : '-' ?></td>
+                                                                    <td><button type="button" class="btn btn-danger"
+                                                                            title="Delete Sugar Record"
+                                                                            onclick="confirmDeleteSugarRecord('<?php echo $patientDetails[0]['id']; ?>','<?php echo $row->id; ?>', '<?php echo date('d M Y', strtotime($row->record_date)); ?>')">
+                                                                            <i class="bi bi-trash"></i>
+                                                                        </button></td>
+                                                                </tr>
+                                                            <?php endforeach; ?>
+
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                        <?php
+                                        $firstMonth = false;
+                                    endforeach;
+                                } ?>
                             </div>
 
                             <!-- Sugar Chart Form -->

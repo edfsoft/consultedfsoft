@@ -15,8 +15,15 @@ class Consultation extends CI_Controller
             redirect('Healthcareprovider/');
         }
 
+        $this->update_last_activity();
     }
 
+    private function update_last_activity()
+    {
+        $this->session->set_userdata('last_activity_time', time());
+    }
+
+    
     public function consultation($patientIdDb)
     {
         $this->data['method'] = "consultDashboard";

@@ -1069,7 +1069,11 @@ class Consultation extends CI_Controller
             'morning' => $post['morning'],
             'afternoon' => $post['afternoon'],
             'night' => $post['night'],
-            'medicine_name' => $post['medicine_name'],
+            'medicine_name' => $post['medicine_name'], 
+            'medicine_name2' => $post['medicine_name2'],
+             'morning2' => $post['morning2'],
+            'afternoon2' => $post['afternoon2'],
+            'night2' => $post['night2'],           
             'notes' => $post['notes']
         ];
 

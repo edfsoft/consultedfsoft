@@ -1867,7 +1867,11 @@
                                                                     Dinner</th>
                                                                 <th colspan="3"
                                                                     style="font-size: 16px; font-weight: 500; color: #00ad8e;">
-                                                                    Medicine: <?= $records[0]->medicine_name ?>
+                                                                    Medicine 1: <?= $records[0]->medicine_name ?>
+                                                                </th>
+                                                                <th colspan="3"
+                                                                    style="font-size: 16px; font-weight: 500; color: #00ad8e;">
+                                                                    Medicine 2: <?= $records[0]->medicine_name2 ?>
                                                                 </th>
                                                                 <th rowspan="2"
                                                                     style="font-size: 16px; font-weight: 500; color: #00ad8e;">Notes
@@ -1896,45 +1900,93 @@
                                                                 </th>
                                                                 <th style="font-size: 16px; font-weight: 500; color: #00ad8e;">N
                                                                 </th>
+                                                                <th style="font-size: 16px; font-weight: 500; color: #00ad8e;">M
+                                                                </th>
+                                                                <th style="font-size: 16px; font-weight: 500; color: #00ad8e;">A
+                                                                </th>
+                                                                <th style="font-size: 16px; font-weight: 500; color: #00ad8e;">N
+                                                                </th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-
-                                                            <?php $i = 1;
+                                                            <?php
+                                                            usort($records, function ($a, $b) {
+                                                                return strtotime($a->record_date) - strtotime($b->record_date);
+                                                            });
+                                                            $i = 1;
                                                             foreach ($records as $row): ?>
                                                                 <tr>
                                                                     <td class="pt-3"><?= $i++ . ". " ?></td>
-                                                                    <td class="pt-3"><?= date('d-m-Y', strtotime($row->record_date)) ?>
-                                                                    </td>
-                                                                    <td class="pt-3"><?= !empty($row->fbs) ? $row->fbs : '-' ?></td>
-                                                                    <td class="pt-3"><?= !empty($row->pp_1hr) ? $row->pp_1hr : '-' ?>
-                                                                    </td>
-                                                                    <td class="pt-3"><?= !empty($row->pp_2hr) ? $row->pp_2hr : '-' ?>
+                                                                    <td class="pt-3">
+                                                                        <?= date('d-m-Y', strtotime($row->record_date)) ?>
                                                                     </td>
                                                                     <td class="pt-3">
-                                                                        <?= !empty($row->lunch_before) ? $row->lunch_before : '-' ?>
+                                                                        <?= ($row->fbs > 0) ? intval($row->fbs) : '-' ?>
                                                                     </td>
+
                                                                     <td class="pt-3">
-                                                                        <?= !empty($row->lunch_after) ? $row->lunch_after : '-' ?>
+                                                                        <?= ($row->pp_1hr > 0) ? intval($row->pp_1hr) : '-' ?>
                                                                     </td>
+
                                                                     <td class="pt-3">
-                                                                        <?= !empty($row->dinner_before) ? $row->dinner_before : '-' ?>
+                                                                        <?= ($row->pp_2hr > 0) ? intval($row->pp_2hr) : '-' ?>
                                                                     </td>
+
                                                                     <td class="pt-3">
-                                                                        <?= !empty($row->dinner_after) ? $row->dinner_after : '-' ?>
+                                                                        <?= ($row->lunch_before > 0) ? intval($row->lunch_before) : '-' ?>
                                                                     </td>
-                                                                    <td class="pt-3"><?= !empty($row->morning) ? $row->morning : '-' ?>
-                                                                    </td>
+
                                                                     <td class="pt-3">
-                                                                        <?= !empty($row->afternoon) ? $row->afternoon : '-' ?>
+                                                                        <?= ($row->lunch_after > 0) ? intval($row->lunch_after) : '-' ?>
                                                                     </td>
-                                                                    <td class="pt-3"><?= !empty($row->night) ? $row->night : '-' ?></td>
-                                                                    <td class="pt-3"><?= !empty($row->notes) ? $row->notes : '-' ?></td>
-                                                                    <td><button type="button" class="btn btn-danger"
-                                                                            title="Delete Sugar Record"
-                                                                            onclick="confirmDeleteSugarRecord('<?php echo $patientDetails[0]['id']; ?>','<?php echo $row->id; ?>', '<?php echo date('d M Y', strtotime($row->record_date)); ?>')">
+
+                                                                    <td class="pt-3">
+                                                                        <?= ($row->dinner_before > 0) ? intval($row->dinner_before) : '-' ?>
+                                                                    </td>
+
+                                                                    <td class="pt-3">
+                                                                        <?= ($row->dinner_after > 0) ? intval($row->dinner_after) : '-' ?>
+                                                                    </td>
+
+                                                                    <td class="pt-3">
+                                                                        <?= ($row->morning > 0) ? intval($row->morning) : '-' ?>
+                                                                    </td>
+
+                                                                    <td class="pt-3">
+                                                                        <?= ($row->afternoon > 0) ? intval($row->afternoon) : '-' ?>
+                                                                    </td>
+
+                                                                    <td class="pt-3">
+                                                                        <?= ($row->night > 0) ? intval($row->night) : '-' ?>
+                                                                    </td>
+
+                                                                    <td class="pt-3">
+                                                                        <?= ($row->morning2 > 0) ? intval($row->morning2) : '-' ?>
+                                                                    </td>
+
+                                                                    <td class="pt-3">
+                                                                        <?= ($row->afternoon2 > 0) ? intval($row->afternoon2) : '-' ?>
+                                                                    </td>
+
+                                                                    <td class="pt-3">
+                                                                        <?= ($row->night2 > 0) ? intval($row->night2) : '-' ?>
+                                                                    </td>
+
+                                                                    <td class="pt-3">
+                                                                        <?= !empty($row->notes) ? $row->notes : '-' ?>
+                                                                    </td>
+
+                                                                    <td>
+                                                                        <button type="button" class="btn btn-danger"
+                                                                            title="Delete Sugar Record" onclick="confirmDeleteSugarRecord(
+                '<?php echo $patientDetails[0]['id']; ?>',
+                '<?php echo $row->id; ?>',
+                '<?php echo date('d M Y', strtotime($row->record_date)); ?>'
+            )">
                                                                             <i class="bi bi-trash"></i>
-                                                                        </button></td>
+                                                                        </button>
+                                                                    </td>
+
                                                                 </tr>
                                                             <?php endforeach; ?>
 
@@ -1969,7 +2021,7 @@
                                         <label class="form-label"
                                             style="font-size: 18px; font-weight: 500;color: #00ad8e">Fasting Blood Sugar
                                             (FBS)</label>
-                                        <input type="number" min="0" step="0.01" name="fbs" class="form-control"
+                                        <input type="number" min="0" step="1" name="fbs" class="form-control"
                                             placeholder="E.g. 70–99 mg/dL">
                                     </div>
                                     <hr>
@@ -1979,12 +2031,12 @@
                                     <div class="row mb-3">
                                         <div class="col-md-3">
                                             <label class="form-label fieldLabel">PP - 1 Hour</label>
-                                            <input type="number" min="0" step="0.01" name="pp_1hr" class="form-control"
+                                            <input type="number" min="0" step="1" name="pp_1hr" class="form-control"
                                                 placeholder="E.g. < 180 mg/dL">
                                         </div>
                                         <div class="col-md-3">
                                             <label class="form-label fieldLabel">PP - 2 Hour</label>
-                                            <input type="number" min="0" step="0.01" name="pp_2hr" class="form-control"
+                                            <input type="number" min="0" step="1" name="pp_2hr" class="form-control"
                                                 placeholder="E.g. < 140 mg/dL">
                                         </div>
                                     </div>
@@ -1994,12 +2046,12 @@
                                     <div class="row mb-3">
                                         <div class="col-md-3">
                                             <label class="form-label fieldLabel">Before Lunch</label>
-                                            <input type="number" min="0" step="0.01" name="lunch_before"
-                                                class="form-control" placeholder="E.g. 80–130 mg/dL">
+                                            <input type="number" min="0" step="1" name="lunch_before" class="form-control"
+                                                placeholder="E.g. 80–130 mg/dL">
                                         </div>
                                         <div class="col-md-3">
                                             <label class="form-label fieldLabel">After Lunch</label>
-                                            <input type="number" min="0" step="0.01" name="lunch_after" class="form-control"
+                                            <input type="number" min="0" step="1" name="lunch_after" class="form-control"
                                                 placeholder="E.g. < 140 mg/dL">
                                         </div>
                                     </div>
@@ -2009,38 +2061,63 @@
                                     <div class="row mb-3">
                                         <div class="col-md-3">
                                             <label class="form-label fieldLabel">Before Dinner</label>
-                                            <input type="number" min="0" step="0.01" name="dinner_before"
-                                                class="form-control" placeholder="E.g. 80–130 mg/dL">
+                                            <input type="number" min="0" step="1" name="dinner_before" class="form-control"
+                                                placeholder="E.g. 80–130 mg/dL">
                                         </div>
                                         <div class="col-md-3">
                                             <label class="form-label fieldLabel">After Dinner</label>
-                                            <input type="number" min="0" step="0.01" name="dinner_after"
-                                                class="form-control" placeholder="E.g. < 140 mg/dL">
+                                            <input type="number" min="0" step="1" name="dinner_after" class="form-control"
+                                                placeholder="E.g. < 140 mg/dL">
                                         </div>
                                     </div>
                                     <hr>
                                     <!-- Medicine -->
                                     <div class="mb-3">
                                         <label class="form-label"
-                                            style="font-size: 18px; font-weight: 500;color: #00ad8e">Medicine
+                                            style="font-size: 18px; font-weight: 500;color: #00ad8e">1. Medicine
                                             Name</label>
                                         <input type="text" name="medicine_name" class="form-control mb-3"
-                                            placeholder="E.g. Metformin 500mg + Insulin">
+                                            placeholder="E.g. Insulin">
 
                                         <div class="row mb-4">
                                             <div class="col-md-4">
                                                 <label class="form-label fieldLabel">Morning (M)</label>
-                                                <input type="number" min="0" step="0.01" name="morning" class="form-control"
+                                                <input type="number" min="0" step="1" name="morning" class="form-control"
                                                     placeholder="E.g. 1">
                                             </div>
                                             <div class="col-md-4">
                                                 <label class="form-label fieldLabel">Afternoon (A)</label>
-                                                <input type="number" min="0" step="0.01" name="afternoon"
-                                                    class="form-control" placeholder="E.g. 1">
+                                                <input type="number" min="0" step="1" name="afternoon" class="form-control"
+                                                    placeholder="E.g. 1">
                                             </div>
                                             <div class="col-md-4">
                                                 <label class="form-label fieldLabel">Night (N)</label>
-                                                <input type="number" min="0" step="0.01" name="night" class="form-control"
+                                                <input type="number" min="0" step="1" name="night" class="form-control"
+                                                    placeholder="E.g. 1">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label"
+                                            style="font-size: 18px; font-weight: 500;color: #00ad8e">2. Medicine
+                                            Name</label>
+                                        <input type="text" name="medicine_name2" class="form-control mb-3"
+                                            placeholder="E.g. Insulin">
+
+                                        <div class="row mb-4">
+                                            <div class="col-md-4">
+                                                <label class="form-label fieldLabel">Morning (M)</label>
+                                                <input type="number" min="0" step="1" name="morning2" class="form-control"
+                                                    placeholder="E.g. 1">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="form-label fieldLabel">Afternoon (A)</label>
+                                                <input type="number" min="0" step="1" name="afternoon2" class="form-control"
+                                                    placeholder="E.g. 1">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="form-label fieldLabel">Night (N)</label>
+                                                <input type="number" min="0" step="1" name="night2" class="form-control"
                                                     placeholder="E.g. 1">
                                             </div>
                                         </div>

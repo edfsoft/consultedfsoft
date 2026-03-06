@@ -1842,7 +1842,20 @@
                                                     </button>
 
                                                     <button class="btn btn-sm btn-primary me-2" title="Print Month Records"
-                                                        onclick="printMonthTable('<?= $month ?>')">
+                                                        onclick="printMonthTable('<?= $month ?>', this)"
+                                                        data-patient-id="<?= $patientDetails[0]['patientId'] ?>"
+                                                        data-patient-name="<?= $patientDetails[0]['firstName'] . ' ' . $patientDetails[0]['lastName'] ?>"
+                                                        data-patient-age="
+                                                         <?php
+                                                         if (!empty($patientDetails[0]['derived_dob'])) {
+                                                             $dob = new DateTime($patientDetails[0]['derived_dob']);
+                                                             $today = new DateTime();
+                                                             $currentAge = $today->diff($dob)->y;
+                                                         } else {
+                                                             $currentAge = $patientDetails[0]['age'];
+                                                         } ?><?= $currentAge ?>"
+                                                        data-patient-gender="<?= $patientDetails[0]['gender'] ?>"
+                                                        data-patient-mobile="<?= $patientDetails[0]['mobileNumber'] ?>">
                                                         <i class="bi bi-printer"></i>
                                                     </button>
 
@@ -1898,12 +1911,12 @@
                                                                 <th style="font-size: 16px; font-weight: 500; color: #00ad8e;">2 Hr
                                                                 </th>
                                                                 <th style="font-size: 16px; font-weight: 500; color: #00ad8e;">
-                                                                    Before</th>
-                                                                <th style="font-size: 16px; font-weight: 500; color: #00ad8e;">After
+                                                                    B/F</th>
+                                                                <th style="font-size: 16px; font-weight: 500; color: #00ad8e;">A/F
                                                                 </th>
                                                                 <th style="font-size: 16px; font-weight: 500; color: #00ad8e;">
-                                                                    Before</th>
-                                                                <th style="font-size: 16px; font-weight: 500; color: #00ad8e;">After
+                                                                    B/F</th>
+                                                                <th style="font-size: 16px; font-weight: 500; color: #00ad8e;">A/F
                                                                 </th>
                                                                 <th style="font-size: 16px; font-weight: 500; color: #00ad8e;">M
                                                                 </th>
@@ -1929,7 +1942,7 @@
                                                                 <tr>
                                                                     <td class="pt-3"><?= $i++ . ". " ?></td>
                                                                     <td class="pt-3">
-                                                                        <?= date('d-m-Y', strtotime($row->record_date)) ?>
+                                                                        <?= date('j-n-y', strtotime($row->record_date)) ?>
                                                                     </td>
                                                                     <td class="pt-3">
                                                                         <?= ($row->fbs > 0) ? intval($row->fbs) : '-' ?>
@@ -2016,9 +2029,18 @@
 
                             <!-- Print -->
                             <script>
-                                function printMonthTable(month) {
-                                    var id = "monthTable_" + md5(month);
-                                    var content = document.getElementById(id).innerHTML;
+                                function printMonthTable(month, button) {
+                                    // Get the card that contains this button
+                                    var card = button.closest('.card');
+                                    var content = card.querySelector('.month-content').innerHTML;
+
+                                    // Get patient details from button data attributes
+                                    var patientId = button.getAttribute('data-patient-id');
+                                    var patientName = button.getAttribute('data-patient-name');
+                                    var patientAge = button.getAttribute('data-patient-age');
+                                    var patientGender = button.getAttribute('data-patient-gender');
+                                    var patientMobile = button.getAttribute('data-patient-mobile');
+                                    var printDate = new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
 
                                     var printWindow = window.open('', '', 'width=900,height=700');
 
@@ -2028,11 +2050,107 @@
             <title>Sugar Report - ${month}</title>
             <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
             <style>
-                .action-column{display:none;}
+                @page {
+                    size: A4;
+                    margin: 0.5cm 0.5cm 0.5cm 0.5cm;
+                }
+                * {
+                    box-sizing: border-box;
+                }
+                .action-column { display: none; }
+                html, body {
+                    margin: 0;
+                    padding: 0;
+                    width: 100%;
+                    height: 100%;
+                }
+                body {
+                    font-family: Arial, sans-serif;
+                    padding: 8px;
+                    margin: 0;
+                }
+                .header { border-bottom: 1px solid #00ad8e; padding-bottom: 10px; margin-bottom: 10px; }
+                .patient-info { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0px; font-size: 11px; }
+                .info-item { display: flex; flex-direction: column; }
+                .info-label { font-weight: bold; color: #00ad8e; font-size: 10px; }
+                .info-value { font-weight: normal;font-size: 11px; color: #333; margin-top: 2px; }
+                .print-title { text-align: center; font-size: 16px; font-weight: bold; margin-bottom: 3px; }
+                .print-month { text-align: center; font-size: 13px; color: #666; margin-bottom: 8px; }
+                .print-date { text-align: right; margin-bottom: 8px; font-size: 10px; color: #666; }
+                table {
+                    border-collapse: collapse !important;
+                    width: 100%;
+                    table-layout: auto;
+                }
+                table, th, td {
+                    border: 1px solid #000 !important;
+                    padding: 6px !important;
+                    font-size: 11px;
+                }
+                thead {
+                    background-color: #f0f0f0 !important;
+                    font-weight: bold;
+                    color: #000;
+                }
+                tbody tr:nth-child(even) { background-color: #fafafa !important; }
+                .table-responsive {
+                    overflow: visible !important;
+                }
+                @media print {
+                    @page {
+                        size: A4;
+                        margin: 0.5cm 0.5cm 0.5cm 0.5cm;
+                    }
+                    html, body {
+                        margin: 0;
+                        padding: 0;
+                        width: 100%;
+                    }
+                    body {
+                        padding: 5px;
+                        margin: 0;
+                    }
+                    table {
+                        border-collapse: collapse !important;
+                        width: 100%;
+                    }
+                    table, th, td {
+                        border: 1px solid #000 !important;
+                        padding: 6px !important;
+                        page-break-inside: avoid;
+                    }
+                    thead { background-color: #f0f0f0 !important; font-weight: bold; }
+                    .header { padding-bottom: 8px; margin-bottom: 8px; }
+                    .patient-info { margin-bottom: 8px; font-size: 11px; }
+                }
             </style>
         </head>
         <body>
-            <h4 style="text-align:center;margin-bottom:20px;">Sugar Records - ${month}</h4>
+            <div class="header">
+                <div class="print-title">Sugar Chart Record</div>
+                <div class="patient-info">
+                    <div class="info-item">
+                        <p class="info-label">Patient Name:
+                        <span class="info-value">${patientName}</span></p>
+                    </div>
+                    <div class="info-item">
+                        <p class="info-label">Patient ID:
+                        <span class="info-value">${patientId}</span></p>
+                    </div>
+                    <div class="info-item">
+                        <p class="info-label">Mobile Number:
+                        <span class="info-value">${patientMobile}</span></p>
+                    </div>
+                    <div class="info-item">
+                        <p class="info-label">Age & Gender:
+                        <span class="info-value">${patientAge} years & ${patientGender}</span></p>
+                    </div>
+                </div>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+            <div class="print-month">Period: <strong>${month}</strong></div>
+            <div class="print-date" style="text-align: right; margin-bottom: 10px; font-size: 12px; color: #666;">Printed on: ${printDate}</div>
+            </div>
             ${content}
         </body>
         </html>

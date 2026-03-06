@@ -15,7 +15,14 @@ class Consultation extends CI_Controller
             redirect('Healthcareprovider/');
         }
 
+        $this->update_last_activity();
     }
+
+    private function update_last_activity()
+    {
+        $this->session->set_userdata('last_activity_time', time());
+    }
+
 
     public function consultation($patientIdDb)
     {
@@ -1063,6 +1070,10 @@ class Consultation extends CI_Controller
             'afternoon' => $post['afternoon'],
             'night' => $post['night'],
             'medicine_name' => $post['medicine_name'],
+            'medicine_name2' => $post['medicine_name2'],
+            'morning2' => $post['morning2'],
+            'afternoon2' => $post['afternoon2'],
+            'night2' => $post['night2'],
             'notes' => $post['notes']
         ];
 
@@ -1085,6 +1096,23 @@ class Consultation extends CI_Controller
 
         redirect('Consultation/consultation/' . $patientId);
     }
+
+    public function deleteMonthRecords($patientId, $monthYear)
+    {
+        $monthYear = urldecode($monthYear);
+        $timestamp = strtotime($monthYear);
+
+        $month = date('m', $timestamp);
+        $year = date('Y', $timestamp);
+
+        $this->db->where('patient_id', $patientId);
+        $this->db->where('MONTH(record_date)', $month);
+        $this->db->where('YEAR(record_date)', $year);
+        $this->db->delete('sugar_chart');
+
+        redirect('Consultation/consultation/' . $patientId);
+    }
+
 
 
 }

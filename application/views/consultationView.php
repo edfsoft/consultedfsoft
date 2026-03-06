@@ -301,6 +301,11 @@
             border-radius: 20%;
         }
 
+        .scTableStyles {
+            font-size: 16px;
+            font-weight: 500;
+        }
+
         /*  Print consultaion page format*/
         @media print {
             @page {
@@ -1871,64 +1876,55 @@
                                                     <table class="table table-bordered text-center">
                                                         <thead class="table-light">
                                                             <tr>
-                                                                <th rowspan="2"
-                                                                    style="font-size: 16px; font-weight: 500; color: #00ad8e;">S.No
+                                                                <th rowspan="2" style="color: #00ad8e;" class="scTableStyles">S.No
                                                                 </th>
-                                                                <th rowspan="2"
-                                                                    style="font-size: 16px; font-weight: 500; color: #00ad8e;">Date
+                                                                <th rowspan="2" style="color: #00ad8e;" class="scTableStyles">Date
                                                                 </th>
-                                                                <th rowspan="2"
-                                                                    style="font-size: 16px; font-weight: 500; color: #00ad8e;">FBS
+                                                                <th rowspan="2" style="color: #00ad8e;" class="scTableStyles">FBS
                                                                 </th>
-                                                                <th colspan="2"
-                                                                    style="font-size: 16px; font-weight: 500; color: #00ad8e;">PP
+                                                                <th colspan="2" style="color: #00ad8e;" class="scTableStyles">PP
                                                                 </th>
-                                                                <th colspan="2"
-                                                                    style="font-size: 16px; font-weight: 500; color: #00ad8e;">Lunch
+                                                                <th colspan="2" style="color: #00ad8e;" class="scTableStyles">Lunch
                                                                 </th>
-                                                                <th colspan="2"
-                                                                    style="font-size: 16px; font-weight: 500; color: #00ad8e;">
+                                                                <th colspan="2" style="color: #00ad8e;" class="scTableStyles">
                                                                     Dinner</th>
-                                                                <th colspan="3"
-                                                                    style="font-size: 16px; font-weight: 500; color: #00ad8e;">
+                                                                <th colspan="3" style="color: #00ad8e;" class="scTableStyles">
                                                                     Medicine 1: <?= $records[0]->medicine_name ?>
                                                                 </th>
-                                                                <th colspan="3"
-                                                                    style="font-size: 16px; font-weight: 500; color: #00ad8e;">
+                                                                <th colspan="3" style="color: #00ad8e;" class="scTableStyles">
                                                                     Medicine 2: <?= $records[0]->medicine_name2 ?>
                                                                 </th>
-                                                                <th rowspan="2"
-                                                                    style="font-size: 16px; font-weight: 500; color: #00ad8e;">Notes
+                                                                <th rowspan="2" style="color: #00ad8e;" class="scTableStyles">Notes
                                                                 </th>
-                                                                <th rowspan="2" class="action-column"
-                                                                    style="font-size: 16px; font-weight: 500; color: #00ad8e;">
+                                                                <th rowspan="2" class="action-column" style="color: #00ad8e;"
+                                                                    class="scTableStyles">
                                                                     Action
                                                                 </th>
                                                             </tr>
                                                             <tr>
-                                                                <th style="font-size: 16px; font-weight: 500; color: #00ad8e;">1 Hr
+                                                                <th style="color: #00ad8e;" class="scTableStyles">1 Hr
                                                                 </th>
-                                                                <th style="font-size: 16px; font-weight: 500; color: #00ad8e;">2 Hr
+                                                                <th style="color: #00ad8e;" class="scTableStyles">2 Hr
                                                                 </th>
-                                                                <th style="font-size: 16px; font-weight: 500; color: #00ad8e;">
+                                                                <th style="color: #00ad8e;" class="scTableStyles">
                                                                     B/F</th>
-                                                                <th style="font-size: 16px; font-weight: 500; color: #00ad8e;">A/F
+                                                                <th style="color: #00ad8e;" class="scTableStyles">A/F
                                                                 </th>
-                                                                <th style="font-size: 16px; font-weight: 500; color: #00ad8e;">
+                                                                <th style="color: #00ad8e;" class="scTableStyles">
                                                                     B/F</th>
-                                                                <th style="font-size: 16px; font-weight: 500; color: #00ad8e;">A/F
+                                                                <th style="color: #00ad8e;" class="scTableStyles">A/F
                                                                 </th>
-                                                                <th style="font-size: 16px; font-weight: 500; color: #00ad8e;">M
+                                                                <th style="color: #00ad8e;" class="scTableStyles">M
                                                                 </th>
-                                                                <th style="font-size: 16px; font-weight: 500; color: #00ad8e;">A
+                                                                <th style="color: #00ad8e;" class="scTableStyles">A
                                                                 </th>
-                                                                <th style="font-size: 16px; font-weight: 500; color: #00ad8e;">N
+                                                                <th style="color: #00ad8e;" class="scTableStyles">N
                                                                 </th>
-                                                                <th style="font-size: 16px; font-weight: 500; color: #00ad8e;">M
+                                                                <th style="color: #00ad8e;" class="scTableStyles">M
                                                                 </th>
-                                                                <th style="font-size: 16px; font-weight: 500; color: #00ad8e;">A
+                                                                <th style="color: #00ad8e;" class="scTableStyles">A
                                                                 </th>
-                                                                <th style="font-size: 16px; font-weight: 500; color: #00ad8e;">N
+                                                                <th style="color: #00ad8e;" class="scTableStyles">N
                                                                 </th>
                                                             </tr>
                                                         </thead>
@@ -2030,11 +2026,9 @@
                             <!-- Print -->
                             <script>
                                 function printMonthTable(month, button) {
-                                    // Get the card that contains this button
                                     var card = button.closest('.card');
                                     var content = card.querySelector('.month-content').innerHTML;
 
-                                    // Get patient details from button data attributes
                                     var patientId = button.getAttribute('data-patient-id');
                                     var patientName = button.getAttribute('data-patient-name');
                                     var patientAge = button.getAttribute('data-patient-age');
@@ -2069,11 +2063,11 @@
                     padding: 8px;
                     margin: 0;
                 }
-                .header { border-bottom: 1px solid #00ad8e; padding-bottom: 10px; margin-bottom: 10px; }
-                .patient-info { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0px; font-size: 11px; }
-                .info-item { display: flex; flex-direction: column; }
-                .info-label { font-weight: bold; color: #00ad8e; font-size: 10px; }
-                .info-value { font-weight: normal;font-size: 11px; color: #333; margin-top: 2px; }
+                .header { border-bottom: 1px solid #00ad8e; padding-bottom: 8px; margin-bottom: 10px; }
+                .patient-info { display: grid; grid-template-columns: repeat(2, 1fr); gap: 5px; font-size: 11px; margin: 0; padding: 0; }
+                .info-item { display: flex; flex-direction: column; margin: 0; padding: 0; }
+                .info-label { font-weight: bold; color: #00ad8e; font-size: 10px; margin: 0; padding: 0; }
+                .info-value { font-weight: normal;font-size: 10px; color: #333; margin: 0; padding: 0; }
                 .print-title { text-align: center; font-size: 16px; font-weight: bold; margin-bottom: 3px; }
                 .print-month { text-align: center; font-size: 13px; color: #666; margin-bottom: 8px; }
                 .print-date { text-align: right; margin-bottom: 8px; font-size: 10px; color: #666; }
@@ -2090,7 +2084,6 @@
                 thead {
                     background-color: #f0f0f0 !important;
                     font-weight: bold;
-                    color: #000;
                 }
                 tbody tr:nth-child(even) { background-color: #fafafa !important; }
                 .table-responsive {
@@ -2119,9 +2112,12 @@
                         padding: 6px !important;
                         page-break-inside: avoid;
                     }
-                    thead { background-color: #f0f0f0 !important; font-weight: bold; }
-                    .header { padding-bottom: 8px; margin-bottom: 8px; }
-                    .patient-info { margin-bottom: 8px; font-size: 11px; }
+                    thead { background-color: #f0f0f0 !important; font-weight: bold; font-size: 8px; color: #0066cc; }
+                    .header { padding-bottom: 6px; margin-bottom: 6px; }
+                    .patient-info { margin-bottom: 4px; font-size: 11px; margin: 0; padding: 0; gap: 5px; margin-top: 10px; }
+                    .info-item { margin: 0; padding: 0; }
+                    .info-label { margin: 0; padding: 0; font-size: 9px; }
+                    .info-value { margin: 0; padding: 0; font-size: 9px; }
                 }
             </style>
         </head>

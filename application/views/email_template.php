@@ -31,7 +31,7 @@
                     </tr>
 
                     <tr>
-                        <td style="padding:30px; color:#333;">
+                        <td style="padding:15px 30px; color:#333;">
                             <p style="margin:0;">Best regards,</p>
                             <p style="margin:0;"><b>EDF Healthcare Team</b></p>
                         </td>

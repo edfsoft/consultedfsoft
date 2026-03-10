@@ -32,6 +32,39 @@ class ConsultModel extends CI_Model
         return $this->db->insert_id();
     }
 
+    // Start - Save consultion details in batch for symptoms, findings, diagnosis, investigations, advices and medicines
+    public function save_symptoms_batch($data)
+    {
+        return $this->db->insert_batch('consult_symptoms', $data);
+    }
+
+    public function save_findings_batch($data)
+    {
+        return $this->db->insert_batch('consult_findings', $data);
+    }
+
+    public function save_diagnosis_batch($data)
+    {
+        return $this->db->insert_batch('consult_diagnosis', $data);
+    }
+
+    public function save_investigations_batch($data)
+    {
+        return $this->db->insert_batch('consult_investigations', $data);
+    }
+
+    public function save_advices_batch($data)
+    {
+        return $this->db->insert_batch('consult_advices', $data);
+    }
+
+    public function save_medicines_batch($data)
+    {
+        return $this->db->insert_batch('consult_medicines', $data);
+    }
+
+    // End - Save consultion details in batch for symptoms, findings, diagnosis, investigations, advices and medicines
+
     public function update_consultation()
     {
         $post = $this->input->post(null, true);

@@ -87,6 +87,9 @@ class Consultation extends CI_Controller
     public function saveConsultation()
     {
         $post = $this->input->post(null, true);
+
+        $this->db->trans_start();
+
         $consultationId = $this->ConsultModel->save_consultation();
         $post['consultationId'] = $consultationId;
 
@@ -100,94 +103,133 @@ class Consultation extends CI_Controller
         $adviceSaved = false;
         $medicineSaved = false;
         $attachmentsSaved = false;
-        // Vitals
+
+        /* ---------------- Vitals ---------------- */
         $vitalsSaved = $this->ConsultModel->save_vitals($post);
-        // Symptoms
+
+        /* ---------------- Symptoms ---------------- */
         $symptoms_json = $this->input->post('symptomsJson');
         $symptoms = json_decode($symptoms_json, true);
+
         if ($symptoms && is_array($symptoms)) {
+
+            $batch = [];
+
             foreach ($symptoms as $symptom) {
-                $data = array(
+
+                $batch[] = [
                     'consultation_id' => $consultationId,
                     'symptom_name' => $symptom['symptom'],
                     'note' => $symptom['note'],
                     'since' => $symptom['since'],
-                    'severity' => $symptom['severity'],
-                );
-                $symptomSaved = $this->ConsultModel->save_symptom($data);
+                    'severity' => $symptom['severity']
+                ];
             }
+
+            $symptomSaved = $this->ConsultModel->save_symptoms_batch($batch);
         }
-        // Findings
+
+        /* ---------------- Findings ---------------- */
         $findings_json = $this->input->post('findingsJson');
         $findings = json_decode($findings_json, true);
 
         if ($findings && is_array($findings)) {
+
+            $batch = [];
+
             foreach ($findings as $finding) {
-                $data = array(
+
+                $batch[] = [
                     'consultation_id' => $consultationId,
                     'finding_name' => $finding['finding'],
                     'note' => $finding['note'],
                     'since' => $finding['since'],
                     'severity' => $finding['severity']
-                );
-                $findingSaved = $this->ConsultModel->save_finding($data);
+                ];
             }
+
+            $findingSaved = $this->ConsultModel->save_findings_batch($batch);
         }
-        // Diagnosis
+
+        /* ---------------- Diagnosis ---------------- */
         $diagnosis_json = $this->input->post('diagnosisJson');
         $diagnoses = json_decode($diagnosis_json, true);
-        if ($diagnoses && is_array($diagnoses) && !empty($diagnoses)) {
+
+        if ($diagnoses && is_array($diagnoses)) {
+
+            $batch = [];
+
             foreach ($diagnoses as $diagnosis) {
-                $data = array(
+
+                $batch[] = [
                     'consultation_id' => $consultationId,
                     'diagnosis_name' => $diagnosis['name'],
                     'note' => $diagnosis['note'],
                     'since' => $diagnosis['since'],
                     'severity' => $diagnosis['severity']
-                );
-
-                $diagnosisSaved = $this->ConsultModel->save_diagnosis($data);
+                ];
             }
+
+            $diagnosisSaved = $this->ConsultModel->save_diagnosis_batch($batch);
         }
-        // Investigations
+
+        /* ---------------- Investigations ---------------- */
         $investigations_json = $this->input->post('investigationsJson');
         $investigations = json_decode($investigations_json, true);
+
         if ($investigations && is_array($investigations)) {
+
+            $batch = [];
+
             foreach ($investigations as $investigation) {
-                $data = array(
+
+                $batch[] = [
                     'consultation_id' => $consultationId,
                     'investigation_name' => $investigation['investigation'],
-                    'note' => $investigation['note'],
-                );
-                $investigationSaved = $this->ConsultModel->save_investigation($data);
+                    'note' => $investigation['note']
+                ];
             }
+
+            $investigationSaved = $this->ConsultModel->save_investigations_batch($batch);
         }
 
+        /* ---------------- Advice ---------------- */
         $advices_json = $this->input->post('advicesJson');
         $advices = json_decode($advices_json, true);
-        $adviceSaved = false;
 
         if ($advices && is_array($advices)) {
+
+            $batch = [];
+
             foreach ($advices as $advice) {
-                $data = array(
+
+                $batch[] = [
                     'consultation_id' => $consultationId,
-                    'advice_name' => $advice['advice'], // Matching JS key
-                    'note' => $advice['note'],
-                );
-                $adviceSaved = $this->ConsultModel->save_advice($data);
+                    'advice_name' => $advice['advice'],
+                    'note' => $advice['note']
+                ];
             }
+
+            $adviceSaved = $this->ConsultModel->save_advices_batch($batch);
         }
 
+        /* ---------------- Instructions ---------------- */
         $instructionSaved = $this->ConsultModel->save_instruction($post);
-        $procedureSaved = $this->ConsultModel->save_procedure($post);
-        //$adviceSaved = $this->ConsultModel->save_advice($post);
 
+        /* ---------------- Procedures ---------------- */
+        $procedureSaved = $this->ConsultModel->save_procedure($post);
+
+        /* ---------------- Medicines ---------------- */
         $medicines_json = $this->input->post('medicinesJson');
         $medicines = json_decode($medicines_json, true);
 
         if ($medicines && is_array($medicines)) {
+
+            $batch = [];
+
             foreach ($medicines as $index => $medicine) {
-                $data = array(
+
+                $batch[] = [
                     'consultation_id' => $consultationId,
                     'medicine_name' => $medicine['medicine_name'],
                     'composition_name' => $medicine['composition'],
@@ -197,10 +239,10 @@ class Consultation extends CI_Controller
                     'food_timing' => $medicine['food_timing'],
                     'notes' => $medicine['notes'],
                     'order_position' => $index + 1
-                );
-
-                $medicineSaved = $this->ConsultModel->save_medicine($data);
+                ];
             }
+
+            $medicineSaved = $this->ConsultModel->save_medicines_batch($batch);
         }
 
         // Attachments
@@ -211,7 +253,6 @@ class Consultation extends CI_Controller
             }
 
             $filesCount = count($_FILES['consultationFiles']['name']);
-            $uploadedFiles = [];
             $lastCounter = $this->ConsultModel->getLastAttachmentCounter($consultationId);
 
             $this->load->library('upload');
@@ -221,7 +262,6 @@ class Consultation extends CI_Controller
                     $ext = pathinfo($_FILES['consultationFiles']['name'][$i], PATHINFO_EXTENSION);
                     $counter = str_pad($lastCounter + $i + 1, 2, '0', STR_PAD_LEFT);
                     $newFileName = "Attachment_" . str_pad($consultationId, 2, '0', STR_PAD_LEFT) . "_" . $counter . "." . $ext;
-
                     $_FILES['file']['name'] = $newFileName;
                     $_FILES['file']['type'] = $_FILES['consultationFiles']['type'][$i];
                     $_FILES['file']['tmp_name'] = $_FILES['consultationFiles']['tmp_name'][$i];
@@ -238,15 +278,16 @@ class Consultation extends CI_Controller
                     $this->upload->initialize($config);
 
                     if ($this->upload->do_upload('file')) {
-                        $uploadedFiles[] = $newFileName;
+
                         $this->ConsultModel->save_attachment($consultationId, $newFileName);
+
                         $attachmentsSaved = true;
-                    } else {
-                        error_log("Upload error for file {$newFileName}: " . $this->upload->display_errors());
                     }
                 }
             }
         }
+
+        $this->db->trans_complete();
 
         $messages = [];
 

@@ -614,7 +614,7 @@ class Healthcareprovider extends CI_Controller
             $meetingBaseUrl = 'https://consult.edftech.in/patient/join/';
             $joinUrl = $meetingBaseUrl . ltrim($details['appointmentLink'], '/');
             $emailContent = "
-                Dear {$details['firstName']} {$details['lastName']},<br><br>
+                Dear <b>{$details['firstName']} {$details['lastName']}</b>,<br><br>
                 Your appointment has been successfully booked with 
                 <b>Dr. {$details['hcpName']}</b>.<br><br>
                 <b>📅 Date:</b> {$formattedDate}<br>

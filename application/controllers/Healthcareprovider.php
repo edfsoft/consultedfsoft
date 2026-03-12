@@ -613,7 +613,7 @@ class Healthcareprovider extends CI_Controller
             $videoMode = ($details['modeOfConsultant'] == 'audio') ? 'No' : 'Yes';
             $meetingBaseUrl = 'https://consult.edftech.in/patient/join/';
             $joinUrl = $meetingBaseUrl . ltrim($details['appointmentLink'], '/');
-            $message = "
+            $emailContent = "
                 Dear {$details['firstName']} {$details['lastName']},<br><br>
                 Your appointment has been successfully booked with 
                 <b>Dr. {$details['hcpName']}</b>.<br><br>
@@ -622,16 +622,17 @@ class Healthcareprovider extends CI_Controller
                 <b>🎥 Video:</b> {$videoMode}<br><br>
                 <b>🔗 Join Meeting:</b><br>
                 <a href='{$joinUrl}' target='_blank'>{$joinUrl}</a><br><br>
-                Please join the meeting at the scheduled time.
-                <br><br>
-                Regards,
-                <br><b>EDF Healthcare Team</b>
-            ";
+                Please join the meeting at the scheduled time.";
+
+            $data['title'] = "Appointment Confirmation & Meeting Link";
+            $data['content'] = $emailContent;
+
+            $message = $this->load->view('email_template', $data, TRUE);
 
             $this->email->set_newline("\r\n");
             $this->email->from('noreply@consult.edftech.in', 'Consult EDF');
             $this->email->to($details['mailId']);
-            $this->email->subject('Appointment Confirmation & Meeting Link');
+            $this->email->subject($data['title']);
             $this->email->message($message);
             $this->email->send();
 
@@ -648,7 +649,6 @@ class Healthcareprovider extends CI_Controller
         $details = $this->HcpModel->getAppointmentAndPatientDetails($id);
 
         if ($this->HcpModel->delete_appointment($id)) {
-            // 1. Prepare the success message
             if ($details && $details['appointmentType'] === 'PATIENT' && !empty($details['mailId'])) {
                 $this->session->set_flashdata('showSuccessMessage', 'Appointment Canceled. Cancellation email is being sent in the background.');
             } else {
@@ -675,30 +675,24 @@ class Healthcareprovider extends CI_Controller
                 $formattedDate = date('d M Y', strtotime($details['dateOfAppoint']));
                 $formattedTime = date('h:i A', strtotime($details['timeOfAppoint']));
 
-                $message = "
-                Dear {$details['firstName']} {$details['lastName']},<br><br>
-
+                $emailContent = "
+                Dear <b>{$details['firstName']} {$details['lastName']}</b>,<br><br>
                 Your appointment with <b>Dr. {$details['hcpName']}</b> on 
                 <b>{$formattedDate}</b> at <b>{$formattedTime}</b> 
                 has been <b>CANCELED</b>.<br><br>
+                You may Re-book anytime through our platform.";
 
-                You may Re-book anytime through our platform.<br><br>
-                <b>Thank you</b>.<br>
+                $data['title'] = "Appointment Cancellation Notice";
+                $data['content'] = $emailContent;
 
-                <br><br>
-                Regards,
-                <br><b>EDF Healthcare Team</b>
-                ";
-
+                $message = $this->load->view('email_template', $data, TRUE);
                 $this->email->set_newline("\r\n");
                 $this->email->from('noreply@consult.edftech.in', 'Consult EDF');
                 $this->email->to($details['mailId']);
-                $this->email->subject('Appointment Cancellation Notice');
+                $this->email->subject($data['title']);
                 $this->email->message($message);
-                $this->email->send();
-
+                $result = $this->email->send();
             }
-
         } else {
             $this->session->set_flashdata('showErrorMessage', 'Failed to cancel appointment.');
             redirect('Healthcareprovider/appointments');
@@ -759,8 +753,8 @@ class Healthcareprovider extends CI_Controller
                 $joinUrl = $meetingBaseUrl . ltrim($details['appointmentLink'], '/');
                 $videoMode = ($details['modeOfConsultant'] == 'audio') ? 'No' : 'Yes';
 
-                $message = "
-                    Dear {$details['firstName']} {$details['lastName']},<br><br>
+                $emailContent = "
+                    Dear <b>{$details['firstName']} {$details['lastName']}</b>,<br><br>
                     Your appointment with <b>Dr. {$details['hcpName']}</b> has been 
                     successfully <b>rescheduled</b>.<br><br>
                     <b>📅 Date:</b> {$formattedDate}<br>
@@ -768,14 +762,16 @@ class Healthcareprovider extends CI_Controller
                     <b>🎥 Video:</b> {$videoMode}<br><br><br>
                     <b>🔗 Join Meeting:</b><br>
                     <a href='{$joinUrl}' target='_blank'>{$joinUrl}</a><br><br>
-                    Please join the meeting at the scheduled time. <br><br>
-                    Regards,
-                    <br><b>EDF Healthcare Team</b>
-                ";
+                    Please join the meeting at the scheduled time.";
+
+                $data['title'] = "Appointment Rescheduled & Meeting Link";
+                $data['content'] = $emailContent;
+
+                $message = $this->load->view('email_template', $data, TRUE);
                 $this->email->set_newline("\r\n");
                 $this->email->from('noreply@consult.edftech.in', 'Consult EDF');
                 $this->email->to($details['mailId']);
-                $this->email->subject('Appointment Rescheduled & Meeting Link');
+                $this->email->subject($data['title']);
                 $this->email->message($message);
                 $this->email->send();
             }

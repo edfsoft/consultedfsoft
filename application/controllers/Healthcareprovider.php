@@ -79,18 +79,21 @@ class Healthcareprovider extends CI_Controller
         $this->session->set_userdata('generated_otp', $otp);
 
         // $message = "Your OTP is $otp to change the new password for your Health Care Provider[HCP] account.";
-        $message = "Hi there, <br> <br>
+        $emailContent = "Hi there, <br> <br>
         Your One-Time Password (OTP) to reset your Health Care Provider (HCP) account password is:
-        <b> $otp </b> <br>
-        Please use this OTP to proceed with updating your password. For security reasons, this OTP is valid for 10 minutes and should not be shared with anyone.
-        <br><br>
-        Regards,
-        <br><b>EDF Healthcare Team</b>";
+        <h2 style='color:#004369;text-align:center;'>$otp</h2>
+        Please use this OTP to proceed with resetting your password. 
+        For security reasons, this OTP is valid for 10 minutes and should not be shared with anyone.";
+
+        $data['title'] = "OTP to Reset HCP Account Password";
+        $data['content'] = $emailContent;
+
+        $message = $this->load->view('email_template', $data, TRUE);
 
         $this->email->set_newline("\r\n");
         $this->email->from('noreply@consult.edftech.in', 'Consult EDF');
         $this->email->to($to);
-        $this->email->subject('OTP to Reset Your HCP Account Password');
+        $this->email->subject($data['title']);
         $this->email->message($message);
 
         if ($this->email->send()) {
@@ -339,23 +342,25 @@ class Healthcareprovider extends CI_Controller
 
     private function sendPatientCredentials($patientMail, $tempPassword, $patientId, $fullName)
     {
-        $message = "
-                    Hi {$fullName},<br><br>
+        $emailContent = "
+                    Hi <b>{$fullName}</b>,<br><br>
                     Your account has been created as <b>Patient</b>.<br><br>
                     Login URL: <b>https://consult.edftech.in/</b><br>
                     EDF Id: <b>{$patientId}</b><br>
                     Email Address: <b>{$patientMail}</b><br>
                     Temporary Password: <b>{$tempPassword}</b><br><br>
                     You will be required to change your password upon first login.
-                    <br><br>
-                    Regards,<br>
-                    <b>EDF Healthcare Team</b>
-                ";
+                    ";
+
+        $data['title'] = "Patient Account Login Details";
+        $data['content'] = $emailContent;
+
+        $message = $this->load->view('email_template', $data, TRUE);
 
         $this->email->set_newline("\r\n");
         $this->email->from('noreply@consult.edftech.in', 'Consult EDF');
         $this->email->to($patientMail);
-        $this->email->subject('Your Account Login Credentials');
+        $this->email->subject($data['title']);
         $this->email->message($message);
 
         $result = $this->email->send();
@@ -867,16 +872,20 @@ class Healthcareprovider extends CI_Controller
         $this->session->set_userdata('email_otp', $otp);
         $this->session->set_userdata('email_otp_address', $email);
 
-        $message = "Hi there, <br><br>
-        Your OTP is <b> $otp </b> to change the new password for your account. 
-        <br>This OTP is valid for 10 minutes.
-        <br><br>
-        Regards,
-        <br><b>EDF Healthcare Team</b>";
+        $emailContent = "Hi there, <br><br>
+                        Your One-Time Password (OTP) for changing your Health Care Provider (HCP) account password is:
+                        <h2 style='color:#004369;text-align:center;'>$otp</h2>
+                        Use this OTP to confirm your password change. 
+                        This OTP is valid for 10 minutes. Please do not share it with anyone.";
+
+        $data['title'] = "OTP to Change HCP Account Password";
+        $data['content'] = $emailContent;
+
+        $message = $this->load->view('email_template', $data, TRUE);
         $this->load->library('email');
         $this->email->from('noreply@consult.edftech.in', 'Consult EDF');
         $this->email->to($email);
-        $this->email->subject('Your OTP for Password Change');
+        $this->email->subject($data['title']);
         $this->email->message($message);
         $this->email->set_mailtype("html");
         $mailSent = $this->email->send();

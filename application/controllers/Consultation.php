@@ -1099,15 +1099,19 @@ class Consultation extends CI_Controller
         file_put_contents($tempFilePath, $output);
 
         // Email Configuration and Sending
-        $message = "
-            Dear {$patient[0]['firstName']} {$patient[0]['lastName']},<br><br>
-            Please find your prescription attached to this email.<br><br>
-            Regards,<br><b>EDF Healthcare Team</b>";
+        $emailContent = "
+            Dear <b>{$patient[0]['firstName']} {$patient[0]['lastName']}</b>,<br><br>
+            Please find your prescription attached to this email.";
+
+        $data['title'] = "Consultation Details";
+        $data['content'] = $emailContent;
+
+        $message = $this->load->view('email_template', $data, TRUE);
 
         $this->email->set_newline("\r\n");
         $this->email->from('noreply@consult.edftech.in', 'Consult EDF');
         $this->email->to($email);
-        $this->email->subject('Consultation Details');
+        $this->email->subject($data['title']);
         $this->email->message($message);
         $this->email->attach($tempFilePath);
 

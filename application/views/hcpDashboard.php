@@ -1339,7 +1339,7 @@ Thank you.`;
                                                     <!-- Hover catcher -->
                                                     <div
                                                         style="position:absolute;top:0;left:0;width:24px;height:24px;cursor:not-allowed;
-                                                                                                                                                                                        "
+                                                                                                                                                                                                        "
                                                         onmouseenter="this.nextElementSibling.style.display='flex'"
                                                         onmouseleave="this.nextElementSibling.style.display='none'"
                                                     ></div>
@@ -1567,6 +1567,11 @@ Thank you.`;
                     function confirmDeleteReschedule(id) {
                         const app = rescheduleList.find(item => item.id == id);
 
+                        let emailNotice = '';
+                        if (app.appointmentType === 'PATIENT') {
+                            emailNotice = ' A cancellation email will be sent to the patient.';
+                        }
+
                         if (app) {
                             let formattedTime = formatTimeAMPM(app.timeOfAppoint);
                             let formattedDate = formatDateOrToday(app.dateOfAppoint).replace('<b>Today</b>', app.dateOfAppoint); // Strip bold for modal
@@ -1574,13 +1579,13 @@ Thank you.`;
                             var content = `
                                 <p>Are you sure you want to delete this Appointment?</p>
                                 <div class="alert alert-light border">
-                                    <strong>Patient Name:</strong> ${app.firstName || ''} ${app.lastName || ''}<br>
                                     <strong>Patient ID:</strong> ${app.patientId}<br>
                                     <strong>Appointment With:</strong> ${app.appointmentType}<br>
                                     <strong>Date:</strong> ${formattedDate}<br>
                                     <strong>Time:</strong> ${formattedTime}
                                 </div>
-                                <p class="text-danger small mb-0"><i class="bi bi-exclamation-triangle"></i> This action cannot be undone.</p>
+                                <p class="text-danger small mb-0"><i class="bi bi-exclamation-triangle"></i> This action cannot be undone.<br>
+                                ${emailNotice}</p>
                             `;
 
                             document.getElementById('deleteModalBody').innerHTML = content;
@@ -2311,7 +2316,7 @@ Thank you.`;
                                                         <label class="form-label" for="patientId">Enable Video?</label>
 
                                                         <div class="d-flex gap-2 pb-3" style="max-width: 100px; cursor: no-drop;">
-                                                            <?php if ($value['modeOfConsultant'] == 'video'): ?>
+                                                <?php if ($value['modeOfConsultant'] == 'video'): ?>
                                                                 <div class="flex-fill">
                                                                     <input type="radio" class="btn-check" checked disabled>
                                                                     <label class="btn btn-sm btn-outline-success w-100 fw-bold"
@@ -2321,7 +2326,7 @@ Thank you.`;
                                                                 <div class="flex-fill">
                                                                     <input type="radio" class="btn-check" checked disabled>
                                                                     <label class="btn btn-sm btn-outline-secondary w-100 fw-bold"
-                                                                       style="cursor: no-drop;">No</label>
+                                                                        style="cursor: no-drop;">No</label>
                                                                 </div>
                                                 <?php endif; ?>
                                                         </div>

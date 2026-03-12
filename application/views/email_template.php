@@ -18,14 +18,14 @@
                     <!-- Header -->
                     <tr>
                         <td style="text-align:center;">
-                            <img src="https://consult.edftech.in/assets/edf_logo.png" alt="EDF Healthcare" width="145"
-                                style="display:block; margin:20px auto;">
+                            <img src="https://consult.edftech.in/external_assets/edf_logo.png" alt="EDF Healthcare"
+                                width="145" style="display:block; margin:20px auto;">
                         </td>
                     </tr>
 
                     <!-- Body -->
                     <tr>
-                        <td style="padding:30px; color:#333;">
+                        <td style="padding:15px 30px; color:#333;">
                             <?php echo $content; ?>
                         </td>
                     </tr>

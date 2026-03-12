@@ -78,18 +78,14 @@ class Healthcareprovider extends CI_Controller
         $otp = rand(1000, 9999);
         $this->session->set_userdata('generated_otp', $otp);
 
-        // Dynamic email content
-        $emailContent = "
-        <p>Hi there,</p>
-
-        <p>Your One-Time Password (OTP) to reset your Health Care Provider (HCP) account password is:</p>
-
+        // $message = "Your OTP is $otp to change the new password for your Health Care Provider[HCP] account.";
+        $emailContent = "Hi there, <br> <br>
+        Your One-Time Password (OTP) to reset your Health Care Provider (HCP) account password is:
         <h2 style='color:#004369;text-align:center;'>$otp</h2>
+        Please use this OTP to proceed with resetting your password. 
+        For security reasons, this OTP is valid for 10 minutes and should not be shared with anyone.";
 
-        <p>This OTP is valid for 10 minutes. Please do not share it with anyone.</p>
-    ";
-
-        $data['title'] = "OTP to Reset Your HCP Account Password";
+        $data['title'] = "OTP to Reset HCP Account Password";
         $data['content'] = $emailContent;
 
         $message = $this->load->view('email_template', $data, TRUE);
@@ -347,14 +343,16 @@ class Healthcareprovider extends CI_Controller
     private function sendPatientCredentials($patientMail, $tempPassword, $patientId, $fullName)
     {
         $emailContent = "
-                    Hi {$fullName},<br><br>
+                    Hi <b>{$fullName}</b>,<br><br>
                     Your account has been created as <b>Patient</b>.<br><br>
                     Login URL: <b>https://consult.edftech.in/</b><br>
                     EDF Id: <b>{$patientId}</b><br>
                     Email Address: <b>{$patientMail}</b><br>
                     Temporary Password: <b>{$tempPassword}</b><br><br>
-                    You will be required to change your password upon first login.";
-        $data['title'] = "Your Account Login Credentials";
+                    You will be required to change your password upon first login.
+                    ";
+
+        $data['title'] = "Patient Account Login Details";
         $data['content'] = $emailContent;
 
         $message = $this->load->view('email_template', $data, TRUE);
@@ -630,6 +628,7 @@ class Healthcareprovider extends CI_Controller
             $data['content'] = $emailContent;
 
             $message = $this->load->view('email_template', $data, TRUE);
+
             $this->email->set_newline("\r\n");
             $this->email->from('noreply@consult.edftech.in', 'Consult EDF');
             $this->email->to($details['mailId']);
@@ -650,7 +649,6 @@ class Healthcareprovider extends CI_Controller
         $details = $this->HcpModel->getAppointmentAndPatientDetails($id);
 
         if ($this->HcpModel->delete_appointment($id)) {
-            // 1. Prepare the success message
             if ($details && $details['appointmentType'] === 'PATIENT' && !empty($details['mailId'])) {
                 $this->session->set_flashdata('showSuccessMessage', 'Appointment Canceled. Cancellation email is being sent in the background.');
             } else {
@@ -678,28 +676,23 @@ class Healthcareprovider extends CI_Controller
                 $formattedTime = date('h:i A', strtotime($details['timeOfAppoint']));
 
                 $emailContent = "
-                Dear {$details['firstName']} {$details['lastName']},<br><br>
-
+                Dear <b>{$details['firstName']} {$details['lastName']}</b>,<br><br>
                 Your appointment with <b>Dr. {$details['hcpName']}</b> on 
                 <b>{$formattedDate}</b> at <b>{$formattedTime}</b> 
                 has been <b>CANCELED</b>.<br><br>
-
                 You may Re-book anytime through our platform.";
 
                 $data['title'] = "Appointment Cancellation Notice";
                 $data['content'] = $emailContent;
 
                 $message = $this->load->view('email_template', $data, TRUE);
-
                 $this->email->set_newline("\r\n");
                 $this->email->from('noreply@consult.edftech.in', 'Consult EDF');
                 $this->email->to($details['mailId']);
                 $this->email->subject($data['title']);
                 $this->email->message($message);
-                $this->email->send();
-
+                $result = $this->email->send();
             }
-
         } else {
             $this->session->set_flashdata('showErrorMessage', 'Failed to cancel appointment.');
             redirect('Healthcareprovider/appointments');
@@ -761,7 +754,7 @@ class Healthcareprovider extends CI_Controller
                 $videoMode = ($details['modeOfConsultant'] == 'audio') ? 'No' : 'Yes';
 
                 $emailContent = "
-                    Dear {$details['firstName']} {$details['lastName']},<br><br>
+                    Dear <b>{$details['firstName']} {$details['lastName']}</b>,<br><br>
                     Your appointment with <b>Dr. {$details['hcpName']}</b> has been 
                     successfully <b>rescheduled</b>.<br><br>
                     <b>📅 Date:</b> {$formattedDate}<br>
@@ -876,14 +869,15 @@ class Healthcareprovider extends CI_Controller
         $this->session->set_userdata('email_otp_address', $email);
 
         $emailContent = "Hi there, <br><br>
-        Your OTP is <b> $otp </b> to change the new password for your account. 
-        <br>This OTP is valid for 10 minutes.";
+                        Your One-Time Password (OTP) for changing your Health Care Provider (HCP) account password is:
+                        <h2 style='color:#004369;text-align:center;'>$otp</h2>
+                        Use this OTP to confirm your password change. 
+                        This OTP is valid for 10 minutes. Please do not share it with anyone.";
 
-        $data['title'] = "Your OTP for Password Change'";
+        $data['title'] = "OTP to Change HCP Account Password";
         $data['content'] = $emailContent;
 
         $message = $this->load->view('email_template', $data, TRUE);
-
         $this->load->library('email');
         $this->email->from('noreply@consult.edftech.in', 'Consult EDF');
         $this->email->to($email);

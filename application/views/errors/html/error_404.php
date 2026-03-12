@@ -136,7 +136,7 @@
 	<div class="error-container">
 		<!-- Clickable Logo to Home -->
 		<a href="https://consult.edftech.in/">
-			<img src="https://consult.edftech.in/assets/edf_logo.png" alt="Your Logo" class="logo img-fluid">
+			<img src="https://consult.edftech.in/external_assets/edf_logo.png" alt="Your Logo" class="logo img-fluid">
 		</a>
 
 		<h1 class="display-1">404</h1>

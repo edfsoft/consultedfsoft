@@ -297,8 +297,8 @@
                                 src="<?php echo base_url(); ?>assets/location.svg" alt="1"> 564, Perundurai road,
                             Erode-11</a></p>
                 </div>
-                <p style="font-size:13px;font-weight:400;" class="text-light pt-2">Copyright © 2024 <a
-                        href="https://www.erodediabetesfoundation.org/" target="blank"
+                <p style="font-size:13px;font-weight:400;" class="text-light pt-2">Copyright © <?php echo date('Y'); ?>
+                    <a href="https://www.erodediabetesfoundation.org/" target="blank"
                         style="font-size:13px;font-weight:400;" class="text-light">Erodediabetesfoundation</a> All
                     rights reserved.</p>
             </div>

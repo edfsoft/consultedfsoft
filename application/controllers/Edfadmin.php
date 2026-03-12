@@ -112,6 +112,7 @@ class Edfadmin extends CI_Controller
         $mobileNumber = $this->input->post('ccMobile');
         $mailId = $this->input->post('ccEmail');
         $pswd = $this->input->post('ccCnfmPassword');
+        $ccName = $this->input->post('ccName');
 
         $existingFields = $this->CcModel->check_existing_user($mobileNumber, $mailId);
 
@@ -124,18 +125,20 @@ class Edfadmin extends CI_Controller
             $register = $this->CcModel->register();
             $id = $this->CcModel->generateCcId();
 
-            $message = "Hi there, <br><br>
-            Your account has been created as Chief Consultant [CC].<br>
+            $emailContent = "Hi <b>{$ccName}</b>, <br><br>
+            Your account has been created as <b>Chief Consultant [CC]</b>.<br>
             Login URL: <b>https://consult.edftech.in/</b><br>
-            Mail Address: <b>" . $mailId . " </b><br>
-            Password: <b>" . $pswd . " </b><br>
-            You will be required to change your password upon first login.
-            <br><br>
-            Regards,
-            <br><b>EDF Healthcare Team</b>";
+            Email Address: <b>" . $mailId . " </b><br>
+            Temporary Password: <b>" . $pswd . " </b><br>
+            You will be required to change your password upon first login.";
+
+            $data['title'] = "CC Account Login Details";
+            $data['content'] = $emailContent;
+
+            $message = $this->load->view('email_template', $data, TRUE);
             $this->email->from('noreply@consult.edftech.in', 'Consult EDF');
             $this->email->to($mailId);
-            $this->email->subject('Your Account Login Credentials');
+            $this->email->subject($data['title']);
             $this->email->message($message);
             $this->email->send();
             // if ($this->email->send()) {
@@ -263,6 +266,7 @@ class Edfadmin extends CI_Controller
         $hcpMobileNum = $this->input->post('hcpMobile');
         $hcpMailId = $this->input->post('hcpEmail');
         $pswd = $this->input->post('hcpCnfmPassword');
+        $hcpName = $this->input->post('hcpName');
 
         $existingFields = $this->HcpModel->check_existing_user($hcpMobileNum, $hcpMailId);
 
@@ -275,18 +279,19 @@ class Edfadmin extends CI_Controller
             $register = $this->HcpModel->register();
             $id = $this->HcpModel->generatehcpid();
 
-            $message = "Hi there, <br><br>
-            Your account has been created as Health Care Provider [HCP].<br>
+            $emailContent = "Hi <b>{$hcpName}</b>, <br><br>
+            Your account has been created as <b>Health Care Provider [HCP]</b>.<br>
             Login URL: <b>https://consult.edftech.in/</b><br>
-            Mail Address: <b>" . $hcpMailId . " </b><br>
-            Password: <b>" . $pswd . " </b><br>
-            You will be required to change your password upon first login.
-            <br><br>
-            Regards,
-            <br><b>EDF Healthcare Team</b>";
+            Email Address: <b>" . $hcpMailId . " </b><br>
+            Temporary Password: <b>" . $pswd . " </b><br>
+            You will be required to change your password upon first login.";
+            $data['title'] = "HCP Account Login Details";
+            $data['content'] = $emailContent;
+
+            $message = $this->load->view('email_template', $data, TRUE);
             $this->email->from('noreply@consult.edftech.in', 'Consult EDF');
             $this->email->to($hcpMailId);
-            $this->email->subject('Your Account Login Credentials');
+            $this->email->subject($data['title']);
             $this->email->message($message);
             $this->email->send();
             // if ($this->email->send()) {

@@ -80,18 +80,20 @@ class Patient extends CI_Controller
 
         $otp = $this->PatientModel->generate_otp($patientMail);
 
-        $message = "Hi there, <br> <br>
+        $emailContent = "Hi there, <br> <br>
         Your One-Time Password (OTP) to reset your Patient account password is:
-        <b> $otp </b> <br>
-        Please use this OTP to proceed with updating your password. For security reasons, this OTP is valid for 10 minutes and should not be shared with anyone.
-        <br><br>
-        Regards,
-        <br><b>EDF Healthcare Team</b>";
+        <h2 style='color:#004369;text-align:center;'>$otp</h2>
+        Please use this OTP to proceed with resetting your password. 
+        For security reasons, this OTP is valid for 10 minutes and should not be shared with anyone.";
 
+        $data['title'] = "OTP to Reset Patient Account Password";
+        $data['content'] = $emailContent;
+
+        $message = $this->load->view('email_template', $data, TRUE);
         $this->email->set_newline("\r\n");
         $this->email->from('noreply@consult.edftech.in', 'Consult EDF');
         $this->email->to($patientMail);
-        $this->email->subject('OTP to Reset Your Patient Account Password');
+        $this->email->subject($data['title']);
         $this->email->message($message);
 
         if ($this->email->send()) {
@@ -253,16 +255,19 @@ class Patient extends CI_Controller
         $this->session->set_userdata('email_otp', $otp);
         $this->session->set_userdata('email_otp_address', $email);
 
-        $message = "Hi there, <br><br>
-        Your OTP is <b> $otp </b> to change the new password for your account. 
-        <br>This OTP is valid for 10 minutes.
-        <br><br>
-        Regards,
-        <br><b>EDF Healthcare Team</b>";
+        $emailContent = "Hi there, <br><br>
+                        Your One-Time Password (OTP) for changing your Patient account password is:
+                        <h2 style='color:#004369;text-align:center;'>$otp</h2>
+                        Use this OTP to confirm your password change. 
+                        This OTP is valid for 10 minutes. Please do not share it with anyone.";
+        $data['title'] = "OTP to Change Patient Account Password";
+        $data['content'] = $emailContent;
+
+        $message = $this->load->view('email_template', $data, TRUE);
         $this->load->library('email');
         $this->email->from('noreply@consult.edftech.in', 'Consult EDF');
         $this->email->to($email);
-        $this->email->subject('Your OTP for Password Change');
+        $this->email->subject($data['title']);
         $this->email->message($message);
         $this->email->set_mailtype("html");
         $mailSent = $this->email->send();

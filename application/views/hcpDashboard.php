@@ -1339,7 +1339,7 @@ Thank you.`;
                                                     <!-- Hover catcher -->
                                                     <div
                                                         style="position:absolute;top:0;left:0;width:24px;height:24px;cursor:not-allowed;
-                                                                                                                                                                                                        "
+                                                                                                                                                                                                                "
                                                         onmouseenter="this.nextElementSibling.style.display='flex'"
                                                         onmouseleave="this.nextElementSibling.style.display='none'"
                                                     ></div>
@@ -3104,7 +3104,7 @@ Thank you.`;
 
         const APP_CONFIG = {
             interval: 20,      // Minutes per slot
-            bufferMins: 20,    // Lead time buffer
+            bufferMins: 5,    // 20 // Lead time buffer
             schedule: [
                 { label: 'Morning', start: 9, end: 11, icon: 'bi-brightness-alt-high' },
                 { label: 'Afternoon', start: 12, end: 15, icon: 'bi-sun' },

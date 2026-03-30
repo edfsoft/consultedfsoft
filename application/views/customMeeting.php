@@ -119,12 +119,13 @@
             max-width: 300px;
         }
 
-        /* Hide banner for local HCP during call */
-        #player-local .hcp-banner-content {
+        /* Hide avatar when banner is active */
+        .hcp-banner-content.active~.avatar-circle {
             display: none !important;
         }
 
-        /* Show banner for remote HCP users */
+        /* Show banner for HCP in both local and remote views */
+        #player-local .hcp-banner-content.active,
         .video-player:not(#player-local) .hcp-banner-content.active {
             display: flex !important;
         }
@@ -890,7 +891,7 @@
 
                 togglePlaceholder(placeholderId, !enabled);
 
-                // Show/hide banner for HCP when video is disabled
+                // Show/hide banner for HCP when video is disabled (both local and remote views)
                 if (options.role === 'hcp') {
                     const placeholder = document.getElementById(placeholderId);
                     const bannerContent = placeholder?.querySelector('.hcp-banner-content');
@@ -1013,8 +1014,20 @@
             if (localTracks.videoTrack && localTracks.videoTrack.enabled) {
                 safePlay(localTracks.videoTrack, 'player-local');
                 togglePlaceholder('placeholder-local', false);
+                // Hide banner when video is on
+                const bannerContent = document.querySelector('#placeholder-local .hcp-banner-content');
+                if (bannerContent) {
+                    bannerContent.classList.remove('active');
+                }
             } else {
                 togglePlaceholder('placeholder-local', true);
+                // Show banner for HCP when video is off
+                if (options.role === 'hcp') {
+                    const bannerContent = document.querySelector('#placeholder-local .hcp-banner-content');
+                    if (bannerContent) {
+                        bannerContent.classList.add('active');
+                    }
+                }
             }
 
             document.getElementById('call-mic-btn').classList.toggle('active', !localTracks.audioTrack.enabled);
@@ -1036,7 +1049,24 @@
                     await client.subscribe(user, "video");
                     safePlay(user.videoTrack, userInfo.wrapperId);
                     togglePlaceholder(`placeholder-${uid}`, false);
+
+                    // Hide banner when video is playing
+                    const bannerContent = document.querySelector(`#placeholder-${uid} .hcp-banner-content`);
+                    if (bannerContent) {
+                        bannerContent.classList.remove('active');
+                    }
+
                     userInfo.hasVideo = true;
+                } else {
+                    // Show banner if user has no video
+                    const role = getRoleFromUid(uid);
+                    if (role === 'hcp') {
+                        togglePlaceholder(`placeholder-${uid}`, true);
+                        const bannerContent = document.querySelector(`#placeholder-${uid} .hcp-banner-content`);
+                        if (bannerContent) {
+                            bannerContent.classList.add('active');
+                        }
+                    }
                 }
                 if (user.hasAudio) {
                     await client.subscribe(user, "audio");
@@ -1074,6 +1104,13 @@
             if (mediaType === "video") {
                 safePlay(user.videoTrack, userInfo.wrapperId);
                 togglePlaceholder(`placeholder-${uid}`, false);
+
+                // Hide banner when video is published
+                const bannerContent = document.querySelector(`#placeholder-${uid} .hcp-banner-content`);
+                if (bannerContent) {
+                    bannerContent.classList.remove('active');
+                }
+
                 userInfo.hasVideo = true;
             }
             if (mediaType === "audio") user.audioTrack.play();
@@ -1084,6 +1121,16 @@
                 const userInfo = remoteUsers.get(user.uid);
                 if (userInfo && userInfo.hasVideo) {
                     togglePlaceholder(`placeholder-${user.uid}`, true);
+
+                    // Show banner for HCP when video is unpublished
+                    const role = getRoleFromUid(user.uid);
+                    if (role === 'hcp') {
+                        const bannerContent = document.querySelector(`#placeholder-${user.uid} .hcp-banner-content`);
+                        if (bannerContent) {
+                            bannerContent.classList.add('active');
+                        }
+                    }
+
                     userInfo.hasVideo = false;
                 }
             }

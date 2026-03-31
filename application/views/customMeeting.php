@@ -80,10 +80,9 @@
             justify-content: center;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, #cac9c9 0%, #f8f9fa 100%);
+            background: linear-gradient(135deg, #8cfce5 0%, #cef5ee 100%);
             padding: 24px;
             text-align: center;
-            /* border-radius: 20px; */
         }
 
         .hcp-banner-content.active {
@@ -674,10 +673,10 @@
                     <div id="lobby-placeholder" class="video-placeholder" style="border-radius: 20px;">
                         <div class="hcp-banner-content">
                             <img src="<?php echo base_url(); ?>assets/edf_logo.png" alt="EDF Logo" />
-                            <h3>ERODE DIABETES FOUNDATION</h3>
-                            <p>Dr. Kumaran M.D., FICP</p>
-                            <p class="banner-description">Expert online diabetes consultation from the comfort of your
-                                home. Book appointments, connect with specialists, and manage your health digitally.</p>
+                            <h3 style="color: #005844;">MAARUTHI MEDICAL CENTRE AND HOSPITALS</h3>
+                            <!-- <p style="font-weight:600;">Dr. A.S.SENTHILVELU, M.D., FICP</p> -->
+                            <p style="font-weight:600;">Expert Diabetes Care, Anytime. Anywhere.</p>
+                            <p class="banner-description">Access Quality Diabetes Care Through Online Consultation.</p>
                         </div>
                         <div class="avatar-circle"></div>
                     </div>
@@ -714,10 +713,9 @@
                 <div id="placeholder-local" class="video-placeholder">
                     <div class="hcp-banner-content">
                         <img src="<?php echo base_url(); ?>assets/edf_logo.png" alt="EDF Logo" />
-                        <h3>ERODE DIABETES FOUNDATION</h3>
-                        <p>Dr. Kumaran M.D., FICP</p>
-                        <p class="banner-description">Expert online diabetes consultation from the comfort of your home.
-                            Book appointments, connect with specialists, and manage your health digitally.</p>
+                        <h3 style="color: #005844;">MAARUTHI MEDICAL CENTRE AND HOSPITALS</h3>
+                        <p style="font-weight:600;">Expert Diabetes Care, Anytime. Anywhere.</p>
+                        <p class="banner-description">Access Quality Diabetes Care Through Online Consultation.</p>
                     </div>
                     <div class="avatar-circle"></div>
                 </div>

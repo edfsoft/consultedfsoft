@@ -903,7 +903,7 @@
                             class="btn btn-sm"
                             style="background:#00ad8e;color:#fff"
                             ${disableBtn}
-                            onclick="markDone(${row.id})">
+                            onclick="openRemarksModal(${row.id})">
                             Done
                         </button>
                     </td>
@@ -930,11 +930,18 @@
 
                     loadFollowups();
                 });
-            </script>
-            <script>
-                function markDone(id) {
 
-                    let remarks = prompt("Enter remarks") || '';
+                function openRemarksModal(id) {
+                    document.getElementById('followupId').value = id;
+                    document.getElementById('remarksInput').value = '';
+
+                    let modal = new bootstrap.Modal(document.getElementById('remarksModal'));
+                    modal.show();
+                }
+
+                function submitFollowup() {
+                    const id = document.getElementById('followupId').value;
+                    const remarks = document.getElementById('remarksInput').value;
 
                     fetch("<?= base_url('Healthcareprovider/mark_discharge_followup_done') ?>", {
                         method: "POST",
@@ -943,14 +950,9 @@
                         },
                         body: "id=" + encodeURIComponent(id) + "&remarks=" + encodeURIComponent(remarks)
                     })
-                        .then(response => response.json())
+                        .then(res => res.json())
                         .then(data => {
-                            console.log(data);
                             location.reload();
-                        })
-                        .catch(error => {
-                            console.error("Error:", error);
-                            alert("Something went wrong");
                         });
                 }
             </script>
@@ -1553,7 +1555,7 @@ Thank you.`;
                                                     <!-- Hover catcher -->
                                                     <div
                                                         style="position:absolute;top:0;left:0;width:24px;height:24px;cursor:not-allowed;
-                                                                                                                                                                                                                        "
+                                                                                                                                                                                                                                                                "
                                                         onmouseenter="this.nextElementSibling.style.display='flex'"
                                                         onmouseleave="this.nextElementSibling.style.display='none'"
                                                     ></div>

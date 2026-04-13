@@ -667,6 +667,36 @@
     });
 </script>
 
+<!-- Discharge followup remarks modal -->
+<div class="modal fade" id="remarksModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title fw-medium" style="font-family: Poppins, sans-serif;">Enter Follow-up
+                    Remarks</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+                <textarea id="remarksInput" class="form-control" placeholder="Enter remarks..."></textarea>
+                <input type="hidden" id="followupId">
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    Cancel
+                </button>
+                <button type="button" class="btn text-light" style="background-color: #00ad8e;"
+                    onclick="submitFollowup()">
+                    Save
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
 <!-- Belong to consultation view page -->
 <!-- Modal for Adding Discharge Follow-up Plan -->
 <div class="modal fade" id="followupModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">

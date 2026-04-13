@@ -667,6 +667,71 @@
     });
 </script>
 
+<!-- Belong to consultation view page -->
+<!-- Modal for Adding Discharge Follow-up Plan -->
+<div class="modal fade" id="followupModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title fw-medium" style="font-family: Poppins, sans-serif;">Add Post-Discharge
+                    Follow-up</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="<?php echo base_url('Consultation/saveDischargeFollowUp'); ?>" method="post"
+                id="followupForm">
+                <div class="modal-body">
+                    <input type="hidden" name="patient_id" id="modal_patient_id">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label class="form-label fieldLabel">Appointment Date <span
+                                    class="text-danger">*</span></label>
+                            <input type="date" name="appointment_date" class="form-control fieldStyle" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fieldLabel">Discharge Date <span
+                                    class="text-danger">*</span></label>
+                            <input type="date" name="discharge_date" class="form-control fieldStyle" required>
+                        </div>
+                        <div class="col-md-6 mt-3">
+                            <label class="form-label fieldLabel">Next Review Date <span
+                                    class="text-danger">*</span></label>
+                            <input type="date" name="next_review_date" class="form-control fieldStyle" required>
+                        </div>
+
+                        <div class="col-md-6 mt-3">
+                            <label class="form-label fieldLabel">Follow-up Interval (Days) <span
+                                    class="text-danger">*</span></label>
+                            <input type="number" name="followup_interval_days" class="form-control fieldStyle" value="7"
+                                min="1" required>
+                        </div>
+                        <div class="col-md-12 mt-3">
+                            <label class="form-label fieldLabel">Notes</label>
+                            <textarea name="notes" class="form-control" placeholder="Enter the notes"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn text-light" style="background-color: #00ad8e;">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Belong to consultation view page -->
+<!-- Discharge follow-up plan modal trigger script -->
+<script>
+    document.getElementById('openFollowupModal').addEventListener('click', function () {
+        var patientId = this.getAttribute('data-patient-id');
+
+        document.getElementById('modal_patient_id').value = patientId;
+
+        var modal = new bootstrap.Modal(document.getElementById('followupModal'));
+        modal.show();
+    });
+</script>
+
 <!-- Mobile number already exist message display modal - 2 palces [Add, Edit patient details] -->
 <div class="modal fade" id="duplicateMobileModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog">

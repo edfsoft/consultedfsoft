@@ -442,6 +442,12 @@
                                     Sugar Chart Form
                                 </button>
                             </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link btn" id="new-tab" data-bs-toggle="tab"
+                                    data-bs-target="#post-discharge-follow-up" type="button" role="tab">
+                                    Post-Discharge Follow-up
+                                </button>
+                            </li>
                         </ul>
 
                         <div class="tab-content border p-4 rounded shadow-sm" id="consultationTabsContent">
@@ -2155,7 +2161,7 @@
                                 printWindow.document.close();
                                 printWindow.print();
                             }
-                        </script>
+                            </script>
 
                         <!-- Sugar Chart Form -->
                         <div class="tab-pane fade" id="sugarChartForm" role="tabpanel">
@@ -2290,11 +2296,65 @@
                                 </div>
                             </form>
                         </div>
+
+                        <!-- Discharge Follow-up -->
+                        <div class="tab-pane fade" id="post-discharge-follow-up" role="tabpanel">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <p class="fs-5 fw-semibold mb-3">Post-Discharge Follow-up:</p>
+                                <button class="btn text-light" style="background-color: #00ad8e;"
+                                    id="openFollowupModal" data-patient-id="<?php echo $patientDetails[0]['id']; ?>">
+                                    + Add Follow-up
+                                </button>
+                            </div>
+                            <div class="table-responsive pt-3">
+                                <table class="table table-bordered text-center">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th style="color: #00ad8e;" class="scTableStyles">S.No</th>
+                                            <th style="color: #00ad8e;" class="scTableStyles">Appointment Date</th>
+                                            <th style="color: #00ad8e;" class="scTableStyles">Discharge Date</th>
+                                            <th style="color: #00ad8e;" class="scTableStyles">Next Review Date</th>
+                                            <th style="color: #00ad8e;" class="scTableStyles">Interval (Days)</th>
+                                            <th style="color: #00ad8e;" class="scTableStyles">Notes</th>
+                                            <th style="color: #00ad8e;" class="scTableStyles">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php
+                                        if (!empty($dischargeFollowUp)) {
+                                            $count = 1;
+                                            foreach ($dischargeFollowUp as $plan) {
+                                                ?>
+                                        <tr>
+                                            <td><?= $count++ ?></td>
+                                            <td><?= date('d M Y', strtotime($plan['appointment_date'])) ?></td>
+                                            <td><?= date('d M Y', strtotime($plan['discharge_date'])) ?></td>
+                                            <td><?= date('d M Y', strtotime($plan['next_review_date'])) ?></td>
+                                            <td><?= $plan['followup_interval_days'] ?></td>
+                                            <td><?= !empty($plan['notes']) ? $plan['notes'] : '-' ?></td>
+                                            <td>
+                                                <button type="button" class="btn btn-danger"
+                                                    title="Delete Follow-up Plan"
+                                                    onclick="confirmDeleteFollowupPlan(<?= $plan['id'] ?>)">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <?php
+                                            }
+                                        }
+                                        ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
                     </div>
 
                 </div>
             </div>
         </section>
+
 
         <?php } elseif ($method == "followupConsult") { ?>
         <section>
@@ -8902,6 +8962,8 @@
             }
         }
     </script>
+
+
 
 
     <!-- Common Script -->

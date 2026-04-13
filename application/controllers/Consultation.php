@@ -36,14 +36,16 @@ class Consultation extends CI_Controller
         $this->data['instructionsList'] = $this->ConsultModel->getInstructions();
         $this->data['proceduresList'] = $this->ConsultModel->getProcedures();
         $this->data['medicinesList'] = $this->ConsultModel->getMedicines();
-        $this->data['medicineCategories'] = $this->ConsultModel->getMedicineCategories();//pass category
+        $this->data['medicineCategories'] = $this->ConsultModel->getMedicineCategories();
         $this->data['dosageUnits'] = $this->ConsultModel->getDosageUnits();
         $this->data['advicesList'] = $this->ConsultModel->getAdvices();
 
         $this->data['consultations'] = $this->ConsultModel->get_consultations_by_patient($patientIdDb);
         $this->data['patient_id'] = $patientIdDb;
-
+        // Sugar chart data
         $this->data['monthlyData'] = $this->ConsultModel->getMonthlyData($patientIdDb);
+        // Discharge follow-up data
+        $this->data['dischargeFollowUp'] = $this->ConsultModel->getDischargeFollowUp($patientIdDb);
 
         $this->load->view('consultationView.php', $this->data);
     }
@@ -1184,6 +1186,28 @@ class Consultation extends CI_Controller
 
         redirect('Consultation/consultation/' . $patientId);
     }
+
+    public function saveDischargeFollowUp()
+    {
+        $patientId = $this->input->post('patient_id');
+        $data = [
+            'patient_id' => $patientId,
+            'appointment_date' => $this->input->post('appointment_date'),
+            'discharge_date' => $this->input->post('discharge_date'),
+            'next_review_date' => $this->input->post('next_review_date'),
+            'followup_interval_days' => $this->input->post('followup_interval_days'),
+            'notes' => $this->input->post('notes'),
+        ];
+
+        $is_inserted = $this->ConsultModel->saveDischargeFollowUp($data);
+        if ($is_inserted) {
+            $this->session->set_flashdata('showSuccessMessage', 'Discharge follow-up data saved successfully.');
+        } else {
+            $this->session->set_flashdata('showErrorMessage', 'Failed to save discharge follow-up data.');
+        }
+        redirect('Consultation/consultation/' . $patientId);
+    }
+
 
 
 

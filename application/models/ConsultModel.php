@@ -1113,5 +1113,29 @@ class ConsultModel extends CI_Model
         return $this->db->delete('sugar_chart');
     }
 
+    public function saveDischargeFollowUp($data)
+    {
+        return $this->db->insert('discharge_followup_plan ', $data);
+    }
+
+    public function getDischargeFollowUp($patientId)
+    {
+        $this->db->select('*');
+        $this->db->from('discharge_followup_plan');
+        $this->db->where('patient_id', $patientId);
+        $this->db->order_by('created_at', 'DESC');
+
+        $query = $this->db->get();
+        return $query->result_array();
+    }
+
+    //  public function deleteDischargeFollowUp($followUpId)
+    // {
+    //     $this->db->where('id', $followUpId);
+    //     return $this->db->delete('discharge_followup_plan');
+    // }
+
+
+
 
 }

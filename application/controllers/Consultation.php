@@ -43,7 +43,7 @@ class Consultation extends CI_Controller
         $this->data['consultations'] = $this->ConsultModel->get_consultations_by_patient($patientIdDb);
         $this->data['patient_id'] = $patientIdDb;
         // Sugar chart data
-        $this->data['monthlyData'] = $this->ConsultModel->getMonthlyData($patientIdDb);
+        $this->data['monthlyData'] = $this->ConsultModel->getSugarMonthlyData($patientIdDb);
         // Discharge follow-up data
         $this->data['dischargeFollowUp'] = $this->ConsultModel->getDischargeFollowUp($patientIdDb);
 
@@ -1199,14 +1199,37 @@ class Consultation extends CI_Controller
             'notes' => $this->input->post('notes'),
         ];
 
-        $is_inserted = $this->ConsultModel->saveDischargeFollowUp($data);
-        if ($is_inserted) {
+        $plan_id = $this->ConsultModel->saveDischargeFollowUp($data);
+
+        $this->generate_discharge_follow($plan_id);
+        if ($plan_id) {
             $this->session->set_flashdata('showSuccessMessage', 'Discharge follow-up data saved successfully.');
         } else {
             $this->session->set_flashdata('showErrorMessage', 'Failed to save discharge follow-up data.');
         }
         redirect('Consultation/consultation/' . $patientId);
     }
+
+    private function generate_discharge_follow($plan_id)
+    {
+        $plan = $this->db->where('id', $plan_id)
+            ->get('discharge_followup_plan')
+            ->row();
+
+        $start = strtotime($plan->discharge_date);
+        $end = strtotime($plan->next_review_date);
+        $interval = $plan->followup_interval_days;
+
+        for ($date = $start + ($interval * 86400); $date <= $end; $date += ($interval * 86400)) {
+
+            $this->db->insert('patient_followups', [
+                'plan_id' => $plan_id,
+                'patient_id' => $plan->patient_id,
+                'followup_date' => date('Y-m-d', $date)
+            ]);
+        }
+    }
+
 
 
 

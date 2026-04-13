@@ -1087,7 +1087,7 @@ class ConsultModel extends CI_Model
         return $this->db->insert('sugar_chart', $data);
     }
 
-    public function getMonthlyData($patientId)
+    public function getSugarMonthlyData($patientId)
     {
         $this->db->select('*');
         $this->db->from('sugar_chart');
@@ -1115,7 +1115,8 @@ class ConsultModel extends CI_Model
 
     public function saveDischargeFollowUp($data)
     {
-        return $this->db->insert('discharge_followup_plan ', $data);
+        $this->db->insert('discharge_followup_plan ', $data);
+        return $this->db->insert_id();
     }
 
     public function getDischargeFollowUp($patientId)

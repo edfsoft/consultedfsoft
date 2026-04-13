@@ -250,6 +250,28 @@ class Healthcareprovider extends CI_Controller
         ]);
     }
 
+    public function getDischargeFollwupByDate()
+{
+    $date = $this->input->get('date');
+
+    $data = $this->HcpModel->getDischargeFollwupByDate($date);
+
+    echo json_encode([
+        'success' => true,
+        'data' => $data
+    ]);
+}
+    
+    public function mark_discharge_followup_done()
+    {
+        $id = $this->input->post('id');
+        $remarks = $this->input->post('remarks');
+
+        $this->HcpModel->mark_discharge_followup_completed($id, $remarks);
+
+        echo json_encode(['status' => 'success']);
+    }
+
     public function patients()
     {
         if (isset($_SESSION['hcpsName'])) {
@@ -993,6 +1015,13 @@ class Healthcareprovider extends CI_Controller
         } else {
             echo json_encode(['success' => false, 'message' => 'Invalid Request']);
         }
+    }
+
+    // 👉 Get Followups by Plan (for modal/view)
+    public function get_by_plan($plan_id)
+    {
+        $data = $this->HcpModel->get_by_plan($plan_id);
+        echo json_encode($data);
     }
 
     public function logout()

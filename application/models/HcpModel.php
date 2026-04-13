@@ -163,6 +163,26 @@ class HcpModel extends CI_Model
         return $query->result_array();
     }
 
+    public function getDischargeFollwupByDate()
+    {
+        return $this->db->select('pf.*, CONCAT(pd.firstName, " ", pd.lastName) as patient_name, pd.patientId, pd.mobileNumber')
+            ->from('patient_followups pf')
+            ->join('patient_details pd', 'pd.id = pf.patient_id')
+            ->where('pf.followup_date', date('Y-m-d'))
+            ->where('pf.status', 'pending')
+            ->get()
+            ->result();
+    }
+
+    public function mark_discharge_followup_completed($id, $remarks = '')
+    {
+        return $this->db->where('id', $id)
+            ->update('patient_followups', [
+                'status' => 'completed',
+                'remarks' => $remarks
+            ]);
+    }
+
     public function getPatientList()
     {
         $hcpIdDb = $_SESSION['hcpIdDb'];

@@ -2191,7 +2191,7 @@
                                                 foreach ($dischargeFollowUp as $plan) { ?>
 
                                                     <tr>
-                                                        <td><?= $count++ ?></td>
+                                                        <td><?= $count++ ?>.</td>
                                                         <td><?= date('d M Y', strtotime($plan['appointment_date'])) ?></td>
                                                         <td><?= date('d M Y', strtotime($plan['discharge_date'])) ?></td>
                                                         <td><?= date('d M Y', strtotime($plan['next_review_date'])) ?></td>
@@ -8992,7 +8992,7 @@
                     .then(data => {
 
                         let html = `
-                        <table class="table table-sm table-bordered">
+                        <table class="table table-sm table-bordered" style='background-color: #c1c1c1 !important;'>
                             <thead>
                                 <tr>
                                     <th>Follow-up Date</th>
@@ -9001,7 +9001,7 @@
                                     <th>Completed On</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody style="background-color: #f0f0f0 !important;">
                     `;
 
                         if (data.length > 0) {
@@ -9039,15 +9039,20 @@
                                     }
                                 }
 
+                                let completedOn = '-';
+
+                                if (row.status === 'completed') {
+                                    completedOn = row.updated_at ? formatDateTime(row.updated_at) : '-';
+                                }
+
                                 html += `
-                <tr>
-                    <td>${formatDate(followDate)}</td>
-                    <td><span class="badge ${statusBadge}">
-                            ${statusText}</span></td>
-                    <td>${row.remarks ? row.remarks : '-'}</td>
-                    <td>${row.updated_at ? formatDateTime(row.updated_at) : '-'}</td>                  
-                </tr>
-            `;
+                                    <tr>
+                                        <td style="background-color: #f0f0f0 !important;">${formatDate(followDate)}</td>
+                                        <td style="background-color: #f0f0f0 !important;"><span class="badge ${statusBadge}">${statusText}</span></td>
+                                        <td style="background-color: #f0f0f0 !important;">${row.remarks ? row.remarks : '-'}</td>
+                                        <td style="background-color: #f0f0f0 !important;">${completedOn}</td>
+                                    </tr>
+                                    `;
                             });
                         } else {
                             html += `<tr><td colspan="4">No follow-ups</td></tr>`;

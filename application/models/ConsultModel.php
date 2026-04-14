@@ -1130,11 +1130,19 @@ class ConsultModel extends CI_Model
         return $query->result_array();
     }
 
-    //  public function deleteDischargeFollowUp($followUpId)
-    // {
-    //     $this->db->where('id', $followUpId);
-    //     return $this->db->delete('discharge_followup_plan');
-    // }
+    public function getDischargeFollowupsByPlan($plan_id)
+    {
+        return $this->db->where('plan_id', $plan_id)
+            ->order_by('followup_date', 'ASC')
+            ->get('patient_followups')
+            ->result_array();
+    }
+
+    public function deleteDischargeFollowup($id)
+    {
+        return $this->db->where('id', $id)
+            ->delete('discharge_followup_plan');
+    }
 
 
 

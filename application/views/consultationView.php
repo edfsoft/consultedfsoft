@@ -2029,715 +2029,594 @@
                                 } ?>
                             </div>
 
-                            <!-- Print -->
-                            <script>
-                                function printMonthTable(month, button) {
-                                    var card = button.closest('.card');
-                                    var content = card.querySelector('.month-content').innerHTML;
-
-                                    var patientId = button.getAttribute('data-patient-id');
-                                    var patientName = button.getAttribute('data-patient-name');
-                                    var patientAge = button.getAttribute('data-patient-age');
-                                    var patientGender = button.getAttribute('data-patient-gender');
-                                    var patientMobile = button.getAttribute('data-patient-mobile');
-                                    var printDate = new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
-
-                                    var printWindow = window.open('', '', 'width=900,height=700');
-
-                                    printWindow.document.write(`
-        <html>
-        <head>
-            <title>Sugar Report - ${month}</title>
-            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-            <style>
-                @page {
-                    size: A4;
-                    margin: 0.5cm 0.5cm 0.5cm 0.5cm;
-                }
-                * {
-                    box-sizing: border-box;
-                }
-                .action-column { display: none; }
-                html, body {
-                    margin: 0;
-                    padding: 0;
-                    width: 100%;
-                    height: 100%;
-                }
-                body {
-                    font-family: Arial, sans-serif;
-                    padding: 8px;
-                    margin: 0;
-                }
-                .header { border-bottom: 1px solid #00ad8e; padding-bottom: 8px; margin-bottom: 10px; }
-                .patient-info { display: grid; grid-template-columns: repeat(2, 1fr); gap: 5px; font-size: 11px; margin: 0; padding: 0; }
-                .info-item { display: flex; flex-direction: column; margin: 0; padding: 0; }
-                .info-label { font-weight: bold; color: #00ad8e; font-size: 10px; margin: 0; padding: 0; }
-                .info-value { font-weight: normal;font-size: 10px; color: #333; margin: 0; padding: 0; }
-                .print-title { text-align: center; font-size: 16px; font-weight: bold; margin-bottom: 3px; }
-                .print-month { text-align: center; font-size: 13px; color: #666; margin-bottom: 8px; }
-                .print-date { text-align: right; margin-bottom: 8px; font-size: 10px; color: #666; }
-                table {
-                    border-collapse: collapse !important;
-                    width: 100%;
-                    table-layout: auto;
-                }
-                table, th, td {
-                    border: 1px solid #000 !important;
-                    padding: 6px !important;
-                    font-size: 11px;
-                }
-                thead {
-                    background-color: #f0f0f0 !important;
-                    font-weight: bold;
-                }
-                tbody tr:nth-child(even) { background-color: #fafafa !important; }
-                .table-responsive {
-                    overflow: visible !important;
-                }
-                @media print {
-                    @page {
-                        size: A4;
-                        margin: 0.5cm 0.5cm 0.5cm 0.5cm;
-                    }
-                    html, body {
-                        margin: 0;
-                        padding: 0;
-                        width: 100%;
-                    }
-                    body {
-                        padding: 5px;
-                        margin: 0;
-                    }
-                    table {
-                        border-collapse: collapse !important;
-                        width: 100%;
-                    }
-                    table, th, td {
-                        border: 1px solid #000 !important;
-                        padding: 6px !important;
-                        page-break-inside: avoid;
-                    }
-                    thead { background-color: #f0f0f0 !important; font-weight: bold; font-size: 8px; color: #0066cc; }
-                    .header { padding-bottom: 6px; margin-bottom: 6px; }
-                    .patient-info { margin-bottom: 4px; font-size: 11px; margin: 0; padding: 0; gap: 5px; margin-top: 10px; }
-                    .info-item { margin: 0; padding: 0; }
-                    .info-label { margin: 0; padding: 0; font-size: 9px; }
-                    .info-value { margin: 0; padding: 0; font-size: 9px; }
-                }
-            </style>
-        </head>
-        <body>
-            <div class="header">
-                <div class="print-title">Sugar Chart Record</div>
-                <div class="patient-info">
-                    <div class="info-item">
-                        <p class="info-label">Patient Name:
-                        <span class="info-value">${patientName}</span></p>
-                    </div>
-                    <div class="info-item">
-                        <p class="info-label">Patient ID:
-                        <span class="info-value">${patientId}</span></p>
-                    </div>
-                    <div class="info-item">
-                        <p class="info-label">Mobile Number:
-                        <span class="info-value">${patientMobile}</span></p>
-                    </div>
-                    <div class="info-item">
-                        <p class="info-label">Age & Gender:
-                        <span class="info-value">${patientAge} years & ${patientGender}</span></p>
-                    </div>
-                </div>
-            </div>
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
-            <div class="print-month">Period: <strong>${month}</strong></div>
-            <div class="print-date" style="text-align: right; margin-bottom: 10px; font-size: 12px; color: #666;">Printed on: ${printDate}</div>
-            </div>
-            ${content}
-        </body>
-        </html>
-    `);
-
-                                printWindow.document.close();
-                                printWindow.print();
-                            }
-                            </script>
-
-                        <!-- Sugar Chart Form -->
-                        <div class="tab-pane fade" id="sugarChartForm" role="tabpanel">
-                            <p class="fs-5 fw-semibold mb-3">Sugar Chart Form:</p>
-                            <form method="post" action="<?= base_url('Consultation/saveSugarValues') ?>" class="pb-5">
-                                <input type="hidden" name="patient_id" value="<?= $patient_id ?>">
-                                <!-- Date -->
-                                <div class="col-md-3">
-                                    <label class="form-label"
-                                        style="font-size: 18px; font-weight: 500;color: #00ad8e">Date <span
-                                            class="text-danger">*</span></label>
-                                    <input type="date" name="record_date" class="form-control" required>
-                                </div>
-                                <hr>
-                                <!-- FBS -->
-                                <div class="col-md-3">
-                                    <label class="form-label"
-                                        style="font-size: 18px; font-weight: 500;color: #00ad8e">Fasting Blood Sugar
-                                        (FBS)</label>
-                                    <input type="number" min="0" step="1" name="fbs" class="form-control"
-                                        placeholder="E.g. 70–99 mg/dL">
-                                </div>
-                                <hr>
-                                <!-- PP Sugar -->
-                                <p style="font-size: 18px; font-weight: 500;color: #00ad8e">Post
-                                    Prandial (PP Sugar)</p>
-                                <div class="row mb-3">
+                            <!-- Sugar Chart Form -->
+                            <div class="tab-pane fade" id="sugarChartForm" role="tabpanel">
+                                <p class="fs-5 fw-semibold mb-3">Sugar Chart Form:</p>
+                                <form method="post" action="<?= base_url('Consultation/saveSugarValues') ?>" class="pb-5">
+                                    <input type="hidden" name="patient_id" value="<?= $patient_id ?>">
+                                    <!-- Date -->
                                     <div class="col-md-3">
-                                        <label class="form-label fieldLabel">PP - 1 Hour</label>
-                                        <input type="number" min="0" step="1" name="pp_1hr" class="form-control"
-                                            placeholder="E.g. < 180 mg/dL">
+                                        <label class="form-label"
+                                            style="font-size: 18px; font-weight: 500;color: #00ad8e">Date <span
+                                                class="text-danger">*</span></label>
+                                        <input type="date" name="record_date" class="form-control" required>
                                     </div>
+                                    <hr>
+                                    <!-- FBS -->
                                     <div class="col-md-3">
-                                        <label class="form-label fieldLabel">PP - 2 Hour</label>
-                                        <input type="number" min="0" step="1" name="pp_2hr" class="form-control"
-                                            placeholder="E.g. < 140 mg/dL">
+                                        <label class="form-label"
+                                            style="font-size: 18px; font-weight: 500;color: #00ad8e">Fasting Blood Sugar
+                                            (FBS)</label>
+                                        <input type="number" min="0" step="1" name="fbs" class="form-control"
+                                            placeholder="E.g. 70–99 mg/dL">
                                     </div>
-                                </div>
-                                <hr>
-                                <!-- Lunch -->
-                                <p style="font-size: 18px; font-weight: 500;color: #00ad8e">Lunch</p>
-                                <div class="row mb-3">
-                                    <div class="col-md-3">
-                                        <label class="form-label fieldLabel">Before Lunch</label>
-                                        <input type="number" min="0" step="1" name="lunch_before" class="form-control"
-                                            placeholder="E.g. 80–130 mg/dL">
-                                    </div>
-                                    <div class="col-md-3">
-                                        <label class="form-label fieldLabel">After Lunch</label>
-                                        <input type="number" min="0" step="1" name="lunch_after" class="form-control"
-                                            placeholder="E.g. < 140 mg/dL">
-                                    </div>
-                                </div>
-                                <hr>
-                                <!-- Dinner -->
-                                <p style="font-size: 18px; font-weight: 500;color: #00ad8e">Dinner</p>
-                                <div class="row mb-3">
-                                    <div class="col-md-3">
-                                        <label class="form-label fieldLabel">Before Dinner</label>
-                                        <input type="number" min="0" step="1" name="dinner_before" class="form-control"
-                                            placeholder="E.g. 80–130 mg/dL">
-                                    </div>
-                                    <div class="col-md-3">
-                                        <label class="form-label fieldLabel">After Dinner</label>
-                                        <input type="number" min="0" step="1" name="dinner_after" class="form-control"
-                                            placeholder="E.g. < 140 mg/dL">
-                                    </div>
-                                </div>
-                                <hr>
-                                <!-- Medicine -->
-                                <div class="mb-3">
-                                    <label class="form-label"
-                                        style="font-size: 18px; font-weight: 500;color: #00ad8e">1. Medicine
-                                        Name</label>
-                                    <input type="text" name="medicine_name" class="form-control mb-3"
-                                        placeholder="E.g. Insulin">
-
-                                    <div class="row mb-4">
-                                        <div class="col-md-4">
-                                            <label class="form-label fieldLabel">Morning (M)</label>
-                                            <input type="number" min="0" step="1" name="morning" class="form-control"
-                                                placeholder="E.g. 1 unit">
+                                    <hr>
+                                    <!-- PP Sugar -->
+                                    <p style="font-size: 18px; font-weight: 500;color: #00ad8e">Post
+                                        Prandial (PP Sugar)</p>
+                                    <div class="row mb-3">
+                                        <div class="col-md-3">
+                                            <label class="form-label fieldLabel">PP - 1 Hour</label>
+                                            <input type="number" min="0" step="1" name="pp_1hr" class="form-control"
+                                                placeholder="E.g. < 180 mg/dL">
                                         </div>
-                                        <div class="col-md-4">
-                                            <label class="form-label fieldLabel">Afternoon (A)</label>
-                                            <input type="number" min="0" step="1" name="afternoon" class="form-control"
-                                                placeholder="E.g. 1 unit">
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label class="form-label fieldLabel">Night (N)</label>
-                                            <input type="number" min="0" step="1" name="night" class="form-control"
-                                                placeholder="E.g. 1 unit">
+                                        <div class="col-md-3">
+                                            <label class="form-label fieldLabel">PP - 2 Hour</label>
+                                            <input type="number" min="0" step="1" name="pp_2hr" class="form-control"
+                                                placeholder="E.g. < 140 mg/dL">
                                         </div>
                                     </div>
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label"
-                                        style="font-size: 18px; font-weight: 500;color: #00ad8e">2. Medicine
-                                        Name</label>
-                                    <input type="text" name="medicine_name2" class="form-control mb-3"
-                                        placeholder="E.g. Insulin">
-
-                                    <div class="row mb-4">
-                                        <div class="col-md-4">
-                                            <label class="form-label fieldLabel">Morning (M)</label>
-                                            <input type="number" min="0" step="1" name="morning2" class="form-control"
-                                                placeholder="E.g. 1 unit">
+                                    <hr>
+                                    <!-- Lunch -->
+                                    <p style="font-size: 18px; font-weight: 500;color: #00ad8e">Lunch</p>
+                                    <div class="row mb-3">
+                                        <div class="col-md-3">
+                                            <label class="form-label fieldLabel">Before Lunch</label>
+                                            <input type="number" min="0" step="1" name="lunch_before" class="form-control"
+                                                placeholder="E.g. 80–130 mg/dL">
                                         </div>
-                                        <div class="col-md-4">
-                                            <label class="form-label fieldLabel">Afternoon (A)</label>
-                                            <input type="number" min="0" step="1" name="afternoon2" class="form-control"
-                                                placeholder="E.g. 1 unit">
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label class="form-label fieldLabel">Night (N)</label>
-                                            <input type="number" min="0" step="1" name="night2" class="form-control"
-                                                placeholder="E.g. 1 unit">
+                                        <div class="col-md-3">
+                                            <label class="form-label fieldLabel">After Lunch</label>
+                                            <input type="number" min="0" step="1" name="lunch_after" class="form-control"
+                                                placeholder="E.g. < 140 mg/dL">
                                         </div>
                                     </div>
-                                </div>
-                                <hr>
-                                <!-- Notes -->
-                                <div class="">
-                                    <label class="form-label"
-                                        style="font-size: 18px; font-weight: 500;color: #00ad8e">Notes</label>
-                                    <textarea class="form-control" name="notes" id="notes"
-                                        placeholder="Enter the notes"></textarea>
-                                </div>
-                                <div class="text-end mt-5">
-                                    <button type="submit" class="float-end btn text-light"
-                                        style="background-color: #00ad8e;">Save</button>
-                                </div>
-                            </form>
-                        </div>
+                                    <hr>
+                                    <!-- Dinner -->
+                                    <p style="font-size: 18px; font-weight: 500;color: #00ad8e">Dinner</p>
+                                    <div class="row mb-3">
+                                        <div class="col-md-3">
+                                            <label class="form-label fieldLabel">Before Dinner</label>
+                                            <input type="number" min="0" step="1" name="dinner_before" class="form-control"
+                                                placeholder="E.g. 80–130 mg/dL">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="form-label fieldLabel">After Dinner</label>
+                                            <input type="number" min="0" step="1" name="dinner_after" class="form-control"
+                                                placeholder="E.g. < 140 mg/dL">
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <!-- Medicine -->
+                                    <div class="mb-3">
+                                        <label class="form-label"
+                                            style="font-size: 18px; font-weight: 500;color: #00ad8e">1. Medicine
+                                            Name</label>
+                                        <input type="text" name="medicine_name" class="form-control mb-3"
+                                            placeholder="E.g. Insulin">
 
-                        <!-- Discharge Follow-up -->
-                        <div class="tab-pane fade" id="post-discharge-follow-up" role="tabpanel">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <p class="fs-5 fw-semibold mb-3">Post-Discharge Follow-up:</p>
-                                <button class="btn text-light" style="background-color: #00ad8e;"
-                                    id="openFollowupModal" data-patient-id="<?php echo $patientDetails[0]['id']; ?>">
-                                    + Add Follow-up
-                                </button>
+                                        <div class="row mb-4">
+                                            <div class="col-md-4">
+                                                <label class="form-label fieldLabel">Morning (M)</label>
+                                                <input type="number" min="0" step="1" name="morning" class="form-control"
+                                                    placeholder="E.g. 1 unit">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="form-label fieldLabel">Afternoon (A)</label>
+                                                <input type="number" min="0" step="1" name="afternoon" class="form-control"
+                                                    placeholder="E.g. 1 unit">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="form-label fieldLabel">Night (N)</label>
+                                                <input type="number" min="0" step="1" name="night" class="form-control"
+                                                    placeholder="E.g. 1 unit">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label"
+                                            style="font-size: 18px; font-weight: 500;color: #00ad8e">2. Medicine
+                                            Name</label>
+                                        <input type="text" name="medicine_name2" class="form-control mb-3"
+                                            placeholder="E.g. Insulin">
+
+                                        <div class="row mb-4">
+                                            <div class="col-md-4">
+                                                <label class="form-label fieldLabel">Morning (M)</label>
+                                                <input type="number" min="0" step="1" name="morning2" class="form-control"
+                                                    placeholder="E.g. 1 unit">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="form-label fieldLabel">Afternoon (A)</label>
+                                                <input type="number" min="0" step="1" name="afternoon2" class="form-control"
+                                                    placeholder="E.g. 1 unit">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="form-label fieldLabel">Night (N)</label>
+                                                <input type="number" min="0" step="1" name="night2" class="form-control"
+                                                    placeholder="E.g. 1 unit">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <!-- Notes -->
+                                    <div class="">
+                                        <label class="form-label"
+                                            style="font-size: 18px; font-weight: 500;color: #00ad8e">Notes</label>
+                                        <textarea class="form-control" name="notes" id="notes"
+                                            placeholder="Enter the notes"></textarea>
+                                    </div>
+                                    <div class="text-end mt-5">
+                                        <button type="submit" class="float-end btn text-light"
+                                            style="background-color: #00ad8e;">Save</button>
+                                    </div>
+                                </form>
                             </div>
-                            <div class="table-responsive pt-3">
-                                <table class="table table-bordered text-center">
-                                    <thead class="table-light">
-                                        <tr>
-                                            <th style="color: #00ad8e;" class="scTableStyles">S.No</th>
-                                            <th style="color: #00ad8e;" class="scTableStyles">Appointment Date</th>
-                                            <th style="color: #00ad8e;" class="scTableStyles">Discharge Date</th>
-                                            <th style="color: #00ad8e;" class="scTableStyles">Next Review Date</th>
-                                            <th style="color: #00ad8e;" class="scTableStyles">Interval (Days)</th>
-                                            <th style="color: #00ad8e;" class="scTableStyles">Notes</th>
-                                            <th style="color: #00ad8e;" class="scTableStyles">Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php
-                                        if (!empty($dischargeFollowUp)) {
-                                            $count = 1;
-                                            foreach ($dischargeFollowUp as $plan) {
-                                                ?>
-                                        <tr>
-                                            <td><?= $count++ ?></td>
-                                            <td><?= date('d M Y', strtotime($plan['appointment_date'])) ?></td>
-                                            <td><?= date('d M Y', strtotime($plan['discharge_date'])) ?></td>
-                                            <td><?= date('d M Y', strtotime($plan['next_review_date'])) ?></td>
-                                            <td><?= $plan['followup_interval_days'] ?></td>
-                                            <td><?= !empty($plan['notes']) ? $plan['notes'] : '-' ?></td>
-                                            <td>
-                                                <button type="button" class="btn btn-danger"
-                                                    title="Delete Follow-up Plan"
-                                                    onclick="confirmDeleteFollowupPlan(<?= $plan['id'] ?>)">
-                                                    <i class="bi bi-trash"></i>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                        <?php
-                                            }
-                                        }
-                                        ?>
-                                    </tbody>
-                                </table>
+
+                            <!-- Discharge Follow-up -->
+                            <div class="tab-pane fade" id="post-discharge-follow-up" role="tabpanel">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <p class="fs-5 fw-semibold mb-3">Post-Discharge Follow-up:</p>
+                                    <button class="btn text-light" style="background-color: #00ad8e;" id="openFollowupModal"
+                                        data-patient-id="<?php echo $patientDetails[0]['id']; ?>">
+                                        + Add Follow-up
+                                    </button>
+                                </div>
+                                <div class="table-responsive pt-3">
+                                    <table class="table table-bordered text-center">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th style="color: #00ad8e;" class="scTableStyles">S.No</th>
+                                                <th style="color: #00ad8e;" class="scTableStyles">Appointment Date</th>
+                                                <th style="color: #00ad8e;" class="scTableStyles">Discharge Date</th>
+                                                <th style="color: #00ad8e;" class="scTableStyles">Next Review Date</th>
+                                                <th style="color: #00ad8e;" class="scTableStyles">Interval (Days)</th>
+                                                <th style="color: #00ad8e;" class="scTableStyles">Notes</th>
+                                                <th style="color: #00ad8e;" class="scTableStyles">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php if (!empty($dischargeFollowUp)) {
+                                                $count = 1;
+                                                foreach ($dischargeFollowUp as $plan) { ?>
+
+                                                    <tr>
+                                                        <td><?= $count++ ?></td>
+                                                        <td><?= date('d M Y', strtotime($plan['appointment_date'])) ?></td>
+                                                        <td><?= date('d M Y', strtotime($plan['discharge_date'])) ?></td>
+                                                        <td><?= date('d M Y', strtotime($plan['next_review_date'])) ?></td>
+                                                        <td><?= $plan['followup_interval_days'] ?></td>
+                                                        <td><?= !empty($plan['notes']) ? $plan['notes'] : '-' ?></td>
+
+                                                        <td>
+                                                            <!-- Expand -->
+                                                            <button class="btn btn-info btn-sm"
+                                                                onclick="toggleFollowups(<?= $plan['id'] ?>)">
+                                                                <i class="bi bi-eye"></i>
+                                                            </button>
+
+                                                            <!-- Delete -->
+                                                            <button class="btn btn-danger btn-sm"
+                                                                onclick="openDeleteModal(<?= $plan['id'] ?>)">
+                                                                <i class="bi bi-trash"></i>
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+
+                                                    <!-- Expand Row -->
+                                                    <tr id="expand-row-<?= $plan['id'] ?>" style="display:none;">
+                                                        <td colspan="7">
+                                                            <div id="followup-data-<?= $plan['id'] ?>">
+                                                                Loading...
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+
+                                                <?php }
+                                            } ?>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
+
                         </div>
 
                     </div>
-
                 </div>
-            </div>
-        </section>
-
+            </section>
 
         <?php } elseif ($method == "followupConsult") { ?>
-        <section>
-            <div class="card rounded pb-3">
-                <div class="d-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
-                    <div class="border border-2 rounded text-center py-2 position-relative px-5">
-                        <?php
-                        foreach ($patientDetails as $key => $value) {
-                            ?>
-                        <a href="<?php echo base_url() . "Healthcareprovider/patientformUpdate/" . $value['id']; ?>"
-                            class="position-absolute top-0 end-0 m-2">
-                            <button class="btn btn-secondary btn-sm"><i class="bi bi-pen"></i></button>
-                        </a>
-                        <p style="font-size: 16px; font-weight: 700">
-                            <?php echo $value['firstName'] ?> <?php echo $value['lastName'] ?> |
-                            <?php echo $value['patientId'] ?>
-                        </p>
-                        <p>
-                            <a href="tel:<?php echo $value['mobileNumber'] ?>" class="text-decoration-none text-dark">
-                                <?php echo $value['mobileNumber'] ?>
-                                <?php
-                                if (!empty($value['derived_dob'])) {
-                                    $dob = new DateTime($value['derived_dob']);
-                                    $today = new DateTime();
-                                    $currentAge = $today->diff($dob)->y;
-                                } else {
-                                    $currentAge = $value['age'];
-                                } ?>
-                            </a> | <?php echo $value['gender'] ?> | <?php echo $currentAge ?> Year(s)
-                        </p>
-                        <?php } ?>
+            <section>
+                <div class="card rounded pb-3">
+                    <div class="d-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
+                        <div class="border border-2 rounded text-center py-2 position-relative px-5">
+                            <?php
+                            foreach ($patientDetails as $key => $value) {
+                                ?>
+                                <a href="<?php echo base_url() . "Healthcareprovider/patientformUpdate/" . $value['id']; ?>"
+                                    class="position-absolute top-0 end-0 m-2">
+                                    <button class="btn btn-secondary btn-sm"><i class="bi bi-pen"></i></button>
+                                </a>
+                                <p style="font-size: 16px; font-weight: 700">
+                                    <?php echo $value['firstName'] ?>         <?php echo $value['lastName'] ?> |
+                                    <?php echo $value['patientId'] ?>
+                                </p>
+                                <p>
+                                    <a href="tel:<?php echo $value['mobileNumber'] ?>" class="text-decoration-none text-dark">
+                                        <?php echo $value['mobileNumber'] ?>
+                                        <?php
+                                        if (!empty($value['derived_dob'])) {
+                                            $dob = new DateTime($value['derived_dob']);
+                                            $today = new DateTime();
+                                            $currentAge = $today->diff($dob)->y;
+                                        } else {
+                                            $currentAge = $value['age'];
+                                        } ?>
+                                    </a> | <?php echo $value['gender'] ?> | <?php echo $currentAge ?> Year(s)
+                                </p>
+                            <?php } ?>
+                        </div>
+                        <a href="<?php echo base_url() . "Consultation/consultation/" . $value['id']; ?>"
+                            class="float-end text-dark mt-2"><i class="bi bi-arrow-left"></i> Back</a>
                     </div>
-                    <a href="<?php echo base_url() . "Consultation/consultation/" . $value['id']; ?>"
-                        class="float-end text-dark mt-2"><i class="bi bi-arrow-left"></i> Back</a>
-                </div>
 
-                <div class="card-body mx-3 px-md-4">
-                    <form action="<?php echo base_url() . 'Consultation/saveConsultation' ?>" method="post"
-                        enctype="multipart/form-data" id="consultationForm" class="mb-5">
-                        <input type="hidden" id="patientIdDb" name="patientIdDb"
-                            value="<?php echo $patientDetails[0]['id'] ?>">
-                        <input type="hidden" id="patientId" name="patientId"
-                            value="<?php echo $patientDetails[0]['patientId'] ?>">
-                        <p class="fs-4 fw-semibold mb-3">Follow-up Consultation:</p>
-                        <div class="d-flex justify-content-between align-items-start mb-3">
-                            <p class="mb-2 mt-0 pt-0 fs-5 fw-semibold">Vitals:</p>
-                            <div>
-                                <label for="consultDate" class="form-label fieldLabel">Consultation Date & Time:</label>
-                                <div class="d-flex align-items-center gap-2">
-                                    <input type="date" id="consultDate" name="consultDate" class="form-control"
-                                        style="width: 180px;">
-                                    <select id="consultTime" name="consultTime" class="form-select"
-                                        style="width: 150px;">
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="p-3">
-                            <div class="d-md-flex mb-3">
-                                <div class="col-md-3">
-                                    <label class="form-label fieldLabel" for="patientHeight">Height</label>
-                                    <div class="d-flex me-4">
-                                        <input type="number" class="form-control fieldStyle" id="patientHeight"
-                                            name="patientHeight" step="0.1" min="0" placeholder="E.g. 135"
-                                            value="<?= isset($vitals['height_cm']) ? $vitals['height_cm'] : '' ?>">
-                                        <p class="mx-2 my-2">Cm</p>
-                                    </div>
-                                </div>
-                                <div class="col-md-3 mt-3 mt-md-0">
-                                    <label class="form-label fieldLabel" for="patientWeight">Weight </label>
-                                    <div class="d-flex me-4">
-                                        <input type="number" class="form-control fieldStyle" id="patientWeight"
-                                            name="patientWeight" step="0.1" min="0" placeholder="E.g. 50"
-                                            value="<?= isset($vitals['weight_kg']) ? $vitals['weight_kg'] : '' ?>">
-                                        <p class="mx-2 my-2">Kg</p>
-                                    </div>
-                                </div>
-                                <div class="col-md-3 mt-3 mt-md-0">
-                                    <label class="form-label fieldLabel" for="patientSystolicBp">Systolic BP
-                                    </label>
-                                    <div class="d-flex me-4">
-                                        <input type="number" class="form-control fieldStyle" id="patientSystolicBp"
-                                            name="patientSystolicBp" placeholder="E.g. 120" step="0.1" min="0"
-                                            value="<?= isset($vitals['systolic_bp']) ? $vitals['systolic_bp'] : '' ?>">
-                                        <p class="mx-2 my-2">mmHg</p>
-                                    </div>
-                                    <div id="patientSystolicBp_err" class="text-danger pt-1"></div>
-                                </div>
-                                <div class="col-md-3 mt-3 mt-md-0">
-                                    <label class="form-label fieldLabel" for="patientDiastolicBp">Diastolic BP</label>
-                                    <div class="d-flex">
-                                        <input type="number" class="form-control fieldStyle" id="patientDiastolicBp"
-                                            name="patientDiastolicBp" placeholder="E.g. 80" step="0.1" min="0"
-                                            value="<?= isset($vitals['diastolic_bp']) ? $vitals['diastolic_bp'] : '' ?>">
-                                        <p class="mx-2 my-2">mmHg</p>
-                                    </div>
-                                    <!-- <div id="patientBp_err" class="text-danger pt-1"></div> -->
-                                </div>
-                            </div>
-                            <div class="d-md-flex mb-3">
-                                <div class="col-md-3">
-                                    <label class="form-label fieldLabel" for="bodyMassIndex">BMI
-                                    </label>
-                                    <div class="d-flex me-4">
-                                        <input type="number" class="form-control fieldStyle" id="bodyMassIndex"
-                                            name="bodyMassIndex" step="0.1" min="0"
-                                            value="<?= isset($vitals['body_mass_index']) ? $vitals['body_mass_index'] : '' ?>"
-                                            placeholder="E.g. 27.4">
-                                        <p class="mx-2 my-2">kg/m<sup>2</sup></p>
-                                    </div>
-                                </div>
-                                <div class="col-md-3 mt-3 mt-md-0">
-                                    <label class="form-label fieldLabel" for="fastingBsugar">Blood Sugar
-                                        (Fasting)</label>
-                                    <div class="d-flex me-4">
-                                        <input type="number" class="form-control fieldStyle" id="fastingBsugar"
-                                            name="fastingBsugar" step="0.1" min="0"
-                                            value="<?= isset($vitals['blood_sugar_fasting']) ? $vitals['blood_sugar_fasting'] : '' ?>"
-                                            placeholder="E.g. 75">
-                                        <p class="mx-2 my-2">mg/dL</p>
-                                    </div>
-                                </div>
-                                <div class="col-md-3 mt-3 mt-md-0">
-                                    <label class="form-label fieldLabel" for="patientSpo2">Blood Sugar (PP) </label>
-                                    <div class="d-flex me-4">
-                                        <input type="number" class="form-control fieldStyle" id="ppBsugar"
-                                            value="<?= isset($vitals['blood_sugar_pp']) ? $vitals['blood_sugar_pp'] : '' ?>"
-                                            name="ppBsugar" step="0.1" min="0" placeholder="E.g. 100">
-                                        <p class="mx-2 my-2">mg/dL</p>
-                                    </div>
-                                </div>
-                                <div class="col-md-3 mt-3 mt-md-0">
-                                    <label class="form-label fieldLabel" for="randomBsugar">Blood Sugar (Random)
-                                    </label>
-                                    <div class="d-flex">
-                                        <input type="number" class="form-control fieldStyle" id="randomBsugar"
-                                            name="randomBsugar" step="0.1" min="0"
-                                            value="<?= isset($vitals['blood_sugar_random']) ? $vitals['blood_sugar_random'] : '' ?>"
-                                            placeholder="E.g. 125">
-                                        <p class="mx-2 my-2">mg/dL</p>
-                                    </div>
-
-                                </div>
-                            </div>
-                            <div class="d-md-flex mb-3">
-                                <div class="col-md-3">
-                                    <label class="form-label fieldLabel" for="patientSpo2">SPO2 </label>
-                                    <div class="d-flex me-4">
-                                        <input type="number" class="form-control fieldStyle" id="patientSpo2"
-                                            name="patientSpo2" step="0.1" min="0" placeholder="E.g. 98"
-                                            value="<?= isset($vitals['spo2_percent']) ? $vitals['spo2_percent'] : '' ?>">
-                                        <p class="mx-2 my-2">%</p>
-                                    </div>
-                                </div>
-                                <div class="col-md-3 mt-3 mt-md-0">
-                                    <label class="form-label fieldLabel" for="patientPulseRate">Pulse Rate
-                                    </label>
-                                    <div class="d-flex me-4">
-                                        <input type="number" class="form-control fieldStyle" id="patientPulseRate"
-                                            name="patientPulseRate" placeholder="E.g. 75" step="1" min="0"
-                                            value="<?= isset($vitals['pulse_rate']) ? $vitals['pulse_rate'] : '' ?>">
-                                        <p class="mx-2 my-2">/min</p>
-                                    </div>
-                                    <div id="patientPulseRate_err" class="text-danger pt-1"></div>
-                                </div>
-                                <div class="col-md-3 mt-3 mt-md-0">
-                                    <label class="form-label fieldLabel" for="patientTemperature">Temperature
-                                    </label>
-                                    <div class="d-flex me-4">
-                                        <input type="number" class="form-control fieldStyle" id="patientTemperature"
-                                            name="patientTemperature" step="0.1" min="0" step="0.01"
-                                            placeholder="E.g. 98.6"
-                                            value="<?= isset($vitals['temperature_f']) ? $vitals['temperature_f'] : '' ?>">
-                                        <p class="mx-2 my-2">°F</p>
-                                    </div>
-                                </div>
-                                <div class="col-md-3 mt-3 mt-md-0">
-                                    <label class="form-label fieldLabel" for="patientsHbA1c">HbA1c</label>
-                                    <div class="d-flex">
-                                        <input type="number" class="form-control fieldStyle" id="patientsHbA1c"
-                                            name="patientsHbA1c" step="0.1" min="0" placeholder="E.g. 5.5"
-                                            value="<?= isset($vitals['HbA1c_percent']) ? $vitals['HbA1c_percent'] : '' ?>">
-                                        <p class="mx-2 my-2">%</p>
+                    <div class="card-body mx-3 px-md-4">
+                        <form action="<?php echo base_url() . 'Consultation/saveConsultation' ?>" method="post"
+                            enctype="multipart/form-data" id="consultationForm" class="mb-5">
+                            <input type="hidden" id="patientIdDb" name="patientIdDb"
+                                value="<?php echo $patientDetails[0]['id'] ?>">
+                            <input type="hidden" id="patientId" name="patientId"
+                                value="<?php echo $patientDetails[0]['patientId'] ?>">
+                            <p class="fs-4 fw-semibold mb-3">Follow-up Consultation:</p>
+                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                <p class="mb-2 mt-0 pt-0 fs-5 fw-semibold">Vitals:</p>
+                                <div>
+                                    <label for="consultDate" class="form-label fieldLabel">Consultation Date & Time:</label>
+                                    <div class="d-flex align-items-center gap-2">
+                                        <input type="date" id="consultDate" name="consultDate" class="form-control"
+                                            style="width: 180px;">
+                                        <select id="consultTime" name="consultTime" class="form-select"
+                                            style="width: 150px;">
+                                        </select>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="p-3">
-                            <div class="mb-3">
-                                <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
-                                    style="background-color: rgb(206, 206, 206);" role="button" data-toggle="collapse"
-                                    data-target="#symptomsCollapse">
-                                    <span><strong><i class="bi bi-virus me-2"></i> Symptoms</strong></span>
-                                    <span class="toggle-icon">+</span>
+
+                            <div class="p-3">
+                                <div class="d-md-flex mb-3">
+                                    <div class="col-md-3">
+                                        <label class="form-label fieldLabel" for="patientHeight">Height</label>
+                                        <div class="d-flex me-4">
+                                            <input type="number" class="form-control fieldStyle" id="patientHeight"
+                                                name="patientHeight" step="0.1" min="0" placeholder="E.g. 135"
+                                                value="<?= isset($vitals['height_cm']) ? $vitals['height_cm'] : '' ?>">
+                                            <p class="mx-2 my-2">Cm</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 mt-3 mt-md-0">
+                                        <label class="form-label fieldLabel" for="patientWeight">Weight </label>
+                                        <div class="d-flex me-4">
+                                            <input type="number" class="form-control fieldStyle" id="patientWeight"
+                                                name="patientWeight" step="0.1" min="0" placeholder="E.g. 50"
+                                                value="<?= isset($vitals['weight_kg']) ? $vitals['weight_kg'] : '' ?>">
+                                            <p class="mx-2 my-2">Kg</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 mt-3 mt-md-0">
+                                        <label class="form-label fieldLabel" for="patientSystolicBp">Systolic BP
+                                        </label>
+                                        <div class="d-flex me-4">
+                                            <input type="number" class="form-control fieldStyle" id="patientSystolicBp"
+                                                name="patientSystolicBp" placeholder="E.g. 120" step="0.1" min="0"
+                                                value="<?= isset($vitals['systolic_bp']) ? $vitals['systolic_bp'] : '' ?>">
+                                            <p class="mx-2 my-2">mmHg</p>
+                                        </div>
+                                        <div id="patientSystolicBp_err" class="text-danger pt-1"></div>
+                                    </div>
+                                    <div class="col-md-3 mt-3 mt-md-0">
+                                        <label class="form-label fieldLabel" for="patientDiastolicBp">Diastolic BP</label>
+                                        <div class="d-flex">
+                                            <input type="number" class="form-control fieldStyle" id="patientDiastolicBp"
+                                                name="patientDiastolicBp" placeholder="E.g. 80" step="0.1" min="0"
+                                                value="<?= isset($vitals['diastolic_bp']) ? $vitals['diastolic_bp'] : '' ?>">
+                                            <p class="mx-2 my-2">mmHg</p>
+                                        </div>
+                                        <!-- <div id="patientBp_err" class="text-danger pt-1"></div> -->
+                                    </div>
                                 </div>
-                                <div class="collapse field-container mt-2" id="symptomsCollapse">
-                                    <div id="symptomsWrapper">
-                                        <div id="symptomsList" class="mb-2"></div>
-                                        <div class="mb-3 position-relative">
-                                            <div class="input-group mb-2">
-                                                <div class="tags-input flex-grow-1" id="symptomsInput">
-                                                    <input type="text" class="form-control border-0 shadow-none"
-                                                        id="symptomsSearchInput"
-                                                        placeholder="Search or type to add..." />
-                                                </div>
+                                <div class="d-md-flex mb-3">
+                                    <div class="col-md-3">
+                                        <label class="form-label fieldLabel" for="bodyMassIndex">BMI
+                                        </label>
+                                        <div class="d-flex me-4">
+                                            <input type="number" class="form-control fieldStyle" id="bodyMassIndex"
+                                                name="bodyMassIndex" step="0.1" min="0"
+                                                value="<?= isset($vitals['body_mass_index']) ? $vitals['body_mass_index'] : '' ?>"
+                                                placeholder="E.g. 27.4">
+                                            <p class="mx-2 my-2">kg/m<sup>2</sup></p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 mt-3 mt-md-0">
+                                        <label class="form-label fieldLabel" for="fastingBsugar">Blood Sugar
+                                            (Fasting)</label>
+                                        <div class="d-flex me-4">
+                                            <input type="number" class="form-control fieldStyle" id="fastingBsugar"
+                                                name="fastingBsugar" step="0.1" min="0"
+                                                value="<?= isset($vitals['blood_sugar_fasting']) ? $vitals['blood_sugar_fasting'] : '' ?>"
+                                                placeholder="E.g. 75">
+                                            <p class="mx-2 my-2">mg/dL</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 mt-3 mt-md-0">
+                                        <label class="form-label fieldLabel" for="patientSpo2">Blood Sugar (PP) </label>
+                                        <div class="d-flex me-4">
+                                            <input type="number" class="form-control fieldStyle" id="ppBsugar"
+                                                value="<?= isset($vitals['blood_sugar_pp']) ? $vitals['blood_sugar_pp'] : '' ?>"
+                                                name="ppBsugar" step="0.1" min="0" placeholder="E.g. 100">
+                                            <p class="mx-2 my-2">mg/dL</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 mt-3 mt-md-0">
+                                        <label class="form-label fieldLabel" for="randomBsugar">Blood Sugar (Random)
+                                        </label>
+                                        <div class="d-flex">
+                                            <input type="number" class="form-control fieldStyle" id="randomBsugar"
+                                                name="randomBsugar" step="0.1" min="0"
+                                                value="<?= isset($vitals['blood_sugar_random']) ? $vitals['blood_sugar_random'] : '' ?>"
+                                                placeholder="E.g. 125">
+                                            <p class="mx-2 my-2">mg/dL</p>
+                                        </div>
 
-                                                <button type="button" class="btn btn-outline-secondary"
-                                                    id="clearSymptomSearch" style="display: none;">✖</button>
-
-                                                <button type="button" class="btn btn-outline-primary" id="addSymptomBtn"
-                                                    style="display: none;">+ Add</button>
-                                            </div>
-                                            <div class="suggestions-box" id="symptomsSuggestionsBox"
-                                                style="position: relative; margin-bottom: 15px;"></div>
+                                    </div>
+                                </div>
+                                <div class="d-md-flex mb-3">
+                                    <div class="col-md-3">
+                                        <label class="form-label fieldLabel" for="patientSpo2">SPO2 </label>
+                                        <div class="d-flex me-4">
+                                            <input type="number" class="form-control fieldStyle" id="patientSpo2"
+                                                name="patientSpo2" step="0.1" min="0" placeholder="E.g. 98"
+                                                value="<?= isset($vitals['spo2_percent']) ? $vitals['spo2_percent'] : '' ?>">
+                                            <p class="mx-2 my-2">%</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 mt-3 mt-md-0">
+                                        <label class="form-label fieldLabel" for="patientPulseRate">Pulse Rate
+                                        </label>
+                                        <div class="d-flex me-4">
+                                            <input type="number" class="form-control fieldStyle" id="patientPulseRate"
+                                                name="patientPulseRate" placeholder="E.g. 75" step="1" min="0"
+                                                value="<?= isset($vitals['pulse_rate']) ? $vitals['pulse_rate'] : '' ?>">
+                                            <p class="mx-2 my-2">/min</p>
+                                        </div>
+                                        <div id="patientPulseRate_err" class="text-danger pt-1"></div>
+                                    </div>
+                                    <div class="col-md-3 mt-3 mt-md-0">
+                                        <label class="form-label fieldLabel" for="patientTemperature">Temperature
+                                        </label>
+                                        <div class="d-flex me-4">
+                                            <input type="number" class="form-control fieldStyle" id="patientTemperature"
+                                                name="patientTemperature" step="0.1" min="0" step="0.01"
+                                                placeholder="E.g. 98.6"
+                                                value="<?= isset($vitals['temperature_f']) ? $vitals['temperature_f'] : '' ?>">
+                                            <p class="mx-2 my-2">°F</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 mt-3 mt-md-0">
+                                        <label class="form-label fieldLabel" for="patientsHbA1c">HbA1c</label>
+                                        <div class="d-flex">
+                                            <input type="number" class="form-control fieldStyle" id="patientsHbA1c"
+                                                name="patientsHbA1c" step="0.1" min="0" placeholder="E.g. 5.5"
+                                                value="<?= isset($vitals['HbA1c_percent']) ? $vitals['HbA1c_percent'] : '' ?>">
+                                            <p class="mx-2 my-2">%</p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <input type="hidden" name="symptomsJson" id="symptomsJson">
-
-                            <div class="mb-3">
-                                <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
-                                    style="background-color: rgb(206, 206, 206);" role="button" data-toggle="collapse"
-                                    data-target="#findingsCollapse">
-                                    <span><strong><i class="bi bi-search me-2"></i> Findings</strong></span>
-                                    <span class="toggle-icon">+</span>
-                                </div>
-                                <div class="collapse field-container mt-2" id="findingsCollapse">
-                                    <div id="findingsWrapper">
-                                        <div id="findingsWrapper">
-                                            <div id="findingsList" class="mb-2"></div>
+                            <div class="p-3">
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+                                        style="background-color: rgb(206, 206, 206);" role="button" data-toggle="collapse"
+                                        data-target="#symptomsCollapse">
+                                        <span><strong><i class="bi bi-virus me-2"></i> Symptoms</strong></span>
+                                        <span class="toggle-icon">+</span>
+                                    </div>
+                                    <div class="collapse field-container mt-2" id="symptomsCollapse">
+                                        <div id="symptomsWrapper">
+                                            <div id="symptomsList" class="mb-2"></div>
                                             <div class="mb-3 position-relative">
                                                 <div class="input-group mb-2">
-                                                    <div class="tags-input flex-grow-1" id="findingsInput">
+                                                    <div class="tags-input flex-grow-1" id="symptomsInput">
                                                         <input type="text" class="form-control border-0 shadow-none"
-                                                            id="searchInput" placeholder="Search or type to add..." />
-                                                    </div>
-
-                                                    <button type="button" class="btn btn-outline-secondary"
-                                                        id="clearFindingSearch" style="display: none;">✖</button>
-
-                                                    <button type="button" class="btn btn-outline-primary"
-                                                        id="addFindingBtn" style="display: none;">+ Add</button>
-                                                </div>
-                                                <div class="suggestions-box" id="suggestionsBox"
-                                                    style="position: relative; margin-bottom: 15px;"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <input type="hidden" name="findingsJson" id="findingsJson">
-
-                            <div class="mb-3">
-                                <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
-                                    style="background-color: rgb(206, 206, 206);" role="button" data-toggle="collapse"
-                                    data-target="#diagnosisCollapse">
-                                    <span><strong><i class="bi bi-clipboard2-heart me-2"></i>
-                                            Diagnosis</strong></span>
-                                    <span class="toggle-icon">+</span>
-                                </div>
-                                <div class="collapse field-container mt-2" id="diagnosisCollapse">
-                                    <div id="diagnosisWrapper">
-                                        <div id="diagnosisList" class="mb-2"></div>
-                                        <div class="mb-3 position-relative">
-                                            <div class="input-group mb-2">
-                                                <div class="tags-input flex-grow-1" id="diagnosisInputBox">
-                                                    <input type="text" class="form-control border-0 shadow-none"
-                                                        id="diagnosisInput"
-                                                        placeholder="Search or type to add diagnosis..." />
-                                                </div>
-
-                                                <button type="button" class="btn btn-outline-secondary"
-                                                    id="clearDiagnosisSearch" style="display: none;">✖</button>
-
-                                                <button type="button" class="btn btn-outline-primary"
-                                                    id="addDiagnosisBtn" style="display: none;">+ Add</button>
-                                            </div>
-                                            <div class="suggestions-box" id="diagnosisSuggestionsBox"
-                                                style="position: relative; margin-bottom: 15px;"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <input type="hidden" name="diagnosisJson" id="diagnosisJson">
-
-                            <div class="mb-3">
-                                <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
-                                    style="background-color: rgb(206, 206, 206);" role="button" data-toggle="collapse"
-                                    data-target="#investigationsCollapse">
-                                    <span><strong><i class="bi bi-patch-question me-2"></i>
-                                            Investigations</strong></span>
-                                    <span class="toggle-icon">+</span>
-                                </div>
-                                <div class="collapse field-container mt-2" id="investigationsCollapse">
-                                    <div id="investigationsWrapper">
-                                        <div id="investigationsWrapper">
-                                            <div id="investigationsList" class="mb-2"></div>
-                                            <div class="mb-3 position-relative">
-                                                <div class="input-group mb-2">
-                                                    <div class="tags-input flex-grow-1" id="investigationsInput">
-                                                        <input type="text" class="form-control border-0 shadow-none"
-                                                            id="investigationsSearchInput"
+                                                            id="symptomsSearchInput"
                                                             placeholder="Search or type to add..." />
                                                     </div>
 
                                                     <button type="button" class="btn btn-outline-secondary"
-                                                        id="clearInvestigationSearch" style="display: none;">✖</button>
+                                                        id="clearSymptomSearch" style="display: none;">✖</button>
 
-                                                    <button type="button" class="btn btn-outline-primary"
-                                                        id="addInvestigationBtn" style="display: none;">+ Add</button>
+                                                    <button type="button" class="btn btn-outline-primary" id="addSymptomBtn"
+                                                        style="display: none;">+ Add</button>
                                                 </div>
-                                                <div class="suggestions-box" id="investigationsSuggestionsBox"
+                                                <div class="suggestions-box" id="symptomsSuggestionsBox"
                                                     style="position: relative; margin-bottom: 15px;"></div>
                                             </div>
                                         </div>
-                                        <div id="investigationsList" class="mt-2"></div>
                                     </div>
                                 </div>
-                            </div>
-                            <input type="hidden" name="investigationsJson" id="investigationsJson">
+                                <input type="hidden" name="symptomsJson" id="symptomsJson">
 
-                            <div class="mb-3">
-                                <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
-                                    style="background-color: rgb(206, 206, 206);" role="button">
-                                    <span><strong><i class="bi bi-prescription2 me-2"></i>
-                                            Procedures</strong></span>
-                                    <span class="toggle-icon">+</span>
-                                </div>
-                                <div class="collapse field-container mt-2">
-                                    <div id="proceduresWrapper">
-                                        <div class="input-group mb-2">
-                                            <input type="text" class="form-control" id="procedureSearch"
-                                                placeholder="Search Procedures">
-
-                                            <button type="button" class="btn btn-outline-secondary"
-                                                id="clearProcedureSearch" style="display: none;">✖</button>
-
-                                            <button type="button" class="btn btn-outline-primary" id="addProcedureBtn"
-                                                style="display: none;">+ Add</button>
-                                        </div>
-
-                                        <div id="procedureList" class="mt-2"
-                                            style="max-height: 200px; overflow-y: auto;">
-                                        </div>
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+                                        style="background-color: rgb(206, 206, 206);" role="button" data-toggle="collapse"
+                                        data-target="#findingsCollapse">
+                                        <span><strong><i class="bi bi-search me-2"></i> Findings</strong></span>
+                                        <span class="toggle-icon">+</span>
                                     </div>
-                                </div>
-                            </div>
-                            <div class="mb-3">
-                                <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
-                                    style="background-color: rgb(206, 206, 206);" role="button"
-                                    data-bs-toggle="collapse" data-bs-target="#medicinesCol">
-                                    <span><strong><i class="bi bi-capsule me-2"></i> Medicines</strong></span>
-                                    <span class="toggle-icon">+</span>
-                                </div>
-                                <div class="collapse field-container mt-2" id="medicinesCollapse">
-                                    <div id="medicinesWrapper">
-                                        <div id="medicinesList" class="mb-2"></div>
+                                    <div class="collapse field-container mt-2" id="findingsCollapse">
+                                        <div id="findingsWrapper">
+                                            <div id="findingsWrapper">
+                                                <div id="findingsList" class="mb-2"></div>
+                                                <div class="mb-3 position-relative">
+                                                    <div class="input-group mb-2">
+                                                        <div class="tags-input flex-grow-1" id="findingsInput">
+                                                            <input type="text" class="form-control border-0 shadow-none"
+                                                                id="searchInput" placeholder="Search or type to add..." />
+                                                        </div>
 
-                                        <div class="mb-3 position-relative">
-                                            <div class="input-group mb-2">
-                                                <div class="tags-input flex-grow-1" id="medicinesInput">
-                                                    <input type="text" class="form-control border-0 shadow-none"
-                                                        id="medicinesSearchInput"
-                                                        placeholder="Search or type to add..." />
+                                                        <button type="button" class="btn btn-outline-secondary"
+                                                            id="clearFindingSearch" style="display: none;">✖</button>
+
+                                                        <button type="button" class="btn btn-outline-primary"
+                                                            id="addFindingBtn" style="display: none;">+ Add</button>
+                                                    </div>
+                                                    <div class="suggestions-box" id="suggestionsBox"
+                                                        style="position: relative; margin-bottom: 15px;"></div>
                                                 </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="hidden" name="findingsJson" id="findingsJson">
+
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+                                        style="background-color: rgb(206, 206, 206);" role="button" data-toggle="collapse"
+                                        data-target="#diagnosisCollapse">
+                                        <span><strong><i class="bi bi-clipboard2-heart me-2"></i>
+                                                Diagnosis</strong></span>
+                                        <span class="toggle-icon">+</span>
+                                    </div>
+                                    <div class="collapse field-container mt-2" id="diagnosisCollapse">
+                                        <div id="diagnosisWrapper">
+                                            <div id="diagnosisList" class="mb-2"></div>
+                                            <div class="mb-3 position-relative">
+                                                <div class="input-group mb-2">
+                                                    <div class="tags-input flex-grow-1" id="diagnosisInputBox">
+                                                        <input type="text" class="form-control border-0 shadow-none"
+                                                            id="diagnosisInput"
+                                                            placeholder="Search or type to add diagnosis..." />
+                                                    </div>
+
+                                                    <button type="button" class="btn btn-outline-secondary"
+                                                        id="clearDiagnosisSearch" style="display: none;">✖</button>
+
+                                                    <button type="button" class="btn btn-outline-primary"
+                                                        id="addDiagnosisBtn" style="display: none;">+ Add</button>
+                                                </div>
+                                                <div class="suggestions-box" id="diagnosisSuggestionsBox"
+                                                    style="position: relative; margin-bottom: 15px;"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="hidden" name="diagnosisJson" id="diagnosisJson">
+
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+                                        style="background-color: rgb(206, 206, 206);" role="button" data-toggle="collapse"
+                                        data-target="#investigationsCollapse">
+                                        <span><strong><i class="bi bi-patch-question me-2"></i>
+                                                Investigations</strong></span>
+                                        <span class="toggle-icon">+</span>
+                                    </div>
+                                    <div class="collapse field-container mt-2" id="investigationsCollapse">
+                                        <div id="investigationsWrapper">
+                                            <div id="investigationsWrapper">
+                                                <div id="investigationsList" class="mb-2"></div>
+                                                <div class="mb-3 position-relative">
+                                                    <div class="input-group mb-2">
+                                                        <div class="tags-input flex-grow-1" id="investigationsInput">
+                                                            <input type="text" class="form-control border-0 shadow-none"
+                                                                id="investigationsSearchInput"
+                                                                placeholder="Search or type to add..." />
+                                                        </div>
+
+                                                        <button type="button" class="btn btn-outline-secondary"
+                                                            id="clearInvestigationSearch" style="display: none;">✖</button>
+
+                                                        <button type="button" class="btn btn-outline-primary"
+                                                            id="addInvestigationBtn" style="display: none;">+ Add</button>
+                                                    </div>
+                                                    <div class="suggestions-box" id="investigationsSuggestionsBox"
+                                                        style="position: relative; margin-bottom: 15px;"></div>
+                                                </div>
+                                            </div>
+                                            <div id="investigationsList" class="mt-2"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="hidden" name="investigationsJson" id="investigationsJson">
+
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+                                        style="background-color: rgb(206, 206, 206);" role="button">
+                                        <span><strong><i class="bi bi-prescription2 me-2"></i>
+                                                Procedures</strong></span>
+                                        <span class="toggle-icon">+</span>
+                                    </div>
+                                    <div class="collapse field-container mt-2">
+                                        <div id="proceduresWrapper">
+                                            <div class="input-group mb-2">
+                                                <input type="text" class="form-control" id="procedureSearch"
+                                                    placeholder="Search Procedures">
 
                                                 <button type="button" class="btn btn-outline-secondary"
-                                                    id="clearMedicineSearch" style="display: none;">✖</button>
+                                                    id="clearProcedureSearch" style="display: none;">✖</button>
 
-                                                <button type="button" class="btn btn-outline-primary"
-                                                    id="medicinesAddBtn" style="display: none;">+ Add</button>
+                                                <button type="button" class="btn btn-outline-primary" id="addProcedureBtn"
+                                                    style="display: none;">+ Add</button>
                                             </div>
 
-                                            <div class="suggestions-box" id="medicinesSuggestionsBox"
-                                                style="position: relative; margin-bottom: 15px;"></div>
+                                            <div id="procedureList" class="mt-2"
+                                                style="max-height: 200px; overflow-y: auto;">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <input type="hidden" name="medicinesJson" id="medicinesJson">
-                            <!-- 
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+                                        style="background-color: rgb(206, 206, 206);" role="button"
+                                        data-bs-toggle="collapse" data-bs-target="#medicinesCol">
+                                        <span><strong><i class="bi bi-capsule me-2"></i> Medicines</strong></span>
+                                        <span class="toggle-icon">+</span>
+                                    </div>
+                                    <div class="collapse field-container mt-2" id="medicinesCollapse">
+                                        <div id="medicinesWrapper">
+                                            <div id="medicinesList" class="mb-2"></div>
+
+                                            <div class="mb-3 position-relative">
+                                                <div class="input-group mb-2">
+                                                    <div class="tags-input flex-grow-1" id="medicinesInput">
+                                                        <input type="text" class="form-control border-0 shadow-none"
+                                                            id="medicinesSearchInput"
+                                                            placeholder="Search or type to add..." />
+                                                    </div>
+
+                                                    <button type="button" class="btn btn-outline-secondary"
+                                                        id="clearMedicineSearch" style="display: none;">✖</button>
+
+                                                    <button type="button" class="btn btn-outline-primary"
+                                                        id="medicinesAddBtn" style="display: none;">+ Add</button>
+                                                </div>
+
+                                                <div class="suggestions-box" id="medicinesSuggestionsBox"
+                                                    style="position: relative; margin-bottom: 15px;"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="hidden" name="medicinesJson" id="medicinesJson">
+                                <!-- 
                                 <div class="mb-3">
                                     <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
                                         style="background-color: rgb(206, 206, 206);" role="button">
@@ -2765,763 +2644,763 @@
                                     </div>
 
                                 </div> -->
-                            <div class="mb-3">
-                                <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
-                                    style="background-color: rgb(206, 206, 206);" role="button">
-                                    <span><strong><i class="bi bi-chat-square-text me-2"></i>
-                                            Advices</strong></span>
-                                    <span class="toggle-icon">+</span>
-                                </div>
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+                                        style="background-color: rgb(206, 206, 206);" role="button">
+                                        <span><strong><i class="bi bi-chat-square-text me-2"></i>
+                                                Advices</strong></span>
+                                        <span class="toggle-icon">+</span>
+                                    </div>
 
-                                <div class="collapse field-container mt-2">
-                                    <div id="adviceWrapper">
-                                        <div id="adviceList" class="mb-2"
-                                            style="background-color: white; border: none;"></div>
+                                    <div class="collapse field-container mt-2">
+                                        <div id="adviceWrapper">
+                                            <div id="adviceList" class="mb-2"
+                                                style="background-color: white; border: none;"></div>
 
-                                        <div class="mb-3 position-relative">
-                                            <div class="input-group mb-2">
-                                                <div class="tags-input flex-grow-1" id="adviceInputContainer">
-                                                    <input type="text" class="form-control border-0 shadow-none"
-                                                        id="adviceSearchInput"
-                                                        placeholder="Search Advice or type to add..." />
+                                            <div class="mb-3 position-relative">
+                                                <div class="input-group mb-2">
+                                                    <div class="tags-input flex-grow-1" id="adviceInputContainer">
+                                                        <input type="text" class="form-control border-0 shadow-none"
+                                                            id="adviceSearchInput"
+                                                            placeholder="Search Advice or type to add..." />
+                                                    </div>
+
+                                                    <button type="button" class="btn btn-outline-secondary"
+                                                        id="clearAdviceSearch" style="display: none;">✖</button>
+
+                                                    <button type="button" class="btn btn-outline-primary" id="addAdviceBtn"
+                                                        style="display: none;">+ Add</button>
                                                 </div>
 
-                                                <button type="button" class="btn btn-outline-secondary"
-                                                    id="clearAdviceSearch" style="display: none;">✖</button>
+                                                <div class="suggestions-box" id="adviceSuggestionsBox"
+                                                    style="position: relative; margin-bottom: 15px; display: none;"></div>
+                                            </div>
+                                        </div>
 
-                                                <button type="button" class="btn btn-outline-primary" id="addAdviceBtn"
+                                        <input type="hidden" name="advicesJson" id="advicesJson">
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+                                        style="background-color: rgb(206, 206, 206);" role="button">
+                                        <span><strong><i class="bi bi-clipboard2-pulse me-2"></i>
+                                                Instructions</strong></span>
+                                        <span class="toggle-icon">+</span>
+                                    </div>
+                                    <div class="collapse field-container mt-2">
+                                        <div id="instructionWrapper">
+                                            <div class="input-group mb-2">
+                                                <input type="text" class="form-control" id="instructionSearch"
+                                                    placeholder="Search Instructions">
+
+                                                <button type="button" class="btn btn-outline-secondary"
+                                                    id="clearInstructionSearch" style="display: none;">✖</button>
+
+                                                <button type="button" class="btn btn-outline-primary" id="addInstructionBtn"
                                                     style="display: none;">+ Add</button>
                                             </div>
 
-                                            <div class="suggestions-box" id="adviceSuggestionsBox"
-                                                style="position: relative; margin-bottom: 15px; display: none;"></div>
-                                        </div>
-                                    </div>
-
-                                    <input type="hidden" name="advicesJson" id="advicesJson">
-                                </div>
-                            </div>
-
-                            <div class="mb-3">
-                                <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
-                                    style="background-color: rgb(206, 206, 206);" role="button">
-                                    <span><strong><i class="bi bi-clipboard2-pulse me-2"></i>
-                                            Instructions</strong></span>
-                                    <span class="toggle-icon">+</span>
-                                </div>
-                                <div class="collapse field-container mt-2">
-                                    <div id="instructionWrapper">
-                                        <div class="input-group mb-2">
-                                            <input type="text" class="form-control" id="instructionSearch"
-                                                placeholder="Search Instructions">
-
-                                            <button type="button" class="btn btn-outline-secondary"
-                                                id="clearInstructionSearch" style="display: none;">✖</button>
-
-                                            <button type="button" class="btn btn-outline-primary" id="addInstructionBtn"
-                                                style="display: none;">+ Add</button>
-                                        </div>
-
-                                        <div id="instructionList" class="mt-2"
-                                            style="max-height: 200px; overflow-y: auto;">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group pb-3" data-page="followup">
-                            <label class="form-label fieldLabel">Attachments</label>
-                            <button type="button" class="addFileBtn btn text-light float-end mb-2"
-                                style="background-color: #00ad8e;"> + Add File </button>
-                            <div class="mb-3"></div>
-                            <div class="dropZone"
-                                style="border: 2px dashed #ccc; padding: 20px; text-align: center; cursor: pointer; margin-bottom: 15px;">
-                                <p class="text-muted mb-0">Drag and drop your files here or click the button above to
-                                    upload. Supported formats: .pdf, .png, .jpg, .jpeg.</p>
-                            </div>
-                            <input type="file" class="fileInput d-none" accept=".pdf,.doc,.docx,.png,.jpg,.jpeg"
-                                multiple>
-                            <input type="file" class="submitFileInput d-none" name="consultationFiles[]" multiple>
-                            <div class="fileList" style="margin-top: 0.5rem;"></div>
-                            <div class="fileError text-danger pt-1"></div>
-                            <input type="hidden" class="removedFiles" name="removedFiles" value="">
-                        </div>
-
-                        <div class="form-group pb-3">
-                            <label class="form-label fieldLabel" for="dietPlan">Diet Plan <span
-                                    class="text-danger">*</span></label>
-                            <textarea class="form-control" name="dietPlan" id="dietPlan"
-                                placeholder="Enter the diet plan"><?= isset($consultation['dietPlan']) ? $consultation['dietPlan'] : '' ?></textarea>
-                            <div id="dietPlan_err" class="text-danger pt-1"></div>
-                        </div>
-
-                        <div class="form-group pb-3">
-                            <label class="form-label fieldLabel" for="notes">Notes <span
-                                    class="text-danger">*</span></label>
-                            <textarea class="form-control" name="notes" id="notes"
-                                placeholder="Enter the notes"><?= isset($consultation['notes']) ? $consultation['notes'] : '' ?></textarea>
-                            <div id="advices_err" class="text-danger pt-1"></div>
-                        </div>
-                        <div class="form-group pb-3">
-                            <label class="form-label fieldLabel" for="nextFollowUpDate">Next Follow-up Date <span
-                                    class="text-danger">*</span></label>
-                            <input type="date" class="form-control" id="nextFollowUpDate" name="nextFollowUpDate"
-                                value="<?= isset($consultation['next_follow_up']) ? $consultation['next_follow_up'] : '' ?>">
-                            <div id="nextFollowUpDate_err" class="text-danger pt-1"></div>
-                        </div>
-                        <input type="hidden" id="consultationSendEmail" name="consultationSendEmail" value="0">
-                        <button type="submit" class="float-end btn text-light" style="background-color: #00ad8e;">Save
-                            as new</button>
-                    </form>
-                    <!---------------------------------------------------- Image Edit Modal -------------------------->
-                    <div class="modal fade" id="imageEditModal" tabindex="-1" aria-labelledby="imageEditModalLabel"
-                        aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
-                        <div class="modal-dialog modal-lg modal-dialog-centered">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <!-- Custom Toolbar -->
-                                    <div id="editor-toolbar" style="margin-bottom: 10px; text-align: left;">
-                                        <button type="button" id="crop-btn" class="btn btn-sm btn-outline-dark"
-                                            title="Crop">✂️ Crop</button>
-                                        <button type="button" id="rotate-btn" class="btn btn-sm btn-outline-dark"
-                                            title="Rotate">⟳ Rotate</button>
-                                    </div>
-                                    <h5 class=" fw-medium" id="imageEditModalLabel"
-                                        style="font-family: Poppins, sans-serif; margin-left:25%">Edit Image</h5>
-                                    <button type="button" class="btn-close btn btn-danger" data-bs-dismiss="modal"
-                                        aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body text-center">
-
-                                    <!-- Bootstrap container for image -->
-                                    <div class="container">
-                                        <div class="row justify-content-center">
-                                            <div class="col-12"
-                                                style="position: relative; width: 600px; height: 600px;">
-                                                <img id="editor-image" class="img-fluid"
-                                                    style=" object-fit: contain; display: none; ">
-                                                <canvas id="editor-canvas" class="img-fluid" style=""></canvas>
+                                            <div id="instructionList" class="mt-2"
+                                                style="max-height: 200px; overflow-y: auto;">
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="modal-footer" style="background-color: white;">
-                                    <button type="button" class="btn btn-secondary"
-                                        data-bs-dismiss="modal">Cancel</button>
-                                    <button type="button" class="btn text-light" style="background-color: #00ad8e;"
-                                        id="saveEditedImage">OK</button>
-                                </div>
                             </div>
-                        </div>
-                    </div>
-                    <!-----------------------------end ------------------>
 
-                    <!-- Preview display Followup Model -->
-                    <div class="modal fade" id="followupPreviewModal" tabindex="-1"
-                        aria-labelledby="followupPreviewModalLabel" aria-hidden="true" data-bs-backdrop="static"
-                        data-bs-keyboard="true">
-                        <div class="modal-dialog modal-lg modal-dialog-centered">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title fw-medium" style="font-family: Poppins, sans-serif;"
-                                        id="followupPreviewModalLabel">
-                                        Follow-up Attachment Preview
-                                    </h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                        aria-label="Close"></button>
+                            <div class="form-group pb-3" data-page="followup">
+                                <label class="form-label fieldLabel">Attachments</label>
+                                <button type="button" class="addFileBtn btn text-light float-end mb-2"
+                                    style="background-color: #00ad8e;"> + Add File </button>
+                                <div class="mb-3"></div>
+                                <div class="dropZone"
+                                    style="border: 2px dashed #ccc; padding: 20px; text-align: center; cursor: pointer; margin-bottom: 15px;">
+                                    <p class="text-muted mb-0">Drag and drop your files here or click the button above to
+                                        upload. Supported formats: .pdf, .png, .jpg, .jpeg.</p>
                                 </div>
-                                <div class="modal-body text-center position-relative">
+                                <input type="file" class="fileInput d-none" accept=".pdf,.doc,.docx,.png,.jpg,.jpeg"
+                                    multiple>
+                                <input type="file" class="submitFileInput d-none" name="consultationFiles[]" multiple>
+                                <div class="fileList" style="margin-top: 0.5rem;"></div>
+                                <div class="fileError text-danger pt-1"></div>
+                                <input type="hidden" class="removedFiles" name="removedFiles" value="">
+                            </div>
 
-                                    <button id="prevFollowup"
-                                        class="btn btn-outline-secondary position-absolute start-0 top-50 translate-middle-y"
-                                        style="font-size: 1.5rem; z-index: 10;" disabled>
-                                        <b>&lt;</b>
-                                    </button>
-                                    <div id="followup-content-wrapper">
-                                        <img id="followupImage" src="" alt="Attachment" class="img-fluid d-none">
-                                        <iframe id="followupPDF" src="" class="w-100" style="height:500px;"
-                                            frameborder="0"></iframe>
+                            <div class="form-group pb-3">
+                                <label class="form-label fieldLabel" for="dietPlan">Diet Plan <span
+                                        class="text-danger">*</span></label>
+                                <textarea class="form-control" name="dietPlan" id="dietPlan"
+                                    placeholder="Enter the diet plan"><?= isset($consultation['dietPlan']) ? $consultation['dietPlan'] : '' ?></textarea>
+                                <div id="dietPlan_err" class="text-danger pt-1"></div>
+                            </div>
+
+                            <div class="form-group pb-3">
+                                <label class="form-label fieldLabel" for="notes">Notes <span
+                                        class="text-danger">*</span></label>
+                                <textarea class="form-control" name="notes" id="notes"
+                                    placeholder="Enter the notes"><?= isset($consultation['notes']) ? $consultation['notes'] : '' ?></textarea>
+                                <div id="advices_err" class="text-danger pt-1"></div>
+                            </div>
+                            <div class="form-group pb-3">
+                                <label class="form-label fieldLabel" for="nextFollowUpDate">Next Follow-up Date <span
+                                        class="text-danger">*</span></label>
+                                <input type="date" class="form-control" id="nextFollowUpDate" name="nextFollowUpDate"
+                                    value="<?= isset($consultation['next_follow_up']) ? $consultation['next_follow_up'] : '' ?>">
+                                <div id="nextFollowUpDate_err" class="text-danger pt-1"></div>
+                            </div>
+                            <input type="hidden" id="consultationSendEmail" name="consultationSendEmail" value="0">
+                            <button type="submit" class="float-end btn text-light" style="background-color: #00ad8e;">Save
+                                as new</button>
+                        </form>
+                        <!---------------------------------------------------- Image Edit Modal -------------------------->
+                        <div class="modal fade" id="imageEditModal" tabindex="-1" aria-labelledby="imageEditModalLabel"
+                            aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+                            <div class="modal-dialog modal-lg modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <!-- Custom Toolbar -->
+                                        <div id="editor-toolbar" style="margin-bottom: 10px; text-align: left;">
+                                            <button type="button" id="crop-btn" class="btn btn-sm btn-outline-dark"
+                                                title="Crop">✂️ Crop</button>
+                                            <button type="button" id="rotate-btn" class="btn btn-sm btn-outline-dark"
+                                                title="Rotate">⟳ Rotate</button>
+                                        </div>
+                                        <h5 class=" fw-medium" id="imageEditModalLabel"
+                                            style="font-family: Poppins, sans-serif; margin-left:25%">Edit Image</h5>
+                                        <button type="button" class="btn-close btn btn-danger" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
                                     </div>
-                                    <button id="nextFollowup"
-                                        class="btn btn-outline-secondary position-absolute end-0 top-50 translate-middle-y"
-                                        style="font-size: 1.5rem; z-index: 10;" disabled>
-                                        <b>&gt;</b>
-                                    </button>
+                                    <div class="modal-body text-center">
+
+                                        <!-- Bootstrap container for image -->
+                                        <div class="container">
+                                            <div class="row justify-content-center">
+                                                <div class="col-12"
+                                                    style="position: relative; width: 600px; height: 600px;">
+                                                    <img id="editor-image" class="img-fluid"
+                                                        style=" object-fit: contain; display: none; ">
+                                                    <canvas id="editor-canvas" class="img-fluid" style=""></canvas>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer" style="background-color: white;">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Cancel</button>
+                                        <button type="button" class="btn text-light" style="background-color: #00ad8e;"
+                                            id="saveEditedImage">OK</button>
+                                    </div>
                                 </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary text-light"
-                                        data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                        <!-----------------------------end ------------------>
+
+                        <!-- Preview display Followup Model -->
+                        <div class="modal fade" id="followupPreviewModal" tabindex="-1"
+                            aria-labelledby="followupPreviewModalLabel" aria-hidden="true" data-bs-backdrop="static"
+                            data-bs-keyboard="true">
+                            <div class="modal-dialog modal-lg modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title fw-medium" style="font-family: Poppins, sans-serif;"
+                                            id="followupPreviewModalLabel">
+                                            Follow-up Attachment Preview
+                                        </h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body text-center position-relative">
+
+                                        <button id="prevFollowup"
+                                            class="btn btn-outline-secondary position-absolute start-0 top-50 translate-middle-y"
+                                            style="font-size: 1.5rem; z-index: 10;" disabled>
+                                            <b>&lt;</b>
+                                        </button>
+                                        <div id="followup-content-wrapper">
+                                            <img id="followupImage" src="" alt="Attachment" class="img-fluid d-none">
+                                            <iframe id="followupPDF" src="" class="w-100" style="height:500px;"
+                                                frameborder="0"></iframe>
+                                        </div>
+                                        <button id="nextFollowup"
+                                            class="btn btn-outline-secondary position-absolute end-0 top-50 translate-middle-y"
+                                            style="font-size: 1.5rem; z-index: 10;" disabled>
+                                            <b>&gt;</b>
+                                        </button>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary text-light"
+                                            data-bs-dismiss="modal">Close</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-        </section>
+            </section>
 
 
-        <!-------------------------- Edit Consultant -->
+            <!-------------------------- Edit Consultant -->
         <?php } elseif ($method == "editConsult") { ?>
-        <section>
-            <div class="card rounded pb-3">
-                <div class="d-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
-                    <div class="border border-2 rounded text-center py-2 position-relative px-5">
-                        <?php
-                        foreach ($patientDetails as $key => $value) {
-                            ?>
-                        <a href="<?php echo base_url() . "Healthcareprovider/patientformUpdate/" . $value['id']; ?>"
-                            class="position-absolute top-0 end-0 m-2">
-                            <button class="btn btn-secondary btn-sm"><i class="bi bi-pen"></i></button>
-                        </a>
-                        <p style="font-size: 16px; font-weight: 700">
-                            <?php echo $value['firstName'] ?> <?php echo $value['lastName'] ?> |
-                            <?php echo $value['patientId'] ?>
-                        </p>
-                        <p>
-                            <a href="tel:<?php echo $value['mobileNumber'] ?>" class="text-decoration-none text-dark">
-                                <?php echo $value['mobileNumber'] ?>
-                                <?php
-                                if (!empty($value['derived_dob'])) {
-                                    $dob = new DateTime($value['derived_dob']);
-                                    $today = new DateTime();
-                                    $currentAge = $today->diff($dob)->y;
-                                } else {
-                                    $currentAge = $value['age'];
-                                } ?>
-                            </a> | <?php echo $value['gender'] ?> | <?php echo $currentAge ?> Year(s)
-                        </p>
-                        <?php } ?>
-                    </div>
-                    <a href="<?php echo base_url() . "Consultation/consultation/" . $value['id']; ?>"
-                        class="float-end text-dark mt-2"><i class="bi bi-arrow-left"></i> Back</a>
-                </div>
-
-                <div class="card-body mx-3 px-md-4">
-                    <form action="<?php echo base_url() . 'Consultation/saveEditConsult' ?>" method="post"
-                        enctype="multipart/form-data" id="consultationForm" class="mb-5">
-                        <input type="hidden" id="patientIdDb" name="patientIdDb"
-                            value="<?php echo $patientDetails[0]['id'] ?>">
-                        <input type="hidden" id="patientId" name="patientId"
-                            value="<?php echo $patientDetails[0]['patientId'] ?>">
-                        <input type="hidden" id="consultationDbId" name="consultationDbId"
-                            value="<?php echo $consultation['id'] ?>">
-                        <input type="hidden" id="vitalsDbId" name="vitalsDbId" value="<?php echo $vitals['id'] ?>">
-                        <div class="float-end">
-                            <label for="consultDate" class="form-label fieldLabel">Consultation Date & Time:</label>
-                            <div class="d-flex align-items-center gap-2">
-                                <input type="date" id="consultDate" name="consultDate" class="form-control"
-                                    value="<?= isset($consultation['consult_date']) ? $consultation['consult_date'] : '' ?>">
-                                <select id="consultTime" name="consultTime" class="form-select" style="width:150px;">
-                                </select>
-                            </div>
-                        </div>
-                        <p class="fs-4 fw-semibold mb-3">Edit Consultation:</p>
-                        <p class="mb-2 mt-0 pt-0 fs-5 fw-semibold">Vitals:</p>
-                        <div class="p-3">
-                            <div class="d-md-flex mb-3">
-                                <div class="col-md-3">
-                                    <label class="form-label fieldLabel" for="patientHeight">Height</label>
-                                    <div class="d-flex me-4">
-                                        <input type="number" class="form-control fieldStyle" id="patientHeight"
-                                            name="patientHeight" step="0.1" min="0" placeholder="E.g. 135"
-                                            value="<?= isset($vitals['height_cm']) ? $vitals['height_cm'] : '' ?>">
-                                        <p class="mx-2 my-2">Cm</p>
-                                    </div>
-                                </div>
-                                <div class="col-md-3 mt-3 mt-md-0">
-                                    <label class="form-label fieldLabel" for="patientWeight">Weight </label>
-                                    <div class="d-flex me-4">
-                                        <input type="number" class="form-control fieldStyle" id="patientWeight"
-                                            name="patientWeight" step="0.1" min="0" placeholder="E.g. 50"
-                                            value="<?= isset($vitals['weight_kg']) ? $vitals['weight_kg'] : '' ?>">
-                                        <p class="mx-2 my-2">Kg</p>
-                                    </div>
-                                </div>
-                                <div class="col-md-3 mt-3 mt-md-0">
-                                    <label class="form-label fieldLabel" for="patientSystolicBp">Systolic BP
-                                    </label>
-                                    <div class="d-flex me-4">
-                                        <input type="number" class="form-control fieldStyle" id="patientSystolicBp"
-                                            name="patientSystolicBp" placeholder="E.g. 120" step="0.1" min="0"
-                                            value="<?= isset($vitals['systolic_bp']) ? $vitals['systolic_bp'] : '' ?>">
-                                        <p class="mx-2 my-2">mmHg</p>
-                                    </div>
-                                    <div id="patientSystolicBp_err" class="text-danger pt-1"></div>
-                                </div>
-                                <div class="col-md-3 mt-3 mt-md-0">
-                                    <label class="form-label fieldLabel" for="patientDiastolicBp">Diastolic BP</label>
-                                    <div class="d-flex">
-                                        <input type="number" class="form-control fieldStyle" id="patientDiastolicBp"
-                                            name="patientDiastolicBp" placeholder="E.g. 80" step="0.1" min="0"
-                                            value="<?= isset($vitals['diastolic_bp']) ? $vitals['diastolic_bp'] : '' ?>">
-                                        <p class="mx-2 my-2">mmHg</p>
-                                    </div>
-                                    <!-- <div id="patientBp_err" class="text-danger pt-1"></div> -->
-                                </div>
-                            </div>
-                            <div class="d-md-flex mb-3">
-                                <div class="col-md-3">
-                                    <label class="form-label fieldLabel" for="bodyMassIndex">BMI
-                                    </label>
-                                    <div class="d-flex me-4">
-                                        <input type="number" class="form-control fieldStyle" id="bodyMassIndex"
-                                            name="bodyMassIndex" step="0.1" min="0"
-                                            value="<?= isset($vitals['body_mass_index']) ? $vitals['body_mass_index'] : '' ?>"
-                                            placeholder="E.g. 27.4">
-                                        <p class="mx-2 my-2">kg/m<sup>2</sup></p>
-                                    </div>
-                                </div>
-                                <div class="col-md-3 mt-3 mt-md-0">
-                                    <label class="form-label fieldLabel" for="fastingBsugar">Blood Sugar
-                                        (Fasting)</label>
-                                    <div class="d-flex me-4">
-                                        <input type="number" class="form-control fieldStyle" id="fastingBsugar"
-                                            name="fastingBsugar" step="0.1" min="0"
-                                            value="<?= isset($vitals['blood_sugar_fasting']) ? $vitals['blood_sugar_fasting'] : '' ?>"
-                                            placeholder="E.g. 75">
-                                        <p class="mx-2 my-2">mg/dL</p>
-                                    </div>
-                                </div>
-                                <div class="col-md-3 mt-3 mt-md-0">
-                                    <label class="form-label fieldLabel" for="patientSpo2">Blood Sugar (PP) </label>
-                                    <div class="d-flex me-4">
-                                        <input type="number" class="form-control fieldStyle" id="ppBsugar"
-                                            value="<?= isset($vitals['blood_sugar_pp']) ? $vitals['blood_sugar_pp'] : '' ?>"
-                                            name="ppBsugar" step="0.1" min="0" placeholder="E.g. 100">
-                                        <p class="mx-2 my-2">mg/dL</p>
-                                    </div>
-                                </div>
-                                <div class="col-md-3 mt-3 mt-md-0">
-                                    <label class="form-label fieldLabel" for="randomBsugar">Blood Sugar (Random)
-                                    </label>
-                                    <div class="d-flex">
-                                        <input type="number" class="form-control fieldStyle" id="randomBsugar"
-                                            name="randomBsugar" step="0.1" min="0"
-                                            value="<?= isset($vitals['blood_sugar_random']) ? $vitals['blood_sugar_random'] : '' ?>"
-                                            placeholder="E.g. 125">
-                                        <p class="mx-2 my-2">mg/dL</p>
-                                    </div>
-
-                                </div>
-                            </div>
-                            <div class="d-md-flex mb-3">
-                                <div class="col-md-3">
-                                    <label class="form-label fieldLabel" for="patientSpo2">SPO2 </label>
-                                    <div class="d-flex me-4">
-                                        <input type="number" class="form-control fieldStyle" id="patientSpo2"
-                                            name="patientSpo2" step="0.1" min="0" placeholder="E.g. 98"
-                                            value="<?= isset($vitals['spo2_percent']) ? $vitals['spo2_percent'] : '' ?>">
-                                        <p class="mx-2 my-2">%</p>
-                                    </div>
-                                </div>
-                                <div class="col-md-3 mt-3 mt-md-0">
-                                    <label class="form-label fieldLabel" for="patientPulseRate">Pulse Rate
-                                    </label>
-                                    <div class="d-flex me-4">
-                                        <input type="number" class="form-control fieldStyle" id="patientPulseRate"
-                                            name="patientPulseRate" placeholder="E.g. 75" step="1" min="0"
-                                            value="<?= isset($vitals['pulse_rate']) ? $vitals['pulse_rate'] : '' ?>">
-                                        <p class="mx-2 my-2">/min</p>
-                                    </div>
-                                    <div id="patientPulseRate_err" class="text-danger pt-1"></div>
-                                </div>
-                                <div class="col-md-3 mt-3 mt-md-0">
-                                    <label class="form-label fieldLabel" for="patientTemperature">Temperature
-                                    </label>
-                                    <div class="d-flex me-4">
-                                        <input type="number" class="form-control fieldStyle" id="patientTemperature"
-                                            name="patientTemperature" step="0.1" min="0" step="0.01"
-                                            placeholder="E.g. 98.6"
-                                            value="<?= isset($vitals['temperature_f']) ? $vitals['temperature_f'] : '' ?>">
-                                        <p class="mx-2 my-2">°F</p>
-                                    </div>
-                                </div>
-                                <div class="col-md-3 mt-3 mt-md-0">
-                                    <label class="form-label fieldLabel" for="patientsHbA1c">HbA1c</label>
-                                    <div class="d-flex">
-                                        <input type="number" class="form-control fieldStyle" id="patientsHbA1c"
-                                            name="patientsHbA1c" step="0.1" min="0" placeholder="E.g. 5.5"
-                                            value="<?= isset($vitals['HbA1c_percent']) ? $vitals['HbA1c_percent'] : '' ?>">
-                                        <p class="mx-2 my-2">%</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="p-3">
-                            <div class="mb-3">
-                                <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
-                                    style="background-color: rgb(206, 206, 206);" role="button" data-toggle="collapse"
-                                    data-target="#symptomsCollapse">
-                                    <span><strong><i class="bi bi-virus me-2"></i> Symptoms</strong></span>
-                                    <span class="toggle-icon">+</span>
-                                </div>
-                                <div class="collapse field-container mt-2" id="symptomsCollapse">
-                                    <div id="symptomsWrapper">
-                                        <div id="symptomsList" class="mb-2"></div>
-                                        <div class="mb-3 position-relative">
-                                            <div class="input-group mb-2">
-                                                <div class="tags-input flex-grow-1" id="symptomsInput">
-                                                    <input type="text" class="form-control border-0 shadow-none"
-                                                        id="symptomsSearchInput"
-                                                        placeholder="Search or type to add..." />
-                                                </div>
-
-                                                <button type="button" class="btn btn-outline-secondary"
-                                                    id="clearSymptomSearch" style="display: none;">✖</button>
-
-                                                <button type="button" class="btn btn-outline-primary" id="addSymptomBtn"
-                                                    style="display: none;">+ Add</button>
-                                            </div>
-                                            <div class="suggestions-box" id="symptomsSuggestionsBox"
-                                                style="position: relative; margin-bottom: 15px;"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <input type="hidden" name="symptomsJson" id="symptomsJson">
-
-                            <div class="mb-3">
-                                <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
-                                    style="background-color: rgb(206, 206, 206);" role="button" data-toggle="collapse"
-                                    data-target="#findingsCollapse">
-                                    <span><strong><i class="bi bi-search me-2"></i> Findings</strong></span>
-                                    <span class="toggle-icon">+</span>
-                                </div>
-                                <div class="collapse field-container mt-2" id="findingsCollapse">
-                                    <div id="findingsWrapper">
-                                        <div id="findingsList" class="mb-2"></div>
-                                        <div class="mb-3 position-relative">
-                                            <div class="input-group mb-2">
-                                                <div class="tags-input flex-grow-1" id="findingsInput">
-                                                    <input type="text" class="form-control border-0 shadow-none"
-                                                        id="searchInput" placeholder="Search or type to add..." />
-                                                </div>
-
-                                                <button type="button" class="btn btn-outline-secondary"
-                                                    id="clearFindingSearch" style="display: none;">✖</button>
-
-                                                <button type="button" class="btn btn-outline-primary" id="addFindingBtn"
-                                                    style="display: none;">+ Add</button>
-                                            </div>
-                                            <div class="suggestions-box" id="suggestionsBox"
-                                                style="position: relative; margin-bottom: 15px;"></div>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-                            <input type="hidden" name="findingsJson" id="findingsJson">
-
-                            <div class="mb-3">
-                                <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
-                                    style="background-color: rgb(206, 206, 206);" role="button" data-toggle="collapse"
-                                    data-target="#diagnosisCollapse">
-                                    <span><strong><i class="bi bi-clipboard2-heart me-2"></i> Diagnosis</strong></span>
-                                    <span class="toggle-icon">+</span>
-                                </div>
-                                <div class="collapse field-container mt-2" id="diagnosisCollapse">
-                                    <div id="diagnosisWrapper">
-                                        <div id="diagnosisList" class="mb-2"></div>
-                                        <div class="mb-3 position-relative">
-                                            <div class="input-group mb-2">
-                                                <div class="tags-input flex-grow-1" id="diagnosisInputBox">
-                                                    <input type="text" class="form-control border-0 shadow-none"
-                                                        id="diagnosisInput"
-                                                        placeholder="Search or type to add diagnosis..." />
-                                                </div>
-
-                                                <button type="button" class="btn btn-outline-secondary"
-                                                    id="clearDiagnosisSearch" style="display: none;">✖</button>
-
-                                                <button type="button" class="btn btn-outline-primary"
-                                                    id="addDiagnosisBtn" style="display: none;">+ Add</button>
-                                            </div>
-                                            <div class="suggestions-box" id="diagnosisSuggestionsBox"
-                                                style="position: relative; margin-bottom: 15px;"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <input type="hidden" name="diagnosisJson" id="diagnosisJson">
-
-                            <div class="mb-3">
-                                <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
-                                    style="background-color: rgb(206, 206, 206);" role="button" data-toggle="collapse"
-                                    data-target="#investigationsCollapse">
-                                    <span><strong><i class="bi bi-patch-question me-2"></i>
-                                            Investigations</strong></span>
-                                    <span class="toggle-icon">+</span>
-                                </div>
-                                <div class="collapse field-container mt-2" id="investigationsCollapse">
-                                    <div id="investigationsWrapper">
-                                        <div id="investigationsList" class="mb-2"></div>
-                                        <div class="mb-3 position-relative">
-                                            <div class="input-group mb-2">
-                                                <div class="tags-input flex-grow-1" id="investigationsInput">
-                                                    <input type="text" class="form-control border-0 shadow-none"
-                                                        id="investigationsSearchInput"
-                                                        placeholder="Search or type to add..." />
-                                                </div>
-
-                                                <button type="button" class="btn btn-outline-secondary"
-                                                    id="clearInvestigationSearch" style="display: none;">✖</button>
-
-                                                <button type="button" class="btn btn-outline-primary"
-                                                    id="addInvestigationBtn" style="display: none;">+ Add</button>
-                                            </div>
-                                            <div class="suggestions-box" id="investigationsSuggestionsBox"
-                                                style="position: relative; margin-bottom: 15px;"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <input type="hidden" name="investigationsJson" id="investigationsJson">
-
-                            <div class="mb-3">
-                                <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
-                                    style="background-color: rgb(206, 206, 206);" role="button">
-                                    <span><strong><i class="bi bi-prescription2 me-2"></i>
-                                            Procedures</strong></span>
-                                    <span class="toggle-icon">+</span>
-                                </div>
-                                <div class="collapse field-container mt-2">
-                                    <div id="proceduresWrapper">
-                                        <div class="input-group mb-2">
-                                            <input type="text" class="form-control" id="procedureSearch"
-                                                placeholder="Search Procedures">
-
-                                            <button type="button" class="btn btn-outline-secondary"
-                                                id="clearProcedureSearch" style="display: none;">✖</button>
-
-                                            <button type="button" class="btn btn-outline-primary" id="addProcedureBtn"
-                                                style="display: none;">+ Add</button>
-                                        </div>
-
-                                        <div id="procedureList" class="mt-2"
-                                            style="max-height: 200px; overflow-y: auto;">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="mb-3">
-                                <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
-                                    style="background-color: rgb(206, 206, 206);" role="button"
-                                    data-bs-toggle="collapse" data-bs-target="#medicinesCol">
-                                    <span><strong><i class="bi bi-capsule me-2"></i> Medicines</strong></span>
-                                    <span class="toggle-icon">+</span>
-                                </div>
-                                <div class="collapse field-container mt-2" id="medicinesCollapse">
-                                    <div id="medicinesWrapper">
-                                        <div id="medicinesList" class="mb-2"></div>
-
-                                        <div class="mb-3 position-relative">
-                                            <div class="input-group mb-2">
-                                                <div class="tags-input flex-grow-1" id="medicinesInput">
-                                                    <input type="text" class="form-control border-0 shadow-none"
-                                                        id="medicinesSearchInput"
-                                                        placeholder="Search or type to add..." />
-                                                </div>
-
-                                                <button type="button" class="btn btn-outline-secondary"
-                                                    id="clearMedicineSearch" style="display: none;">✖</button>
-
-                                                <button type="button" class="btn btn-outline-primary"
-                                                    id="medicinesAddBtn" style="display: none;">+ Add</button>
-                                            </div>
-
-                                            <div class="suggestions-box" id="medicinesSuggestionsBox"
-                                                style="position: relative; margin-bottom: 15px;"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <input type="hidden" name="medicinesJson" id="medicinesJson">
-
-                            <div class="mb-3">
-                                <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
-                                    style="background-color: rgb(206, 206, 206);" role="button">
-                                    <span><strong><i class="bi bi-chat-square-text me-2"></i>
-                                            Advices</strong></span>
-                                    <span class="toggle-icon">+</span>
-                                </div>
-
-                                <div class="collapse field-container mt-2">
-                                    <div id="adviceWrapper">
-                                        <div id="adviceList" class="mb-2" style="background-color: white; border: none">
-                                        </div>
-
-                                        <div class="mb-3 position-relative">
-                                            <div class="input-group mb-2">
-                                                <div class="tags-input flex-grow-1" id="adviceInputContainer">
-                                                    <input type="text" class="form-control border-0 shadow-none"
-                                                        id="adviceSearchInput"
-                                                        placeholder="Search Advice or type to add..." />
-                                                </div>
-
-                                                <button type="button" class="btn btn-outline-secondary"
-                                                    id="clearAdviceSearch" style="display: none;">✖</button>
-
-                                                <button type="button" class="btn btn-outline-primary" id="addAdviceBtn"
-                                                    style="display: none;">+ Add</button>
-                                            </div>
-
-                                            <div class="suggestions-box" id="adviceSuggestionsBox"
-                                                style="position: relative; margin-bottom: 15px; display: none;"></div>
-                                        </div>
-                                    </div>
-
-                                    <input type="hidden" name="advicesJson" id="advicesJson">
-                                </div>
-                            </div>
-
-                            <div class="mb-3">
-                                <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
-                                    style="background-color: rgb(206, 206, 206);" role="button">
-                                    <span><strong><i class="bi bi-clipboard2-pulse me-2"></i>
-                                            Instructions</strong></span>
-                                    <span class="toggle-icon">+</span>
-                                </div>
-                                <div class="collapse field-container mt-2">
-                                    <div id="instructionWrapper">
-                                        <div class="input-group mb-2">
-                                            <input type="text" class="form-control" id="instructionSearch"
-                                                placeholder="Search Instructions">
-
-                                            <button type="button" class="btn btn-outline-secondary"
-                                                id="clearInstructionSearch" style="display: none;">✖</button>
-
-                                            <button type="button" class="btn btn-outline-primary" id="addInstructionBtn"
-                                                style="display: none;">+ Add</button>
-                                        </div>
-
-                                        <div id="instructionList" class="mt-2"
-                                            style="max-height: 200px; overflow-y: auto;">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group pb-3 " data-page="edit" id="editFileSection">
-                            <label class="form-label fieldLabel">Attachments</label>
-                            <button type="button" id="addFileBtn" class="btn text-light float-end mb-2"
-                                style="background-color: #00ad8e;"> + Add File </button>
-                            <div class="mb-3"></div>
-                            <div id="dropZone"
-                                style="border: 2px dashed #ccc; padding: 20px; text-align: center; cursor: pointer; margin-bottom: 15px;">
-                                <p class="text-muted mb-0">Drag and drop your files here or click the button above to
-                                    upload. Supported formats: .pdf, .png, .jpg, .jpeg.
+            <section>
+                <div class="card rounded pb-3">
+                    <div class="d-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
+                        <div class="border border-2 rounded text-center py-2 position-relative px-5">
+                            <?php
+                            foreach ($patientDetails as $key => $value) {
+                                ?>
+                                <a href="<?php echo base_url() . "Healthcareprovider/patientformUpdate/" . $value['id']; ?>"
+                                    class="position-absolute top-0 end-0 m-2">
+                                    <button class="btn btn-secondary btn-sm"><i class="bi bi-pen"></i></button>
+                                </a>
+                                <p style="font-size: 16px; font-weight: 700">
+                                    <?php echo $value['firstName'] ?>         <?php echo $value['lastName'] ?> |
+                                    <?php echo $value['patientId'] ?>
                                 </p>
-                            </div>
-                            <input type="file" id="fileInput" class="d-none" accept=".pdf,.doc,.docx,.png,.jpg,.jpeg"
-                                multiple>
-                            <input type="file" id="submitFileInput" name="consultationFiles[]" class="d-none" multiple>
-                            <div id="fileList" style="margin-top: 0.5rem;"></div>
-                            <div id="fileError" class="text-danger pt-1"></div>
-                            <input type="hidden" id="removedFiles" name="removedFiles" value="">
+                                <p>
+                                    <a href="tel:<?php echo $value['mobileNumber'] ?>" class="text-decoration-none text-dark">
+                                        <?php echo $value['mobileNumber'] ?>
+                                        <?php
+                                        if (!empty($value['derived_dob'])) {
+                                            $dob = new DateTime($value['derived_dob']);
+                                            $today = new DateTime();
+                                            $currentAge = $today->diff($dob)->y;
+                                        } else {
+                                            $currentAge = $value['age'];
+                                        } ?>
+                                    </a> | <?php echo $value['gender'] ?> | <?php echo $currentAge ?> Year(s)
+                                </p>
+                            <?php } ?>
                         </div>
+                        <a href="<?php echo base_url() . "Consultation/consultation/" . $value['id']; ?>"
+                            class="float-end text-dark mt-2"><i class="bi bi-arrow-left"></i> Back</a>
+                    </div>
 
-                        <div class="form-group pb-3">
-                            <label class="form-label fieldLabel" for="dietPlan">Diet Plan <span
-                                    class="text-danger">*</span></label>
-                            <textarea class="form-control" name="dietPlan" id="dietPlan"
-                                placeholder="Enter the diet plan"><?= isset($consultation['dietPlan']) ? $consultation['dietPlan'] : '' ?></textarea>
-                            <div id="dietPlan_err" class="text-danger pt-1"></div>
-                        </div>
-
-                        <div class="form-group pb-3">
-                            <label class="form-label fieldLabel" for="notes">Notes <span
-                                    class="text-danger">*</span></label>
-                            <textarea class="form-control" name="notes" id="notes"
-                                placeholder="Enter the notes"><?= isset($consultation['notes']) ? $consultation['notes'] : '' ?></textarea>
-                            <div id="advices_err" class="text-danger pt-1"></div>
-                        </div>
-                        <div class="form-group pb-3">
-                            <label class="form-label fieldLabel" for="nextFollowUpDate">Next Follow-up Date <span
-                                    class="text-danger">*</span></label>
-                            <input type="date" class="form-control" id="nextFollowUpDate" name="nextFollowUpDate"
-                                value="<?= isset($consultation['next_follow_up']) ? $consultation['next_follow_up'] : '' ?>">
-                            <div id="nextFollowUpDate_err" class="text-danger pt-1"></div>
-                        </div>
-                        <input type="hidden" id="consultationSendEmail" name="consultationSendEmail" value="0">
-                        <button type="submit" class="float-end btn text-light"
-                            style="background-color: #00ad8e;">Update</button>
-                    </form>
-                    <!---------------------------------------------------- Image Edit Modal -------------------------->
-                    <div class="modal fade" id="imageEditModal" tabindex="-1" aria-labelledby="imageEditModalLabel"
-                        aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
-                        <div class="modal-dialog modal-lg modal-dialog-centered">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <!-- Custom Toolbar -->
-                                    <div id="editor-toolbar" style="margin-bottom: 10px; text-align: left;">
-                                        <button type="button" id="crop-btn" class="btn btn-sm btn-outline-dark"
-                                            title="Crop">✂️ Crop</button>
-                                        <button type="button" id="rotate-btn" class="btn btn-sm btn-outline-dark"
-                                            title="Rotate">⟳ Rotate</button>
-                                    </div>
-                                    <h5 class=" fw-medium" id="imageEditModalLabel"
-                                        style="font-family: Poppins, sans-serif; margin-left:25%">Edit Image</h5>
-                                    <button type="button" class="btn-close btn btn-danger" data-bs-dismiss="modal"
-                                        aria-label="Close"></button>
+                    <div class="card-body mx-3 px-md-4">
+                        <form action="<?php echo base_url() . 'Consultation/saveEditConsult' ?>" method="post"
+                            enctype="multipart/form-data" id="consultationForm" class="mb-5">
+                            <input type="hidden" id="patientIdDb" name="patientIdDb"
+                                value="<?php echo $patientDetails[0]['id'] ?>">
+                            <input type="hidden" id="patientId" name="patientId"
+                                value="<?php echo $patientDetails[0]['patientId'] ?>">
+                            <input type="hidden" id="consultationDbId" name="consultationDbId"
+                                value="<?php echo $consultation['id'] ?>">
+                            <input type="hidden" id="vitalsDbId" name="vitalsDbId" value="<?php echo $vitals['id'] ?>">
+                            <div class="float-end">
+                                <label for="consultDate" class="form-label fieldLabel">Consultation Date & Time:</label>
+                                <div class="d-flex align-items-center gap-2">
+                                    <input type="date" id="consultDate" name="consultDate" class="form-control"
+                                        value="<?= isset($consultation['consult_date']) ? $consultation['consult_date'] : '' ?>">
+                                    <select id="consultTime" name="consultTime" class="form-select" style="width:150px;">
+                                    </select>
                                 </div>
-                                <div class="modal-body text-center">
+                            </div>
+                            <p class="fs-4 fw-semibold mb-3">Edit Consultation:</p>
+                            <p class="mb-2 mt-0 pt-0 fs-5 fw-semibold">Vitals:</p>
+                            <div class="p-3">
+                                <div class="d-md-flex mb-3">
+                                    <div class="col-md-3">
+                                        <label class="form-label fieldLabel" for="patientHeight">Height</label>
+                                        <div class="d-flex me-4">
+                                            <input type="number" class="form-control fieldStyle" id="patientHeight"
+                                                name="patientHeight" step="0.1" min="0" placeholder="E.g. 135"
+                                                value="<?= isset($vitals['height_cm']) ? $vitals['height_cm'] : '' ?>">
+                                            <p class="mx-2 my-2">Cm</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 mt-3 mt-md-0">
+                                        <label class="form-label fieldLabel" for="patientWeight">Weight </label>
+                                        <div class="d-flex me-4">
+                                            <input type="number" class="form-control fieldStyle" id="patientWeight"
+                                                name="patientWeight" step="0.1" min="0" placeholder="E.g. 50"
+                                                value="<?= isset($vitals['weight_kg']) ? $vitals['weight_kg'] : '' ?>">
+                                            <p class="mx-2 my-2">Kg</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 mt-3 mt-md-0">
+                                        <label class="form-label fieldLabel" for="patientSystolicBp">Systolic BP
+                                        </label>
+                                        <div class="d-flex me-4">
+                                            <input type="number" class="form-control fieldStyle" id="patientSystolicBp"
+                                                name="patientSystolicBp" placeholder="E.g. 120" step="0.1" min="0"
+                                                value="<?= isset($vitals['systolic_bp']) ? $vitals['systolic_bp'] : '' ?>">
+                                            <p class="mx-2 my-2">mmHg</p>
+                                        </div>
+                                        <div id="patientSystolicBp_err" class="text-danger pt-1"></div>
+                                    </div>
+                                    <div class="col-md-3 mt-3 mt-md-0">
+                                        <label class="form-label fieldLabel" for="patientDiastolicBp">Diastolic BP</label>
+                                        <div class="d-flex">
+                                            <input type="number" class="form-control fieldStyle" id="patientDiastolicBp"
+                                                name="patientDiastolicBp" placeholder="E.g. 80" step="0.1" min="0"
+                                                value="<?= isset($vitals['diastolic_bp']) ? $vitals['diastolic_bp'] : '' ?>">
+                                            <p class="mx-2 my-2">mmHg</p>
+                                        </div>
+                                        <!-- <div id="patientBp_err" class="text-danger pt-1"></div> -->
+                                    </div>
+                                </div>
+                                <div class="d-md-flex mb-3">
+                                    <div class="col-md-3">
+                                        <label class="form-label fieldLabel" for="bodyMassIndex">BMI
+                                        </label>
+                                        <div class="d-flex me-4">
+                                            <input type="number" class="form-control fieldStyle" id="bodyMassIndex"
+                                                name="bodyMassIndex" step="0.1" min="0"
+                                                value="<?= isset($vitals['body_mass_index']) ? $vitals['body_mass_index'] : '' ?>"
+                                                placeholder="E.g. 27.4">
+                                            <p class="mx-2 my-2">kg/m<sup>2</sup></p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 mt-3 mt-md-0">
+                                        <label class="form-label fieldLabel" for="fastingBsugar">Blood Sugar
+                                            (Fasting)</label>
+                                        <div class="d-flex me-4">
+                                            <input type="number" class="form-control fieldStyle" id="fastingBsugar"
+                                                name="fastingBsugar" step="0.1" min="0"
+                                                value="<?= isset($vitals['blood_sugar_fasting']) ? $vitals['blood_sugar_fasting'] : '' ?>"
+                                                placeholder="E.g. 75">
+                                            <p class="mx-2 my-2">mg/dL</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 mt-3 mt-md-0">
+                                        <label class="form-label fieldLabel" for="patientSpo2">Blood Sugar (PP) </label>
+                                        <div class="d-flex me-4">
+                                            <input type="number" class="form-control fieldStyle" id="ppBsugar"
+                                                value="<?= isset($vitals['blood_sugar_pp']) ? $vitals['blood_sugar_pp'] : '' ?>"
+                                                name="ppBsugar" step="0.1" min="0" placeholder="E.g. 100">
+                                            <p class="mx-2 my-2">mg/dL</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 mt-3 mt-md-0">
+                                        <label class="form-label fieldLabel" for="randomBsugar">Blood Sugar (Random)
+                                        </label>
+                                        <div class="d-flex">
+                                            <input type="number" class="form-control fieldStyle" id="randomBsugar"
+                                                name="randomBsugar" step="0.1" min="0"
+                                                value="<?= isset($vitals['blood_sugar_random']) ? $vitals['blood_sugar_random'] : '' ?>"
+                                                placeholder="E.g. 125">
+                                            <p class="mx-2 my-2">mg/dL</p>
+                                        </div>
 
-                                    <div class="container">
-                                        <div class="row justify-content-center">
-                                            <div class="col-12"
-                                                style="position: relative; width: 600px; height: 600px;">
-                                                <img id="editor-image" class="img-fluid"
-                                                    style=" object-fit: contain; display: none; ">
-                                                <canvas id="editor-canvas" class="img-fluid" style=""></canvas>
+                                    </div>
+                                </div>
+                                <div class="d-md-flex mb-3">
+                                    <div class="col-md-3">
+                                        <label class="form-label fieldLabel" for="patientSpo2">SPO2 </label>
+                                        <div class="d-flex me-4">
+                                            <input type="number" class="form-control fieldStyle" id="patientSpo2"
+                                                name="patientSpo2" step="0.1" min="0" placeholder="E.g. 98"
+                                                value="<?= isset($vitals['spo2_percent']) ? $vitals['spo2_percent'] : '' ?>">
+                                            <p class="mx-2 my-2">%</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 mt-3 mt-md-0">
+                                        <label class="form-label fieldLabel" for="patientPulseRate">Pulse Rate
+                                        </label>
+                                        <div class="d-flex me-4">
+                                            <input type="number" class="form-control fieldStyle" id="patientPulseRate"
+                                                name="patientPulseRate" placeholder="E.g. 75" step="1" min="0"
+                                                value="<?= isset($vitals['pulse_rate']) ? $vitals['pulse_rate'] : '' ?>">
+                                            <p class="mx-2 my-2">/min</p>
+                                        </div>
+                                        <div id="patientPulseRate_err" class="text-danger pt-1"></div>
+                                    </div>
+                                    <div class="col-md-3 mt-3 mt-md-0">
+                                        <label class="form-label fieldLabel" for="patientTemperature">Temperature
+                                        </label>
+                                        <div class="d-flex me-4">
+                                            <input type="number" class="form-control fieldStyle" id="patientTemperature"
+                                                name="patientTemperature" step="0.1" min="0" step="0.01"
+                                                placeholder="E.g. 98.6"
+                                                value="<?= isset($vitals['temperature_f']) ? $vitals['temperature_f'] : '' ?>">
+                                            <p class="mx-2 my-2">°F</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 mt-3 mt-md-0">
+                                        <label class="form-label fieldLabel" for="patientsHbA1c">HbA1c</label>
+                                        <div class="d-flex">
+                                            <input type="number" class="form-control fieldStyle" id="patientsHbA1c"
+                                                name="patientsHbA1c" step="0.1" min="0" placeholder="E.g. 5.5"
+                                                value="<?= isset($vitals['HbA1c_percent']) ? $vitals['HbA1c_percent'] : '' ?>">
+                                            <p class="mx-2 my-2">%</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="p-3">
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+                                        style="background-color: rgb(206, 206, 206);" role="button" data-toggle="collapse"
+                                        data-target="#symptomsCollapse">
+                                        <span><strong><i class="bi bi-virus me-2"></i> Symptoms</strong></span>
+                                        <span class="toggle-icon">+</span>
+                                    </div>
+                                    <div class="collapse field-container mt-2" id="symptomsCollapse">
+                                        <div id="symptomsWrapper">
+                                            <div id="symptomsList" class="mb-2"></div>
+                                            <div class="mb-3 position-relative">
+                                                <div class="input-group mb-2">
+                                                    <div class="tags-input flex-grow-1" id="symptomsInput">
+                                                        <input type="text" class="form-control border-0 shadow-none"
+                                                            id="symptomsSearchInput"
+                                                            placeholder="Search or type to add..." />
+                                                    </div>
+
+                                                    <button type="button" class="btn btn-outline-secondary"
+                                                        id="clearSymptomSearch" style="display: none;">✖</button>
+
+                                                    <button type="button" class="btn btn-outline-primary" id="addSymptomBtn"
+                                                        style="display: none;">+ Add</button>
+                                                </div>
+                                                <div class="suggestions-box" id="symptomsSuggestionsBox"
+                                                    style="position: relative; margin-bottom: 15px;"></div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="modal-footer" style="background-color: white;">
-                                    <button type="button" class="btn btn-secondary"
-                                        data-bs-dismiss="modal">Cancel</button>
-                                    <button type="button" class="btn text-light" style="background-color: #00ad8e;"
-                                        id="saveEditedImage">OK</button>
+                                <input type="hidden" name="symptomsJson" id="symptomsJson">
+
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+                                        style="background-color: rgb(206, 206, 206);" role="button" data-toggle="collapse"
+                                        data-target="#findingsCollapse">
+                                        <span><strong><i class="bi bi-search me-2"></i> Findings</strong></span>
+                                        <span class="toggle-icon">+</span>
+                                    </div>
+                                    <div class="collapse field-container mt-2" id="findingsCollapse">
+                                        <div id="findingsWrapper">
+                                            <div id="findingsList" class="mb-2"></div>
+                                            <div class="mb-3 position-relative">
+                                                <div class="input-group mb-2">
+                                                    <div class="tags-input flex-grow-1" id="findingsInput">
+                                                        <input type="text" class="form-control border-0 shadow-none"
+                                                            id="searchInput" placeholder="Search or type to add..." />
+                                                    </div>
+
+                                                    <button type="button" class="btn btn-outline-secondary"
+                                                        id="clearFindingSearch" style="display: none;">✖</button>
+
+                                                    <button type="button" class="btn btn-outline-primary" id="addFindingBtn"
+                                                        style="display: none;">+ Add</button>
+                                                </div>
+                                                <div class="suggestions-box" id="suggestionsBox"
+                                                    style="position: relative; margin-bottom: 15px;"></div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <input type="hidden" name="findingsJson" id="findingsJson">
+
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+                                        style="background-color: rgb(206, 206, 206);" role="button" data-toggle="collapse"
+                                        data-target="#diagnosisCollapse">
+                                        <span><strong><i class="bi bi-clipboard2-heart me-2"></i> Diagnosis</strong></span>
+                                        <span class="toggle-icon">+</span>
+                                    </div>
+                                    <div class="collapse field-container mt-2" id="diagnosisCollapse">
+                                        <div id="diagnosisWrapper">
+                                            <div id="diagnosisList" class="mb-2"></div>
+                                            <div class="mb-3 position-relative">
+                                                <div class="input-group mb-2">
+                                                    <div class="tags-input flex-grow-1" id="diagnosisInputBox">
+                                                        <input type="text" class="form-control border-0 shadow-none"
+                                                            id="diagnosisInput"
+                                                            placeholder="Search or type to add diagnosis..." />
+                                                    </div>
+
+                                                    <button type="button" class="btn btn-outline-secondary"
+                                                        id="clearDiagnosisSearch" style="display: none;">✖</button>
+
+                                                    <button type="button" class="btn btn-outline-primary"
+                                                        id="addDiagnosisBtn" style="display: none;">+ Add</button>
+                                                </div>
+                                                <div class="suggestions-box" id="diagnosisSuggestionsBox"
+                                                    style="position: relative; margin-bottom: 15px;"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="hidden" name="diagnosisJson" id="diagnosisJson">
+
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+                                        style="background-color: rgb(206, 206, 206);" role="button" data-toggle="collapse"
+                                        data-target="#investigationsCollapse">
+                                        <span><strong><i class="bi bi-patch-question me-2"></i>
+                                                Investigations</strong></span>
+                                        <span class="toggle-icon">+</span>
+                                    </div>
+                                    <div class="collapse field-container mt-2" id="investigationsCollapse">
+                                        <div id="investigationsWrapper">
+                                            <div id="investigationsList" class="mb-2"></div>
+                                            <div class="mb-3 position-relative">
+                                                <div class="input-group mb-2">
+                                                    <div class="tags-input flex-grow-1" id="investigationsInput">
+                                                        <input type="text" class="form-control border-0 shadow-none"
+                                                            id="investigationsSearchInput"
+                                                            placeholder="Search or type to add..." />
+                                                    </div>
+
+                                                    <button type="button" class="btn btn-outline-secondary"
+                                                        id="clearInvestigationSearch" style="display: none;">✖</button>
+
+                                                    <button type="button" class="btn btn-outline-primary"
+                                                        id="addInvestigationBtn" style="display: none;">+ Add</button>
+                                                </div>
+                                                <div class="suggestions-box" id="investigationsSuggestionsBox"
+                                                    style="position: relative; margin-bottom: 15px;"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="hidden" name="investigationsJson" id="investigationsJson">
+
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+                                        style="background-color: rgb(206, 206, 206);" role="button">
+                                        <span><strong><i class="bi bi-prescription2 me-2"></i>
+                                                Procedures</strong></span>
+                                        <span class="toggle-icon">+</span>
+                                    </div>
+                                    <div class="collapse field-container mt-2">
+                                        <div id="proceduresWrapper">
+                                            <div class="input-group mb-2">
+                                                <input type="text" class="form-control" id="procedureSearch"
+                                                    placeholder="Search Procedures">
+
+                                                <button type="button" class="btn btn-outline-secondary"
+                                                    id="clearProcedureSearch" style="display: none;">✖</button>
+
+                                                <button type="button" class="btn btn-outline-primary" id="addProcedureBtn"
+                                                    style="display: none;">+ Add</button>
+                                            </div>
+
+                                            <div id="procedureList" class="mt-2"
+                                                style="max-height: 200px; overflow-y: auto;">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+                                        style="background-color: rgb(206, 206, 206);" role="button"
+                                        data-bs-toggle="collapse" data-bs-target="#medicinesCol">
+                                        <span><strong><i class="bi bi-capsule me-2"></i> Medicines</strong></span>
+                                        <span class="toggle-icon">+</span>
+                                    </div>
+                                    <div class="collapse field-container mt-2" id="medicinesCollapse">
+                                        <div id="medicinesWrapper">
+                                            <div id="medicinesList" class="mb-2"></div>
+
+                                            <div class="mb-3 position-relative">
+                                                <div class="input-group mb-2">
+                                                    <div class="tags-input flex-grow-1" id="medicinesInput">
+                                                        <input type="text" class="form-control border-0 shadow-none"
+                                                            id="medicinesSearchInput"
+                                                            placeholder="Search or type to add..." />
+                                                    </div>
+
+                                                    <button type="button" class="btn btn-outline-secondary"
+                                                        id="clearMedicineSearch" style="display: none;">✖</button>
+
+                                                    <button type="button" class="btn btn-outline-primary"
+                                                        id="medicinesAddBtn" style="display: none;">+ Add</button>
+                                                </div>
+
+                                                <div class="suggestions-box" id="medicinesSuggestionsBox"
+                                                    style="position: relative; margin-bottom: 15px;"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="hidden" name="medicinesJson" id="medicinesJson">
+
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+                                        style="background-color: rgb(206, 206, 206);" role="button">
+                                        <span><strong><i class="bi bi-chat-square-text me-2"></i>
+                                                Advices</strong></span>
+                                        <span class="toggle-icon">+</span>
+                                    </div>
+
+                                    <div class="collapse field-container mt-2">
+                                        <div id="adviceWrapper">
+                                            <div id="adviceList" class="mb-2" style="background-color: white; border: none">
+                                            </div>
+
+                                            <div class="mb-3 position-relative">
+                                                <div class="input-group mb-2">
+                                                    <div class="tags-input flex-grow-1" id="adviceInputContainer">
+                                                        <input type="text" class="form-control border-0 shadow-none"
+                                                            id="adviceSearchInput"
+                                                            placeholder="Search Advice or type to add..." />
+                                                    </div>
+
+                                                    <button type="button" class="btn btn-outline-secondary"
+                                                        id="clearAdviceSearch" style="display: none;">✖</button>
+
+                                                    <button type="button" class="btn btn-outline-primary" id="addAdviceBtn"
+                                                        style="display: none;">+ Add</button>
+                                                </div>
+
+                                                <div class="suggestions-box" id="adviceSuggestionsBox"
+                                                    style="position: relative; margin-bottom: 15px; display: none;"></div>
+                                            </div>
+                                        </div>
+
+                                        <input type="hidden" name="advicesJson" id="advicesJson">
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+                                        style="background-color: rgb(206, 206, 206);" role="button">
+                                        <span><strong><i class="bi bi-clipboard2-pulse me-2"></i>
+                                                Instructions</strong></span>
+                                        <span class="toggle-icon">+</span>
+                                    </div>
+                                    <div class="collapse field-container mt-2">
+                                        <div id="instructionWrapper">
+                                            <div class="input-group mb-2">
+                                                <input type="text" class="form-control" id="instructionSearch"
+                                                    placeholder="Search Instructions">
+
+                                                <button type="button" class="btn btn-outline-secondary"
+                                                    id="clearInstructionSearch" style="display: none;">✖</button>
+
+                                                <button type="button" class="btn btn-outline-primary" id="addInstructionBtn"
+                                                    style="display: none;">+ Add</button>
+                                            </div>
+
+                                            <div id="instructionList" class="mt-2"
+                                                style="max-height: 200px; overflow-y: auto;">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group pb-3 " data-page="edit" id="editFileSection">
+                                <label class="form-label fieldLabel">Attachments</label>
+                                <button type="button" id="addFileBtn" class="btn text-light float-end mb-2"
+                                    style="background-color: #00ad8e;"> + Add File </button>
+                                <div class="mb-3"></div>
+                                <div id="dropZone"
+                                    style="border: 2px dashed #ccc; padding: 20px; text-align: center; cursor: pointer; margin-bottom: 15px;">
+                                    <p class="text-muted mb-0">Drag and drop your files here or click the button above to
+                                        upload. Supported formats: .pdf, .png, .jpg, .jpeg.
+                                    </p>
+                                </div>
+                                <input type="file" id="fileInput" class="d-none" accept=".pdf,.doc,.docx,.png,.jpg,.jpeg"
+                                    multiple>
+                                <input type="file" id="submitFileInput" name="consultationFiles[]" class="d-none" multiple>
+                                <div id="fileList" style="margin-top: 0.5rem;"></div>
+                                <div id="fileError" class="text-danger pt-1"></div>
+                                <input type="hidden" id="removedFiles" name="removedFiles" value="">
+                            </div>
+
+                            <div class="form-group pb-3">
+                                <label class="form-label fieldLabel" for="dietPlan">Diet Plan <span
+                                        class="text-danger">*</span></label>
+                                <textarea class="form-control" name="dietPlan" id="dietPlan"
+                                    placeholder="Enter the diet plan"><?= isset($consultation['dietPlan']) ? $consultation['dietPlan'] : '' ?></textarea>
+                                <div id="dietPlan_err" class="text-danger pt-1"></div>
+                            </div>
+
+                            <div class="form-group pb-3">
+                                <label class="form-label fieldLabel" for="notes">Notes <span
+                                        class="text-danger">*</span></label>
+                                <textarea class="form-control" name="notes" id="notes"
+                                    placeholder="Enter the notes"><?= isset($consultation['notes']) ? $consultation['notes'] : '' ?></textarea>
+                                <div id="advices_err" class="text-danger pt-1"></div>
+                            </div>
+                            <div class="form-group pb-3">
+                                <label class="form-label fieldLabel" for="nextFollowUpDate">Next Follow-up Date <span
+                                        class="text-danger">*</span></label>
+                                <input type="date" class="form-control" id="nextFollowUpDate" name="nextFollowUpDate"
+                                    value="<?= isset($consultation['next_follow_up']) ? $consultation['next_follow_up'] : '' ?>">
+                                <div id="nextFollowUpDate_err" class="text-danger pt-1"></div>
+                            </div>
+                            <input type="hidden" id="consultationSendEmail" name="consultationSendEmail" value="0">
+                            <button type="submit" class="float-end btn text-light"
+                                style="background-color: #00ad8e;">Update</button>
+                        </form>
+                        <!---------------------------------------------------- Image Edit Modal -------------------------->
+                        <div class="modal fade" id="imageEditModal" tabindex="-1" aria-labelledby="imageEditModalLabel"
+                            aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+                            <div class="modal-dialog modal-lg modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <!-- Custom Toolbar -->
+                                        <div id="editor-toolbar" style="margin-bottom: 10px; text-align: left;">
+                                            <button type="button" id="crop-btn" class="btn btn-sm btn-outline-dark"
+                                                title="Crop">✂️ Crop</button>
+                                            <button type="button" id="rotate-btn" class="btn btn-sm btn-outline-dark"
+                                                title="Rotate">⟳ Rotate</button>
+                                        </div>
+                                        <h5 class=" fw-medium" id="imageEditModalLabel"
+                                            style="font-family: Poppins, sans-serif; margin-left:25%">Edit Image</h5>
+                                        <button type="button" class="btn-close btn btn-danger" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body text-center">
+
+                                        <div class="container">
+                                            <div class="row justify-content-center">
+                                                <div class="col-12"
+                                                    style="position: relative; width: 600px; height: 600px;">
+                                                    <img id="editor-image" class="img-fluid"
+                                                        style=" object-fit: contain; display: none; ">
+                                                    <canvas id="editor-canvas" class="img-fluid" style=""></canvas>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer" style="background-color: white;">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Cancel</button>
+                                        <button type="button" class="btn text-light" style="background-color: #00ad8e;"
+                                            id="saveEditedImage">OK</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <!-- File Preview  in Edit Modal -->
-                    <div class="modal fade" id="editPreviewModal" tabindex="-1" aria-labelledby="editPreviewModalLabel"
-                        aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="true">
-                        <div class="modal-dialog modal-lg modal-dialog-centered">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title fw-medium" style="font-family: Poppins, sans-serif;"
-                                        id="editPreviewModalLabel">Attachment Preview</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                        aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body text-center position-relative">
-                                    <button id="prevFile"
-                                        class="btn btn-outline-secondary position-absolute start-0 top-50 translate-middle-y"
-                                        style="font-size: 1.5rem;" disabled>
-                                        <b>&lt;</b>
-                                    </button>
-                                    <div id="filePreviewContent"></div>
-                                    <button id="nextFile"
-                                        class="btn btn-outline-secondary position-absolute end-0 top-50 translate-middle-y"
-                                        style="font-size: 1.5rem;" disabled>
-                                        <b>&gt;</b>
-                                    </button>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary text-light"
-                                        data-bs-dismiss="modal">Close</button>
+                        <!-- File Preview  in Edit Modal -->
+                        <div class="modal fade" id="editPreviewModal" tabindex="-1" aria-labelledby="editPreviewModalLabel"
+                            aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="true">
+                            <div class="modal-dialog modal-lg modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title fw-medium" style="font-family: Poppins, sans-serif;"
+                                            id="editPreviewModalLabel">Attachment Preview</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body text-center position-relative">
+                                        <button id="prevFile"
+                                            class="btn btn-outline-secondary position-absolute start-0 top-50 translate-middle-y"
+                                            style="font-size: 1.5rem;" disabled>
+                                            <b>&lt;</b>
+                                        </button>
+                                        <div id="filePreviewContent"></div>
+                                        <button id="nextFile"
+                                            class="btn btn-outline-secondary position-absolute end-0 top-50 translate-middle-y"
+                                            style="font-size: 1.5rem;" disabled>
+                                            <b>&gt;</b>
+                                        </button>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary text-light"
+                                            data-bs-dismiss="modal">Close</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                </div>
-        </section>
+                    </div>
+            </section>
         <?php } ?>
 
         <!-- ******************************************************************************************************************************************** -->
@@ -3743,11 +3622,11 @@
                         <select id="newMedicineCategory" class="form-select">
                             <option value="">Select Category</option>
                             <?php if (!empty($medicineCategories)): ?>
-                            <?php foreach ($medicineCategories as $cat): ?>
-                            <option value="<?= htmlspecialchars($cat['category']) ?>">
-                                <?= htmlspecialchars($cat['category']) ?>
-                            </option>
-                            <?php endforeach; ?>
+                                <?php foreach ($medicineCategories as $cat): ?>
+                                    <option value="<?= htmlspecialchars($cat['category']) ?>">
+                                        <?= htmlspecialchars($cat['category']) ?>
+                                    </option>
+                                <?php endforeach; ?>
                             <?php endif; ?>
                         </select>
 
@@ -3854,11 +3733,11 @@
                                             style="min-width: 130px; width: 100%; max-width: 220px;" disabled>
                                             <option value=""></option>
                                             <?php if (!empty($dosageUnits)): ?>
-                                            <?php foreach ($dosageUnits as $unit): ?>
-                                            <option value="<?= htmlspecialchars($unit['units_name']) ?>">
-                                                <?= htmlspecialchars($unit['units_name']) ?>
-                                            </option>
-                                            <?php endforeach; ?>
+                                                <?php foreach ($dosageUnits as $unit): ?>
+                                                    <option value="<?= htmlspecialchars($unit['units_name']) ?>">
+                                                        <?= htmlspecialchars($unit['units_name']) ?>
+                                                    </option>
+                                                <?php endforeach; ?>
                                             <?php endif; ?>
                                         </select>
                                     </div>
@@ -3878,11 +3757,11 @@
                                             style="min-width: 110px; width: 100%; max-width: 210px;" disabled>
                                             <option value=""></option>
                                             <?php if (!empty($dosageUnits)): ?>
-                                            <?php foreach ($dosageUnits as $unit): ?>
-                                            <option value="<?= htmlspecialchars($unit['units_name']) ?>">
-                                                <?= htmlspecialchars($unit['units_name']) ?>
-                                            </option>
-                                            <?php endforeach; ?>
+                                                <?php foreach ($dosageUnits as $unit): ?>
+                                                    <option value="<?= htmlspecialchars($unit['units_name']) ?>">
+                                                        <?= htmlspecialchars($unit['units_name']) ?>
+                                                    </option>
+                                                <?php endforeach; ?>
                                             <?php endif; ?>
                                         </select>
                                     </div>
@@ -3902,11 +3781,11 @@
                                             style="min-width: 130px; width: 100%; max-width: 220px;" disabled>
                                             <option value=""></option>
                                             <?php if (!empty($dosageUnits)): ?>
-                                            <?php foreach ($dosageUnits as $unit): ?>
-                                            <option value="<?= htmlspecialchars($unit['units_name']) ?>">
-                                                <?= htmlspecialchars($unit['units_name']) ?>
-                                            </option>
-                                            <?php endforeach; ?>
+                                                <?php foreach ($dosageUnits as $unit): ?>
+                                                    <option value="<?= htmlspecialchars($unit['units_name']) ?>">
+                                                        <?= htmlspecialchars($unit['units_name']) ?>
+                                                    </option>
+                                                <?php endforeach; ?>
                                             <?php endif; ?>
                                         </select>
                                     </div>
@@ -3925,11 +3804,11 @@
                                             style="min-width: 120px;" disabled>
                                             <option value=""></option>
                                             <?php if (!empty($dosageUnits)): ?>
-                                            <?php foreach ($dosageUnits as $unit): ?>
-                                            <option value="<?= htmlspecialchars($unit['units_name']) ?>">
-                                                <?= htmlspecialchars($unit['units_name']) ?>
-                                            </option>
-                                            <?php endforeach; ?>
+                                                <?php foreach ($dosageUnits as $unit): ?>
+                                                    <option value="<?= htmlspecialchars($unit['units_name']) ?>">
+                                                        <?= htmlspecialchars($unit['units_name']) ?>
+                                                    </option>
+                                                <?php endforeach; ?>
                                             <?php endif; ?>
                                         </select>
                                     </div>
@@ -8438,7 +8317,7 @@
     <!-- Sidebar active color change code -->
     <script>
         <?php if ($method == "consultDashboard" || $method == "followupConsult" || $method == "editConsult") { ?>
-        document.getElementById('patients').style.color = "#87F7E3";
+            document.getElementById('patients').style.color = "#87F7E3";
         <?php } ?>
     </script>
 
@@ -8963,7 +8842,240 @@
         }
     </script>
 
+    <!-- Print - sugar chart-->
+    <script>
+        function printMonthTable(month, button) {
+            var card = button.closest('.card');
+            var content = card.querySelector('.month-content').innerHTML;
 
+            var patientId = button.getAttribute('data-patient-id');
+            var patientName = button.getAttribute('data-patient-name');
+            var patientAge = button.getAttribute('data-patient-age');
+            var patientGender = button.getAttribute('data-patient-gender');
+            var patientMobile = button.getAttribute('data-patient-mobile');
+            var printDate = new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+
+            var printWindow = window.open('', '', 'width=900,height=700');
+
+            printWindow.document.write(`
+        <html>
+        <head>
+            <title>Sugar Report - ${month}</title>
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+            <style>
+                @page {
+                    size: A4;
+                    margin: 0.5cm 0.5cm 0.5cm 0.5cm;
+                }
+                * {
+                    box-sizing: border-box;
+                }
+                .action-column { display: none; }
+                html, body {
+                    margin: 0;
+                    padding: 0;
+                    width: 100%;
+                    height: 100%;
+                }
+                body {
+                    font-family: Arial, sans-serif;
+                    padding: 8px;
+                    margin: 0;
+                }
+                .header { border-bottom: 1px solid #00ad8e; padding-bottom: 8px; margin-bottom: 10px; }
+                .patient-info { display: grid; grid-template-columns: repeat(2, 1fr); gap: 5px; font-size: 11px; margin: 0; padding: 0; }
+                .info-item { display: flex; flex-direction: column; margin: 0; padding: 0; }
+                .info-label { font-weight: bold; color: #00ad8e; font-size: 10px; margin: 0; padding: 0; }
+                .info-value { font-weight: normal;font-size: 10px; color: #333; margin: 0; padding: 0; }
+                .print-title { text-align: center; font-size: 16px; font-weight: bold; margin-bottom: 3px; }
+                .print-month { text-align: center; font-size: 13px; color: #666; margin-bottom: 8px; }
+                .print-date { text-align: right; margin-bottom: 8px; font-size: 10px; color: #666; }
+                table {
+                    border-collapse: collapse !important;
+                    width: 100%;
+                    table-layout: auto;
+                }
+                table, th, td {
+                    border: 1px solid #000 !important;
+                    padding: 6px !important;
+                    font-size: 11px;
+                }
+                thead {
+                    background-color: #f0f0f0 !important;
+                    font-weight: bold;
+                }
+                tbody tr:nth-child(even) { background-color: #fafafa !important; }
+                .table-responsive {
+                    overflow: visible !important;
+                }
+                @media print {
+                    @page {
+                        size: A4;
+                        margin: 0.5cm 0.5cm 0.5cm 0.5cm;
+                    }
+                    html, body {
+                        margin: 0;
+                        padding: 0;
+                        width: 100%;
+                    }
+                    body {
+                        padding: 5px;
+                        margin: 0;
+                    }
+                    table {
+                        border-collapse: collapse !important;
+                        width: 100%;
+                    }
+                    table, th, td {
+                        border: 1px solid #000 !important;
+                        padding: 6px !important;
+                        page-break-inside: avoid;
+                    }
+                    thead { background-color: #f0f0f0 !important; font-weight: bold; font-size: 8px; color: #0066cc; }
+                    .header { padding-bottom: 6px; margin-bottom: 6px; }
+                    .patient-info { margin-bottom: 4px; font-size: 11px; margin: 0; padding: 0; gap: 5px; margin-top: 10px; }
+                    .info-item { margin: 0; padding: 0; }
+                    .info-label { margin: 0; padding: 0; font-size: 9px; }
+                    .info-value { margin: 0; padding: 0; font-size: 9px; }
+                }
+            </style>
+        </head>
+        <body>
+            <div class="header">
+                <div class="print-title">Sugar Chart Record</div>
+                <div class="patient-info">
+                    <div class="info-item">
+                        <p class="info-label">Patient Name:
+                        <span class="info-value">${patientName}</span></p>
+                    </div>
+                    <div class="info-item">
+                        <p class="info-label">Patient ID:
+                        <span class="info-value">${patientId}</span></p>
+                    </div>
+                    <div class="info-item">
+                        <p class="info-label">Mobile Number:
+                        <span class="info-value">${patientMobile}</span></p>
+                    </div>
+                    <div class="info-item">
+                        <p class="info-label">Age & Gender:
+                        <span class="info-value">${patientAge} years & ${patientGender}</span></p>
+                    </div>
+                </div>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+            <div class="print-month">Period: <strong>${month}</strong></div>
+            <div class="print-date" style="text-align: right; margin-bottom: 10px; font-size: 12px; color: #666;">Printed on: ${printDate}</div>
+            </div>
+            ${content}
+        </body>
+        </html>
+    `);
+
+            printWindow.document.close();
+            printWindow.print();
+        }
+    </script>
+
+    <!-- Expandable view for discharge followups -->
+    <script>
+        function toggleFollowups(planId) {
+
+            let row = document.getElementById('expand-row-' + planId);
+            let container = document.getElementById('followup-data-' + planId);
+
+            if (row.style.display === 'none') {
+
+                row.style.display = 'table-row';
+
+                fetch("<?= base_url('Consultation/getDischargeFollowupsByPlan/') ?>" + planId)
+                    .then(res => res.json())
+                    .then(data => {
+
+                        let html = `
+                        <table class="table table-sm table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Status</th>
+                                    <th>Remarks</th>
+                                    <th>Updated At</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                    `;
+
+                        if (data.length > 0) {
+                            data.forEach(row => {
+
+                                let statusBadge = 'bg-warning';
+                                let statusText = 'Pending';
+
+                                const today = new Date().toISOString().split('T')[0];
+
+                                const followDate = row.followup_date;
+                                const updatedDate = row.updated_at ? row.updated_at.split(' ')[0] : null;
+
+                                if (row.status === 'completed') {
+
+                                    if (updatedDate && updatedDate > followDate) {
+                                        statusBadge = 'bg-danger';
+                                        statusText = 'Done Late';
+                                    } else {
+                                        statusBadge = 'bg-success';
+                                        statusText = 'Done';
+                                    }
+
+                                } else {
+
+                                    if (followDate < today) {
+                                        statusBadge = 'bg-danger';
+                                        statusText = 'Missed';
+                                    } else if (followDate === today) {
+                                        statusBadge = 'bg-warning';
+                                        statusText = 'Pending';
+                                    } else {
+                                        statusBadge = 'bg-secondary';
+                                        statusText = 'Upcoming';
+                                    }
+                                }
+
+                                html += `
+                <tr>
+                    <td>${formatDate(followDate)}</td>
+
+                    <td>
+                        <span class="badge ${statusBadge}">
+                            ${statusText}
+                        </span>
+                    </td>
+
+                    <td>${row.remarks ? row.remarks : '-'}</td>
+
+                    <td>${row.updated_at ? row.updated_at : '-'}</td>
+                </tr>
+            `;
+                            });
+                        } else {
+                            html += `<tr><td colspan="4">No follow-ups</td></tr>`;
+                        }
+
+                        html += '</tbody></table>';
+                        container.innerHTML = html;
+                    });
+
+            } else {
+                row.style.display = 'none';
+            }
+        }
+        function formatDate(dateStr) {
+            let d = new Date(dateStr);
+            return d.toLocaleDateString('en-GB', {
+                day: '2-digit',
+                month: 'short',
+                year: 'numeric'
+            });
+        }
+    </script>
 
 
     <!-- Common Script -->

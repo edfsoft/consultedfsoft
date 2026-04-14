@@ -1230,6 +1230,21 @@ class Consultation extends CI_Controller
         }
     }
 
+    public function getDischargeFollowupsByPlan($plan_id)
+    {
+        $data = $this->ConsultModel->getDischargeFollowupsByPlan($plan_id);
+        echo json_encode($data);
+    }
+
+    public function deleteDischargeFollowup()
+    {
+        $id = $this->input->post('id');
+
+        $this->ConsultModel->deleteDischargeFollowup($id);
+
+        echo json_encode(['status' => 'success']);
+    }
+
 
 
 

@@ -252,9 +252,19 @@ class Healthcareprovider extends CI_Controller
 
     public function getDischargeFollwupByDate()
     {
-        $date = $this->input->get('date');
+        $hcpIdDb = $this->session->userdata('hcpIdDb');
+        if (!$hcpIdDb) {
+            echo json_encode(['success' => false, 'message' => 'Unauthorized']);
+            return;
+        }
 
-        $data = $this->HcpModel->getDischargeFollwupByDate($date);
+        $date = $this->input->get('date');
+        if (!$date) {
+            echo json_encode(['success' => false, 'message' => 'Date is required']);
+            return;
+        }
+
+        $data = $this->HcpModel->getDischargeFollwupByDate($hcpIdDb, $date);
 
         echo json_encode([
             'success' => true,

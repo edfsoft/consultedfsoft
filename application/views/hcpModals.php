@@ -708,42 +708,58 @@
                     Follow-up</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="<?php echo base_url('Consultation/saveDischargeFollowUp'); ?>" method="post"
-                id="followupForm">
+            <form action="<?php echo base_url('Consultation/saveDischargeFollowUp'); ?>" method="post" id="followupForm"
+                onsubmit="return validateFollowupForm();">
+
                 <div class="modal-body">
                     <input type="hidden" name="patient_id" id="modal_patient_id">
+
                     <div class="row">
+
+                        <!-- Appointment -->
                         <div class="col-md-6">
-                            <label class="form-label fieldLabel">Appointment Date <span
-                                    class="text-danger">*</span></label>
-                            <input type="date" name="appointment_date" class="form-control fieldStyle" required>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label fieldLabel">Discharge Date <span
-                                    class="text-danger">*</span></label>
-                            <input type="date" name="discharge_date" class="form-control fieldStyle" required>
-                        </div>
-                        <div class="col-md-6 mt-3">
-                            <label class="form-label fieldLabel">Next Review Date <span
-                                    class="text-danger">*</span></label>
-                            <input type="date" name="next_review_date" class="form-control fieldStyle" required>
+                            <label class="form-label fieldLabel">Appointment Date</label>
+                            <input type="date" name="appointment_date" id="appointment_date"
+                                class="form-control fieldStyle">
+                            <small id="appointment_date_err" class="text-danger"></small>
                         </div>
 
-                        <div class="col-md-6 mt-3">
-                            <label class="form-label fieldLabel">Follow-up Interval (Days) <span
-                                    class="text-danger">*</span></label>
-                            <input type="number" name="followup_interval_days" class="form-control fieldStyle" value="7"
-                                min="1" required>
+                        <!-- Discharge -->
+                        <div class="col-md-6">
+                            <label class="form-label fieldLabel">Discharge Date</label>
+                            <input type="date" name="discharge_date" id="discharge_date"
+                                class="form-control fieldStyle">
+                            <small id="discharge_date_err" class="text-danger"></small>
                         </div>
+
+                        <!-- Review -->
+                        <div class="col-md-6 mt-3">
+                            <label class="form-label fieldLabel">Next Review Date</label>
+                            <input type="date" name="next_review_date" id="next_review_date"
+                                class="form-control fieldStyle">
+                            <small id="review_date_err" class="text-danger"></small>
+                        </div>
+
+                        <!-- Interval -->
+                        <div class="col-md-6 mt-3">
+                            <label class="form-label fieldLabel">Follow-up Interval (Days)</label>
+                            <input type="number" name="followup_interval_days" id="interval_days"
+                                class="form-control fieldStyle" value="7" min="1">
+                            <small id="interval_err" class="text-danger"></small>
+                        </div>
+
+                        <!-- Notes -->
                         <div class="col-md-12 mt-3">
                             <label class="form-label fieldLabel">Notes</label>
-                            <textarea name="notes" class="form-control" placeholder="Enter the notes"></textarea>
+                            <textarea name="notes" class="form-control"></textarea>
                         </div>
+
                     </div>
                 </div>
+
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn text-light" style="background-color: #00ad8e;">Save</button>
+                    <button type="submit" class="btn text-light" style="background-color:#00ad8e;">Save</button>
                 </div>
             </form>
         </div>
@@ -760,6 +776,74 @@
         var modal = new bootstrap.Modal(document.getElementById('followupModal'));
         modal.show();
     });
+
+    function validateFollowupForm() {
+
+        let isValid = true;
+
+        let appointment = document.getElementById('appointment_date').value;
+        let discharge = document.getElementById('discharge_date').value;
+        let review = document.getElementById('next_review_date').value;
+        let interval = document.getElementById('interval_days').value;
+
+        document.getElementById('appointment_date_err').innerText = '';
+        document.getElementById('discharge_date_err').innerText = '';
+        document.getElementById('review_date_err').innerText = '';
+        document.getElementById('interval_err').innerText = '';
+
+        if (!appointment) {
+            document.getElementById('appointment_date_err').innerText = 'Appointment date is required';
+            isValid = false;
+        }
+
+        if (!discharge) {
+            document.getElementById('discharge_date_err').innerText = 'Discharge date is required';
+            isValid = false;
+        }
+
+        if (!review) {
+            document.getElementById('review_date_err').innerText = 'Review date is required';
+            isValid = false;
+        }
+
+        if (!interval) {
+            document.getElementById('interval_err').innerText = 'Interval is required';
+            isValid = false;
+        }
+
+        if (!isValid) return false;
+
+        let appDate = new Date(appointment);
+        let disDate = new Date(discharge);
+        let revDate = new Date(review);
+
+        if (appDate > disDate) {
+            document.getElementById('appointment_date_err').innerText =
+                'Appointment date must be before or same as discharge date';
+            isValid = false;
+        }
+
+        if (revDate <= disDate) {
+            document.getElementById('review_date_err').innerText =
+                'Review date must be after discharge date';
+            isValid = false;
+        }
+
+        if (interval < 1) {
+            document.getElementById('interval_err').innerText =
+                'Interval must be at least 1 day';
+            isValid = false;
+        }
+
+        let diffDays = Math.floor((revDate - disDate) / (1000 * 60 * 60 * 24));
+
+        if (interval > diffDays) {
+            document.getElementById('interval_err').innerText =
+                'Interval must not exceed the days between discharge and review date';
+            isValid = false;
+        }
+        return isValid;
+    }
 </script>
 
 <!-- Belong to consultation view page -->

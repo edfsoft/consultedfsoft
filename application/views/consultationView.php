@@ -8995,10 +8995,10 @@
                         <table class="table table-sm table-bordered">
                             <thead>
                                 <tr>
-                                    <th>Date</th>
+                                    <th>Follow-up Date</th>
                                     <th>Status</th>
                                     <th>Remarks</th>
-                                    <th>Updated At</th>
+                                    <th>Completed On</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -9018,7 +9018,7 @@
                                 if (row.status === 'completed') {
 
                                     if (updatedDate && updatedDate > followDate) {
-                                        statusBadge = 'bg-danger';
+                                        statusBadge = 'bg-success bg-opacity-50 text-dark';
                                         statusText = 'Done Late';
                                     } else {
                                         statusBadge = 'bg-success';
@@ -9042,16 +9042,10 @@
                                 html += `
                 <tr>
                     <td>${formatDate(followDate)}</td>
-
-                    <td>
-                        <span class="badge ${statusBadge}">
-                            ${statusText}
-                        </span>
-                    </td>
-
+                    <td><span class="badge ${statusBadge}">
+                            ${statusText}</span></td>
                     <td>${row.remarks ? row.remarks : '-'}</td>
-
-                    <td>${row.updated_at ? row.updated_at : '-'}</td>
+                    <td>${row.updated_at ? formatDateTime(row.updated_at) : '-'}</td>                  
                 </tr>
             `;
                             });
@@ -9075,6 +9069,21 @@
                 year: 'numeric'
             });
         }
+
+        function formatDateTime(dateStr) {
+            let d = new Date(dateStr);
+
+            return d.toLocaleDateString('en-GB', {
+                day: '2-digit',
+                month: 'short',
+                year: 'numeric'
+            }) + ' - ' +
+                d.toLocaleTimeString('en-US', {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: true
+                });
+        }        
     </script>
 
 

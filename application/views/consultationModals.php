@@ -1,19 +1,20 @@
-<!-- Delete consultation and sugar chart Modal -->
-<div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel"
-    aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+<!-- Delete Confirmation Modal - consultation, sugar chart, discharge followup  -->
+<div class="modal fade" id="globalDeleteModal" tabindex="-1" aria-labelledby="globalDeleteModalLabel" aria-hidden="true"
+    data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog">
         <div class="modal-content border-0 rounded-3 shadow">
             <div class="modal-header text-dark rounded-top-3">
-                <h5 class="modal-title fw-medium" style="font-family: Poppins, sans-serif;"
-                    id="deleteConfirmModalLabel">Delete Consultation</h5>
+                <h5 class="modal-title fw-medium" style="font-family: Poppins, sans-serif;" id="globalDeleteModalLabel">
+                    Confirm Delete
+                </h5>
                 <button type="button" class="btn-close btn-close-dark" data-bs-dismiss="modal"
                     aria-label="Close"></button>
             </div>
-            <div class="modal-body" id="deleteModalBody">
+            <div class="modal-body" id="globalDeleteModalBody">
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Delete</button>
+                <button type="button" class="btn btn-danger" id="confirmGlobalDeleteBtn">Delete</button>
             </div>
         </div>
     </div>
@@ -167,52 +168,5 @@
             isValid = false;
         }
         return isValid;
-    }
-</script>
-
-<!-- Post Discharge Follow-up Delete Modal -->
-<div class="modal fade" id="deleteModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title fw-medium" style="font-family: Poppins, sans-serif;">Delete Discharge Follow-up
-                    Plan</h5>
-            </div>
-            <div class="modal-body">
-                Are you sure you want to delete this follow-up?
-            </div>
-
-            <div class="modal-footer">
-                <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button class="btn btn-danger" onclick="confirmDelete()">Delete</button>
-            </div>
-
-        </div>
-    </div>
-</div>
-
-<!-- Script for discharge follow-up delete confirmation -->
-<script>
-    let deleteId = 0;
-
-    function openDeleteModal(id) {
-        deleteId = id;
-        let modal = new bootstrap.Modal(document.getElementById('deleteModal'));
-        modal.show();
-    }
-
-    function confirmDelete() {
-
-        fetch("<?= base_url('Consultation/deleteDischargeFollowup') ?>", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded"
-            },
-            body: "id=" + deleteId
-        })
-            .then(res => res.json())
-            .then(data => {
-                location.reload();
-            });
     }
 </script>

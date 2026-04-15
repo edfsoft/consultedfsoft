@@ -2210,7 +2210,7 @@
 
                                                             <!-- Delete -->
                                                             <button class="btn btn-danger btn-sm"
-                                                                onclick="openDeleteModal(<?= $plan['id'] ?>)">
+                                                                onclick="confirmDeleteDischargeFollowup(<?= $plan['id'] ?>,'<?php echo date('d M Y', strtotime($plan['appointment_date'])); ?>')">
                                                                 <i class="bi bi-trash"></i>
                                                             </button>
                                                         </td>
@@ -8270,48 +8270,81 @@
 
     <!-- Delete Consultation & Sugar Record Script -->
     <script>
-        let deleteType = null;
-        let deletePatientId = null;
-        let deleteRecordId = null;
+        let deleteConfig = {
+            type: null,
+            patientId: null,
+            recordId: null,
+            url: null
+        };
+
+        function openGlobalDeleteModal(options) {
+            deleteConfig = {
+                type: options.type,
+                patientId: options.patientId || null,
+                recordId: options.recordId,
+                url: options.url || null
+            };
+
+            document.getElementById('globalDeleteModalLabel').innerText = options.title;
+            document.getElementById('globalDeleteModalBody').innerHTML = options.body;
+
+            const modal = new bootstrap.Modal(document.getElementById('globalDeleteModal'));
+            modal.show();
+        }
 
         function confirmDeleteConsult(patientId, consultationId, consultationDate, consultationTime) {
-            deleteType = 'consult';
-            deletePatientId = patientId;
-            deleteRecordId = consultationId;
-
-            document.getElementById('deleteModalBody').innerHTML =
-                `Are you sure you want to delete this consultation done on 
-            <strong>${consultationDate} - ${consultationTime}</strong>?`;
-
-            const modal = new bootstrap.Modal(document.getElementById('deleteConfirmModal'));
-            modal.show();
+            openGlobalDeleteModal({
+                title: 'Delete Consultation',
+                body: `Are you sure you want to delete this consultation done on <strong>${consultationDate} - ${consultationTime}</strong>?`,
+                type: 'redirect',
+                patientId: patientId,
+                recordId: consultationId,
+                url: "<?php echo site_url('Consultation/deleteConsultation/'); ?>"
+            });
         }
 
         function confirmDeleteSugarRecord(patientId, sugarRecordId, recordDate) {
-            deleteType = 'sugar';
-            deletePatientId = patientId;
-            deleteRecordId = sugarRecordId;
-
-            document.getElementById('deleteModalBody').innerHTML =
-                `Are you sure you want to delete this sugar record done on 
-            <strong>${recordDate}</strong>?`;
-
-            const modal = new bootstrap.Modal(document.getElementById('deleteConfirmModal'));
-            modal.show();
+            openGlobalDeleteModal({
+                title: 'Delete Sugar Record',
+                body: `Are you sure you want to delete this sugar record done on <strong>${recordDate}</strong>?`,
+                type: 'redirect',
+                patientId: patientId,
+                recordId: sugarRecordId,
+                url: "<?php echo site_url('Consultation/deleteSugarRecord/'); ?>"
+            });
         }
 
-        document.getElementById('confirmDeleteBtn').addEventListener('click', function () {
+        function confirmDeleteDischargeFollowup(id, appointmentDate) {
+            openGlobalDeleteModal({
+                title: 'Delete Discharge Follow-up Plan',
+                body: `Are you sure you want to delete this follow-up scheduled for the appointment date <strong>${appointmentDate}</strong>?`,
+                type: 'fetch',
+                recordId: id,
+                url: "<?= base_url('Consultation/deleteDischargeFollowup') ?>"
+            });
+        }
 
-            if (deleteType === 'consult') {
-                window.location.href =
-                    "<?php echo site_url('Consultation/deleteConsultation/'); ?>" +
-                    deletePatientId + "/" + deleteRecordId;
+        document.getElementById('confirmGlobalDeleteBtn').addEventListener('click', function () {
+            const btn = this;
+            btn.disabled = true;
+
+            if (deleteConfig.type === 'redirect') {
+                window.location.href = deleteConfig.url + deleteConfig.patientId + "/" + deleteConfig.recordId;
             }
-
-            if (deleteType === 'sugar') {
-                window.location.href =
-                    "<?php echo site_url('Consultation/deleteSugarRecord/'); ?>" +
-                    deletePatientId + "/" + deleteRecordId;
+            else if (deleteConfig.type === 'fetch') {
+                fetch(deleteConfig.url, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                    body: "id=" + deleteConfig.recordId
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        location.reload();
+                    })
+                    .catch(err => {
+                        console.error(err);
+                        btn.disabled = false;
+                    });
             }
         });
     </script>

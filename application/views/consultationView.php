@@ -3967,7 +3967,7 @@
         </div>
 
         <!-- All modal files -->
-        <?php include 'hcpModals.php'; ?>
+        <?php include 'consultationModals.php'; ?>
 
     </main>
 

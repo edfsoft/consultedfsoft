@@ -1277,7 +1277,7 @@
                                         <?php endforeach; ?>
                                     </div>
                                 <?php else: ?>
-                                    <p class="text-muted">No Previous Consultation.</p>
+                                    <p class="text-muted">No previous consultations found.</p>
                                 <?php endif; ?>
                             </div>
 
@@ -2172,21 +2172,24 @@
                                         + Add Follow-up
                                     </button>
                                 </div>
-                                <div class="table-responsive pt-3">
-                                    <table class="table table-bordered text-center">
-                                        <thead class="table-light">
-                                            <tr>
-                                                <th style="color: #00ad8e;" class="scTableStyles">S.No</th>
-                                                <th style="color: #00ad8e;" class="scTableStyles">Appointment Date</th>
-                                                <th style="color: #00ad8e;" class="scTableStyles">Discharge Date</th>
-                                                <th style="color: #00ad8e;" class="scTableStyles">Next Review Date</th>
-                                                <th style="color: #00ad8e;" class="scTableStyles">Interval (Days)</th>
-                                                <th style="color: #00ad8e;" class="scTableStyles">Notes</th>
-                                                <th style="color: #00ad8e;" class="scTableStyles">Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <?php if (!empty($dischargeFollowUp)) {
+                                <?php if (empty($dischargeFollowUp)) { ?>
+                                    <p class="text-muted">No discharge follow-ups found.</p>
+                                <?php } else { ?>
+                                    <div class="table-responsive pt-3">
+                                        <table class="table table-bordered text-center">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th style="color: #00ad8e;" class="scTableStyles">S.No</th>
+                                                    <th style="color: #00ad8e;" class="scTableStyles">Appointment Date</th>
+                                                    <th style="color: #00ad8e;" class="scTableStyles">Discharge Date</th>
+                                                    <th style="color: #00ad8e;" class="scTableStyles">Next Review Date</th>
+                                                    <th style="color: #00ad8e;" class="scTableStyles">Interval (Days)</th>
+                                                    <th style="color: #00ad8e;" class="scTableStyles">Notes</th>
+                                                    <th style="color: #00ad8e;" class="scTableStyles">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <?php
                                                 $count = 1;
                                                 foreach ($dischargeFollowUp as $plan) { ?>
 
@@ -2221,12 +2224,11 @@
                                                             </div>
                                                         </td>
                                                     </tr>
-
-                                                <?php }
-                                            } ?>
-                                        </tbody>
-                                    </table>
-                                </div>
+                                                <?php } ?>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                <?php } ?>
                             </div>
 
                         </div>

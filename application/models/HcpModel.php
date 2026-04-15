@@ -165,7 +165,7 @@ class HcpModel extends CI_Model
 
     public function getDischargeFollwupByDate($hcpIdDb, $date)
     {
-        return $this->db->select('pf.*, CONCAT(pd.firstName, " ", pd.lastName) as patient_name, pd.patientId, pd.mobileNumber')
+        return $this->db->select('pf.*, CONCAT(pd.firstName, " ", pd.lastName) as patient_name, pd.patientId, pd.mobileNumber, pd.id as patientDbId')
             ->from('patient_followups pf')
             ->join('patient_details pd', 'pd.id = pf.patient_id')
             ->where('pf.followup_date', $date)

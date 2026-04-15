@@ -718,7 +718,8 @@
 
                         <!-- Appointment -->
                         <div class="col-md-6">
-                            <label class="form-label fieldLabel">Appointment Date</label>
+                            <label class="form-label fieldLabel">Appointment Date <span
+                                    class="text-danger">*</span></label>
                             <input type="date" name="appointment_date" id="appointment_date"
                                 class="form-control fieldStyle">
                             <small id="appointment_date_err" class="text-danger"></small>
@@ -726,7 +727,8 @@
 
                         <!-- Discharge -->
                         <div class="col-md-6">
-                            <label class="form-label fieldLabel">Discharge Date</label>
+                            <label class="form-label fieldLabel">Discharge Date <span
+                                    class="text-danger">*</span></label>
                             <input type="date" name="discharge_date" id="discharge_date"
                                 class="form-control fieldStyle">
                             <small id="discharge_date_err" class="text-danger"></small>
@@ -734,7 +736,8 @@
 
                         <!-- Review -->
                         <div class="col-md-6 mt-3">
-                            <label class="form-label fieldLabel">Next Review Date</label>
+                            <label class="form-label fieldLabel">Next Review Date <span
+                                    class="text-danger">*</span></label>
                             <input type="date" name="next_review_date" id="next_review_date"
                                 class="form-control fieldStyle">
                             <small id="review_date_err" class="text-danger"></small>
@@ -751,7 +754,7 @@
                         <!-- Notes -->
                         <div class="col-md-12 mt-3">
                             <label class="form-label fieldLabel">Notes</label>
-                            <textarea name="notes" class="form-control"></textarea>
+                            <textarea name="notes" class="form-control" placeholder="Enter the notes"></textarea>
                         </div>
 
                     </div>

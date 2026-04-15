@@ -1236,13 +1236,15 @@ class Consultation extends CI_Controller
         echo json_encode($data);
     }
 
-    public function deleteDischargeFollowup()
+    public function deleteDischargeFollowup($patientDbId, $id)
     {
-        $id = $this->input->post('id');
+        if ($this->ConsultModel->deleteDischargeFollowup($id)) {
+            $this->session->set_flashdata('showSuccessMessage', 'Discharge follow-up deleted successfully.');
+        } else {
+            $this->session->set_flashdata('showErrorMessage', 'Failed to delete discharge follow-up.');
+        }
 
-        $this->ConsultModel->deleteDischargeFollowup($id);
-
-        echo json_encode(['status' => 'success']);
+        redirect('Consultation/consultation/' . $patientDbId);
     }
 
 

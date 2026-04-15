@@ -2210,7 +2210,7 @@
 
                                                             <!-- Delete -->
                                                             <button class="btn btn-danger btn-sm"
-                                                                onclick="confirmDeleteDischargeFollowup(<?= $plan['id'] ?>,'<?php echo date('d M Y', strtotime($plan['appointment_date'])); ?>')">
+                                                                onclick="confirmDeleteDischargeFollowup(<?php echo $plan['patient_id'] ?>, <?php echo $plan['id'] ?>, '<?php echo date('d M Y', strtotime($plan['appointment_date'])); ?>')">
                                                                 <i class="bi bi-trash"></i>
                                                             </button>
                                                         </td>
@@ -8314,13 +8314,14 @@
             });
         }
 
-        function confirmDeleteDischargeFollowup(id, appointmentDate) {
+        function confirmDeleteDischargeFollowup(patientDbId, id, appointmentDate) {
             openGlobalDeleteModal({
                 title: 'Delete Discharge Follow-up Plan',
                 body: `Are you sure you want to delete this follow-up scheduled for the appointment date <strong>${appointmentDate}</strong>?`,
-                type: 'fetch',
+                type: 'redirect',
+                patientId: patientDbId,
                 recordId: id,
-                url: "<?= base_url('Consultation/deleteDischargeFollowup') ?>"
+                url: "<?php echo site_url('Consultation/deleteDischargeFollowup/') ?>"
             });
         }
 
@@ -8328,24 +8329,7 @@
             const btn = this;
             btn.disabled = true;
 
-            if (deleteConfig.type === 'redirect') {
-                window.location.href = deleteConfig.url + deleteConfig.patientId + "/" + deleteConfig.recordId;
-            }
-            else if (deleteConfig.type === 'fetch') {
-                fetch(deleteConfig.url, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                    body: "id=" + deleteConfig.recordId
-                })
-                    .then(res => res.json())
-                    .then(data => {
-                        location.reload();
-                    })
-                    .catch(err => {
-                        console.error(err);
-                        btn.disabled = false;
-                    });
-            }
+            window.location.href = deleteConfig.url + deleteConfig.patientId + "/" + deleteConfig.recordId;
         });
     </script>
 

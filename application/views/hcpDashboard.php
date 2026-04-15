@@ -519,6 +519,69 @@
                     </div>
                 </div>
 
+                <!-- Section 4 -->
+                <!-- Discharge Follow-up Summary -->
+                <div class="card col-12 rounded-5 mx-1 mt-3">
+                    <div class="card-body p-4">
+
+                        <p style="font-size:20px;font-weight:500;color:#00ad8e"
+                            class="pb-3 d-flex justify-content-between align-items-center">
+                            <span><i class="bi bi-calendar-check pe-3"></i>Follow-ups (Post Discharge)</span>
+
+                            <span id="followupCount" class="px-2"
+                                style="font-size:16px;color:#00ad8e;border:2px solid #00ad8e;border-radius:50%;">0</span>
+                        </p>
+
+                        <div class="rounded-4 px-3">
+
+                            <!-- Date Header -->
+                            <div class="d-flex justify-content-between align-items-center mb-3"
+                                style="background:#fff;color:#00ad8e;border-radius:12px;padding:10px 20px;border:2px solid #00ad8e">
+
+                                <button id="prevDayBtnFollowup" class="btn btn-link p-0"
+                                    style="font-size:1.5rem;color:#00ad8e">
+                                    <i class="bi bi-chevron-left"></i>
+                                </button>
+
+                                <div class="text-center">
+                                    <h5 class="mb-0 fw-semibold d-flex align-items-center gap-2 justify-content-center">
+                                        <span id="followupDate"></span>
+
+                                        <input type="date" id="followupCalendar"
+                                            style="opacity:0;position:absolute;pointer-events:none">
+
+                                        <i class="bi bi-calendar-event ms-md-3 ms-1" id="followupCalendarIcon"
+                                            style="cursor:pointer;font-size:1.5rem"></i>
+                                    </h5>
+                                    <small id="followupDay"></small>
+                                </div>
+
+                                <button id="nextDayBtnFollowup" class="btn btn-link p-0"
+                                    style="font-size:1.5rem;color:#00ad8e">
+                                    <i class="bi bi-chevron-right"></i>
+                                </button>
+                            </div>
+
+                            <!-- Table -->
+                            <div class="table-responsive" style="max-height:300px">
+                                <table class="table align-middle mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th>S.No</th>
+                                            <th>Patient ID</th>
+                                            <th>Patient Name</th>
+                                            <th>Mobile Number</th>
+                                            <th>Status</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="followupTableBody"></tbody>
+                                </table>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
             </section>
 
             <!-- Completed Consultations script -->
@@ -739,6 +802,159 @@
 
                     loadAppointments();
                 });
+            </script>
+
+            <!-- Discharge followup summary script -->
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+
+                    const dateEl = document.getElementById('followupDate');
+                    const dayEl = document.getElementById('followupDay');
+                    const tbody = document.getElementById('followupTableBody');
+                    const prevBtn = document.getElementById('prevDayBtnFollowup');
+                    const nextBtn = document.getElementById('nextDayBtnFollowup');
+                    const calIn = document.getElementById('followupCalendar');
+                    const calIcon = document.getElementById('followupCalendarIcon');
+                    const countEl = document.getElementById('followupCount');
+
+                    let currentDate = new Date();
+                    const today = new Date();
+
+                    const baseUrl = '<?= base_url("Healthcareprovider/getDischargeFollwupByDate") ?>';
+
+                    function formatDisplayDate(date) {
+                        return date.toLocaleDateString('en-GB', {
+                            day: '2-digit', month: 'short', year: 'numeric'
+                        });
+                    }
+
+                    function formatApiDate(date) {
+                        return date.toISOString().split('T')[0];
+                    }
+
+                    function updateHeader() {
+                        dateEl.textContent = formatDisplayDate(currentDate);
+                        dayEl.textContent = currentDate.toLocaleDateString('en-US', { weekday: 'long' });
+                        calIn.value = formatApiDate(currentDate);
+                    }
+
+                    function loadFollowups() {
+                        updateHeader();
+
+                        tbody.innerHTML = `<tr><td colspan="6" class="text-center py-4">Loading...</td></tr>`;
+
+                        fetch(`${baseUrl}?date=${formatApiDate(currentDate)}`)
+                            .then(res => res.json())
+                            .then(res => {
+
+                                if (res.success && res.data.length) {
+                                    renderFollowups(res.data);
+                                    countEl.textContent = res.data.length;
+                                } else {
+                                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="6" class="text-center text-muted py-4">
+                                No follow-ups
+                            </td>
+                        </tr>`;
+                                    countEl.textContent = 0;
+                                }
+                            });
+                    }
+
+                    function renderFollowups(data) {
+
+                        tbody.innerHTML = '';
+
+                        data.forEach((row, i) => {
+
+                            const selected = new Date(formatApiDate(currentDate));
+                            const todayDate = new Date(formatApiDate(today));
+
+                            let status = 'Pending';
+                            let badge = 'bg-warning';
+
+                            if (row.status === 'completed') {
+                                status = 'Completed';
+                                badge = 'bg-success';
+                            } else if (selected < todayDate) {
+                                status = 'Missed';
+                                badge = 'bg-danger';
+                            } else if (selected > todayDate) {
+                                status = 'Upcoming';
+                                badge = 'bg-secondary';
+                            }
+
+                            let disableBtn = selected > todayDate ? 'disabled' : '';
+
+                            tbody.innerHTML += `
+                <tr>
+                    <td>${i + 1}.</td>
+                    <td>${row.patientId}</td>
+                    <td>${row.patient_name}</td>
+                    <td>${row.mobileNumber}</td>
+
+                    <td>
+                        <span class="badge ${badge}">${status}</span>
+                    </td>
+
+                    <td>
+                        <button 
+                            class="btn btn-sm"
+                            style="background:#00ad8e;color:#fff"
+                            ${disableBtn}
+                            onclick="openRemarksModal(${row.id})">
+                            Done
+                        </button>
+                    </td>
+                </tr>`;
+                        });
+                    }
+
+                    prevBtn.onclick = () => {
+                        currentDate.setDate(currentDate.getDate() - 1);
+                        loadFollowups();
+                    };
+
+                    nextBtn.onclick = () => {
+                        currentDate.setDate(currentDate.getDate() + 1);
+                        loadFollowups();
+                    };
+
+                    calIcon.onclick = () => calIn.showPicker();
+
+                    calIn.onchange = () => {
+                        currentDate = new Date(calIn.value);
+                        loadFollowups();
+                    };
+
+                    loadFollowups();
+                });
+
+                function openRemarksModal(id) {
+                    document.getElementById('followupId').value = id;
+                    document.getElementById('remarksInput').value = '';
+
+                    let modal = new bootstrap.Modal(document.getElementById('remarksModal'));
+                    modal.show();
+                }
+
+                function submitFollowup() {
+                    const id = document.getElementById('followupId').value;
+                    const remarks = document.getElementById('remarksInput').value;
+
+                    fetch("<?= base_url('Healthcareprovider/mark_discharge_followup_done') ?>", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/x-www-form-urlencoded"
+                        },
+                        body: "id=" + encodeURIComponent(id) + "&remarks=" + encodeURIComponent(remarks)
+                    })
+                        .then(res => res.json())
+                        .then(data => {
+                            location.reload();
+                        });
+                }
             </script>
 
             <?php
@@ -1339,7 +1555,7 @@ Thank you.`;
                                                     <!-- Hover catcher -->
                                                     <div
                                                         style="position:absolute;top:0;left:0;width:24px;height:24px;cursor:not-allowed;
-                                                                                                                                                                                                                "
+                                                                                                                                                                                                                                                                "
                                                         onmouseenter="this.nextElementSibling.style.display='flex'"
                                                         onmouseleave="this.nextElementSibling.style.display='none'"
                                                     ></div>

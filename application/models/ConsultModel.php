@@ -1087,7 +1087,7 @@ class ConsultModel extends CI_Model
         return $this->db->insert('sugar_chart', $data);
     }
 
-    public function getMonthlyData($patientId)
+    public function getSugarMonthlyData($patientId)
     {
         $this->db->select('*');
         $this->db->from('sugar_chart');
@@ -1112,6 +1112,39 @@ class ConsultModel extends CI_Model
         $this->db->where('id', $sugarRecordId);
         return $this->db->delete('sugar_chart');
     }
+
+    public function saveDischargeFollowUp($data)
+    {
+        $this->db->insert('discharge_followup_plan ', $data);
+        return $this->db->insert_id();
+    }
+
+    public function getDischargeFollowUp($patientId)
+    {
+        $this->db->select('*');
+        $this->db->from('discharge_followup_plan');
+        $this->db->where('patient_id', $patientId);
+        $this->db->order_by('created_at', 'DESC');
+
+        $query = $this->db->get();
+        return $query->result_array();
+    }
+
+    public function getDischargeFollowupsByPlan($plan_id)
+    {
+        return $this->db->where('plan_id', $plan_id)
+            ->order_by('followup_date', 'ASC')
+            ->get('patient_followups')
+            ->result_array();
+    }
+
+    public function deleteDischargeFollowup($id)
+    {
+        return $this->db->where('id', $id)
+            ->delete('discharge_followup_plan');
+    }
+
+
 
 
 }

@@ -62,6 +62,83 @@
         .role-hcp .video-placeholder,
         .video-player.role-hcp .video-placeholder {
             background: #00ad8e;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        .role-hcp .video-placeholder.show-banner,
+        .video-player.role-hcp .video-placeholder.show-banner {
+            display: flex !important;
+        }
+
+        .hcp-banner-content {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #8cfce5 0%, #cef5ee 100%);
+            padding: 24px;
+            text-align: center;
+        }
+
+        .hcp-banner-content.active {
+            display: flex;
+        }
+
+        .hcp-banner-content img {
+            max-width: 80px;
+            height: auto;
+            margin-bottom: 16px;
+            animation: fadeInUp 0.6s ease;
+        }
+
+        .hcp-banner-content h3 {
+            font-size: 1.5rem;
+            color: #1a2332;
+            margin: 8px 0;
+            font-weight: 700;
+        }
+
+        .hcp-banner-content p {
+            font-size: 0.95rem;
+            color: #555555;
+            margin: 8px 0 0 0;
+            line-height: 1.5;
+        }
+
+        .hcp-banner-content .banner-description {
+            font-size: 0.85rem;
+            color: #666666;
+            margin: 12px 0 0 0;
+            line-height: 1.4;
+            max-width: 300px;
+        }
+
+        /* Hide avatar when banner is active */
+        .hcp-banner-content.active~.avatar-circle {
+            display: none !important;
+        }
+
+        /* Show banner for HCP in both local and remote views */
+        #player-local .hcp-banner-content.active,
+        .video-player:not(#player-local) .hcp-banner-content.active {
+            display: flex !important;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .role-cc .video-placeholder,
@@ -594,6 +671,13 @@
                 <div class="preview-wrapper">
                     <div id="local-preview-container"></div>
                     <div id="lobby-placeholder" class="video-placeholder" style="border-radius: 20px;">
+                        <div class="hcp-banner-content">
+                            <img src="<?php echo base_url(); ?>assets/edf_logo.png" alt="EDF Logo" />
+                            <h3 style="color: #005844;">MAARUTHI MEDICAL CENTRE AND HOSPITALS</h3>
+                            <!-- <p style="font-weight:600;">Dr. A.S.SENTHILVELU, M.D., FICP</p> -->
+                            <p style="font-weight:600;">Expert Diabetes Care, Anytime. Anywhere.</p>
+                            <p class="banner-description">Access Quality Diabetes Care Through Online Consultation.</p>
+                        </div>
                         <div class="avatar-circle"></div>
                     </div>
 
@@ -627,6 +711,12 @@
         <div id="video-grid">
             <div id="player-local" class="floating-self">
                 <div id="placeholder-local" class="video-placeholder">
+                    <div class="hcp-banner-content">
+                        <img src="<?php echo base_url(); ?>assets/edf_logo.png" alt="EDF Logo" />
+                        <h3 style="color: #005844;">MAARUTHI MEDICAL CENTRE AND HOSPITALS</h3>
+                        <p style="font-weight:600;">Expert Diabetes Care, Anytime. Anywhere.</p>
+                        <p class="banner-description">Access Quality Diabetes Care Through Online Consultation.</p>
+                    </div>
                     <div class="avatar-circle"></div>
                 </div>
                 <div class="name-label"></div>
@@ -728,6 +818,19 @@
             placeholder.id = `placeholder-${uid}`;
             placeholder.className = 'video-placeholder';
 
+            // Add banner content for HCP (for remote users only)
+            if (role === 'hcp') {
+                const bannerContent = document.createElement('div');
+                bannerContent.className = 'hcp-banner-content active';
+                bannerContent.innerHTML = `
+                    <img src="<?php echo base_url(); ?>assets/edf_logo.png" alt="EDF Logo" />
+                    <h3>ERODE DIABETES FOUNDATION</h3>
+                    <p>${getDisplayName(name, role)}</p>
+                    <p class="banner-description">Expert online diabetes consultation from the comfort of your home. Book appointments, connect with specialists, and manage your health digitally.</p>
+                `;
+                placeholder.appendChild(bannerContent);
+            }
+
             const avatar = document.createElement('div');
             avatar.className = 'avatar-circle';
             let initial = (name && name.length > 0) ? name.charAt(0).toUpperCase() : '?';
@@ -785,6 +888,15 @@
                 const placeholderId = isJoined ? 'placeholder-local' : 'lobby-placeholder';
 
                 togglePlaceholder(placeholderId, !enabled);
+
+                // Show/hide banner for HCP when video is disabled (both local and remote views)
+                if (options.role === 'hcp') {
+                    const placeholder = document.getElementById(placeholderId);
+                    const bannerContent = placeholder?.querySelector('.hcp-banner-content');
+                    if (bannerContent) {
+                        bannerContent.classList.toggle('active', !enabled);
+                    }
+                }
 
                 if (!enabled) {
                     const container = document.getElementById(containerId);
@@ -853,6 +965,14 @@
             // FIX: Show placeholder if Audio Mode, Hide if Video Mode
             togglePlaceholder('lobby-placeholder', isAudioOnly);
 
+            // Show banner for HCP if video is disabled initially
+            if (options.role === 'hcp' && isAudioOnly) {
+                const bannerContent = document.querySelector('#lobby-placeholder .hcp-banner-content');
+                if (bannerContent) {
+                    bannerContent.classList.add('active');
+                }
+            }
+
             // 3. Setup Initial Local Player (Self View in Call)
             document.querySelector('#placeholder-local .avatar-circle').innerText = localInitial;
             document.querySelector('#player-local .name-label').innerText = getDisplayName(options.localName, options.role);
@@ -892,8 +1012,20 @@
             if (localTracks.videoTrack && localTracks.videoTrack.enabled) {
                 safePlay(localTracks.videoTrack, 'player-local');
                 togglePlaceholder('placeholder-local', false);
+                // Hide banner when video is on
+                const bannerContent = document.querySelector('#placeholder-local .hcp-banner-content');
+                if (bannerContent) {
+                    bannerContent.classList.remove('active');
+                }
             } else {
                 togglePlaceholder('placeholder-local', true);
+                // Show banner for HCP when video is off
+                if (options.role === 'hcp') {
+                    const bannerContent = document.querySelector('#placeholder-local .hcp-banner-content');
+                    if (bannerContent) {
+                        bannerContent.classList.add('active');
+                    }
+                }
             }
 
             document.getElementById('call-mic-btn').classList.toggle('active', !localTracks.audioTrack.enabled);
@@ -915,7 +1047,24 @@
                     await client.subscribe(user, "video");
                     safePlay(user.videoTrack, userInfo.wrapperId);
                     togglePlaceholder(`placeholder-${uid}`, false);
+
+                    // Hide banner when video is playing
+                    const bannerContent = document.querySelector(`#placeholder-${uid} .hcp-banner-content`);
+                    if (bannerContent) {
+                        bannerContent.classList.remove('active');
+                    }
+
                     userInfo.hasVideo = true;
+                } else {
+                    // Show banner if user has no video
+                    const role = getRoleFromUid(uid);
+                    if (role === 'hcp') {
+                        togglePlaceholder(`placeholder-${uid}`, true);
+                        const bannerContent = document.querySelector(`#placeholder-${uid} .hcp-banner-content`);
+                        if (bannerContent) {
+                            bannerContent.classList.add('active');
+                        }
+                    }
                 }
                 if (user.hasAudio) {
                     await client.subscribe(user, "audio");
@@ -953,6 +1102,13 @@
             if (mediaType === "video") {
                 safePlay(user.videoTrack, userInfo.wrapperId);
                 togglePlaceholder(`placeholder-${uid}`, false);
+
+                // Hide banner when video is published
+                const bannerContent = document.querySelector(`#placeholder-${uid} .hcp-banner-content`);
+                if (bannerContent) {
+                    bannerContent.classList.remove('active');
+                }
+
                 userInfo.hasVideo = true;
             }
             if (mediaType === "audio") user.audioTrack.play();
@@ -963,6 +1119,16 @@
                 const userInfo = remoteUsers.get(user.uid);
                 if (userInfo && userInfo.hasVideo) {
                     togglePlaceholder(`placeholder-${user.uid}`, true);
+
+                    // Show banner for HCP when video is unpublished
+                    const role = getRoleFromUid(user.uid);
+                    if (role === 'hcp') {
+                        const bannerContent = document.querySelector(`#placeholder-${user.uid} .hcp-banner-content`);
+                        if (bannerContent) {
+                            bannerContent.classList.add('active');
+                        }
+                    }
+
                     userInfo.hasVideo = false;
                 }
             }

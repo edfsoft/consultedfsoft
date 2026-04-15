@@ -894,7 +894,7 @@
                     <td><a href="<?php echo base_url('Consultation/consultation/'); ?>${row.patientDbId}" class="fieldLink text-dark">${row.patient_name}</a></td>
                     <td><a href="<?php echo base_url('Consultation/consultation/'); ?>${row.patientDbId}" class="fieldLink text-dark">${row.mobileNumber}</a></td>
                     <td><span class="badge ${badge}">${status}</span></td>
-                    <td><button class="btn btn-sm" style="background:#00ad8e;color:#fff" ${disableBtn}
+                    <td><button id="doneBtn-${row.id}" class="btn btn-sm" style="background:#00ad8e;color:#fff" ${disableBtn}
                             onclick="openRemarksModal(${row.id})">Done</button>
                     </td>
                 </tr>`;
@@ -942,7 +942,20 @@
                     })
                         .then(res => res.json())
                         .then(data => {
-                            location.reload();
+                            // Close the modal
+                            let modalEl = document.getElementById('remarksModal');
+                            let modal = bootstrap.Modal.getInstance(modalEl);
+                            modal.hide();
+
+                            // Remove the row and update count
+                            const btn = document.getElementById(`doneBtn-${id}`);
+                            if (btn) {
+                                const row = btn.closest('tr');
+                                row.remove();
+                                // Decrement count
+                                const countEl = document.getElementById('followupCount');
+                                countEl.textContent = Math.max(0, parseInt(countEl.textContent) - 1);
+                            }
                         });
                 }
             </script>
@@ -1545,7 +1558,7 @@ Thank you.`;
                                                     <!-- Hover catcher -->
                                                     <div
                                                         style="position:absolute;top:0;left:0;width:24px;height:24px;cursor:not-allowed;
-                                                                                                                                                                                                                                                                                                "
+                                                                                                                                                                                                                                                                                                        "
                                                         onmouseenter="this.nextElementSibling.style.display='flex'"
                                                         onmouseleave="this.nextElementSibling.style.display='none'"
                                                     ></div>

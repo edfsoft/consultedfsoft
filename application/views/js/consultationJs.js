@@ -1,3 +1,37 @@
+// Toggle visibility and icon for all fields in consultation page
+document.querySelectorAll(".toggle-label").forEach((label) => {
+	label.addEventListener("click", function (e) {
+		const container = label.nextElementSibling;
+		const icon = label.querySelector(".toggle-icon");
+		const isOpening = !container.classList.contains("show");
+
+		if (isOpening) {
+			document
+				.querySelectorAll(".field-container.collapse")
+				.forEach((otherContainer) => {
+					if (
+						otherContainer !== container &&
+						otherContainer.classList.contains("show")
+					) {
+						otherContainer.classList.remove("show");
+						const otherLabel = otherContainer.previousElementSibling;
+						if (otherLabel) {
+							const otherIcon = otherLabel.querySelector(".toggle-icon");
+							if (otherIcon) otherIcon.textContent = "+";
+						}
+					}
+				});
+		}
+		if (isOpening) {
+			container.classList.add("show");
+			icon.textContent = "-";
+		} else {
+			container.classList.remove("show");
+			icon.textContent = "+";
+		}
+	});
+});
+
 // Consulation page tab control
 document.addEventListener("DOMContentLoaded", function () {
 	const tabs = document.querySelectorAll("#consultationTabs button");

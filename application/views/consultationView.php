@@ -419,31 +419,31 @@
                     <div class="card-body mx-3 px-md-4">
                         <ul class="nav nav-tabs mb-3" id="consultationTabs" role="tablist">
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link active btn" id="new-tab" data-bs-toggle="tab"
+                                <button class="nav-link active btn" id="dashboard-tab" data-bs-toggle="tab"
                                     data-bs-target="#consultation-dashboard" type="button" role="tab">
                                     Consultation Dashboard
                                 </button>
                             </li>
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link btn" id="new-tab" data-bs-toggle="tab"
+                                <button class="nav-link btn" id="consultation-tab" data-bs-toggle="tab"
                                     data-bs-target="#new-consultation" type="button" role="tab">
                                     New Consultation
                                 </button>
                             </li>
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link btn" id="new-tab" data-bs-toggle="tab" data-bs-target="#sugar-chart"
-                                    type="button" role="tab">
+                                <button class="nav-link btn" id="sugar-tab" data-bs-toggle="tab"
+                                    data-bs-target="#sugar-chart" type="button" role="tab">
                                     Sugar Chart
                                 </button>
                             </li>
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link btn" id="new-tab" data-bs-toggle="tab"
-                                    data-bs-target="#sugarChartForm" type="button" role="tab">
+                                <button class="nav-link btn" id="sugar-form-tab" data-bs-toggle="tab"
+                                    data-bs-target="#sugar-chart-form" type="button" role="tab">
                                     Sugar Chart Form
                                 </button>
                             </li>
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link btn" id="new-tab" data-bs-toggle="tab"
+                                <button class="nav-link btn" id="followup-tab" data-bs-toggle="tab"
                                     data-bs-target="#post-discharge-follow-up" type="button" role="tab">
                                     Post-Discharge Follow-up
                                 </button>
@@ -2030,7 +2030,7 @@
                             </div>
 
                             <!-- Sugar Chart Form -->
-                            <div class="tab-pane fade" id="sugarChartForm" role="tabpanel">
+                            <div class="tab-pane fade" id="sugar-chart-form" role="tabpanel">
                                 <p class="fs-5 fw-semibold mb-3">Sugar Chart Form:</p>
                                 <form method="post" action="<?= base_url('Consultation/saveSugarValues') ?>" class="pb-5">
                                     <input type="hidden" name="patient_id" value="<?= $patient_id ?>">
@@ -2236,6 +2236,42 @@
                     </div>
                 </div>
             </section>
+            <script>
+                document.addEventListener("DOMContentLoaded", function () {
+
+                    const tabs = document.querySelectorAll('#consultationTabs button');
+                    let hash = window.location.hash;
+
+                    // 🔹 If URL has hash → open that tab
+                    if (hash) {
+                        let triggerEl = document.querySelector(`button[data-bs-target="${hash}"]`);
+                        if (triggerEl) {
+                            new bootstrap.Tab(triggerEl).show();
+                        }
+                    }
+                    // 🔹 If NO hash → open first tab AND update URL
+                    else {
+                        let firstTab = tabs[0];
+                        if (firstTab) {
+                            let target = firstTab.getAttribute("data-bs-target");
+
+                            new bootstrap.Tab(firstTab).show();
+
+                            // ✅ Update URL on first load
+                            history.replaceState(null, null, target);
+                        }
+                    }
+
+                    // 🔹 Update URL when user switches tabs
+                    tabs.forEach(button => {
+                        button.addEventListener('shown.bs.tab', function (event) {
+                            const target = event.target.getAttribute("data-bs-target");
+                            history.replaceState(null, null, target);
+                        });
+                    });
+
+                });
+            </script>
 
         <?php } elseif ($method == "followupConsult") { ?>
             <section>

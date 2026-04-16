@@ -550,28 +550,6 @@
     </div>
 </div>
 
-<!-- Delete Confirmation Modal - consultation, sugar chart, discharge followup  -->
-<div class="modal fade" id="globalDeleteModal" tabindex="-1" aria-labelledby="globalDeleteModalLabel" aria-hidden="true"
-    data-bs-backdrop="static" data-bs-keyboard="false">
-    <div class="modal-dialog">
-        <div class="modal-content border-0 rounded-3 shadow">
-            <div class="modal-header text-dark rounded-top-3">
-                <h5 class="modal-title fw-medium" style="font-family: Poppins, sans-serif;" id="globalDeleteModalLabel">
-                    Confirm Delete
-                </h5>
-                <button type="button" class="btn-close btn-close-dark" data-bs-dismiss="modal"
-                    aria-label="Close"></button>
-            </div>
-            <div class="modal-body" id="globalDeleteModalBody">
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-danger" id="confirmGlobalDeleteBtn">Delete</button>
-            </div>
-        </div>
-    </div>
-</div>
-
 <!-- Modal for Adding Discharge Follow-up Plan -->
 <div class="modal fade" id="followupModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog modal-lg">
@@ -643,82 +621,24 @@
     </div>
 </div>
 
-<!-- Discharge follow-up plan modal trigger script -->
-<script>
-    document.getElementById('openFollowupModal').addEventListener('click', function () {
-        var patientId = this.getAttribute('data-patient-id');
-
-        document.getElementById('modal_patient_id').value = patientId;
-
-        var modal = new bootstrap.Modal(document.getElementById('followupModal'));
-        modal.show();
-    });
-
-    function validateFollowupForm() {
-
-        let isValid = true;
-
-        let appointment = document.getElementById('appointment_date').value;
-        let discharge = document.getElementById('discharge_date').value;
-        let review = document.getElementById('next_review_date').value;
-        let interval = document.getElementById('interval_days').value;
-
-        document.getElementById('appointment_date_err').innerText = '';
-        document.getElementById('discharge_date_err').innerText = '';
-        document.getElementById('review_date_err').innerText = '';
-        document.getElementById('interval_err').innerText = '';
-
-        if (!appointment) {
-            document.getElementById('appointment_date_err').innerText = 'Appointment date is required';
-            isValid = false;
-        }
-
-        if (!discharge) {
-            document.getElementById('discharge_date_err').innerText = 'Discharge date is required';
-            isValid = false;
-        }
-
-        if (!review) {
-            document.getElementById('review_date_err').innerText = 'Review date is required';
-            isValid = false;
-        }
-
-        if (!interval) {
-            document.getElementById('interval_err').innerText = 'Interval is required';
-            isValid = false;
-        }
-
-        if (!isValid) return false;
-
-        let appDate = new Date(appointment);
-        let disDate = new Date(discharge);
-        let revDate = new Date(review);
-
-        if (appDate > disDate) {
-            document.getElementById('appointment_date_err').innerText =
-                'Appointment date must be before or same as discharge date';
-            isValid = false;
-        }
-
-        if (revDate <= disDate) {
-            document.getElementById('review_date_err').innerText =
-                'Review date must be after discharge date';
-            isValid = false;
-        }
-
-        if (interval < 1) {
-            document.getElementById('interval_err').innerText =
-                'Interval must be at least 1 day';
-            isValid = false;
-        }
-
-        let diffDays = Math.floor((revDate - disDate) / (1000 * 60 * 60 * 24));
-
-        if (interval > diffDays) {
-            document.getElementById('interval_err').innerText =
-                'Interval must not exceed the days between discharge and review date';
-            isValid = false;
-        }
-        return isValid;
-    }
-</script>
+<!-- Delete Confirmation Modal - consultation, sugar chart, discharge followup  -->
+<div class="modal fade" id="globalDeleteModal" tabindex="-1" aria-labelledby="globalDeleteModalLabel" aria-hidden="true"
+    data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content border-0 rounded-3 shadow">
+            <div class="modal-header text-dark rounded-top-3">
+                <h5 class="modal-title fw-medium" style="font-family: Poppins, sans-serif;" id="globalDeleteModalLabel">
+                    Confirm Delete
+                </h5>
+                <button type="button" class="btn-close btn-close-dark" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="globalDeleteModalBody">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger" id="confirmGlobalDeleteBtn">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>

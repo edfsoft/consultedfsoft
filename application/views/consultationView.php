@@ -2236,42 +2236,6 @@
                     </div>
                 </div>
             </section>
-            <script>
-                document.addEventListener("DOMContentLoaded", function () {
-
-                    const tabs = document.querySelectorAll('#consultationTabs button');
-                    let hash = window.location.hash;
-
-                    // 🔹 If URL has hash → open that tab
-                    if (hash) {
-                        let triggerEl = document.querySelector(`button[data-bs-target="${hash}"]`);
-                        if (triggerEl) {
-                            new bootstrap.Tab(triggerEl).show();
-                        }
-                    }
-                    // 🔹 If NO hash → open first tab AND update URL
-                    else {
-                        let firstTab = tabs[0];
-                        if (firstTab) {
-                            let target = firstTab.getAttribute("data-bs-target");
-
-                            new bootstrap.Tab(firstTab).show();
-
-                            // ✅ Update URL on first load
-                            history.replaceState(null, null, target);
-                        }
-                    }
-
-                    // 🔹 Update URL when user switches tabs
-                    tabs.forEach(button => {
-                        button.addEventListener('shown.bs.tab', function (event) {
-                            const target = event.target.getAttribute("data-bs-target");
-                            history.replaceState(null, null, target);
-                        });
-                    });
-
-                });
-            </script>
 
         <?php } elseif ($method == "followupConsult") { ?>
             <section>
@@ -2875,7 +2839,6 @@
                         </div>
                     </div>
             </section>
-
 
             <!-------------------------- Edit Consultant -->
         <?php } elseif ($method == "editConsult") { ?>
@@ -4009,6 +3972,40 @@
 
     <!-- ******************************************************************************************************************************************** -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Consulation page tab control -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+            const tabs = document.querySelectorAll('#consultationTabs button');
+            let hash = window.location.hash;
+
+            if (hash) {
+                let triggerEl = document.querySelector(`button[data-bs-target="${hash}"]`);
+                if (triggerEl) {
+                    new bootstrap.Tab(triggerEl).show();
+                }
+            }
+            else {
+                let firstTab = tabs[0];
+                if (firstTab) {
+                    let target = firstTab.getAttribute("data-bs-target");
+
+                    new bootstrap.Tab(firstTab).show();
+
+                    history.replaceState(null, null, target);
+                }
+            }
+
+            tabs.forEach(button => {
+                button.addEventListener('shown.bs.tab', function (event) {
+                    const target = event.target.getAttribute("data-bs-target");
+                    history.replaceState(null, null, target);
+                });
+            });
+
+        });
+    </script>
 
     <!-- Previous and Next arrows script in consulation dashboard page -->
     <script>

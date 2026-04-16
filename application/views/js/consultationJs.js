@@ -1,3 +1,69 @@
+// Consulation page tab control
+document.addEventListener("DOMContentLoaded", function () {
+	const tabs = document.querySelectorAll("#consultationTabs button");
+	let hash = window.location.hash;
+
+	if (hash) {
+		let triggerEl = document.querySelector(`button[data-bs-target="${hash}"]`);
+		if (triggerEl) {
+			new bootstrap.Tab(triggerEl).show();
+		}
+	} else {
+		let firstTab = tabs[0];
+		if (firstTab) {
+			let target = firstTab.getAttribute("data-bs-target");
+
+			new bootstrap.Tab(firstTab).show();
+
+			history.replaceState(null, null, target);
+		}
+	}
+
+	tabs.forEach((button) => {
+		button.addEventListener("shown.bs.tab", function (event) {
+			const target = event.target.getAttribute("data-bs-target");
+			history.replaceState(null, null, target);
+		});
+	});
+});
+
+// Previous and Next arrows script in consulation dashboard page
+let currentIndex = 0;
+const consultationItems = document.querySelectorAll(".consultation-item");
+const totalItems = consultationItems.length;
+const counterDisplay = document.getElementById("consultation-counter");
+const navLeft = document.getElementById("nav-left");
+const navRight = document.getElementById("nav-right");
+
+function updateCounterAndButtons() {
+	counterDisplay.textContent = ` ${currentIndex + 1} of ${totalItems} `;
+	navLeft.disabled = currentIndex === 0;
+	navRight.disabled = currentIndex === totalItems - 1;
+}
+
+function navigateConsultations(direction) {
+	if (
+		(direction === -1 && currentIndex === 0) ||
+		(direction === 1 && currentIndex === totalItems - 1)
+	) {
+		return;
+	}
+	consultationItems[currentIndex].classList.remove("active");
+	currentIndex = (currentIndex + direction + totalItems) % totalItems;
+	consultationItems[currentIndex].classList.add("active");
+	updateCounterAndButtons();
+}
+
+document.addEventListener("keydown", function (event) {
+	if (event.key === "ArrowLeft" && currentIndex > 0) {
+		navigateConsultations(-1);
+	} else if (event.key === "ArrowRight" && currentIndex < totalItems - 1) {
+		navigateConsultations(1);
+	}
+});
+
+updateCounterAndButtons();
+
 //  Toggle month content visibility and icon - Sugar Chart
 document.querySelectorAll(".toggle-btn").forEach((button) => {
 	button.addEventListener("click", function () {

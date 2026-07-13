@@ -602,25 +602,69 @@
             <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
             <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
             <style>
-                .flatpickr-day.disabled,
-                .flatpickr-day.disabled:hover {
-                    color: #ccc !important;
-                    background: #f7f7f7 !important;
-                    cursor: not-allowed !important;
-                    text-decoration: line-through;
+                /* ── All calendar days: base visible style ── */
+                .flatpickr-day {
+                    border-radius: 6px !important;
                 }
+
+                /* ── Disabled dates: clearly visible, not selectable ── */
+                .flatpickr-day.disabled,
+                .flatpickr-day.disabled:hover,
+                .flatpickr-day.flatpickr-disabled,
+                .flatpickr-day.flatpickr-disabled:hover {
+                    color: #333 !important;
+                    background: #e0e0e0 !important;
+                    border: 1px solid #ccc !important;
+                    border-radius: 6px !important;
+                    cursor: not-allowed !important;
+                    text-decoration: none !important;
+                    opacity: 1 !important;
+                }
+
+                /* ── Selectable (follow-up) dates: green highlight ── */
+                .flatpickr-day:not(.disabled):not(.flatpickr-disabled):not(.prevMonthDay):not(.nextMonthDay) {
+                    background: #e6f7f3 !important;
+                    color: #007a63 !important;
+                    font-weight: 700 !important;
+                    border: 1.5px solid #00ad8e !important;
+                }
+
+                /* ── Selected date ── */
+                .flatpickr-day.selected,
+                .flatpickr-day.selected:hover {
+                    background: #00ad8e !important;
+                    color: #fff !important;
+                    border-color: #00ad8e !important;
+                }
+
+                /* ── Today marker ── */
+                .flatpickr-day.today:not(.selected) {
+                    border-color: #00ad8e !important;
+                }
+
+                /* ── Prev/next month faded days ── */
+                .flatpickr-day.prevMonthDay,
+                .flatpickr-day.nextMonthDay {
+                    color: #ccc !important;
+                    background: transparent !important;
+                    cursor: not-allowed !important;
+                    pointer-events: none;
+                }
+
                 .flatpickr-input { cursor: pointer; }
-                #fuDlFromDate, #fuDlToDate { background:#fff; }
+                #fuDlFromDate, #fuDlToDate { background: #fff; }
             </style>
 
-            <div class="modal fade" id="followUpDownloadModal" tabindex="-1" aria-labelledby="followUpDownloadModalLabel" aria-hidden="true">
+
+            <div class="modal fade" id="followUpDownloadModal" tabindex="-1" aria-labelledby="followUpDownloadModalLabel" aria-hidden="true"
+                 data-bs-backdrop="static" data-bs-keyboard="false">
                 <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
                     <div class="modal-content" style="border-radius:16px;font-family:'Poppins',sans-serif;">
 
                         <!-- Modal Header -->
                         <div class="modal-header" style="background:#00ad8e;color:#fff;border-radius:16px 16px 0 0;">
                             <h5 class="modal-title fw-semibold" id="followUpDownloadModalLabel">
-                                <i class="bi bi-download me-2"></i> Download Follow-up List
+                                <i class="bi bi-download me-2"></i> Download Next Follow-up List
                             </h5>
                             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                         </div>
@@ -636,6 +680,9 @@
                                     </label>
                                     <input type="text" id="fuDlFromDate" class="form-control" placeholder="Select from date"
                                         style="border:2px solid #00ad8e;border-radius:10px;" readonly>
+                                    <div id="fuDlFromErr" class="d-none mt-1" style="font-size:12px;color:#dc3545;">
+                                        <i class="bi bi-exclamation-circle me-1"></i>Please select a valid From date.
+                                    </div>
                                 </div>
                                 <div class="col-12 col-md-4">
                                     <label class="form-label fw-semibold" for="fuDlToDate">
@@ -643,6 +690,9 @@
                                     </label>
                                     <input type="text" id="fuDlToDate" class="form-control" placeholder="Select to date"
                                         style="border:2px solid #00ad8e;border-radius:10px;" readonly>
+                                    <div id="fuDlToErr" class="d-none mt-1" style="font-size:12px;color:#dc3545;">
+                                        <i class="bi bi-exclamation-circle me-1"></i>Please select a valid To date.
+                                    </div>
                                 </div>
                                 <div class="col-12 col-md-4">
                                     <button id="fuDlPreviewBtn" class="btn w-100 fw-semibold"
@@ -656,7 +706,7 @@
                             <div class="alert alert-info py-2 px-3 mb-3" style="font-size:13px;border-radius:10px;">
                                 <i class="bi bi-info-circle me-1"></i>
                                 Only dates <strong>highlighted</strong> in the calendar have follow-ups and can be selected.
-                                Both dates must be <strong>today or later</strong>, and From ≤ To.
+                                Both dates must be <strong>today or later</strong>.
                             </div>
 
                             <!-- Download Buttons (shown after preview) -->
@@ -823,7 +873,8 @@
                     if (fpTo)   { fpTo.destroy();   fpTo   = null; }
 
                     /* Disable dates that have NO follow-ups or are before today.
-                       All other dates remain visible but unselectable (grayed out). */
+                       NO minDate set — so the full month grid is always rendered.
+                       disableFn grays out past dates AND dates with no follow-ups. */
                     const disableFn = (date) => {
                         const iso = toISO(date);
                         return iso < today || !validDates.includes(iso);
@@ -831,16 +882,19 @@
 
                     fpFrom = flatpickr('#fuDlFromDate', {
                         dateFormat   : 'Y-m-d',
-                        minDate      : today,
-                        disable      : [disableFn],
+                        disable      : [disableFn],   // no minDate so all grid days render
                         disableMobile: true,
                         onChange(selDates) {
                             selectedFrom = selDates.length ? toISO(selDates[0]) : '';
+                            document.getElementById('fuDlFromErr').classList.add('d-none');
                             resetPreview();
-                            // Update To picker to enforce from <= to
+                            // When From changes, re-disable To picker so dates before From are also grayed
                             if (fpTo) {
-                                fpTo.set('minDate', selectedFrom || today);
-                                // Clear To if it's now before From
+                                fpTo.set('disable', [(date) => {
+                                    const iso = toISO(date);
+                                    return iso < today || !validDates.includes(iso) || (selectedFrom && iso < selectedFrom);
+                                }]);
+                                // Clear To if it is now before the new From
                                 if (selectedTo && selectedTo < selectedFrom) {
                                     fpTo.clear();
                                     selectedTo = '';
@@ -851,11 +905,11 @@
 
                     fpTo = flatpickr('#fuDlToDate', {
                         dateFormat   : 'Y-m-d',
-                        minDate      : today,
-                        disable      : [disableFn],
+                        disable      : [disableFn],   // no minDate
                         disableMobile: true,
                         onChange(selDates) {
                             selectedTo = selDates.length ? toISO(selDates[0]) : '';
+                            document.getElementById('fuDlToErr').classList.add('d-none');
                             resetPreview();
                         }
                     });
@@ -869,14 +923,29 @@
 
                 /* ── Load & render preview table ────────────────────────── */
                 function loadPreview() {
-                    if (!selectedFrom || !selectedTo) {
-                        alert('Please select both From and To dates.');
-                        return;
+                    const fromErrEl = document.getElementById('fuDlFromErr');
+                    const toErrEl   = document.getElementById('fuDlToErr');
+                    let valid = true;
+
+                    if (!selectedFrom) {
+                        fromErrEl.classList.remove('d-none');
+                        valid = false;
+                    } else {
+                        fromErrEl.classList.add('d-none');
                     }
-                    if (selectedFrom > selectedTo) {
-                        alert('From date must be on or before To date.');
-                        return;
+
+                    if (!selectedTo) {
+                        toErrEl.classList.remove('d-none');
+                        valid = false;
+                    } else if (selectedFrom && selectedTo < selectedFrom) {
+                        toErrEl.querySelector ? (toErrEl.innerHTML = '<i class="bi bi-exclamation-circle me-1"></i>To date must be on or after From date.') : null;
+                        toErrEl.classList.remove('d-none');
+                        valid = false;
+                    } else {
+                        toErrEl.classList.add('d-none');
                     }
+
+                    if (!valid) return;
 
                     previewWrap.classList.remove('d-none');
                     loadingDiv.classList.remove('d-none');
@@ -948,7 +1017,7 @@
                     actionsDiv.classList.remove('d-none');
                 }
 
-                /* ── PDF Download ───────────────────────────────────────── */
+                /* ── PDF Download — modal stays open after download ──── */
                 function downloadPDF() {
                     const area     = document.getElementById('fuDlPrintArea');
                     const filename = `followup_${selectedFrom}_to_${selectedTo}.pdf`;
@@ -965,10 +1034,11 @@
                     }).from(area).save().then(() => {
                         pdfBtn.disabled = false;
                         pdfBtn.innerHTML = '<i class="bi bi-file-earmark-pdf"></i> Download PDF';
+                        // Modal intentionally stays open so user can also download as image
                     });
                 }
 
-                /* ── Image Download ─────────────────────────────────────── */
+                /* ── Image Download — modal stays open after download ─── */
                 function downloadImage() {
                     const area     = document.getElementById('fuDlPrintArea');
                     const filename = `followup_${selectedFrom}_to_${selectedTo}.png`;
@@ -999,6 +1069,8 @@
                         selectedFrom = '';
                         selectedTo   = '';
                         resetPreview();
+                        document.getElementById('fuDlFromErr').classList.add('d-none');
+                        document.getElementById('fuDlToErr').classList.add('d-none');
                         // Reload dates each open so new follow-ups are reflected
                         datesLoaded = false;
                         document.getElementById('fuDlFromDate').value = '';

@@ -282,6 +282,52 @@ class Healthcareprovider extends CI_Controller
         echo json_encode(['status' => 'success']);
     }
 
+    /**
+     * Returns all unique follow-up dates in a date range that have data.
+     * GET params: from (YYYY-MM-DD), to (YYYY-MM-DD)
+     * Looks up to 1 year ahead from today as the outer boundary.
+     */
+    public function getFollowUpDatesInRange()
+    {
+        $hcpIdDb = $this->session->userdata('hcpIdDb');
+        if (!$hcpIdDb) {
+            echo json_encode(['success' => false, 'message' => 'Unauthorized']);
+            return;
+        }
+
+        $from = $this->input->get('from') ?: date('Y-m-d');
+        $to   = $this->input->get('to')   ?: date('Y-m-d', strtotime('+1 year'));
+
+        $dates = $this->HcpModel->getFollowUpDatesInRange($hcpIdDb, $from, $to);
+
+        echo json_encode(['success' => true, 'dates' => $dates]);
+    }
+
+    /**
+     * Returns follow-up consultations between from and to dates, ordered date ASC.
+     * GET params: from (YYYY-MM-DD), to (YYYY-MM-DD)
+     */
+    public function getFollowUpsByDateRange()
+    {
+        $hcpIdDb = $this->session->userdata('hcpIdDb');
+        if (!$hcpIdDb) {
+            echo json_encode(['success' => false, 'message' => 'Unauthorized']);
+            return;
+        }
+
+        $from = $this->input->get('from');
+        $to   = $this->input->get('to');
+
+        if (!$from || !$to) {
+            echo json_encode(['success' => false, 'message' => 'From and To dates are required']);
+            return;
+        }
+
+        $data = $this->HcpModel->getFollowUpsByDateRange($hcpIdDb, $from, $to);
+
+        echo json_encode(['success' => true, 'data' => $data, 'from' => $from, 'to' => $to]);
+    }
+
     public function patients()
     {
         if (isset($_SESSION['hcpsName'])) {

@@ -1157,7 +1157,7 @@ class Consultation extends CI_Controller
             $this->session->set_flashdata('showErrorMessage', 'Failed to save sugar chart data.');
         }
 
-        redirect('Consultation/consultation/' . $post['patient_id']);
+        redirect('Consultation/consultation/' . $post['patient_id'] . '#sugar-chart');
     }
 
     public function deleteSugarRecord($patientId, $sugarRecordId)
@@ -1168,7 +1168,7 @@ class Consultation extends CI_Controller
             $this->session->set_flashdata('showErrorMessage', 'Failed to delete sugar record.');
         }
 
-        redirect('Consultation/consultation/' . $patientId);
+        redirect('Consultation/consultation/' . $patientId . '#sugar-chart');
     }
 
     public function deleteMonthRecords($patientId, $monthYear)
@@ -1184,7 +1184,7 @@ class Consultation extends CI_Controller
         $this->db->where('YEAR(record_date)', $year);
         $this->db->delete('sugar_chart');
 
-        redirect('Consultation/consultation/' . $patientId);
+        redirect('Consultation/consultation/' . $patientId . '#sugar-chart');
     }
 
     public function saveDischargeFollowUp()
@@ -1207,7 +1207,7 @@ class Consultation extends CI_Controller
         } else {
             $this->session->set_flashdata('showErrorMessage', 'Failed to save discharge follow-up data.');
         }
-        redirect('Consultation/consultation/' . $patientId);
+        redirect('Consultation/consultation/' . $patientId . '#post-discharge-follow-up');
     }
 
     private function generate_discharge_follow($plan_id)
@@ -1236,13 +1236,15 @@ class Consultation extends CI_Controller
         echo json_encode($data);
     }
 
-    public function deleteDischargeFollowup()
+    public function deleteDischargeFollowup($patientDbId, $id)
     {
-        $id = $this->input->post('id');
+        if ($this->ConsultModel->deleteDischargeFollowup($id)) {
+            $this->session->set_flashdata('showSuccessMessage', 'Discharge follow-up deleted successfully.');
+        } else {
+            $this->session->set_flashdata('showErrorMessage', 'Failed to delete discharge follow-up.');
+        }
 
-        $this->ConsultModel->deleteDischargeFollowup($id);
-
-        echo json_encode(['status' => 'success']);
+        redirect('Consultation/consultation/' . $patientDbId . '#post-discharge-follow-up');
     }
 
 

@@ -163,9 +163,55 @@ class HcpModel extends CI_Model
         return $query->result_array();
     }
 
+    /**
+     * Returns distinct next_follow_up dates in [fromDate, toDate] that have data.
+     * Used to enable/disable date picker days in the download modal.
+     */
+    public function getFollowUpDatesInRange($hcpIdDb, $fromDate, $toDate)
+    {
+        $sql = "SELECT DISTINCT DATE(c.next_follow_up) AS follow_date
+                FROM consultations c
+                INNER JOIN patient_details p ON p.id = c.patient_id
+                WHERE c.doctor_id = ?
+                  AND c.next_follow_up IS NOT NULL
+                  AND c.next_follow_up != ''
+                  AND DATE(c.next_follow_up) >= ?
+                  AND DATE(c.next_follow_up) <= ?
+                ORDER BY follow_date ASC";
+        $query = $this->db->query($sql, [$hcpIdDb, $fromDate, $toDate]);
+        return array_column($query->result_array(), 'follow_date');
+    }
+
+    /**
+     * Returns all follow-up consultations between fromDate and toDate,
+     * ordered by next_follow_up date ASC, then consult_time ASC.
+     */
+    public function getFollowUpsByDateRange($hcpIdDb, $fromDate, $toDate)
+    {
+        $sql = "SELECT
+                    c.id AS consultationId,
+                    c.patient_id AS consultationPatientId,
+                    DATE(c.next_follow_up) AS follow_date,
+                    c.consult_date AS consult_date,
+                    c.consult_time AS consult_time,
+                    CONCAT(p.firstName, ' ', p.lastName) AS patientName,
+                    p.patientId,
+                    p.mobileNumber
+                FROM consultations c
+                INNER JOIN patient_details p ON p.id = c.patient_id
+                WHERE c.doctor_id = ?
+                  AND c.next_follow_up IS NOT NULL
+                  AND c.next_follow_up != ''
+                  AND DATE(c.next_follow_up) >= ?
+                  AND DATE(c.next_follow_up) <= ?
+                ORDER BY DATE(c.next_follow_up) ASC, c.consult_time ASC";
+        $query = $this->db->query($sql, [$hcpIdDb, $fromDate, $toDate]);
+        return $query->result_array();
+    }
+
     public function getDischargeFollwupByDate($hcpIdDb, $date)
     {
-        return $this->db->select('pf.*, CONCAT(pd.firstName, " ", pd.lastName) as patient_name, pd.patientId, pd.mobileNumber')
+        return $this->db->select('pf.*, CONCAT(pd.firstName, " ", pd.lastName) as patient_name, pd.patientId, pd.mobileNumber, pd.id as patientDbId')
             ->from('patient_followups pf')
             ->join('patient_details pd', 'pd.id = pf.patient_id')
             ->where('pf.followup_date', $date)

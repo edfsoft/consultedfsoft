@@ -419,31 +419,31 @@
                     <div class="card-body mx-3 px-md-4">
                         <ul class="nav nav-tabs mb-3" id="consultationTabs" role="tablist">
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link active btn" id="new-tab" data-bs-toggle="tab"
+                                <button class="nav-link active btn" id="dashboard-tab" data-bs-toggle="tab"
                                     data-bs-target="#consultation-dashboard" type="button" role="tab">
                                     Consultation Dashboard
                                 </button>
                             </li>
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link btn" id="new-tab" data-bs-toggle="tab"
+                                <button class="nav-link btn" id="consultation-tab" data-bs-toggle="tab"
                                     data-bs-target="#new-consultation" type="button" role="tab">
                                     New Consultation
                                 </button>
                             </li>
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link btn" id="new-tab" data-bs-toggle="tab" data-bs-target="#sugar-chart"
-                                    type="button" role="tab">
+                                <button class="nav-link btn" id="sugar-tab" data-bs-toggle="tab"
+                                    data-bs-target="#sugar-chart" type="button" role="tab">
                                     Sugar Chart
                                 </button>
                             </li>
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link btn" id="new-tab" data-bs-toggle="tab"
-                                    data-bs-target="#sugarChartForm" type="button" role="tab">
+                                <button class="nav-link btn" id="sugar-form-tab" data-bs-toggle="tab"
+                                    data-bs-target="#sugar-chart-form" type="button" role="tab">
                                     Sugar Chart Form
                                 </button>
                             </li>
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link btn" id="new-tab" data-bs-toggle="tab"
+                                <button class="nav-link btn" id="followup-tab" data-bs-toggle="tab"
                                     data-bs-target="#post-discharge-follow-up" type="button" role="tab">
                                     Post-Discharge Follow-up
                                 </button>
@@ -1277,7 +1277,7 @@
                                         <?php endforeach; ?>
                                     </div>
                                 <?php else: ?>
-                                    <p class="text-muted">No Previous Consultation.</p>
+                                    <p class="text-muted">No previous consultations found.</p>
                                 <?php endif; ?>
                             </div>
 
@@ -2030,7 +2030,7 @@
                             </div>
 
                             <!-- Sugar Chart Form -->
-                            <div class="tab-pane fade" id="sugarChartForm" role="tabpanel">
+                            <div class="tab-pane fade" id="sugar-chart-form" role="tabpanel">
                                 <p class="fs-5 fw-semibold mb-3">Sugar Chart Form:</p>
                                 <form method="post" action="<?= base_url('Consultation/saveSugarValues') ?>" class="pb-5">
                                     <input type="hidden" name="patient_id" value="<?= $patient_id ?>">
@@ -2172,21 +2172,24 @@
                                         + Add Follow-up
                                     </button>
                                 </div>
-                                <div class="table-responsive pt-3">
-                                    <table class="table table-bordered text-center">
-                                        <thead class="table-light">
-                                            <tr>
-                                                <th style="color: #00ad8e;" class="scTableStyles">S.No</th>
-                                                <th style="color: #00ad8e;" class="scTableStyles">Appointment Date</th>
-                                                <th style="color: #00ad8e;" class="scTableStyles">Discharge Date</th>
-                                                <th style="color: #00ad8e;" class="scTableStyles">Next Review Date</th>
-                                                <th style="color: #00ad8e;" class="scTableStyles">Interval (Days)</th>
-                                                <th style="color: #00ad8e;" class="scTableStyles">Notes</th>
-                                                <th style="color: #00ad8e;" class="scTableStyles">Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <?php if (!empty($dischargeFollowUp)) {
+                                <?php if (empty($dischargeFollowUp)) { ?>
+                                    <p class="text-muted">No discharge follow-ups found.</p>
+                                <?php } else { ?>
+                                    <div class="table-responsive pt-3">
+                                        <table class="table table-bordered text-center">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th style="color: #00ad8e;" class="scTableStyles">S.No</th>
+                                                    <th style="color: #00ad8e;" class="scTableStyles">Appointment Date</th>
+                                                    <th style="color: #00ad8e;" class="scTableStyles">Discharge Date</th>
+                                                    <th style="color: #00ad8e;" class="scTableStyles">Next Review Date</th>
+                                                    <th style="color: #00ad8e;" class="scTableStyles">Interval (Days)</th>
+                                                    <th style="color: #00ad8e;" class="scTableStyles">Notes</th>
+                                                    <th style="color: #00ad8e;" class="scTableStyles">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <?php
                                                 $count = 1;
                                                 foreach ($dischargeFollowUp as $plan) { ?>
 
@@ -2207,7 +2210,7 @@
 
                                                             <!-- Delete -->
                                                             <button class="btn btn-danger btn-sm"
-                                                                onclick="openDeleteModal(<?= $plan['id'] ?>)">
+                                                                onclick="confirmDeleteDischargeFollowup(<?php echo $plan['patient_id'] ?>, <?php echo $plan['id'] ?>, '<?php echo date('d M Y', strtotime($plan['appointment_date'])); ?>')">
                                                                 <i class="bi bi-trash"></i>
                                                             </button>
                                                         </td>
@@ -2221,12 +2224,11 @@
                                                             </div>
                                                         </td>
                                                     </tr>
-
-                                                <?php }
-                                            } ?>
-                                        </tbody>
-                                    </table>
-                                </div>
+                                                <?php } ?>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                <?php } ?>
                             </div>
 
                         </div>
@@ -2838,7 +2840,6 @@
                     </div>
             </section>
 
-
             <!-------------------------- Edit Consultant -->
         <?php } elseif ($method == "editConsult") { ?>
             <section>
@@ -3405,608 +3406,13 @@
 
         <!-- ******************************************************************************************************************************************** -->
 
-        <!-- Symptoms Modal -->
-        <div class="modal fade" id="symptomsModal" tabindex="-1" aria-labelledby="symptomsModalTitle" aria-hidden="true"
-            data-bs-backdrop="static" data-bs-keyboard="false">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title fw-medium" id="symptomsModalTitle"
-                            style="font-family: Poppins, sans-serif;">
-                            Enter Symptom Details</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="mb-3">
-                            <label for="symptomNote" class="form-label">Note</label>
-                            <input type="text" class="form-control" id="symptomNote" placeholder="Enter note" />
-                        </div>
-                        <div class="mb-3">
-                            <label for="symptomSince" class="form-label">Since</label>
-                            <input type="text" class="form-control" id="symptomSince" placeholder="Enter since" />
-                        </div>
-                        <div class="mb-3">
-                            <label for="symptomSeverity" class="form-label">Severity</label>
-                            <select id="symptomSeverity" class="form-select">
-                                <option value="">Select severity</option>
-                                <option value="Mild">Mild</option>
-                                <option value="Moderate">Moderate</option>
-                                <option value="Severe">Severe</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button class="btn text-light" style="background-color: #00ad8e;"
-                            onclick="saveSymptomModal()">OK</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Findings Modal -->
-        <div class="modal fade" id="inputModal" tabindex="-1" aria-labelledby="modalTitle" aria-hidden="true"
-            data-bs-backdrop="static" data-bs-keyboard="false">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title fw-medium" id="modalTitle" style="font-family: Poppins, sans-serif;">
-                            Enter Details</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="mb-3">
-                            <label for="modalNote" class="form-label">Note</label>
-                            <input type="text" class="form-control" id="modalNote" placeholder="Enter note" />
-                        </div>
-                        <div class="mb-3">
-                            <label for="modalSince" class="form-label">Since</label>
-                            <input type="text" class="form-control" id="modalSince" placeholder="Enter since" />
-                        </div>
-                        <div class="mb-3">
-                            <label for="modalSeverity" class="form-label">Severity</label>
-                            <select id="modalSeverity" class="form-select">
-                                <option value="">Select severity</option>
-                                <option value="Mild">Mild</option>
-                                <option value="Moderate">Moderate</option>
-                                <option value="Severe">Severe</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button class="btn text-light" style="background-color: #00ad8e;"
-                            onclick="saveModal()">OK</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Diagnosis Modal -->
-        <div class="modal fade" id="diagnosisModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title fw-medium" style="font-family: Poppins, sans-serif;">
-                            Diagnosis
-                            Details
-                        </h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="mb-3">
-                            <label for="diagnosisNote" class="form-label">Note</label>
-                            <input type="text" class="form-control" id="diagnosisNote" placeholder="Enter note">
-                        </div>
-                        <div class="mb-3">
-                            <label for="diagnosisSince" class="form-label">Location</label>
-                            <input type="text" class="form-control" id="diagnosisSince" placeholder="Enter location">
-                        </div>
-                        <div class="mb-3">
-                            <label for="diagnosisSeverity" class="form-label">Description</label>
-                            <select class="form-select" id="diagnosisSeverity">
-                                <option value="">Select description</option>
-                                <option>To rule out</option>
-                                <option>Suspect</option>
-                                <option>Follow-up</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button class="btn text-light" style="background-color: #00ad8e;"
-                            onclick="saveDiagnosisModal()">OK</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Investigation Modal -->
-        <div class="modal fade" id="investigationsModal" tabindex="-1" aria-labelledby="investigationsModalTitle"
-            aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title fw-medium" id="investigationsModalTitle"
-                            style="font-family: Poppins, sans-serif;">
-                            Enter Investigation Details</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                    </div>
-
-                    <div class="modal-body">
-                        <div class="mb-3">
-                            <label for="investigationNote" class="form-label">Note</label>
-                            <input type="text" class="form-control" id="investigationNote" placeholder="Enter note" />
-                        </div>
-                    </div>
-
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="button" class="btn text-light" style="background-color: #00ad8e;"
-                            onclick="saveInvestigationModal()">OK</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Instruction Add New Modal -->
-        <div class="modal fade" id="addInstructionModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static"
-            data-bs-keyboard="false" data-bs-backdrop="static" data-bs-keyboard="false">
-            <div class="modal-dialog">
-                <form id="addInstructionForm" class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title fw-medium" style="font-family: Poppins, sans-serif;">Add New Instruction
-                        </h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                    </div>
-                    <div class="modal-body">
-                        <label for="newInstructionName" class="form-label fieldLabel">Instruction Name <span
-                                class="text-danger">*</span></label>
-                        <input type="text" id="newInstructionName" class="form-control" name="name"
-                            placeholder="Enter new instruction" required>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn text-light" style="background-color: #00ad8e;">Save</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-
-        <!-- Add Procedure Modal -->
-        <div class="modal fade" id="addProcedureModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static"
-            data-bs-keyboard="false">
-            <div class="modal-dialog">
-                <form id="addProcedureForm" class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title fw-medium" style="font-family: Poppins, sans-serif;">Add New Procedure
-                        </h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                    </div>
-                    <div class="modal-body">
-                        <label for="newProcedureName" class="form-label fieldLabel">Procedure Name <span
-                                class="text-danger">*</span></label>
-                        <input type="text" id="newProcedureName" class="form-control" name="name"
-                            placeholder="Procedure name" required>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn text-light" style="background-color: #00ad8e;">Save</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-
-        <!-- New Add-new-medicine modal  -->
-        <div class="modal fade" id="addMedicineModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static"
-            data-bs-keyboard="false">
-            <div class="modal-dialog modal-md">
-                <form id="addMedicineMasterForm" class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title fw-medium" id="addMedicineModalTitle"
-                            style="font-family: Poppins, sans-serif;">Add New Medicine</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                    </div>
-                    <div class="modal-body">
-                        <label for="newMedicineName" class="form-label fieldLabel pb-2">Medicine Name <span
-                                class="text-danger">*</span></label>
-                        <input type="text" id="newMedicineName" class="form-control" placeholder="E.g. Dolo 650"
-                            required>
-
-                        <label for="newMedicineComposition" class="form-label fieldLabel pb-2 mt-2">Composition
-                            Name</label>
-                        <input type="text" id="newMedicineComposition" class="form-control"
-                            placeholder="E.g. Paracetamol">
-
-                        <label for="newMedicineCategory" class="form-label fieldLabel pb-2 mt-2">Category</label>
-                        <select id="newMedicineCategory" class="form-select">
-                            <option value="">Select Category</option>
-                            <?php if (!empty($medicineCategories)): ?>
-                                <?php foreach ($medicineCategories as $cat): ?>
-                                    <option value="<?= htmlspecialchars($cat['category']) ?>">
-                                        <?= htmlspecialchars($cat['category']) ?>
-                                    </option>
-                                <?php endforeach; ?>
-                            <?php endif; ?>
-                        </select>
-
-                        <input type="hidden" id="editMedicineMasterId" value="">
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="button" id="addMedicineConfirmBtn" class="btn text-light"
-                            style="background-color: #00ad8e;">Save</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-
-        <!-- Delete Medicine -->
-        <div class="modal fade" id="deleteMedicineMasterModal" tabindex="-1" aria-hidden="true"
-            data-bs-backdrop="static" data-bs-keyboard="false">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title fw-medium" style="font-family: Poppins, sans-serif;">Confirm Delete</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <p>Are you sure you want to delete <strong id="delMedNameDisplay"></strong>?</p>
-                        <input type="hidden" id="delMedId" value="">
-                    </div>
-                    <div class="modal-footer d-flex justify-content-end">
-                        <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Cancel</button>
-                        <button type="button" id="finalDeleteMedBtn" class="btn text-light"
-                            style="background-color: #2b353bf5;">Delete</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Medicine Modal -->
-        <div class="modal fade" id="medicinesModal" tabindex="-1" aria-labelledby="medicinesModalTitle"
-            aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header d-flex justify-content-between align-items-center">
-                        <div>
-                            <h5 class="modal-title fw-medium" id="medicinesModalTitle"
-                                style="font-family: Poppins, sans-serif;">Enter Medicine Details</h5>
-                            <small id="medicineCompositionText" class="text-muted d-block"></small>
-                        </div>
-                        <span id="medicineCategoryText" class="text-dark"></span>
-                        <div>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                        </div>
-                    </div>
-
-                    <div class="modal-body" style="font-family: Poppins, sans-serif;">
-                        <div class="mb-4">
-
-                            <div class="d-flex align-items-start gap-4">
-
-                                <div>
-                                    <label class="form-label fw-semibold">Quantity</label>
-                                    <input type="number" id="medicineQuantity" min="0" class="form-control w-100"
-                                        placeholder="Enter quantity">
-                                </div>
-
-                                <div>
-                                    <label class="form-label fw-semibold">Food Timing</label>
-
-                                    <div class="d-flex flex-column flex-lg-row gap-3">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="foodTiming"
-                                                value="Before" id="beforeFood">
-                                            <label class="form-check-label" for="beforeFood">
-                                                Before Food
-                                            </label>
-                                        </div>
-
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="foodTiming" value="After"
-                                                id="afterFood">
-                                            <label class="form-check-label" for="afterFood">
-                                                After Food
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-
-                        <div class="mb-4">
-                            <label class="form-label fw-semibold">Timing</label>
-                            <div id="timingOptions" class="d-flex flex-wrap gap-4">
-
-                                <!-- Morning -->
-                                <div class="form-check d-flex align-items-center gap-2 flex-column flex-sm-row">
-                                    <div class="d-flex align-items-center gap-2 mb-2 mb-sm-0">
-                                        <input type="checkbox" id="morningCheck" class="me-1">
-                                        <label for="morningCheck" class="mb-0">Morning</label>
-                                    </div>
-                                    <div class="d-flex gap-3 w-100 w-sm-auto">
-                                        <input type="number" id="morningQty" class="form-control"
-                                            style="min-width: 110px; width: 100%; max-width: 200px;" min="0" step="0.5"
-                                            disabled placeholder="Qty">
-                                        <select id="morningUnit" class="form-select"
-                                            style="min-width: 130px; width: 100%; max-width: 220px;" disabled>
-                                            <option value=""></option>
-                                            <?php if (!empty($dosageUnits)): ?>
-                                                <?php foreach ($dosageUnits as $unit): ?>
-                                                    <option value="<?= htmlspecialchars($unit['units_name']) ?>">
-                                                        <?= htmlspecialchars($unit['units_name']) ?>
-                                                    </option>
-                                                <?php endforeach; ?>
-                                            <?php endif; ?>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <!-- Afternoon -->
-                                <div class="form-check d-flex align-items-center gap-2 flex-column flex-sm-row">
-                                    <div class="d-flex align-items-center gap-2 mb-2 mb-sm-0">
-                                        <input type="checkbox" id="afternoonCheck" class="me-1">
-                                        <label for="afternoonCheck" class="mb-0">Afternoon</label>
-                                    </div>
-                                    <div class="d-flex gap-3 w-100 w-sm-auto">
-                                        <input type="number" id="afternoonQty" class="form-control"
-                                            style="min-width: 110px; width: 100%; max-width: 200px;" min="0" step="0.5"
-                                            disabled placeholder="Qty">
-                                        <select id="afternoonUnit" class="form-select"
-                                            style="min-width: 110px; width: 100%; max-width: 210px;" disabled>
-                                            <option value=""></option>
-                                            <?php if (!empty($dosageUnits)): ?>
-                                                <?php foreach ($dosageUnits as $unit): ?>
-                                                    <option value="<?= htmlspecialchars($unit['units_name']) ?>">
-                                                        <?= htmlspecialchars($unit['units_name']) ?>
-                                                    </option>
-                                                <?php endforeach; ?>
-                                            <?php endif; ?>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <!-- Evening -->
-                                <div class="form-check d-flex align-items-center gap-2 flex-column flex-sm-row">
-                                    <div class="d-flex align-items-center gap-2 mb-2 mb-sm-0">
-                                        <input type="checkbox" id="eveningCheck" class="me-1">
-                                        <label for="eveningCheck" class="mb-0">Evening</label>
-                                    </div>
-                                    <div class="d-flex gap-3 w-100 w-sm-auto">
-                                        <input type="number" id="eveningQty" class="form-control"
-                                            style="min-width: 110px; width: 100%; max-width: 200px;" min="0" step="0.5"
-                                            disabled placeholder="Qty">
-                                        <select id="eveningUnit" class="form-select"
-                                            style="min-width: 130px; width: 100%; max-width: 220px;" disabled>
-                                            <option value=""></option>
-                                            <?php if (!empty($dosageUnits)): ?>
-                                                <?php foreach ($dosageUnits as $unit): ?>
-                                                    <option value="<?= htmlspecialchars($unit['units_name']) ?>">
-                                                        <?= htmlspecialchars($unit['units_name']) ?>
-                                                    </option>
-                                                <?php endforeach; ?>
-                                            <?php endif; ?>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <!-- Night -->
-                                <div class="form-check d-flex align-items-center gap-2 flex-column flex-sm-row">
-                                    <div class="d-flex align-items-center gap-2 mb-2 mb-sm-0">
-                                        <input type="checkbox" id="nightCheck" class="me-1">
-                                        <label for="nightCheck" class="mb-0">Night</label>
-                                    </div>
-                                    <div class="d-flex gap-2 w-100 w-sm-auto">
-                                        <input type="number" id="nightQty" class="form-control flex-fill flex-sm-none"
-                                            style="min-width: 100px;" min="0" step="0.5" disabled placeholder="Qty">
-                                        <select id="nightUnit" class="form-select flex-fill flex-sm-none"
-                                            style="min-width: 120px;" disabled>
-                                            <option value=""></option>
-                                            <?php if (!empty($dosageUnits)): ?>
-                                                <?php foreach ($dosageUnits as $unit): ?>
-                                                    <option value="<?= htmlspecialchars($unit['units_name']) ?>">
-                                                        <?= htmlspecialchars($unit['units_name']) ?>
-                                                    </option>
-                                                <?php endforeach; ?>
-                                            <?php endif; ?>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="mb-3 pt-3">
-                                <label class="form-label fw-semibold">Notes</label>
-                                <textarea id="medicineNotes" class="form-control" rows="3"
-                                    placeholder="Enter any additional notes..."></textarea>
-                            </div>
-
-                        </div>
-
-                        <div class="modal-footer">
-                            <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                            <button class="btn text-light" style="background-color: #00ad8e;"
-                                onclick="saveMedicineModal()">OK</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Advice Note Modal -->
-        <div class="modal fade" id="adviceModal" tabindex="-1" aria-labelledby="adviceModalTitle" aria-hidden="true"
-            data-bs-backdrop="static" data-bs-keyboard="false">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title fw-medium" id="adviceModalTitle"
-                            style="font-family: Poppins, sans-serif;">
-                            Enter Advice Details</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                    </div>
-
-                    <div class="modal-body">
-                        <div class="mb-3">
-                            <label for="adviceNote" class="form-label">Note</label>
-                            <input type="text" class="form-control" id="adviceNote" placeholder="Enter note" />
-                        </div>
-                    </div>
-
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="button" class="btn text-light" style="background-color: #00ad8e;"
-                            onclick="saveAdviceModal()">OK</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Attachment Display Dashboard Modal -->
-        <div class="modal fade" id="dashboardPreviewModal" tabindex="-1" aria-labelledby="dashboardPreviewModalLabel"
-            aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="true">
-            <div class="modal-dialog modal-lg modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title fw-medium" style="font-family: Poppins, sans-serif;"
-                            id="dashboardPreviewModalLabel">
-                            Attachment Preview
-                        </h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-
-                    <div class="modal-body text-center position-relative p-0">
-
-                        <div id="attachment-toolbar" class="d-flex justify-content-center align-items-center mb-1 mt-0"
-                            style="height: 43px; width: 100%; background-color: #cccecfff; border-radius: 5px; display: none;">
-                            <button id="zoomOutBtn" class="btn btn-dark btn-sm mx-1 text-light" title="Zoom Out"
-                                disabled>
-                                <b style="font-size: 1.2rem;">-</b>
-                            </button>
-                            <button id="zoomInBtn" class="btn btn-dark btn-sm mx-1 text-light" title="Zoom In" disabled>
-                                <b style="font-size: 1.2rem;">+</b>
-                            </button>
-                            <button id="downloadAttachmentBtn" class="btn btn-secondary ms-3"><i
-                                    class="bi bi-download"></i></button>
-                        </div>
-
-                        <button id="prevAttachment"
-                            class="btn btn-outline-secondary position-absolute start-0 top-50 translate-middle-y"
-                            style="font-size: 1.5rem;" disabled><b>&lt;</b></button>
-
-                        <div id="attachment-content-wrapper" class="w-100"
-                            style="max-height: calc(70vh - 100px); overflow: auto; min-height: 400px;">
-                            <img id="attachmentImage" src="" alt="Attachment" class="img-fluid d-none"
-                                style="transform-origin: top left; transition: transform 0.2s ease-out;">
-                            <iframe id="attachmentPDF" src="" class="w-100" style="height:500px;"
-                                frameborder="0"></iframe>
-                        </div>
-
-                        <button id="nextAttachment"
-                            class="btn btn-outline-secondary position-absolute end-0 top-50 translate-middle-y"
-                            style="font-size: 1.5rem;" disabled><b>&gt;</b></button>
-                    </div>
-
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary text-light"
-                            data-bs-dismiss="modal">Close</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!--  Add/Edit Modal for all -->
-        <div class="modal fade" id="universalAddMasterModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static"
-            data-bs-keyboard="false">
-            <div class="modal-dialog">
-                <form id="universalAddMasterForm" class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title fw-medium" id="universalMasterTitle"
-                            style="font-family: Poppins, sans-serif;">Add New Item</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                    </div>
-                    <div class="modal-body">
-                        <label for="universalMasterInput" id="universalMasterLabel" class="form-label fieldLabel">Name
-                            <span class="text-danger">*</span></label>
-                        <input type="text" id="universalMasterInput" class="form-control" name="name"
-                            placeholder="Enter name" required>
-
-                        <input type="hidden" id="universalMasterId" value=""> <input type="hidden"
-                            id="universalMasterType" value="">
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn text-light" style="background-color: #00ad8e;">Save</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-
-        <!--  Delete Modal for all -->
-        <div class="modal fade" id="universalDeleteModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static"
-            data-bs-keyboard="false">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title fw-medium" style="font-family: Poppins, sans-serif;">Confirm Delete</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <p>Are you sure you want to delete <strong id="universalDeleteNameDisplay"></strong>?</p>
-                        <input type="hidden" id="universalDeleteId" value="">
-                        <input type="hidden" id="universalDeleteType" value="">
-                    </div>
-                    <div class="modal-footer d-flex justify-content-end">
-                        <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Cancel</button>
-                        <button type="button" id="universalDeleteBtn" class="btn text-light"
-                            style="background-color: #2b353bf5;">Delete</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <!-- All modal files -->
-        <?php include 'hcpModals.php'; ?>
+        <?php include 'consultationModals.php'; ?>
 
     </main>
 
     <!-- ******************************************************************************************************************************************** -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
-    <!-- Previous and Next arrows script in consulation dashboard page -->
-    <script>
-        let currentIndex = 0;
-        const consultationItems = document.querySelectorAll('.consultation-item');
-        const totalItems = consultationItems.length;
-        const counterDisplay = document.getElementById('consultation-counter');
-        const navLeft = document.getElementById('nav-left');
-        const navRight = document.getElementById('nav-right');
-
-        function updateCounterAndButtons() {
-            counterDisplay.textContent = ` ${currentIndex + 1} of ${totalItems} `;
-            navLeft.disabled = currentIndex === 0;
-            navRight.disabled = currentIndex === totalItems - 1;
-        }
-
-        function navigateConsultations(direction) {
-            if ((direction === -1 && currentIndex === 0) || (direction === 1 && currentIndex === totalItems - 1)) {
-                return;
-            }
-            consultationItems[currentIndex].classList.remove('active');
-            currentIndex = (currentIndex + direction + totalItems) % totalItems;
-            consultationItems[currentIndex].classList.add('active');
-            updateCounterAndButtons();
-        }
-
-        document.addEventListener('keydown', function (event) {
-            if (event.key === 'ArrowLeft' && currentIndex > 0) {
-                navigateConsultations(-1);
-            } else if (event.key === 'ArrowRight' && currentIndex < totalItems - 1) {
-                navigateConsultations(1);
-            }
-        });
-
-        updateCounterAndButtons();
-    </script>
 
     <!-- Consultation date and time default -->
     <script>
@@ -8268,49 +7674,66 @@
 
     <!-- Delete Consultation & Sugar Record Script -->
     <script>
-        let deleteType = null;
-        let deletePatientId = null;
-        let deleteRecordId = null;
+        let deleteConfig = {
+            type: null,
+            patientId: null,
+            recordId: null,
+            url: null
+        };
+
+        function openGlobalDeleteModal(options) {
+            deleteConfig = {
+                type: options.type,
+                patientId: options.patientId || null,
+                recordId: options.recordId,
+                url: options.url || null
+            };
+
+            document.getElementById('globalDeleteModalLabel').innerText = options.title;
+            document.getElementById('globalDeleteModalBody').innerHTML = options.body;
+
+            const modal = new bootstrap.Modal(document.getElementById('globalDeleteModal'));
+            modal.show();
+        }
 
         function confirmDeleteConsult(patientId, consultationId, consultationDate, consultationTime) {
-            deleteType = 'consult';
-            deletePatientId = patientId;
-            deleteRecordId = consultationId;
-
-            document.getElementById('deleteModalBody').innerHTML =
-                `Are you sure you want to delete this consultation done on 
-            <strong>${consultationDate} - ${consultationTime}</strong>?`;
-
-            const modal = new bootstrap.Modal(document.getElementById('deleteConfirmModal'));
-            modal.show();
+            openGlobalDeleteModal({
+                title: 'Delete Consultation',
+                body: `Are you sure you want to delete this consultation done on <strong>${consultationDate} - ${consultationTime}</strong>?`,
+                type: 'redirect',
+                patientId: patientId,
+                recordId: consultationId,
+                url: "<?php echo site_url('Consultation/deleteConsultation/'); ?>"
+            });
         }
 
         function confirmDeleteSugarRecord(patientId, sugarRecordId, recordDate) {
-            deleteType = 'sugar';
-            deletePatientId = patientId;
-            deleteRecordId = sugarRecordId;
-
-            document.getElementById('deleteModalBody').innerHTML =
-                `Are you sure you want to delete this sugar record done on 
-            <strong>${recordDate}</strong>?`;
-
-            const modal = new bootstrap.Modal(document.getElementById('deleteConfirmModal'));
-            modal.show();
+            openGlobalDeleteModal({
+                title: 'Delete Sugar Record',
+                body: `Are you sure you want to delete this sugar record done on <strong>${recordDate}</strong>?`,
+                type: 'redirect',
+                patientId: patientId,
+                recordId: sugarRecordId,
+                url: "<?php echo site_url('Consultation/deleteSugarRecord/'); ?>"
+            });
         }
 
-        document.getElementById('confirmDeleteBtn').addEventListener('click', function () {
+        function confirmDeleteDischargeFollowup(patientDbId, id, appointmentDate) {
+            openGlobalDeleteModal({
+                title: 'Delete Discharge Follow-up Plan',
+                body: `Are you sure you want to delete this follow-up scheduled for the appointment date <strong>${appointmentDate}</strong>?`,
+                type: 'redirect',
+                patientId: patientDbId,
+                recordId: id,
+                url: "<?php echo site_url('Consultation/deleteDischargeFollowup/') ?>"
+            });
+        }
 
-            if (deleteType === 'consult') {
-                window.location.href =
-                    "<?php echo site_url('Consultation/deleteConsultation/'); ?>" +
-                    deletePatientId + "/" + deleteRecordId;
-            }
+        document.getElementById('confirmGlobalDeleteBtn').addEventListener('click', function () {
+            const btn = this;
+            btn.disabled = true;
 
-            if (deleteType === 'sugar') {
-                window.location.href =
-                    "<?php echo site_url('Consultation/deleteSugarRecord/'); ?>" +
-                    deletePatientId + "/" + deleteRecordId;
-            }
+            window.location.href = deleteConfig.url + deleteConfig.patientId + "/" + deleteConfig.recordId;
         });
     </script>
 
@@ -8321,38 +7744,7 @@
         <?php } ?>
     </script>
 
-    <!-- Toggle visibility and icon for all fields in consultation page -->
-    <script>
-        document.querySelectorAll('.toggle-label').forEach(label => {
-            label.addEventListener('click', function (e) {
-                const container = label.nextElementSibling;
-                const icon = label.querySelector('.toggle-icon');
-                const isOpening = !container.classList.contains('show');
-
-                if (isOpening) {
-                    document.querySelectorAll('.field-container.collapse').forEach(otherContainer => {
-                        if (otherContainer !== container && otherContainer.classList.contains('show')) {
-                            otherContainer.classList.remove('show');
-                            const otherLabel = otherContainer.previousElementSibling;
-                            if (otherLabel) {
-                                const otherIcon = otherLabel.querySelector('.toggle-icon');
-                                if (otherIcon) otherIcon.textContent = '+';
-                            }
-                        }
-                    });
-                }
-                if (isOpening) {
-                    container.classList.add('show');
-                    icon.textContent = '-';
-                } else {
-                    container.classList.remove('show');
-                    icon.textContent = '+';
-                }
-            });
-        });
-    </script>
-
-    <!-- Modal move on screen -->
+   <!-- Modal move on screen -->
     <script>
         document.addEventListener("DOMContentLoaded", function () {
 
@@ -8689,7 +8081,7 @@
         }
     </script>
 
-    <!-- script to Translate table in preview -->
+    <!-- Tamil Translate table in preview -->
     <script>
         const translationMap = {
             'Name': 'மருந்து',
@@ -8817,180 +8209,20 @@
         });
     </script>
 
-    <!-- Toggle month content visibility and icon - Sugar Chart -->
-    <script>
-        document.querySelectorAll('.toggle-btn').forEach(button => {
-            button.addEventListener('click', function () {
-
-                let content = this.closest('.card').querySelector('.month-content');
-
-                const isVisible = content.style.display === 'block';
-
-                content.style.display = isVisible ? 'none' : 'block';
-                this.textContent = isVisible ? '+' : '-';
-            });
-        });
-    </script>
-
-    <!-- Delete Sugar Records by Month -->
-    <script>
-        function deleteMonthRecords(month, patientId) {
-            if (confirm("Delete all sugar records for " + month + " ?")) {
-                window.location.href =
-                    "<?= base_url('Consultation/deleteMonthRecords/') ?>" + patientId + "/" + encodeURIComponent(month);
-            }
-        }
-    </script>
-
-    <!-- Print - sugar chart-->
-    <script>
-        function printMonthTable(month, button) {
-            var card = button.closest('.card');
-            var content = card.querySelector('.month-content').innerHTML;
-
-            var patientId = button.getAttribute('data-patient-id');
-            var patientName = button.getAttribute('data-patient-name');
-            var patientAge = button.getAttribute('data-patient-age');
-            var patientGender = button.getAttribute('data-patient-gender');
-            var patientMobile = button.getAttribute('data-patient-mobile');
-            var printDate = new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
-
-            var printWindow = window.open('', '', 'width=900,height=700');
-
-            printWindow.document.write(`
-        <html>
-        <head>
-            <title>Sugar Report - ${month}</title>
-            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-            <style>
-                @page {
-                    size: A4;
-                    margin: 0.5cm 0.5cm 0.5cm 0.5cm;
-                }
-                * {
-                    box-sizing: border-box;
-                }
-                .action-column { display: none; }
-                html, body {
-                    margin: 0;
-                    padding: 0;
-                    width: 100%;
-                    height: 100%;
-                }
-                body {
-                    font-family: Arial, sans-serif;
-                    padding: 8px;
-                    margin: 0;
-                }
-                .header { border-bottom: 1px solid #00ad8e; padding-bottom: 8px; margin-bottom: 10px; }
-                .patient-info { display: grid; grid-template-columns: repeat(2, 1fr); gap: 5px; font-size: 11px; margin: 0; padding: 0; }
-                .info-item { display: flex; flex-direction: column; margin: 0; padding: 0; }
-                .info-label { font-weight: bold; color: #00ad8e; font-size: 10px; margin: 0; padding: 0; }
-                .info-value { font-weight: normal;font-size: 10px; color: #333; margin: 0; padding: 0; }
-                .print-title { text-align: center; font-size: 16px; font-weight: bold; margin-bottom: 3px; }
-                .print-month { text-align: center; font-size: 13px; color: #666; margin-bottom: 8px; }
-                .print-date { text-align: right; margin-bottom: 8px; font-size: 10px; color: #666; }
-                table {
-                    border-collapse: collapse !important;
-                    width: 100%;
-                    table-layout: auto;
-                }
-                table, th, td {
-                    border: 1px solid #000 !important;
-                    padding: 6px !important;
-                    font-size: 11px;
-                }
-                thead {
-                    background-color: #f0f0f0 !important;
-                    font-weight: bold;
-                }
-                tbody tr:nth-child(even) { background-color: #fafafa !important; }
-                .table-responsive {
-                    overflow: visible !important;
-                }
-                @media print {
-                    @page {
-                        size: A4;
-                        margin: 0.5cm 0.5cm 0.5cm 0.5cm;
-                    }
-                    html, body {
-                        margin: 0;
-                        padding: 0;
-                        width: 100%;
-                    }
-                    body {
-                        padding: 5px;
-                        margin: 0;
-                    }
-                    table {
-                        border-collapse: collapse !important;
-                        width: 100%;
-                    }
-                    table, th, td {
-                        border: 1px solid #000 !important;
-                        padding: 6px !important;
-                        page-break-inside: avoid;
-                    }
-                    thead { background-color: #f0f0f0 !important; font-weight: bold; font-size: 8px; color: #0066cc; }
-                    .header { padding-bottom: 6px; margin-bottom: 6px; }
-                    .patient-info { margin-bottom: 4px; font-size: 11px; margin: 0; padding: 0; gap: 5px; margin-top: 10px; }
-                    .info-item { margin: 0; padding: 0; }
-                    .info-label { margin: 0; padding: 0; font-size: 9px; }
-                    .info-value { margin: 0; padding: 0; font-size: 9px; }
-                }
-            </style>
-        </head>
-        <body>
-            <div class="header">
-                <div class="print-title">Sugar Chart Record</div>
-                <div class="patient-info">
-                    <div class="info-item">
-                        <p class="info-label">Patient Name:
-                        <span class="info-value">${patientName}</span></p>
-                    </div>
-                    <div class="info-item">
-                        <p class="info-label">Patient ID:
-                        <span class="info-value">${patientId}</span></p>
-                    </div>
-                    <div class="info-item">
-                        <p class="info-label">Mobile Number:
-                        <span class="info-value">${patientMobile}</span></p>
-                    </div>
-                    <div class="info-item">
-                        <p class="info-label">Age & Gender:
-                        <span class="info-value">${patientAge} years & ${patientGender}</span></p>
-                    </div>
-                </div>
-            </div>
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
-            <div class="print-month">Period: <strong>${month}</strong></div>
-            <div class="print-date" style="text-align: right; margin-bottom: 10px; font-size: 12px; color: #666;">Printed on: ${printDate}</div>
-            </div>
-            ${content}
-        </body>
-        </html>
-    `);
-
-            printWindow.document.close();
-            printWindow.print();
-        }
-    </script>
-
     <!-- Expandable view for discharge followups -->
     <script>
         function toggleFollowups(planId) {
+            let row = document.getElementById("expand-row-" + planId);
+            let container = document.getElementById("followup-data-" + planId);
 
-            let row = document.getElementById('expand-row-' + planId);
-            let container = document.getElementById('followup-data-' + planId);
+            if (row.style.display === "none") {
+                row.style.display = "table-row";
 
-            if (row.style.display === 'none') {
-
-                row.style.display = 'table-row';
-
-                fetch("<?= base_url('Consultation/getDischargeFollowupsByPlan/') ?>" + planId)
-                    .then(res => res.json())
-                    .then(data => {
-
+                fetch(
+                    "<?= base_url('Consultation/getDischargeFollowupsByPlan/') ?>" + planId,
+                )
+                    .then((res) => res.json())
+                    .then((data) => {
                         let html = `
                         <table class="table table-sm table-bordered" style='background-color: #c1c1c1 !important;'>
                             <thead>
@@ -9005,51 +8237,51 @@
                     `;
 
                         if (data.length > 0) {
-                            data.forEach(row => {
+                            data.forEach((row) => {
+                                let statusBadge = "bg-warning";
+                                let statusText = "Pending";
 
-                                let statusBadge = 'bg-warning';
-                                let statusText = 'Pending';
-
-                                const today = new Date().toISOString().split('T')[0];
+                                const today = new Date().toISOString().split("T")[0];
 
                                 const followDate = row.followup_date;
-                                const updatedDate = row.updated_at ? row.updated_at.split(' ')[0] : null;
+                                const updatedDate = row.updated_at
+                                    ? row.updated_at.split(" ")[0]
+                                    : null;
 
-                                if (row.status === 'completed') {
-
+                                if (row.status === "completed") {
                                     if (updatedDate && updatedDate > followDate) {
-                                        statusBadge = 'bg-success bg-opacity-50 text-dark';
-                                        statusText = 'Done Late';
+                                        statusBadge = "bg-success bg-opacity-50 text-dark";
+                                        statusText = "Done Late";
                                     } else {
-                                        statusBadge = 'bg-success';
-                                        statusText = 'Done';
+                                        statusBadge = "bg-success";
+                                        statusText = "Done";
                                     }
-
                                 } else {
-
                                     if (followDate < today) {
-                                        statusBadge = 'bg-danger';
-                                        statusText = 'Missed';
+                                        statusBadge = "bg-danger";
+                                        statusText = "Missed";
                                     } else if (followDate === today) {
-                                        statusBadge = 'bg-warning';
-                                        statusText = 'Pending';
+                                        statusBadge = "bg-warning";
+                                        statusText = "Pending";
                                     } else {
-                                        statusBadge = 'bg-secondary';
-                                        statusText = 'Upcoming';
+                                        statusBadge = "bg-secondary";
+                                        statusText = "Upcoming";
                                     }
                                 }
 
-                                let completedOn = '-';
+                                let completedOn = "-";
 
-                                if (row.status === 'completed') {
-                                    completedOn = row.updated_at ? formatDateTime(row.updated_at) : '-';
+                                if (row.status === "completed") {
+                                    completedOn = row.updated_at
+                                        ? formatDateTime(row.updated_at)
+                                        : "-";
                                 }
 
                                 html += `
                                     <tr>
                                         <td style="background-color: #f0f0f0 !important;">${formatDate(followDate)}</td>
                                         <td style="background-color: #f0f0f0 !important;"><span class="badge ${statusBadge}">${statusText}</span></td>
-                                        <td style="background-color: #f0f0f0 !important;">${row.remarks ? row.remarks : '-'}</td>
+                                        <td style="background-color: #f0f0f0 !important;">${row.remarks ? row.remarks : "-"}</td>
                                         <td style="background-color: #f0f0f0 !important;">${completedOn}</td>
                                     </tr>
                                     `;
@@ -9058,39 +8290,43 @@
                             html += `<tr><td colspan="4">No follow-ups</td></tr>`;
                         }
 
-                        html += '</tbody></table>';
+                        html += "</tbody></table>";
                         container.innerHTML = html;
                     });
-
             } else {
-                row.style.display = 'none';
+                row.style.display = "none";
             }
         }
         function formatDate(dateStr) {
             let d = new Date(dateStr);
-            return d.toLocaleDateString('en-GB', {
-                day: '2-digit',
-                month: 'short',
-                year: 'numeric'
+            return d.toLocaleDateString("en-GB", {
+                day: "2-digit",
+                month: "short",
+                year: "numeric",
             });
         }
 
         function formatDateTime(dateStr) {
             let d = new Date(dateStr);
 
-            return d.toLocaleDateString('en-GB', {
-                day: '2-digit',
-                month: 'short',
-                year: 'numeric'
-            }) + ' - ' +
-                d.toLocaleTimeString('en-US', {
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    hour12: true
-                });
-        }        
+            return (
+                d.toLocaleDateString("en-GB", {
+                    day: "2-digit",
+                    month: "short",
+                    year: "numeric",
+                }) +
+                " - " +
+                d.toLocaleTimeString("en-US", {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    hour12: true,
+                })
+            );
+        }
     </script>
 
+    <!-- Consultation script -->
+    <script src="<?php echo base_url(); ?>application/views/js/consultationJs.js"></script>
 
     <!-- Common Script -->
     <script src="<?php echo base_url(); ?>application/views/js/script.js"></script>

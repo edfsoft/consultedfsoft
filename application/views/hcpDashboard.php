@@ -16,6 +16,9 @@
         href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" />
     <!-- Image Cropper -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css">
+    <!-- html2canvas & html2pdf for follow-up download -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
     <style>
         body {
@@ -470,8 +473,16 @@
                                 class="pb-3 d-flex justify-content-between align-items-center">
                                 <span><i class="bi bi-clock-history pe-3"></i>
                                     Follow-ups (Next Follow-up)</span>
-                                <span class="px-2" id="followUpCount"
-                                    style="font-size:16px;color: #00ad8e;border : 2px solid #00ad8e; border-radius:50%;">0</span>
+                                <span class="d-flex align-items-center gap-2">
+                                    <button id="followUpDownloadBtn" title="Download Follow-up List"
+                                        class="btn btn-sm d-flex align-items-center gap-1"
+                                        style="background:#00ad8e;color:#fff;border-radius:8px;font-size:13px;padding:4px 10px;"
+                                        data-bs-toggle="modal" data-bs-target="#followUpDownloadModal">
+                                        <i class="bi bi-download"></i> Download
+                                    </button>
+                                    <span class="px-2" id="followUpCount"
+                                        style="font-size:16px;color: #00ad8e;border : 2px solid #00ad8e; border-radius:50%;">0</span>
+                                </span>
                             </p>
 
                             <div class="rounded-4 px-3">
@@ -583,6 +594,494 @@
                     </div>
                 </div>
             </section>
+
+            <!-- ============================================================
+                 Follow-up Date-Range Download Modal
+            ============================================================ -->
+            <!-- flatpickr CSS (for date pickers with disabled dates) -->
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+            <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+            <style>
+                /* ── All calendar days: base visible style ── */
+                .flatpickr-day {
+                    border-radius: 6px !important;
+                }
+
+                /* ── Disabled dates: clearly visible, not selectable ── */
+                .flatpickr-day.disabled,
+                .flatpickr-day.disabled:hover,
+                .flatpickr-day.flatpickr-disabled,
+                .flatpickr-day.flatpickr-disabled:hover {
+                    color: #333 !important;
+                    background: #e0e0e0 !important;
+                    border: 1px solid #ccc !important;
+                    border-radius: 6px !important;
+                    cursor: not-allowed !important;
+                    text-decoration: none !important;
+                    opacity: 1 !important;
+                }
+
+                /* ── Selectable (follow-up) dates: green highlight ── */
+                .flatpickr-day:not(.disabled):not(.flatpickr-disabled):not(.prevMonthDay):not(.nextMonthDay) {
+                    background: #e6f7f3 !important;
+                    color: #007a63 !important;
+                    font-weight: 700 !important;
+                    border: 1.5px solid #00ad8e !important;
+                }
+
+                /* ── Selected date ── */
+                .flatpickr-day.selected,
+                .flatpickr-day.selected:hover {
+                    background: #00ad8e !important;
+                    color: #fff !important;
+                    border-color: #00ad8e !important;
+                }
+
+                /* ── Today marker ── */
+                .flatpickr-day.today:not(.selected) {
+                    border-color: #00ad8e !important;
+                }
+
+                /* ── Prev/next month faded days ── */
+                .flatpickr-day.prevMonthDay,
+                .flatpickr-day.nextMonthDay {
+                    color: #ccc !important;
+                    background: transparent !important;
+                    cursor: not-allowed !important;
+                    pointer-events: none;
+                }
+
+                .flatpickr-input { cursor: pointer; }
+                #fuDlFromDate, #fuDlToDate { background: #fff; }
+            </style>
+
+
+            <div class="modal fade" id="followUpDownloadModal" tabindex="-1" aria-labelledby="followUpDownloadModalLabel" aria-hidden="true"
+                 data-bs-backdrop="static" data-bs-keyboard="false">
+                <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+                    <div class="modal-content" style="border-radius:16px;font-family:'Poppins',sans-serif;">
+
+                        <!-- Modal Header -->
+                        <div class="modal-header" style="background:#00ad8e;color:#fff;border-radius:16px 16px 0 0;">
+                            <h5 class="modal-title fw-semibold" id="followUpDownloadModalLabel">
+                                <i class="bi bi-download me-2"></i> Download Next Follow-up List
+                            </h5>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                        </div>
+
+                        <!-- Modal Body -->
+                        <div class="modal-body p-4">
+
+                            <!-- Date Range Pickers -->
+                            <div class="row g-3 mb-3 align-items-end">
+                                <div class="col-12 col-md-4">
+                                    <label class="form-label fw-semibold" for="fuDlFromDate">
+                                        From Date <span class="text-danger">*</span>
+                                    </label>
+                                    <input type="text" id="fuDlFromDate" class="form-control" placeholder="Select from date"
+                                        style="border:2px solid #00ad8e;border-radius:10px;" readonly>
+                                    <div id="fuDlFromErr" class="d-none mt-1" style="font-size:12px;color:#dc3545;">
+                                        <i class="bi bi-exclamation-circle me-1"></i>Please select a valid From date.
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-4">
+                                    <label class="form-label fw-semibold" for="fuDlToDate">
+                                        To Date <span class="text-danger">*</span>
+                                    </label>
+                                    <input type="text" id="fuDlToDate" class="form-control" placeholder="Select to date"
+                                        style="border:2px solid #00ad8e;border-radius:10px;" readonly>
+                                    <div id="fuDlToErr" class="d-none mt-1" style="font-size:12px;color:#dc3545;">
+                                        <i class="bi bi-exclamation-circle me-1"></i>Please select a valid To date.
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-4">
+                                    <button id="fuDlPreviewBtn" class="btn w-100 fw-semibold"
+                                        style="background:#00ad8e;color:#fff;border-radius:10px;padding:10px;">
+                                        <i class="bi bi-eye me-1"></i> Preview List
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Info note -->
+                            <div class="alert alert-info py-2 px-3 mb-3" style="font-size:13px;border-radius:10px;">
+                                <i class="bi bi-info-circle me-1"></i>
+                                Only dates <strong>highlighted</strong> in the calendar have follow-ups and can be selected.
+                                Both dates must be <strong>today or later</strong>.
+                            </div>
+
+                            <!-- Download Buttons (shown after preview) -->
+                            <div id="fuDlActions" class="d-none mb-3">
+                                <div class="d-flex justify-content-end gap-2">
+                                    <button id="fuDlPdfBtn" class="btn fw-semibold d-flex align-items-center gap-1"
+                                        style="background:#dc3545;color:#fff;border-radius:10px;">
+                                        <i class="bi bi-file-earmark-pdf"></i> Download PDF
+                                    </button>
+                                    <button id="fuDlImgBtn" class="btn fw-semibold d-flex align-items-center gap-1"
+                                        style="background:#0d6efd;color:#fff;border-radius:10px;">
+                                        <i class="bi bi-image"></i> Download Image
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Preview Table Container -->
+                            <div id="fuDlPreviewWrap" class="d-none">
+
+                                <!-- Loading spinner -->
+                                <div id="fuDlLoading" class="d-none text-center py-4">
+                                    <div class="spinner-border" style="color:#00ad8e;"></div>
+                                    <p class="mt-2" style="color:#00ad8e;">Loading follow-up data...</p>
+                                </div>
+
+                                <!-- Printable area -->
+                                <div id="fuDlPrintArea" style="background:#fff;padding:16px;border:1px solid #dee2e6;border-radius:10px;">
+
+                                    <!-- Header -->
+                                    <div style="text-align:center;margin-bottom:8px;">
+                                        <h5 style="font-weight:700;margin:0;color:#000;">Next Follow Up List</h5>
+                                        <p id="fuDlPrintSubtitle" style="font-size:13px;margin:4px 0 0;color:#555;"></p>
+                                    </div>
+
+                                    <!-- Table -->
+                                    <div class="table-responsive">
+                                        <table id="fuDlTable"
+                                            style="width:100%;border-collapse:collapse;font-size:13px;font-family:'Poppins',sans-serif;">
+                                            <thead>
+                                                <tr>
+                                                    <th rowspan="2"
+                                                        style="border:1.5px solid #333;padding:7px 10px;text-align:center;vertical-align:middle;background:#f8f9fa;">
+                                                        Date</th>
+                                                    <th rowspan="2"
+                                                        style="border:1.5px solid #333;padding:7px 10px;text-align:center;vertical-align:middle;background:#f8f9fa;">
+                                                        S.No</th>
+                                                    <th colspan="2"
+                                                        style="border:1.5px solid #333;padding:7px 10px;text-align:center;background:#f8f9fa;">
+                                                        Next follow up</th>
+                                                    <th rowspan="2"
+                                                        style="border:1.5px solid #333;padding:7px 10px;text-align:center;vertical-align:middle;background:#f8f9fa;">
+                                                        Last Consult On</th>
+                                                    <th rowspan="2"
+                                                        style="border:1.5px solid #333;padding:7px 10px;text-align:center;vertical-align:middle;background:#f8f9fa;">
+                                                        Contact Number</th>
+                                                </tr>
+                                                <tr>
+                                                    <th style="border:1.5px solid #333;padding:7px 10px;text-align:center;background:#f8f9fa;">
+                                                        Patient ID</th>
+                                                    <th style="border:1.5px solid #333;padding:7px 10px;text-align:center;background:#f8f9fa;">
+                                                        Patient Name</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="fuDlTableBody">
+                                                <!-- Rows rendered by JS -->
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <!-- Footer: duration + total count (single place) -->
+                                    <div style="margin-top:12px;padding-top:8px;border-top:1px solid #dee2e6;display:flex;justify-content:space-between;align-items:center;font-size:13px;font-weight:600;color:#333;">
+                                        <div id="fuDlPrintDuration"></div>
+                                        <div id="fuDlPrintCountFooter"></div>
+                                    </div>
+                                </div><!-- /fuDlPrintArea -->
+
+                            </div><!-- /fuDlPreviewWrap -->
+
+                        </div><!-- /modal-body -->
+                    </div>
+                </div>
+            </div>
+            <!-- End Download Modal -->
+
+            <!-- Follow-up Download Modal JavaScript -->
+            <script>
+            (function () {
+                'use strict';
+
+                /* ── URLs ───────────────────────────────────────────────── */
+                const urlDates = '<?= base_url("Healthcareprovider/getFollowUpDatesInRange") ?>';
+                const urlRange = '<?= base_url("Healthcareprovider/getFollowUpsByDateRange") ?>';
+
+                /* ── DOM refs ───────────────────────────────────────────── */
+                const previewBtn     = document.getElementById('fuDlPreviewBtn');
+                const pdfBtn         = document.getElementById('fuDlPdfBtn');
+                const imgBtn         = document.getElementById('fuDlImgBtn');
+                const actionsDiv     = document.getElementById('fuDlActions');
+                const previewWrap    = document.getElementById('fuDlPreviewWrap');
+                const loadingDiv     = document.getElementById('fuDlLoading');
+                const tbodyEl        = document.getElementById('fuDlTableBody');
+                const printDurEl     = document.getElementById('fuDlPrintDuration');
+                const printCountFoot = document.getElementById('fuDlPrintCountFooter');
+                const subtitleEl     = document.getElementById('fuDlPrintSubtitle');
+
+                /* ── State ──────────────────────────────────────────────── */
+                let validDates      = [];   // YYYY-MM-DD strings that have follow-ups
+                let datesLoaded     = false;
+                let fpFrom          = null; // flatpickr instance – From
+                let fpTo            = null; // flatpickr instance – To
+                let selectedFrom    = '';
+                let selectedTo      = '';
+
+                /* ── Helpers ────────────────────────────────────────────── */
+                function todayISO() {
+                    const n = new Date();
+                    return `${n.getFullYear()}-${String(n.getMonth()+1).padStart(2,'0')}-${String(n.getDate()).padStart(2,'0')}`;
+                }
+
+                function toISO(dateObj) {
+                    return `${dateObj.getFullYear()}-${String(dateObj.getMonth()+1).padStart(2,'0')}-${String(dateObj.getDate()).padStart(2,'0')}`;
+                }
+
+                /** "YYYY-MM-DD" → "dd-mm-yyyy"  e.g. 13-07-2026 */
+                function fmtShort(isoStr) {
+                    if (!isoStr) return '-';
+                    const [y, m, d] = isoStr.split('-');
+                    return `${d.padStart(2,'0')}-${m.padStart(2,'0')}-${y}`;
+                }
+
+                /** "YYYY-MM-DD" → "dd Mon yyyy"  e.g. 13 Jul 2026 */
+                function fmtLong(isoStr) {
+                    if (!isoStr) return '-';
+                    const dt = new Date(isoStr + 'T00:00:00');
+                    return dt.toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' });
+                }
+
+                function daysBetween(f, t) {
+                    return Math.round((new Date(t+'T00:00:00') - new Date(f+'T00:00:00')) / 86400000) + 1;
+                }
+
+                /* ── Fetch valid follow-up dates & initialise flatpickr ─── */
+                function loadValidDates() {
+                    if (datesLoaded) return Promise.resolve();
+                    const today = todayISO();
+                    const far   = toISO(new Date(Date.now() + 365 * 86400000));
+
+                    return fetch(`${urlDates}?from=${today}&to=${far}`)
+                        .then(r => r.json())
+                        .then(res => {
+                            validDates  = (res.success && res.dates) ? res.dates : [];
+                            datesLoaded = true;
+                            initPickers();
+                        })
+                        .catch(() => { datesLoaded = true; initPickers(); });
+                }
+
+                /* ── Initialise flatpickr instances ─────────────────────── */
+                function initPickers() {
+                    const today = todayISO();
+
+                    // Destroy old instances if re-opened
+                    if (fpFrom) { fpFrom.destroy(); fpFrom = null; }
+                    if (fpTo)   { fpTo.destroy();   fpTo   = null; }
+
+                    /* Disable dates that have NO follow-ups or are before today.
+                       NO minDate set — so the full month grid is always rendered.
+                       disableFn grays out past dates AND dates with no follow-ups. */
+                    const disableFn = (date) => {
+                        const iso = toISO(date);
+                        return iso < today || !validDates.includes(iso);
+                    };
+
+                    fpFrom = flatpickr('#fuDlFromDate', {
+                        dateFormat   : 'Y-m-d',
+                        disable      : [disableFn],   // no minDate so all grid days render
+                        disableMobile: true,
+                        onChange(selDates) {
+                            selectedFrom = selDates.length ? toISO(selDates[0]) : '';
+                            document.getElementById('fuDlFromErr').classList.add('d-none');
+                            resetPreview();
+                            // When From changes, re-disable To picker so dates before From are also grayed
+                            if (fpTo) {
+                                fpTo.set('disable', [(date) => {
+                                    const iso = toISO(date);
+                                    return iso < today || !validDates.includes(iso) || (selectedFrom && iso < selectedFrom);
+                                }]);
+                                // Clear To if it is now before the new From
+                                if (selectedTo && selectedTo < selectedFrom) {
+                                    fpTo.clear();
+                                    selectedTo = '';
+                                }
+                            }
+                        }
+                    });
+
+                    fpTo = flatpickr('#fuDlToDate', {
+                        dateFormat   : 'Y-m-d',
+                        disable      : [disableFn],   // no minDate
+                        disableMobile: true,
+                        onChange(selDates) {
+                            selectedTo = selDates.length ? toISO(selDates[0]) : '';
+                            document.getElementById('fuDlToErr').classList.add('d-none');
+                            resetPreview();
+                        }
+                    });
+                }
+
+                function resetPreview() {
+                    actionsDiv.classList.add('d-none');
+                    previewWrap.classList.add('d-none');
+                    tbodyEl.innerHTML = '';
+                }
+
+                /* ── Load & render preview table ────────────────────────── */
+                function loadPreview() {
+                    const fromErrEl = document.getElementById('fuDlFromErr');
+                    const toErrEl   = document.getElementById('fuDlToErr');
+                    let valid = true;
+
+                    if (!selectedFrom) {
+                        fromErrEl.classList.remove('d-none');
+                        valid = false;
+                    } else {
+                        fromErrEl.classList.add('d-none');
+                    }
+
+                    if (!selectedTo) {
+                        toErrEl.classList.remove('d-none');
+                        valid = false;
+                    } else if (selectedFrom && selectedTo < selectedFrom) {
+                        toErrEl.querySelector ? (toErrEl.innerHTML = '<i class="bi bi-exclamation-circle me-1"></i>To date must be on or after From date.') : null;
+                        toErrEl.classList.remove('d-none');
+                        valid = false;
+                    } else {
+                        toErrEl.classList.add('d-none');
+                    }
+
+                    if (!valid) return;
+
+                    previewWrap.classList.remove('d-none');
+                    loadingDiv.classList.remove('d-none');
+                    tbodyEl.innerHTML = '';
+                    actionsDiv.classList.add('d-none');
+
+                    fetch(`${urlRange}?from=${selectedFrom}&to=${selectedTo}`)
+                        .then(r => r.json())
+                        .then(res => {
+                            loadingDiv.classList.add('d-none');
+                            if (!res.success || !res.data || !res.data.length) {
+                                tbodyEl.innerHTML = `<tr><td colspan="6" class="text-center text-muted py-4">No follow-ups found for the selected date range.</td></tr>`;
+                                return;
+                            }
+                            renderPreviewTable(res.data, selectedFrom, selectedTo);
+                        })
+                        .catch(() => {
+                            loadingDiv.classList.add('d-none');
+                            tbodyEl.innerHTML = `<tr><td colspan="6" class="text-center text-danger py-3">Error loading data. Please try again.</td></tr>`;
+                        });
+                }
+
+                function renderPreviewTable(data, from, to) {
+                    /* Group rows by follow_date */
+                    const grouped = {};
+                    data.forEach(row => {
+                        if (!grouped[row.follow_date]) grouped[row.follow_date] = [];
+                        grouped[row.follow_date].push(row);
+                    });
+
+                    const sortedDates = Object.keys(grouped).sort();
+                    tbodyEl.innerHTML = '';
+
+                    sortedDates.forEach(date => {
+                        const rows = grouped[date];
+                        rows.forEach((row, i) => {
+                            const tr = document.createElement('tr');
+
+                            /* Date cell with rowspan on first row only */
+                            if (i === 0) {
+                                const dateTd = document.createElement('td');
+                                dateTd.rowSpan = rows.length;
+                                dateTd.style.cssText = 'border:1.5px solid #333;padding:7px 10px;text-align:center;vertical-align:middle;font-weight:600;white-space:nowrap;';
+                                dateTd.textContent = fmtShort(date);
+                                tr.appendChild(dateTd);
+                            }
+
+                            tr.innerHTML += `
+                                <td style="border:1.5px solid #333;padding:7px 10px;text-align:center;">${i + 1}</td>
+                                <td style="border:1.5px solid #333;padding:7px 10px;">${row.patientId || '-'}</td>
+                                <td style="border:1.5px solid #333;padding:7px 10px;">${row.patientName || '-'}</td>
+                                <td style="border:1.5px solid #333;padding:7px 10px;text-align:center;">${fmtShort(row.consult_date)}</td>
+                                <td style="border:1.5px solid #333;padding:7px 10px;text-align:center;">${row.mobileNumber || '-'}</td>
+                            `;
+                            tbodyEl.appendChild(tr);
+                        });
+                    });
+
+                    /* Duration & count — written ONLY to the printable footer */
+                    const totalPatients = data.length;
+                    const days    = daysBetween(from, to);
+                    const durTxt  = `${fmtLong(from)} — ${fmtLong(to)} (${days} day${days !== 1 ? 's' : ''})`;
+                    const cntTxt  = `Total Patients: ${totalPatients}`;
+
+                    subtitleEl.textContent     = `From ${fmtLong(from)} to ${fmtLong(to)}`;
+                    printDurEl.textContent     = `Duration: ${durTxt}`;
+                    printCountFoot.textContent = cntTxt;
+
+                    actionsDiv.classList.remove('d-none');
+                }
+
+                /* ── PDF Download — modal stays open after download ──── */
+                function downloadPDF() {
+                    const area     = document.getElementById('fuDlPrintArea');
+                    const filename = `followup_${selectedFrom}_to_${selectedTo}.pdf`;
+
+                    pdfBtn.disabled = true;
+                    pdfBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Generating…';
+
+                    html2pdf().set({
+                        margin      : [10, 10, 10, 10],
+                        filename,
+                        image       : { type:'jpeg', quality:0.98 },
+                        html2canvas : { scale:2, useCORS:true },
+                        jsPDF       : { unit:'mm', format:'a4', orientation:'landscape' }
+                    }).from(area).save().then(() => {
+                        pdfBtn.disabled = false;
+                        pdfBtn.innerHTML = '<i class="bi bi-file-earmark-pdf"></i> Download PDF';
+                        // Modal intentionally stays open so user can also download as image
+                    });
+                }
+
+                /* ── Image Download — modal stays open after download ─── */
+                function downloadImage() {
+                    const area     = document.getElementById('fuDlPrintArea');
+                    const filename = `followup_${selectedFrom}_to_${selectedTo}.png`;
+
+                    imgBtn.disabled = true;
+                    imgBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Generating…';
+
+                    html2canvas(area, { scale:2, useCORS:true, backgroundColor:'#ffffff' })
+                        .then(canvas => {
+                            const link  = document.createElement('a');
+                            link.download = filename;
+                            link.href = canvas.toDataURL('image/png');
+                            link.click();
+                            imgBtn.disabled = false;
+                            imgBtn.innerHTML = '<i class="bi bi-image"></i> Download Image';
+                        });
+                }
+
+                /* ── Event listeners ────────────────────────────────────── */
+                previewBtn.addEventListener('click', loadPreview);
+                pdfBtn.addEventListener('click', downloadPDF);
+                imgBtn.addEventListener('click', downloadImage);
+
+                /* ── Reset & reload on modal open ───────────────────────── */
+                const modalEl = document.getElementById('followUpDownloadModal');
+                if (modalEl) {
+                    modalEl.addEventListener('show.bs.modal', function () {
+                        selectedFrom = '';
+                        selectedTo   = '';
+                        resetPreview();
+                        document.getElementById('fuDlFromErr').classList.add('d-none');
+                        document.getElementById('fuDlToErr').classList.add('d-none');
+                        // Reload dates each open so new follow-ups are reflected
+                        datesLoaded = false;
+                        document.getElementById('fuDlFromDate').value = '';
+                        document.getElementById('fuDlToDate').value   = '';
+                        loadValidDates();
+                    });
+                }
+
+            })();
+            </script>
+
 
             <!-- Completed Consultations script -->
             <script>
@@ -890,22 +1389,12 @@
                             tbody.innerHTML += `
                 <tr>
                     <td>${i + 1}.</td>
-                    <td>${row.patientId}</td>
-                    <td>${row.patient_name}</td>
-                    <td>${row.mobileNumber}</td>
-
-                    <td>
-                        <span class="badge ${badge}">${status}</span>
-                    </td>
-
-                    <td>
-                        <button 
-                            class="btn btn-sm"
-                            style="background:#00ad8e;color:#fff"
-                            ${disableBtn}
-                            onclick="openRemarksModal(${row.id})">
-                            Done
-                        </button>
+                    <td><a href="<?php echo base_url('Consultation/consultation/'); ?>${row.patientDbId}" class="fieldLink text-dark">${row.patientId}</a></td>
+                    <td><a href="<?php echo base_url('Consultation/consultation/'); ?>${row.patientDbId}" class="fieldLink text-dark">${row.patient_name}</a></td>
+                    <td><a href="<?php echo base_url('Consultation/consultation/'); ?>${row.patientDbId}" class="fieldLink text-dark">${row.mobileNumber}</a></td>
+                    <td><span class="badge ${badge}">${status}</span></td>
+                    <td><button id="doneBtn-${row.id}" class="btn btn-sm" style="background:#00ad8e;color:#fff" ${disableBtn}
+                            onclick="openRemarksModal(${row.id})">Done</button>
                     </td>
                 </tr>`;
                         });
@@ -952,7 +1441,20 @@
                     })
                         .then(res => res.json())
                         .then(data => {
-                            location.reload();
+                            // Close the modal
+                            let modalEl = document.getElementById('remarksModal');
+                            let modal = bootstrap.Modal.getInstance(modalEl);
+                            modal.hide();
+
+                            // Remove the row and update count
+                            const btn = document.getElementById(`doneBtn-${id}`);
+                            if (btn) {
+                                const row = btn.closest('tr');
+                                row.remove();
+                                // Decrement count
+                                const countEl = document.getElementById('followupCount');
+                                countEl.textContent = Math.max(0, parseInt(countEl.textContent) - 1);
+                            }
                         });
                 }
             </script>
@@ -1555,7 +2057,7 @@ Thank you.`;
                                                     <!-- Hover catcher -->
                                                     <div
                                                         style="position:absolute;top:0;left:0;width:24px;height:24px;cursor:not-allowed;
-                                                                                                                                                                                                                                                                "
+                                                                                                                                                                                                                                                                                                        "
                                                         onmouseenter="this.nextElementSibling.style.display='flex'"
                                                         onmouseleave="this.nextElementSibling.style.display='none'"
                                                     ></div>

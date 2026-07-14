@@ -653,6 +653,12 @@
 
                 .flatpickr-input { cursor: pointer; }
                 #fuDlFromDate, #fuDlToDate { background: #fff; }
+
+                /* Prevent table rows and groups from breaking across pages in PDF/print */
+                #fuDlTable tr, #fuDlTable tbody, #fuDlTable td {
+                    page-break-inside: avoid !important;
+                    break-inside: avoid !important;
+                }
             </style>
 
 
@@ -770,9 +776,7 @@
                                                         Patient Name</th>
                                                 </tr>
                                             </thead>
-                                            <tbody id="fuDlTableBody">
-                                                <!-- Rows rendered by JS -->
-                                            </tbody>
+                                            <!-- Dynamic tbodies will be appended here -->
                                         </table>
                                     </div>
 
@@ -807,7 +811,7 @@
                 const actionsDiv     = document.getElementById('fuDlActions');
                 const previewWrap    = document.getElementById('fuDlPreviewWrap');
                 const loadingDiv     = document.getElementById('fuDlLoading');
-                const tbodyEl        = document.getElementById('fuDlTableBody');
+                const tableEl        = document.getElementById('fuDlTable');
                 const printDurEl     = document.getElementById('fuDlPrintDuration');
                 const printCountFoot = document.getElementById('fuDlPrintCountFooter');
                 const subtitleEl     = document.getElementById('fuDlPrintSubtitle');
@@ -819,6 +823,20 @@
                 let fpTo            = null; // flatpickr instance – To
                 let selectedFrom    = '';
                 let selectedTo      = '';
+
+                /* Helper to clear table bodies */
+                function clearTableBodies() {
+                    const tbodies = tableEl.querySelectorAll('tbody');
+                    tbodies.forEach(tb => tb.remove());
+                }
+
+                /* Helper to show table message */
+                function showTableMessage(msg, isError = false) {
+                    clearTableBodies();
+                    const tbody = document.createElement('tbody');
+                    tbody.innerHTML = `<tr><td colspan="6" class="text-center ${isError ? 'text-danger' : 'text-muted'} py-4">${msg}</td></tr>`;
+                    tableEl.appendChild(tbody);
+                }
 
                 /* ── Helpers ────────────────────────────────────────────── */
                 function todayISO() {
@@ -918,7 +936,7 @@
                 function resetPreview() {
                     actionsDiv.classList.add('d-none');
                     previewWrap.classList.add('d-none');
-                    tbodyEl.innerHTML = '';
+                    clearTableBodies();
                 }
 
                 /* ── Load & render preview table ────────────────────────── */
@@ -949,7 +967,7 @@
 
                     previewWrap.classList.remove('d-none');
                     loadingDiv.classList.remove('d-none');
-                    tbodyEl.innerHTML = '';
+                    clearTableBodies();
                     actionsDiv.classList.add('d-none');
 
                     fetch(`${urlRange}?from=${selectedFrom}&to=${selectedTo}`)
@@ -957,14 +975,14 @@
                         .then(res => {
                             loadingDiv.classList.add('d-none');
                             if (!res.success || !res.data || !res.data.length) {
-                                tbodyEl.innerHTML = `<tr><td colspan="6" class="text-center text-muted py-4">No follow-ups found for the selected date range.</td></tr>`;
+                                showTableMessage('No follow-ups found for the selected date range.');
                                 return;
                             }
                             renderPreviewTable(res.data, selectedFrom, selectedTo);
                         })
                         .catch(() => {
                             loadingDiv.classList.add('d-none');
-                            tbodyEl.innerHTML = `<tr><td colspan="6" class="text-center text-danger py-3">Error loading data. Please try again.</td></tr>`;
+                            showTableMessage('Error loading data. Please try again.', true);
                         });
                 }
 
@@ -977,31 +995,37 @@
                     });
 
                     const sortedDates = Object.keys(grouped).sort();
-                    tbodyEl.innerHTML = '';
+                    clearTableBodies();
 
                     sortedDates.forEach(date => {
                         const rows = grouped[date];
+                        const tbody = document.createElement('tbody');
+                        tbody.className = 'fu-date-group';
+                        tbody.style.cssText = 'page-break-inside: avoid; break-inside: avoid;';
+
                         rows.forEach((row, i) => {
                             const tr = document.createElement('tr');
+                            tr.style.cssText = 'page-break-inside: avoid; break-inside: avoid;';
 
                             /* Date cell with rowspan on first row only */
                             if (i === 0) {
                                 const dateTd = document.createElement('td');
                                 dateTd.rowSpan = rows.length;
-                                dateTd.style.cssText = 'border:1.5px solid #333;padding:7px 10px;text-align:center;vertical-align:middle;font-weight:600;white-space:nowrap;';
+                                dateTd.style.cssText = 'border:1.5px solid #333;padding:7px 10px;text-align:center;vertical-align:middle;font-weight:600;white-space:nowrap;page-break-inside: avoid; break-inside: avoid;';
                                 dateTd.textContent = fmtShort(date);
                                 tr.appendChild(dateTd);
                             }
 
                             tr.innerHTML += `
-                                <td style="border:1.5px solid #333;padding:7px 10px;text-align:center;">${i + 1}</td>
-                                <td style="border:1.5px solid #333;padding:7px 10px;">${row.patientId || '-'}</td>
-                                <td style="border:1.5px solid #333;padding:7px 10px;">${row.patientName || '-'}</td>
-                                <td style="border:1.5px solid #333;padding:7px 10px;text-align:center;">${fmtShort(row.consult_date)}</td>
-                                <td style="border:1.5px solid #333;padding:7px 10px;text-align:center;">${row.mobileNumber || '-'}</td>
+                                <td style="border:1.5px solid #333;padding:7px 10px;text-align:center;page-break-inside: avoid; break-inside: avoid;">${i + 1}</td>
+                                <td style="border:1.5px solid #333;padding:7px 10px;page-break-inside: avoid; break-inside: avoid;">${row.patientId || '-'}</td>
+                                <td style="border:1.5px solid #333;padding:7px 10px;page-break-inside: avoid; break-inside: avoid;">${row.patientName || '-'}</td>
+                                <td style="border:1.5px solid #333;padding:7px 10px;text-align:center;page-break-inside: avoid; break-inside: avoid;">${fmtShort(row.consult_date)}</td>
+                                <td style="border:1.5px solid #333;padding:7px 10px;text-align:center;page-break-inside: avoid; break-inside: avoid;">${row.mobileNumber || '-'}</td>
                             `;
-                            tbodyEl.appendChild(tr);
+                            tbody.appendChild(tr);
                         });
+                        tableEl.appendChild(tbody);
                     });
 
                     /* Duration & count — written ONLY to the printable footer */
@@ -1020,7 +1044,7 @@
                 /* ── PDF Download — modal stays open after download ──── */
                 function downloadPDF() {
                     const area     = document.getElementById('fuDlPrintArea');
-                    const filename = `followup_${selectedFrom}_to_${selectedTo}.pdf`;
+                    const filename = `EDF_next_followup_${fmtShort(selectedFrom)}_to_${fmtShort(selectedTo)}.pdf`;
 
                     pdfBtn.disabled = true;
                     pdfBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Generating…';
@@ -1030,7 +1054,8 @@
                         filename,
                         image       : { type:'jpeg', quality:0.98 },
                         html2canvas : { scale:2, useCORS:true },
-                        jsPDF       : { unit:'mm', format:'a4', orientation:'landscape' }
+                        jsPDF       : { unit:'mm', format:'a4', orientation:'landscape' },
+                        pagebreak   : { mode: ['css', 'legacy'], avoid: 'tr, tbody, td' }
                     }).from(area).save().then(() => {
                         pdfBtn.disabled = false;
                         pdfBtn.innerHTML = '<i class="bi bi-file-earmark-pdf"></i> Download PDF';
@@ -1041,7 +1066,7 @@
                 /* ── Image Download — modal stays open after download ─── */
                 function downloadImage() {
                     const area     = document.getElementById('fuDlPrintArea');
-                    const filename = `followup_${selectedFrom}_to_${selectedTo}.png`;
+                    const filename = `EDF_next_followup_${fmtShort(selectedFrom)}_to_${fmtShort(selectedTo)}.png`;
 
                     imgBtn.disabled = true;
                     imgBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Generating…';

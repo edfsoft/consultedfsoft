@@ -659,6 +659,16 @@
                     page-break-inside: avoid !important;
                     break-inside: avoid !important;
                 }
+
+                /* Print area portrait width & styling */
+                #fuDlPrintArea {
+                    width: 700px !important;
+                    margin: 0 auto !important;
+                    box-sizing: border-box !important;
+                }
+                #fuDlPrintArea .table-responsive {
+                    overflow: visible !important;
+                }
             </style>
 
 
@@ -1036,10 +1046,10 @@
 
                             tr.innerHTML += `
                                 <td style="border:1.5px solid #333;padding:7px 10px;text-align:center;page-break-inside: avoid; break-inside: avoid;">${i + 1}</td>
-                                <td style="border:1.5px solid #333;padding:7px 10px;page-break-inside: avoid; break-inside: avoid;">${row.patientId || '-'}</td>
-                                <td style="border:1.5px solid #333;padding:7px 10px;page-break-inside: avoid; break-inside: avoid;">${row.patientName || '-'}</td>
-                                <td style="border:1.5px solid #333;padding:7px 10px;text-align:center;page-break-inside: avoid; break-inside: avoid;">${fmtShort(row.consult_date)}</td>
-                                <td style="border:1.5px solid #333;padding:7px 10px;text-align:center;page-break-inside: avoid; break-inside: avoid;">${row.mobileNumber || '-'}</td>
+                                <td style="border:1.5px solid #333;padding:7px 10px;page-break-inside: avoid; break-inside: avoid; word-break: break-all;">${row.patientId || '-'}</td>
+                                <td style="border:1.5px solid #333;padding:7px 10px;page-break-inside: avoid; break-inside: avoid; word-break: break-word;">${row.patientName || '-'}</td>
+                                <td style="border:1.5px solid #333;padding:7px 10px;text-align:center;page-break-inside: avoid; break-inside: avoid; white-space: nowrap;">${fmtShort(row.consult_date)}</td>
+                                <td style="border:1.5px solid #333;padding:7px 10px;text-align:center;page-break-inside: avoid; break-inside: avoid; white-space: nowrap;">${row.mobileNumber || '-'}</td>
                             `;
                             tbody.appendChild(tr);
                         });
@@ -1078,7 +1088,7 @@
                         filename,
                         image       : { type:'jpeg', quality:0.98 },
                         html2canvas : { scale:2, useCORS:true },
-                        jsPDF       : { unit:'mm', format:'a4', orientation:'landscape' },
+                        jsPDF       : { unit:'mm', format:'a4', orientation:'portrait' },
                         pagebreak   : { mode: ['css', 'legacy'], avoid: 'tr, tbody, td' }
                     }).from(area).save().then(() => {
                         pdfBtn.disabled = false;

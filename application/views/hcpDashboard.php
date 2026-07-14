@@ -742,9 +742,13 @@
                                 <div id="fuDlPrintArea" style="background:#fff;padding:16px;border:1px solid #dee2e6;border-radius:10px;">
 
                                     <!-- Header -->
-                                    <div style="text-align:center;margin-bottom:8px;">
+                                    <div style="text-align:center;margin-bottom:12px;border-bottom:1px solid #dee2e6;padding-bottom:8px;">
                                         <h5 style="font-weight:700;margin:0;color:#000;">Next Follow Up List</h5>
-                                        <p id="fuDlPrintSubtitle" style="font-size:13px;margin:4px 0 0;color:#555;"></p>
+                                        <p id="fuDlPrintSubtitle" style="font-size:13px;margin:4px 0 8px;color:#555;"></p>
+                                        <div style="display:flex;justify-content:space-between;font-size:12px;color:#333;margin-top:6px;font-weight:500;">
+                                            <div><strong>HCP:</strong> <?php echo $_SESSION['hcpsName'] . ' ('. $_SESSION['hcpId'].')'; ?></div>
+                                            <div><strong>Generated on:</strong> <span id="fuDlGeneratedAt"></span></div>
+                                        </div>
                                     </div>
 
                                     <!-- Table -->
@@ -853,6 +857,20 @@
                     if (!isoStr) return '-';
                     const [y, m, d] = isoStr.split('-');
                     return `${d.padStart(2,'0')}-${m.padStart(2,'0')}-${y}`;
+                }
+
+                function getNowTimestamp() {
+                    const now = new Date();
+                    const d = String(now.getDate()).padStart(2, '0');
+                    const m = String(now.getMonth() + 1).padStart(2, '0');
+                    const y = now.getFullYear();
+                    let hours = now.getHours();
+                    const minutes = String(now.getMinutes()).padStart(2, '0');
+                    const ampm = hours >= 12 ? 'PM' : 'AM';
+                    hours = hours % 12;
+                    hours = hours ? hours : 12; // the hour '0' should be '12'
+                    const hrs = String(hours).padStart(2, '0');
+                    return `${d}-${m}-${y} ${hrs}:${minutes} ${ampm}`;
                 }
 
                 /** "YYYY-MM-DD" → "dd Mon yyyy"  e.g. 13 Jul 2026 */
@@ -1038,6 +1056,9 @@
                     printDurEl.textContent     = `Duration: ${durTxt}`;
                     printCountFoot.textContent = cntTxt;
 
+                    // Set generated timestamp in the preview header
+                    document.getElementById('fuDlGeneratedAt').textContent = getNowTimestamp();
+
                     actionsDiv.classList.remove('d-none');
                 }
 
@@ -1045,6 +1066,9 @@
                 function downloadPDF() {
                     const area     = document.getElementById('fuDlPrintArea');
                     const filename = `EDF_next_followup_${fmtShort(selectedFrom)}_to_${fmtShort(selectedTo)}.pdf`;
+
+                    // Update timestamp to the exact download time
+                    document.getElementById('fuDlGeneratedAt').textContent = getNowTimestamp();
 
                     pdfBtn.disabled = true;
                     pdfBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Generating…';
@@ -1067,6 +1091,9 @@
                 function downloadImage() {
                     const area     = document.getElementById('fuDlPrintArea');
                     const filename = `EDF_next_followup_${fmtShort(selectedFrom)}_to_${fmtShort(selectedTo)}.png`;
+
+                    // Update timestamp to the exact download time
+                    document.getElementById('fuDlGeneratedAt').textContent = getNowTimestamp();
 
                     imgBtn.disabled = true;
                     imgBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Generating…';

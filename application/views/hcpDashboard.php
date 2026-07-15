@@ -762,7 +762,7 @@
                                     </div>
 
                                     <!-- Table -->
-                                    <div class="table-responsive">
+                                    <div class="table-responsive" id="fuDlTableContainer">
                                         <table id="fuDlTable"
                                             style="width:100%;border-collapse:collapse;font-size:13px;font-family:'Poppins',sans-serif;">
                                             <thead>
@@ -825,10 +825,19 @@
                 const actionsDiv     = document.getElementById('fuDlActions');
                 const previewWrap    = document.getElementById('fuDlPreviewWrap');
                 const loadingDiv     = document.getElementById('fuDlLoading');
-                const tableEl        = document.getElementById('fuDlTable');
-                const printDurEl     = document.getElementById('fuDlPrintDuration');
-                const printCountFoot = document.getElementById('fuDlPrintCountFooter');
-                const subtitleEl     = document.getElementById('fuDlPrintSubtitle');
+                let tableEl          = document.getElementById('fuDlTable');
+                let tableContainer   = document.getElementById('fuDlTableContainer');
+                let printDurEl       = document.getElementById('fuDlPrintDuration');
+                let printCountFoot   = document.getElementById('fuDlPrintCountFooter');
+                let subtitleEl       = document.getElementById('fuDlPrintSubtitle');
+
+                function rebindDOMRefs() {
+                    tableEl        = document.getElementById('fuDlTable');
+                    tableContainer = document.getElementById('fuDlTableContainer');
+                    printDurEl     = document.getElementById('fuDlPrintDuration');
+                    printCountFoot = document.getElementById('fuDlPrintCountFooter');
+                    subtitleEl     = document.getElementById('fuDlPrintSubtitle');
+                }
 
                 /* ── State ──────────────────────────────────────────────── */
                 let validDates      = [];   // YYYY-MM-DD strings that have follow-ups
@@ -838,10 +847,17 @@
                 let selectedFrom    = '';
                 let selectedTo      = '';
 
-                /* Helper to clear table bodies */
+                /* Helper to clear table bodies & extra generated tables */
                 function clearTableBodies() {
-                    const tbodies = tableEl.querySelectorAll('tbody');
-                    tbodies.forEach(tb => tb.remove());
+                    if (tableContainer) {
+                        const extraTables = tableContainer.querySelectorAll('table:not(#fuDlTable)');
+                        extraTables.forEach(t => t.remove());
+                    }
+                    if (tableEl) {
+                        const tbodies = tableEl.querySelectorAll('tbody');
+                        tbodies.forEach(tb => tb.remove());
+                        tableEl.classList.remove('d-none');
+                    }
                 }
 
                 /* Helper to show table message */
@@ -1023,13 +1039,53 @@
                     });
 
                     const sortedDates = Object.keys(grouped).sort();
-                    clearTableBodies();
+                    clearTableBodies(); // Resets container and ensures tableEl is visible
+
+                    const colGroupHtml = `
+                        <colgroup>
+                            <col style="width: 15%;">
+                            <col style="width: 7%;">
+                            <col style="width: 15%;">
+                            <col style="width: 33%;">
+                            <col style="width: 15%;">
+                            <col style="width: 15%;">
+                        </colgroup>
+                    `;
+
+                    // Populate tableEl with colgroup and headers
+                    tableEl.innerHTML = colGroupHtml + `
+                        <thead>
+                            <tr>
+                                <th rowspan="2"
+                                    style="border:1.5px solid #333;padding:7px 10px;text-align:center;vertical-align:middle;background:#f8f9fa;">
+                                    Date</th>
+                                <th rowspan="2"
+                                    style="border:1.5px solid #333;padding:7px 10px;text-align:center;vertical-align:middle;background:#f8f9fa;">
+                                    S.No</th>
+                                <th colspan="2"
+                                    style="border:1.5px solid #333;padding:7px 10px;text-align:center;background:#f8f9fa;">
+                                    Next follow up</th>
+                                <th rowspan="2"
+                                    style="border:1.5px solid #333;padding:7px 10px;text-align:center;vertical-align:middle;background:#f8f9fa;">
+                                    Last Consult On</th>
+                                <th rowspan="2"
+                                    style="border:1.5px solid #333;padding:7px 10px;text-align:center;vertical-align:middle;background:#f8f9fa;">
+                                    Contact Number</th>
+                            </tr>
+                            <tr>
+                                <th style="border:1.5px solid #333;padding:7px 10px;text-align:center;background:#f8f9fa;">
+                                    Patient ID</th>
+                                <th style="border:1.5px solid #333;padding:7px 10px;text-align:center;background:#f8f9fa;">
+                                    Patient Name</th>
+                            </tr>
+                        </thead>
+                    `;
 
                     sortedDates.forEach(date => {
                         const rows = grouped[date];
                         const tbody = document.createElement('tbody');
                         tbody.className = 'fu-date-group';
-                        tbody.style.cssText = 'page-break-inside: avoid; break-inside: avoid;';
+                        tbody.setAttribute('data-date', date);
 
                         rows.forEach((row, i) => {
                             const tr = document.createElement('tr');
@@ -1072,6 +1128,169 @@
                     actionsDiv.classList.remove('d-none');
                 }
 
+                /* ── Pagination Logic before downloading ───────────────── */
+                function paginateTable() {
+                    const area = document.getElementById('fuDlPrintArea');
+                    const table = document.getElementById('fuDlTable');
+                    if (!table || table.classList.contains('d-none')) return;
+
+                    // Temporarily set width to standard A4 (794px at 96 DPI) so measurements match PDF exactly
+                    area.style.width = '794px';
+
+                    // Measure layout elements at the correct width
+                    const headerEl = area.querySelector('div:first-child');
+                    const footerEl = area.querySelector('div:last-child');
+                    const theadEl = table.querySelector('thead');
+
+                    const headerHeight = headerEl ? headerEl.offsetHeight : 0;
+                    const footerHeight = footerEl ? footerEl.offsetHeight : 0;
+                    const theadHeight = theadEl ? theadEl.offsetHeight : 0;
+
+                    // A4 page at 96 DPI = 1123px tall. html2pdf margin 10mm ≈ 38px each side.
+                    // Net printable height = 1123 - 38 - 38 = 1047px
+                    const PAGE_HEIGHT = 1047;
+
+                    // Gather all rows with their corresponding dates and actual heights at 794px width
+                    const rowData = [];
+                    const tbodies = table.querySelectorAll('tbody.fu-date-group');
+                    tbodies.forEach(tbody => {
+                        const date = tbody.getAttribute('data-date');
+                        const trs = tbody.querySelectorAll('tr');
+                        trs.forEach(tr => {
+                            rowData.push({ 
+                                tr: tr.cloneNode(true), 
+                                date: date, 
+                                height: tr.offsetHeight || 37 
+                            });
+                        });
+                    });
+
+                    if (rowData.length === 0) return;
+
+                    // Clear the container
+                    const container = document.getElementById('fuDlTableContainer');
+                    if (container) {
+                        container.innerHTML = '';
+                    }
+
+                    // Reconstruct pages
+                    // Page 1 starts with: header + thead already occupying space
+                    let currentPageHeight = headerHeight + theadHeight;
+                    let isFirstPage = true;
+                    let currentTable = null;
+                    let currentTbody = null;
+                    let currentDate = null;
+                    let currentDateTd = null;
+                    let currentRowsInDateGroup = 0;
+
+                    function startNewPage() {
+                        // Adjust the final rowspan of the last dateTd on the page
+                        if (currentDateTd) {
+                            currentDateTd.rowSpan = currentRowsInDateGroup;
+                        }
+
+                        // Create a table for this page — page-break-before on the table itself
+                        currentTable = document.createElement('table');
+                        currentTable.style.cssText = 'width:100%; border-collapse:collapse; font-size:13px; font-family:\'Poppins\',sans-serif; page-break-before: always; break-before: always;';
+                        currentTable.innerHTML = `
+                            <colgroup>
+                                <col style="width: 15%;">
+                                <col style="width: 7%;">
+                                <col style="width: 15%;">
+                                <col style="width: 33%;">
+                                <col style="width: 15%;">
+                                <col style="width: 15%;">
+                            </colgroup>
+                        `;
+
+                        // Repeat the thead on every page
+                        const thead = document.createElement('thead');
+                        thead.innerHTML = theadEl.innerHTML;
+                        currentTable.appendChild(thead);
+
+                        container.appendChild(currentTable);
+
+                        // Subsequent pages only have thead (no page-level header)
+                        currentPageHeight = theadHeight;
+                        isFirstPage = false;
+                        currentDate = null;
+                        currentDateTd = null;
+                        currentTbody = null;
+                        currentRowsInDateGroup = 0;
+                    }
+
+                    // Initialize first page (no page break wrapper before first page)
+                    currentTable = document.createElement('table');
+                    currentTable.style.cssText = 'width:100%; border-collapse:collapse; font-size:13px; font-family:\'Poppins\',sans-serif;';
+                    currentTable.innerHTML = `
+                        <colgroup>
+                            <col style="width: 15%;">
+                            <col style="width: 7%;">
+                            <col style="width: 15%;">
+                            <col style="width: 33%;">
+                            <col style="width: 15%;">
+                            <col style="width: 15%;">
+                        </colgroup>
+                    `;
+                    const initialThead = document.createElement('thead');
+                    initialThead.innerHTML = theadEl.innerHTML;
+                    currentTable.appendChild(initialThead);
+                    container.appendChild(currentTable);
+
+                    // Process rows
+                    rowData.forEach(item => {
+                        const rowHeight = item.height;
+                        // footerHeight only affects last page; deduct it always as a safe approximation
+                        const limit = PAGE_HEIGHT - footerHeight;
+
+                        // Check if adding this row exceeds page limit
+                        if (currentPageHeight + rowHeight > limit) {
+                            startNewPage();
+                            isFirstPage = false;
+                        }
+
+                        // If date changes or it's a new page/tbody, create a new tbody
+                        if (item.date !== currentDate) {
+                            if (currentDateTd) {
+                                currentDateTd.rowSpan = currentRowsInDateGroup;
+                            }
+                            currentDate = item.date;
+                            currentRowsInDateGroup = 0;
+
+                            currentTbody = document.createElement('tbody');
+                            currentTbody.className = 'fu-date-group';
+                            currentTable.appendChild(currentTbody);
+
+                            // Remove any existing date td
+                            const existingDateTd = item.tr.querySelector('td[rowspan]');
+                            if (existingDateTd) {
+                                existingDateTd.remove();
+                            }
+
+                            // Create a new date cell
+                            currentDateTd = document.createElement('td');
+                            currentDateTd.style.cssText = 'border:1.5px solid #333;padding:7px 10px;text-align:center;vertical-align:middle;font-weight:600;white-space:nowrap;';
+                            currentDateTd.textContent = fmtShort(currentDate);
+                            item.tr.insertBefore(currentDateTd, item.tr.firstChild);
+                        } else {
+                            // Same date group on same page, ensure it doesn't have an extra date td
+                            const existingDateTd = item.tr.querySelector('td[rowspan]');
+                            if (existingDateTd) {
+                                existingDateTd.remove();
+                            }
+                        }
+
+                        currentTbody.appendChild(item.tr);
+                        currentRowsInDateGroup++;
+                        currentPageHeight += rowHeight;
+                    });
+
+                    // Finalize last page rowspan
+                    if (currentDateTd) {
+                        currentDateTd.rowSpan = currentRowsInDateGroup;
+                    }
+                }
+
                 /* ── PDF Download — modal stays open after download ──── */
                 function downloadPDF() {
                     const area     = document.getElementById('fuDlPrintArea');
@@ -1083,17 +1302,28 @@
                     pdfBtn.disabled = true;
                     pdfBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Generating…';
 
+                    // Save original HTML content & width style to restore after download
+                    const originalHTML = area.innerHTML;
+                    const originalWidthStyle = area.style.width;
+
+                    // Run the pagination to dynamically break table rows across pages safely
+                    paginateTable();
+
                     html2pdf().set({
                         margin      : [10, 10, 10, 10],
                         filename,
                         image       : { type:'jpeg', quality:0.98 },
                         html2canvas : { scale:2, useCORS:true },
                         jsPDF       : { unit:'mm', format:'a4', orientation:'portrait' },
-                        pagebreak   : { mode: ['css', 'legacy'], avoid: 'tr, tbody, td' }
+                        pagebreak   : { mode: 'css' }
                     }).from(area).save().then(() => {
+                        // Restore preview DOM and width style
+                        area.innerHTML = originalHTML;
+                        area.style.width = originalWidthStyle;
+                        rebindDOMRefs();
+
                         pdfBtn.disabled = false;
                         pdfBtn.innerHTML = '<i class="bi bi-file-earmark-pdf"></i> Download PDF';
-                        // Modal intentionally stays open so user can also download as image
                     });
                 }
 
@@ -1108,12 +1338,25 @@
                     imgBtn.disabled = true;
                     imgBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Generating…';
 
+                    // Save original HTML content & width style to restore after download
+                    const originalHTML = area.innerHTML;
+                    const originalWidthStyle = area.style.width;
+
+                    // Run the pagination to dynamically break table rows across pages safely
+                    paginateTable();
+
                     html2canvas(area, { scale:2, useCORS:true, backgroundColor:'#ffffff' })
                         .then(canvas => {
                             const link  = document.createElement('a');
                             link.download = filename;
                             link.href = canvas.toDataURL('image/jpeg');
                             link.click();
+
+                            // Restore preview DOM and width style
+                            area.innerHTML = originalHTML;
+                            area.style.width = originalWidthStyle;
+                            rebindDOMRefs();
+
                             imgBtn.disabled = false;
                             imgBtn.innerHTML = '<i class="bi bi-image"></i> Download Image JPG';
                         });

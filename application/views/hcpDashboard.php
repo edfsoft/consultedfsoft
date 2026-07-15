@@ -734,7 +734,7 @@
                                     </button>
                                     <button id="fuDlImgBtn" class="btn fw-semibold d-flex align-items-center gap-1"
                                         style="background:#0d6efd;color:#fff;border-radius:10px;">
-                                        <i class="bi bi-image"></i> Download Image
+                                        <i class="bi bi-image"></i> Download Image JPG
                                     </button>
                                 </div>
                             </div>
@@ -1100,7 +1100,7 @@
                 /* ── Image Download — modal stays open after download ─── */
                 function downloadImage() {
                     const area     = document.getElementById('fuDlPrintArea');
-                    const filename = `EDF_next_followup_${fmtShort(selectedFrom)}_to_${fmtShort(selectedTo)}.png`;
+                    const filename = `EDF_next_followup_${fmtShort(selectedFrom)}_to_${fmtShort(selectedTo)}.jpg`;
 
                     // Update timestamp to the exact download time
                     document.getElementById('fuDlGeneratedAt').textContent = getNowTimestamp();
@@ -1112,10 +1112,10 @@
                         .then(canvas => {
                             const link  = document.createElement('a');
                             link.download = filename;
-                            link.href = canvas.toDataURL('image/png');
+                            link.href = canvas.toDataURL('image/jpeg');
                             link.click();
                             imgBtn.disabled = false;
-                            imgBtn.innerHTML = '<i class="bi bi-image"></i> Download Image';
+                            imgBtn.innerHTML = '<i class="bi bi-image"></i> Download Image JPG';
                         });
                 }
 

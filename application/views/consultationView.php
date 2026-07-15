@@ -25,6 +25,46 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css">
 
     <style>
+        .center-fill-range {
+            -webkit-appearance: none;
+            width: 100%;
+            background: transparent;
+            margin: 0;
+        }
+        .center-fill-range:focus {
+            outline: none;
+        }
+        .center-fill-range::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 6px;
+            background: var(--track-bg, #dee2e6);
+            border-radius: 3px;
+        }
+        .center-fill-range::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 16px;
+            width: 16px;
+            border-radius: 50%;
+            background: #0d6efd;
+            cursor: pointer;
+            margin-top: -5px;
+            border: 0;
+        }
+        .center-fill-range::-moz-range-track {
+            width: 100%;
+            height: 6px;
+            background: var(--track-bg, #dee2e6);
+            border-radius: 3px;
+        }
+        .center-fill-range::-moz-range-thumb {
+            height: 16px;
+            width: 16px;
+            border-radius: 50%;
+            background: #0d6efd;
+            cursor: pointer;
+            border: 0;
+        }
+
         body {
             font-family: "Poppins", sans-serif;
         }
@@ -1755,47 +1795,6 @@
                                         <div class="modal-content">
                                             <div class="modal-header align-items-center flex-wrap flex-lg-nowrap">
                                                 <!-- Custom Toolbar -->
-                                                <style>
-                                                .center-fill-range {
-                                                    -webkit-appearance: none;
-                                                    width: 100%;
-                                                    background: transparent;
-                                                    margin: 0;
-                                                }
-                                                .center-fill-range:focus {
-                                                    outline: none;
-                                                }
-                                                .center-fill-range::-webkit-slider-runnable-track {
-                                                    width: 100%;
-                                                    height: 6px;
-                                                    background: var(--track-bg, #dee2e6);
-                                                    border-radius: 3px;
-                                                }
-                                                .center-fill-range::-webkit-slider-thumb {
-                                                    -webkit-appearance: none;
-                                                    height: 16px;
-                                                    width: 16px;
-                                                    border-radius: 50%;
-                                                    background: #0d6efd;
-                                                    cursor: pointer;
-                                                    margin-top: -5px;
-                                                    border: 0;
-                                                }
-                                                .center-fill-range::-moz-range-track {
-                                                    width: 100%;
-                                                    height: 6px;
-                                                    background: var(--track-bg, #dee2e6);
-                                                    border-radius: 3px;
-                                                }
-                                                .center-fill-range::-moz-range-thumb {
-                                                    height: 16px;
-                                                    width: 16px;
-                                                    border-radius: 50%;
-                                                    background: #0d6efd;
-                                                    cursor: pointer;
-                                                    border: 0;
-                                                }
-                                                </style>
                                                 <div id="editor-toolbar" class="d-flex align-items-center flex-nowrap gap-3 me-auto overflow-x-auto pb-2 pb-lg-0">
                                                     <div class="btn-group flex-shrink-0">
                                                         <button type="button" id="crop-btn" class="btn btn-sm btn-outline-dark" title="Crop">✂️ Crop</button>

@@ -25,6 +25,46 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css">
 
     <style>
+        .center-fill-range {
+            -webkit-appearance: none;
+            width: 100%;
+            background: transparent;
+            margin: 0;
+        }
+        .center-fill-range:focus {
+            outline: none;
+        }
+        .center-fill-range::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 6px;
+            background: var(--track-bg, #dee2e6);
+            border-radius: 3px;
+        }
+        .center-fill-range::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 16px;
+            width: 16px;
+            border-radius: 50%;
+            background: #0d6efd;
+            cursor: pointer;
+            margin-top: -5px;
+            border: 0;
+        }
+        .center-fill-range::-moz-range-track {
+            width: 100%;
+            height: 6px;
+            background: var(--track-bg, #dee2e6);
+            border-radius: 3px;
+        }
+        .center-fill-range::-moz-range-thumb {
+            height: 16px;
+            width: 16px;
+            border-radius: 50%;
+            background: #0d6efd;
+            cursor: pointer;
+            border: 0;
+        }
+
         body {
             font-family: "Poppins", sans-serif;
         }
@@ -1753,19 +1793,32 @@
                                     data-bs-keyboard="false">
                                     <div class="modal-dialog modal-lg modal-dialog-centered">
                                         <div class="modal-content">
-                                            <div class="modal-header">
+                                            <div class="modal-header align-items-center flex-wrap flex-lg-nowrap">
                                                 <!-- Custom Toolbar -->
-                                                <div id="editor-toolbar" style="margin-bottom: 10px; text-align: left;">
-                                                    <button type="button" id="crop-btn" class="btn btn-sm btn-outline-dark"
-                                                        title="Crop">✂️ Crop</button>
-                                                    <button type="button" id="rotate-btn"
-                                                        class="btn btn-sm btn-outline-dark" title="Rotate">⟳ Rotate</button>
+                                                <div id="editor-toolbar" class="d-flex align-items-center flex-nowrap gap-3 me-auto overflow-x-auto pb-2 pb-lg-0">
+                                                    <div class="btn-group flex-shrink-0">
+                                                        <button type="button" id="crop-btn" class="btn btn-sm btn-outline-dark" title="Crop">✂️ Crop</button>
+                                                        <button type="button" id="rotate-left-btn" class="btn btn-sm btn-outline-dark" title="Rotate Left">⟲ Left</button>
+                                                        <button type="button" id="rotate-right-btn" class="btn btn-sm btn-outline-dark" title="Rotate Right">⟳ Right</button>
+                                                    </div>
+                                                    <div class="d-flex align-items-center gap-2 flex-shrink-0">
+                                                        <div class="position-relative" style="width: 150px; display: flex; align-items: center;">
+                                                            <div style="position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); height: 12px; width: 2px; background-color: #6c757d; z-index: 0; pointer-events: none;"></div>
+                                                            <input type="range" id="rotate-slider" class="center-fill-range" min="-180" max="180" value="0" style="position: relative; z-index: 1;" title="Rotate by degree">
+                                                        </div>
+                                                        <div class="input-group input-group-sm" style="width: 80px;">
+                                                            <input type="number" id="rotate-input" min="-180" max="180" value="0" class="form-control text-center" title="Rotation Degree">
+                                                            <span class="input-group-text">°</span>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                                <h5 class=" fw-medium" id="imageEditModalLabel"
-                                                    style="font-family: Poppins, sans-serif; margin-left:25%">Edit Image
-                                                </h5>
-                                                <button type="button" class="btn-close btn btn-danger"
-                                                    data-bs-dismiss="modal" aria-label="Close"></button>
+                                                <div class="d-flex align-items-center ms-lg-3 flex-shrink-0">
+                                                    <h5 class="fw-medium mb-0 me-3 text-nowrap" id="imageEditModalLabel"
+                                                        style="font-family: Poppins, sans-serif;">Edit Image
+                                                    </h5>
+                                                    <button type="button" class="btn-close btn btn-danger"
+                                                        data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
                                             </div>
                                             <div class="modal-body text-center">
 
@@ -2760,18 +2813,31 @@
                             aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
                             <div class="modal-dialog modal-lg modal-dialog-centered">
                                 <div class="modal-content">
-                                    <div class="modal-header">
+                                    <div class="modal-header align-items-center flex-wrap flex-lg-nowrap">
                                         <!-- Custom Toolbar -->
-                                        <div id="editor-toolbar" style="margin-bottom: 10px; text-align: left;">
-                                            <button type="button" id="crop-btn" class="btn btn-sm btn-outline-dark"
-                                                title="Crop">✂️ Crop</button>
-                                            <button type="button" id="rotate-btn" class="btn btn-sm btn-outline-dark"
-                                                title="Rotate">⟳ Rotate</button>
+                                        <div id="editor-toolbar" class="d-flex align-items-center flex-nowrap gap-3 me-auto overflow-x-auto pb-2 pb-lg-0">
+                                            <div class="btn-group flex-shrink-0">
+                                                <button type="button" id="crop-btn" class="btn btn-sm btn-outline-dark" title="Crop">✂️ Crop</button>
+                                                <button type="button" id="rotate-left-btn" class="btn btn-sm btn-outline-dark" title="Rotate Left">⟲ Left</button>
+                                                <button type="button" id="rotate-right-btn" class="btn btn-sm btn-outline-dark" title="Rotate Right">⟳ Right</button>
+                                            </div>
+                                            <div class="d-flex align-items-center gap-2 flex-shrink-0">
+                                                <div class="position-relative" style="width: 150px; display: flex; align-items: center;">
+                                                    <div style="position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); height: 12px; width: 2px; background-color: #6c757d; z-index: 0; pointer-events: none;"></div>
+                                                    <input type="range" id="rotate-slider" class="center-fill-range" min="-180" max="180" value="0" style="position: relative; z-index: 1;" title="Rotate by degree">
+                                                </div>
+                                                <div class="input-group input-group-sm" style="width: 80px;">
+                                                    <input type="number" id="rotate-input" min="-180" max="180" value="0" class="form-control text-center" title="Rotation Degree">
+                                                    <span class="input-group-text">°</span>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <h5 class=" fw-medium" id="imageEditModalLabel"
-                                            style="font-family: Poppins, sans-serif; margin-left:25%">Edit Image</h5>
-                                        <button type="button" class="btn-close btn btn-danger" data-bs-dismiss="modal"
-                                            aria-label="Close"></button>
+                                        <div class="d-flex align-items-center ms-lg-3 flex-shrink-0">
+                                            <h5 class="fw-medium mb-0 me-3 text-nowrap" id="imageEditModalLabel"
+                                                style="font-family: Poppins, sans-serif;">Edit Image</h5>
+                                            <button type="button" class="btn-close btn btn-danger" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                        </div>
                                     </div>
                                     <div class="modal-body text-center">
 
@@ -3332,18 +3398,31 @@
                             aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
                             <div class="modal-dialog modal-lg modal-dialog-centered">
                                 <div class="modal-content">
-                                    <div class="modal-header">
+                                    <div class="modal-header align-items-center flex-wrap flex-lg-nowrap">
                                         <!-- Custom Toolbar -->
-                                        <div id="editor-toolbar" style="margin-bottom: 10px; text-align: left;">
-                                            <button type="button" id="crop-btn" class="btn btn-sm btn-outline-dark"
-                                                title="Crop">✂️ Crop</button>
-                                            <button type="button" id="rotate-btn" class="btn btn-sm btn-outline-dark"
-                                                title="Rotate">⟳ Rotate</button>
+                                        <div id="editor-toolbar" class="d-flex align-items-center flex-nowrap gap-3 me-auto overflow-x-auto pb-2 pb-lg-0">
+                                            <div class="btn-group flex-shrink-0">
+                                                <button type="button" id="crop-btn" class="btn btn-sm btn-outline-dark" title="Crop">✂️ Crop</button>
+                                                <button type="button" id="rotate-left-btn" class="btn btn-sm btn-outline-dark" title="Rotate Left">⟲ Left</button>
+                                                <button type="button" id="rotate-right-btn" class="btn btn-sm btn-outline-dark" title="Rotate Right">⟳ Right</button>
+                                            </div>
+                                            <div class="d-flex align-items-center gap-2 flex-shrink-0">
+                                                <div class="position-relative" style="width: 150px; display: flex; align-items: center;">
+                                                    <div style="position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); height: 12px; width: 2px; background-color: #6c757d; z-index: 0; pointer-events: none;"></div>
+                                                    <input type="range" id="rotate-slider" class="center-fill-range" min="-180" max="180" value="0" style="position: relative; z-index: 1;" title="Rotate by degree">
+                                                </div>
+                                                <div class="input-group input-group-sm" style="width: 80px;">
+                                                    <input type="number" id="rotate-input" min="-180" max="180" value="0" class="form-control text-center" title="Rotation Degree">
+                                                    <span class="input-group-text">°</span>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <h5 class=" fw-medium" id="imageEditModalLabel"
-                                            style="font-family: Poppins, sans-serif; margin-left:25%">Edit Image</h5>
-                                        <button type="button" class="btn-close btn btn-danger" data-bs-dismiss="modal"
-                                            aria-label="Close"></button>
+                                        <div class="d-flex align-items-center ms-lg-3 flex-shrink-0">
+                                            <h5 class="fw-medium mb-0 me-3 text-nowrap" id="imageEditModalLabel"
+                                                style="font-family: Poppins, sans-serif;">Edit Image</h5>
+                                            <button type="button" class="btn-close btn btn-danger" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                        </div>
                                     </div>
                                     <div class="modal-body text-center">
 
@@ -7089,6 +7168,8 @@
                         const canvas = document.getElementById('editor-canvas');
                         if (cropper) cropper.destroy();
                         currentRotationAngle = 0;
+                        document.querySelectorAll('[id="rotate-slider"]').forEach(s => s.value = 0);
+                        document.querySelectorAll('[id="rotate-input"]').forEach(s => s.value = 0);
                         originalDataURL = dataURL;
                         currentImageBlob = file;
                         img.src = dataURL;
@@ -7130,22 +7211,24 @@
                             cropper.setDragMode('crop');
                         };
 
-                        document.getElementById('rotate-btn').onclick = () => {
+                        const applyRotation = () => {
                             if (!originalDataURL) return;
-                            currentRotationAngle = (currentRotationAngle + 90) % 360;
                             const imgObj = new Image();
                             imgObj.src = originalDataURL;
                             imgObj.onload = () => {
                                 const tempCanvas = document.createElement('canvas'),
-                                    ctx = tempCanvas.getContext('2d');
+                                      ctx = tempCanvas.getContext('2d');
                                 const angleRad = currentRotationAngle * Math.PI / 180;
-                                const isSwapped = currentRotationAngle === 90 || currentRotationAngle === 270;
-                                const [w, h] = isSwapped ? [imgObj.naturalHeight * 0.5, imgObj.naturalWidth * 0.5] : [imgObj.naturalWidth * 0.5, imgObj.naturalHeight * 0.5];
+                                
+                                const w = Math.abs(imgObj.naturalWidth * Math.cos(angleRad)) + Math.abs(imgObj.naturalHeight * Math.sin(angleRad));
+                                const h = Math.abs(imgObj.naturalWidth * Math.sin(angleRad)) + Math.abs(imgObj.naturalHeight * Math.cos(angleRad));
+                                
                                 tempCanvas.width = w;
                                 tempCanvas.height = h;
                                 ctx.translate(w / 2, h / 2);
                                 ctx.rotate(angleRad);
-                                ctx.drawImage(imgObj, -imgObj.naturalWidth * 0.25, -imgObj.naturalHeight * 0.25, imgObj.naturalWidth * 0.5, imgObj.naturalHeight * 0.5);
+                                ctx.drawImage(imgObj, -imgObj.naturalWidth / 2, -imgObj.naturalHeight / 2, imgObj.naturalWidth, imgObj.naturalHeight);
+                                
                                 tempCanvas.toBlob(blob => {
                                     currentImageBlob = new File([blob], file.name, {
                                         type: file.type
@@ -7166,6 +7249,69 @@
                                 }, file.type, 1);
                             };
                         };
+
+                        const normalizeAngle = (angle) => {
+                            while (angle > 180) angle -= 360;
+                            while (angle < -180) angle += 360;
+                            return angle;
+                        };
+
+                        const updateSliderUI = () => {
+                            document.querySelectorAll('[id="rotate-slider"]').forEach(slider => {
+                                slider.value = currentRotationAngle;
+                                const percentage = ((currentRotationAngle + 180) / 360) * 100;
+                                const trackColor = '#dee2e6';
+                                const fillColor = '#0d6efd';
+                                let bg;
+                                if (currentRotationAngle > 0) {
+                                    bg = `linear-gradient(to right, ${trackColor} 50%, ${fillColor} 50%, ${fillColor} ${percentage}%, ${trackColor} ${percentage}%)`;
+                                } else if (currentRotationAngle < 0) {
+                                    bg = `linear-gradient(to right, ${trackColor} ${percentage}%, ${fillColor} ${percentage}%, ${fillColor} 50%, ${trackColor} 50%)`;
+                                } else {
+                                    bg = trackColor;
+                                }
+                                slider.style.setProperty('--track-bg', bg);
+                            });
+                            document.querySelectorAll('[id="rotate-input"]').forEach(input => {
+                                input.value = currentRotationAngle;
+                            });
+                        };
+
+                        // Initialize once
+                        updateSliderUI();
+
+                        document.querySelectorAll('[id="rotate-left-btn"]').forEach(btn => {
+                            btn.onclick = () => {
+                                currentRotationAngle = normalizeAngle(currentRotationAngle - 90);
+                                updateSliderUI();
+                                applyRotation();
+                            };
+                        });
+
+                        document.querySelectorAll('[id="rotate-right-btn"]').forEach(btn => {
+                            btn.onclick = () => {
+                                currentRotationAngle = normalizeAngle(currentRotationAngle + 90);
+                                updateSliderUI();
+                                applyRotation();
+                            };
+                        });
+
+                        document.querySelectorAll('[id="rotate-slider"]').forEach(slider => {
+                            slider.oninput = (e) => {
+                                currentRotationAngle = parseInt(e.target.value);
+                                updateSliderUI();
+                                applyRotation();
+                            };
+                        });
+
+                        document.querySelectorAll('[id="rotate-input"]').forEach(input => {
+                            input.oninput = (e) => {
+                                currentRotationAngle = parseInt(e.target.value) || 0;
+                                currentRotationAngle = normalizeAngle(currentRotationAngle);
+                                updateSliderUI();
+                                applyRotation();
+                            };
+                        });
 
                         const saveBtn = document.getElementById('saveEditedImage');
                         const saveHandler = () => {

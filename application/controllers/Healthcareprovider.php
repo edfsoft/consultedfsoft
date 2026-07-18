@@ -190,10 +190,8 @@ class Healthcareprovider extends CI_Controller
     {
         if (isset($_SESSION['hcpsName'])) {
             $this->data['method'] = "dashboard";
-            $patientTotal = $this->HcpModel->getPatientList();
-            $this->data['patientTotal'] = $patientTotal['totalRows'];
-            $ccDetails = $this->HcpModel->getCcProfile();
-            $this->data['totalCcs'] = $ccDetails['totalRows'];
+            $this->data['patientTotal'] = $this->HcpModel->getPatientCount($_SESSION['hcpIdDb']);
+            $this->data['totalCcs'] = $this->HcpModel->getCcCount();
             // $appointmentList = $this->HcpModel->getAppointmentListDash();
             // $this->data['appointmentList'] = $appointmentList['response'];
             //  $this->data['appointmentsTotal'] = $appointmentList; /* Currently commented */

@@ -312,6 +312,22 @@ class AdminModel extends CI_Model
         return $this->db->delete('dosage_units', ['id' => $id]);
     }
 
+    public function ccCount()
+    {
+        $this->db->where('deleteStatus', '0');
+        return $this->db->count_all_results('cc_details');
+    }
 
+    public function hcpCount()
+    {
+        $this->db->where('deleteStatus', '0');
+        return $this->db->count_all_results('hcp_details');
+    }
+
+    public function patientCount()
+    {
+        $this->db->where('deleteStatus', '0');
+        return $this->db->count_all_results('patient_details');
+    }
 }
 ?>

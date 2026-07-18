@@ -189,10 +189,8 @@ class Chiefconsultant extends CI_Controller
     {
         if (isset($_SESSION['ccName'])) {
             $this->data['method'] = "dashboard";
-            $patientTotal = $this->CcModel->allPatientList();
-            $this->data['patientTotal'] = $patientTotal['totalRows'];
-            $hcpDetails = $this->CcModel->getHcpProfile();
-            $this->data['totalHcps'] = $hcpDetails['totalRows'];
+            $this->data['patientTotal'] = $this->CcModel->allPatientCount();
+            $this->data['totalHcps'] = $this->CcModel->getHcpCount();
             $appointmentList = $this->CcModel->getAppointmentListDash();
             $this->data['appointmentList'] = $appointmentList['response'];
             $this->data['appointmentsTotal'] = $appointmentList['totalRows'];

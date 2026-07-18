@@ -791,8 +791,17 @@ class HcpModel extends CI_Model
         return $select->result_array();
     }
 
+    public function getPatientCount($hcpIdDb)
+    {
+        $this->db->where('patientHcpDbId', $hcpIdDb);
+        $this->db->where('deleteStatus', '0');
+        return $this->db->count_all_results('patient_details');
+    }
 
-
-
-
+    public function getCcCount()
+    {
+        $this->db->where('deleteStatus', '0');
+        $this->db->where('approvalStatus', '1');
+        return $this->db->count_all_results('cc_details');
+    }
 }

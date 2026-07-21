@@ -209,6 +209,44 @@ class HcpModel extends CI_Model
         return $query->result_array();
     }
 
+    /**
+     * Returns distinct appointment_date (admission date) in [fromDate, toDate] for post-discharge plans.
+     * Used to enable/disable date picker days in the download modal.
+     */
+    public function getDischargeFollowUpDatesInRange($hcpIdDb, $fromDate, $toDate)
+    {
+        $query = $this->db->select('DISTINCT(dfp.appointment_date) as follow_date')
+            ->from('discharge_followup_plan dfp')
+            ->join('patient_details pd', 'pd.id = dfp.patient_id')
+            ->where('pd.patientHcpDbId', $hcpIdDb)
+            ->where('pd.deleteStatus', '0')
+            ->where('dfp.appointment_date >=', $fromDate)
+            ->where('dfp.appointment_date <=', $toDate)
+            ->order_by('dfp.appointment_date', 'ASC')
+            ->get();
+        return array_column($query->result_array(), 'follow_date');
+    }
+
+    /**
+     * Returns post-discharge plans where admission date (appointment_date) is between fromDate and toDate.
+     * Ordered by appointment_date ASC, then dfp.id ASC.
+     */
+    public function getDischargeFollowUpsByDateRange($hcpIdDb, $fromDate, $toDate)
+    {
+        return $this->db->select('dfp.id as plan_id, dfp.appointment_date, dfp.discharge_date, dfp.notes, CONCAT(pd.firstName, " ", pd.lastName) as patient_name, pd.patientId, pd.mobileNumber, pd.id as patientDbId')
+            ->from('discharge_followup_plan dfp')
+            ->join('patient_details pd', 'pd.id = dfp.patient_id')
+            ->where('pd.patientHcpDbId', $hcpIdDb)
+            ->where('pd.deleteStatus', '0')
+            ->where('dfp.appointment_date >=', $fromDate)
+            ->where('dfp.appointment_date <=', $toDate)
+            ->order_by('dfp.appointment_date', 'ASC')
+            ->order_by('dfp.id', 'ASC')
+            ->get()
+            ->result_array();
+    }
+
+
     public function getDischargeFollwupByDate($hcpIdDb, $date)
     {
         return $this->db->select('pf.*, CONCAT(pd.firstName, " ", pd.lastName) as patient_name, pd.patientId, pd.mobileNumber, pd.id as patientDbId')
@@ -791,8 +829,17 @@ class HcpModel extends CI_Model
         return $select->result_array();
     }
 
+    public function getPatientCount($hcpIdDb)
+    {
+        $this->db->where('patientHcpDbId', $hcpIdDb);
+        $this->db->where('deleteStatus', '0');
+        return $this->db->count_all_results('patient_details');
+    }
 
-
-
-
+    public function getCcCount()
+    {
+        $this->db->where('deleteStatus', '0');
+        $this->db->where('approvalStatus', '1');
+        return $this->db->count_all_results('cc_details');
+    }
 }

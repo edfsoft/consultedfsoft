@@ -352,59 +352,92 @@ class ConsultModel extends CI_Model
         $this->db->order_by('consult_time', 'DESC');
         $consultations = $this->db->get()->result_array();
 
+        if (empty($consultations)) {
+            return [];
+        }
+
+        $consultation_ids = array_column($consultations, 'id');
+
+        // Batch query sub-tables
+        $vitals = $this->db->where_in('consultation_id', $consultation_ids)->get('consult_vitals')->result_array();
+        $symptoms = $this->db->where_in('consultation_id', $consultation_ids)->get('consult_symptoms')->result_array();
+        $findings = $this->db->where_in('consultation_id', $consultation_ids)->get('consult_findings')->result_array();
+        $diagnosis = $this->db->where_in('consultation_id', $consultation_ids)->get('consult_diagnosis')->result_array();
+        $investigations = $this->db->where_in('consultation_id', $consultation_ids)->get('consult_investigations')->result_array();
+        $instructions = $this->db->where_in('consultation_id', $consultation_ids)->get('consult_instructions')->result_array();
+        $procedures = $this->db->where_in('consultation_id', $consultation_ids)->get('consult_procedures')->result_array();
+        $advices = $this->db->where_in('consultation_id', $consultation_ids)->get('consult_advices')->result_array();
+        
+        $this->db->order_by('order_position', 'ASC');
+        $medicines = $this->db->where_in('consultation_id', $consultation_ids)->get('consult_medicines')->result_array();
+        
+        $attachments = $this->db->where_in('consultation_id', $consultation_ids)->get('consult_attachments')->result_array();
+
+        // Index the results in PHP memory
+        $vitals_by_c = [];
+        foreach ($vitals as $v) {
+            $vitals_by_c[$v['consultation_id']] = $v;
+        }
+
+        $symptoms_by_c = [];
+        foreach ($symptoms as $s) {
+            $symptoms_by_c[$s['consultation_id']][] = $s;
+        }
+
+        $findings_by_c = [];
+        foreach ($findings as $f) {
+            $findings_by_c[$f['consultation_id']][] = $f;
+        }
+
+        $diagnosis_by_c = [];
+        foreach ($diagnosis as $d) {
+            $diagnosis_by_c[$d['consultation_id']][] = $d;
+        }
+
+        $investigations_by_c = [];
+        foreach ($investigations as $i) {
+            $investigations_by_c[$i['consultation_id']][] = $i;
+        }
+
+        $instructions_by_c = [];
+        foreach ($instructions as $in) {
+            $instructions_by_c[$in['consultation_id']][] = $in;
+        }
+
+        $procedures_by_c = [];
+        foreach ($procedures as $pr) {
+            $procedures_by_c[$pr['consultation_id']][] = $pr;
+        }
+
+        $advices_by_c = [];
+        foreach ($advices as $ad) {
+            $advices_by_c[$ad['consultation_id']][] = $ad;
+        }
+
+        $medicines_by_c = [];
+        foreach ($medicines as $m) {
+            $medicines_by_c[$m['consultation_id']][] = $m;
+        }
+
+        $attachments_by_c = [];
+        foreach ($attachments as $at) {
+            $attachments_by_c[$at['consultation_id']][] = $at;
+        }
+
+        // Map grouped entries back into the consultations array structure
         foreach ($consultations as &$consultation) {
             $consultation_id = $consultation['id'];
 
-            // Vitals
-            $consultation['vitals'] = $this->db
-                ->get_where('consult_vitals', ['consultation_id' => $consultation_id])
-                ->row_array();
-
-            // Symptoms
-            $consultation['symptoms'] = $this->db
-                ->get_where('consult_symptoms', ['consultation_id' => $consultation_id])
-                ->result_array();
-
-            // Findings
-            $consultation['findings'] = $this->db
-                ->get_where('consult_findings', ['consultation_id' => $consultation_id])
-                ->result_array();
-
-            // Diagnosis
-            $consultation['diagnosis'] = $this->db
-                ->get_where('consult_diagnosis', ['consultation_id' => $consultation_id])
-                ->result_array();
-
-            // Investigations
-            $consultation['investigations'] = $this->db
-                ->get_where('consult_investigations', ['consultation_id' => $consultation_id])
-                ->result_array();
-
-            // Instructions
-            $consultation['instructions'] = $this->db
-                ->get_where('consult_instructions', ['consultation_id' => $consultation_id])
-                ->result_array();
-
-            // Procedures
-            $consultation['procedures'] = $this->db
-                ->get_where('consult_procedures', ['consultation_id' => $consultation_id])
-                ->result_array();
-
-            // Advices
-            $consultation['advices'] = $this->db
-                ->get_where('consult_advices', ['consultation_id' => $consultation_id])
-                ->result_array();
-
-            // Medicines
-            $consultation['medicines'] = $this->db
-                ->order_by('order_position', 'ASC')
-                ->get_where('consult_medicines', ['consultation_id' => $consultation_id])
-                ->result_array();
-
-            // Attachments
-            $consultation['attachments'] = $this->db
-                ->get_where('consult_attachments', ['consultation_id' => $consultation_id])
-                ->result_array();
+            $consultation['vitals'] = isset($vitals_by_c[$consultation_id]) ? $vitals_by_c[$consultation_id] : null;
+            $consultation['symptoms'] = isset($symptoms_by_c[$consultation_id]) ? $symptoms_by_c[$consultation_id] : [];
+            $consultation['findings'] = isset($findings_by_c[$consultation_id]) ? $findings_by_c[$consultation_id] : [];
+            $consultation['diagnosis'] = isset($diagnosis_by_c[$consultation_id]) ? $diagnosis_by_c[$consultation_id] : [];
+            $consultation['investigations'] = isset($investigations_by_c[$consultation_id]) ? $investigations_by_c[$consultation_id] : [];
+            $consultation['instructions'] = isset($instructions_by_c[$consultation_id]) ? $instructions_by_c[$consultation_id] : [];
+            $consultation['procedures'] = isset($procedures_by_c[$consultation_id]) ? $procedures_by_c[$consultation_id] : [];
+            $consultation['advices'] = isset($advices_by_c[$consultation_id]) ? $advices_by_c[$consultation_id] : [];
+            $consultation['medicines'] = isset($medicines_by_c[$consultation_id]) ? $medicines_by_c[$consultation_id] : [];
+            $consultation['attachments'] = isset($attachments_by_c[$consultation_id]) ? $attachments_by_c[$consultation_id] : [];
         }
 
         return $consultations;

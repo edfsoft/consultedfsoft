@@ -71,12 +71,9 @@ class Edfadmin extends CI_Controller
     {
         if (isset($_SESSION['adminIdDb'])) {
             $this->data['method'] = "dashboard";
-            $overallcc = $this->AdminModel->ccList();
-            $this->data['totalCcList'] = $overallcc['totalRows'];
-            $overallhcp = $this->AdminModel->hcpList();
-            $this->data['totalHcpList'] = $overallhcp['totalRows'];
-            $overallpatient = $this->AdminModel->patientList();
-            $this->data['totalPatientList'] = $overallpatient['totalRows'];
+            $this->data['totalCcList'] = $this->AdminModel->ccCount();
+            $this->data['totalHcpList'] = $this->AdminModel->hcpCount();
+            $this->data['totalPatientList'] = $this->AdminModel->patientCount();
             $this->load->view('adminDashboard.php', $this->data);
         } else {
             redirect('Edfadmin/');

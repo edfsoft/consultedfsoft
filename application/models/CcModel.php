@@ -243,5 +243,17 @@ class CcModel extends CI_Model
         return ($this->db->affected_rows() > 0);
     }
 
+    public function allPatientCount()
+    {
+        $this->db->where('deleteStatus', '0');
+        return $this->db->count_all_results('patient_details');
+    }
+
+    public function getHcpCount()
+    {
+        $this->db->where('deleteStatus', '0');
+        $this->db->where('approvalStatus', '1');
+        return $this->db->count_all_results('hcp_details');
+    }
 }
 ?>

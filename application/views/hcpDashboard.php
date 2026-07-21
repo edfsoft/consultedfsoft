@@ -539,9 +539,18 @@
                             class="pb-3 d-flex justify-content-between align-items-center">
                             <span><i class="bi bi-calendar-check pe-3"></i>Follow-ups (Post Discharge)</span>
 
-                            <span id="followupCount" class="px-2"
-                                style="font-size:16px;color:#00ad8e;border:2px solid #00ad8e;border-radius:50%;">0</span>
+                            <span class="d-flex align-items-center gap-2">
+                                <button id="postDischargeDownloadBtn" title="Download Post Discharge List"
+                                    class="btn btn-sm d-flex align-items-center gap-1"
+                                    style="background:#00ad8e;color:#fff;border-radius:8px;font-size:13px;padding:4px 10px;"
+                                    data-bs-toggle="modal" data-bs-target="#postDischargeDownloadModal">
+                                    <i class="bi bi-download"></i> Download
+                                </button>
+                                <span id="followupCount" class="px-2"
+                                    style="font-size:16px;color:#00ad8e;border:2px solid #00ad8e;border-radius:50%;">0</span>
+                            </span>
                         </p>
+
 
                         <div class="rounded-4 px-3">
 
@@ -651,29 +660,73 @@
                     pointer-events: none;
                 }
 
-                .flatpickr-input { cursor: pointer; }
-                #fuDlFromDate, #fuDlToDate { background: #fff; }
+                .flatpickr-input {
+                    cursor: pointer;
+                }
+
+                #fuDlFromDate,
+                #fuDlToDate,
+                #pdDlFromDate,
+                #pdDlToDate {
+                    background: #fff;
+                }
 
                 /* Prevent table rows and groups from breaking across pages in PDF/print */
-                #fuDlTable tr, #fuDlTable tbody, #fuDlTable td {
+                #fuDlTable,
+                #pdDlTable,
+                #fuDlTableContainer table,
+                #pdDlTableContainer table {
+                    page-break-inside: auto !important;
+                    page-break-after: auto !important;
+                    break-inside: auto !important;
+                    break-after: auto !important;
+                }
+
+                #fuDlTableContainer table thead,
+                #pdDlTableContainer table thead,
+                #fuDlTable thead,
+                #pdDlTable thead {
+                    display: table-header-group !important;
+                }
+
+                #fuDlTableContainer table tbody,
+                #pdDlTableContainer table tbody,
+                #fuDlTable tbody,
+                #pdDlTable tbody {
+                    display: table-row-group !important;
+                }
+
+                #fuDlTable tr,
+                #fuDlTable td,
+                #pdDlTable tr,
+                #pdDlTable td,
+                #fuDlTableContainer table tr,
+                #fuDlTableContainer table td,
+                #pdDlTableContainer table tr,
+                #pdDlTableContainer table td {
                     page-break-inside: avoid !important;
+                    page-break-after: avoid !important;
                     break-inside: avoid !important;
+                    break-after: avoid !important;
                 }
 
                 /* Print area portrait width & styling */
-                #fuDlPrintArea {
+                #fuDlPrintArea,
+                #pdDlPrintArea {
                     width: 700px !important;
                     margin: 0 auto !important;
                     box-sizing: border-box !important;
                 }
-                #fuDlPrintArea .table-responsive {
+
+                #fuDlPrintArea .table-responsive,
+                #pdDlPrintArea .table-responsive {
                     overflow: visible !important;
                 }
             </style>
 
 
-            <div class="modal fade" id="followUpDownloadModal" tabindex="-1" aria-labelledby="followUpDownloadModalLabel" aria-hidden="true"
-                 data-bs-backdrop="static" data-bs-keyboard="false">
+            <div class="modal fade" id="followUpDownloadModal" tabindex="-1" aria-labelledby="followUpDownloadModalLabel"
+                aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
                 <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
                     <div class="modal-content" style="border-radius:16px;font-family:'Poppins',sans-serif;">
 
@@ -749,14 +802,18 @@
                                 </div>
 
                                 <!-- Printable area -->
-                                <div id="fuDlPrintArea" style="background:#fff;padding:16px;border:1px solid #dee2e6;border-radius:10px;">
+                                <div id="fuDlPrintArea"
+                                    style="background:#fff;padding:16px;border:1px solid #dee2e6;border-radius:10px;">
 
                                     <!-- Header -->
-                                    <div style="text-align:center;margin-bottom:12px;border-bottom:1px solid #dee2e6;padding-bottom:8px;">
+                                    <div
+                                        style="text-align:center;margin-bottom:12px;border-bottom:1px solid #dee2e6;padding-bottom:8px;">
                                         <h5 style="font-weight:700;margin:0;color:#000;">Next Follow Up List</h5>
                                         <p id="fuDlPrintSubtitle" style="font-size:13px;margin:4px 0 8px;color:#555;"></p>
-                                        <div style="display:flex;justify-content:space-between;font-size:12px;color:#333;margin-top:6px;font-weight:500;">
-                                            <div><strong>HCP:</strong> <?php echo $_SESSION['hcpsName'] . ' ('. $_SESSION['hcpId'].')'; ?></div>
+                                        <div
+                                            style="display:flex;justify-content:space-between;font-size:12px;color:#333;margin-top:6px;font-weight:500;">
+                                            <div><strong>HCP:</strong>
+                                                <?php echo $_SESSION['hcpsName'] . ' (' . $_SESSION['hcpId'] . ')'; ?></div>
                                             <div><strong>Generated on:</strong> <span id="fuDlGeneratedAt"></span></div>
                                         </div>
                                     </div>
@@ -784,9 +841,11 @@
                                                         Contact Number</th>
                                                 </tr>
                                                 <tr>
-                                                    <th style="border:1.5px solid #333;padding:7px 10px;text-align:center;background:#f8f9fa;">
+                                                    <th
+                                                        style="border:1.5px solid #333;padding:7px 10px;text-align:center;background:#f8f9fa;">
                                                         Patient ID</th>
-                                                    <th style="border:1.5px solid #333;padding:7px 10px;text-align:center;background:#f8f9fa;">
+                                                    <th
+                                                        style="border:1.5px solid #333;padding:7px 10px;text-align:center;background:#f8f9fa;">
                                                         Patient Name</th>
                                                 </tr>
                                             </thead>
@@ -795,7 +854,8 @@
                                     </div>
 
                                     <!-- Footer: duration + total count (single place) -->
-                                    <div style="margin-top:12px;padding-top:8px;border-top:1px solid #dee2e6;display:flex;justify-content:space-between;align-items:center;font-size:13px;font-weight:600;color:#333;">
+                                    <div
+                                        style="margin-top:12px;padding-top:8px;border-top:1px solid #dee2e6;display:flex;justify-content:space-between;align-items:center;font-size:13px;font-weight:600;color:#333;">
                                         <div id="fuDlPrintDuration"></div>
                                         <div id="fuDlPrintCountFooter"></div>
                                     </div>
@@ -809,239 +869,385 @@
             </div>
             <!-- End Download Modal -->
 
+
+            <!-- ============================================================
+                 Post Discharge Follow-up Date-Range Download Modal
+            ============================================================ -->
+            <div class="modal fade" id="postDischargeDownloadModal" tabindex="-1"
+                aria-labelledby="postDischargeDownloadModalLabel" aria-hidden="true" data-bs-backdrop="static"
+                data-bs-keyboard="false">
+                <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+                    <div class="modal-content" style="border-radius:16px;font-family:'Poppins',sans-serif;">
+
+                        <!-- Modal Header -->
+                        <div class="modal-header" style="background:#00ad8e;color:#fff;border-radius:16px 16px 0 0;">
+                            <h5 class="modal-title fw-semibold" id="postDischargeDownloadModalLabel">
+                                <i class="bi bi-download me-2"></i> Download Patient Admission & Discharge List
+                            </h5>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                        </div>
+
+                        <!-- Modal Body -->
+                        <div class="modal-body p-4">
+
+                            <!-- Date Range Pickers -->
+                            <div class="row g-3 mb-3 align-items-end">
+                                <div class="col-12 col-md-4">
+                                    <label class="form-label fw-semibold" for="pdDlFromDate">
+                                        From Date <span class="text-danger">*</span>
+                                    </label>
+                                    <input type="text" id="pdDlFromDate" class="form-control" placeholder="Select from date"
+                                        style="border:2px solid #00ad8e;border-radius:10px;" readonly>
+                                    <div id="pdDlFromErr" class="d-none mt-1" style="font-size:12px;color:#dc3545;">
+                                        <i class="bi bi-exclamation-circle me-1"></i>Please select a valid From date.
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-4">
+                                    <label class="form-label fw-semibold" for="pdDlToDate">
+                                        To Date <span class="text-danger">*</span>
+                                    </label>
+                                    <input type="text" id="pdDlToDate" class="form-control" placeholder="Select to date"
+                                        style="border:2px solid #00ad8e;border-radius:10px;" readonly>
+                                    <div id="pdDlToErr" class="d-none mt-1" style="font-size:12px;color:#dc3545;">
+                                        <i class="bi bi-exclamation-circle me-1"></i>Please select a valid To date.
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-4">
+                                    <button id="pdDlPreviewBtn" class="btn w-100 fw-semibold"
+                                        style="background:#00ad8e;color:#fff;border-radius:10px;padding:10px;">
+                                        <i class="bi bi-eye me-1"></i> Preview List
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Info note -->
+                            <div class="alert alert-info py-2 px-3 mb-3" style="font-size:13px;border-radius:10px;">
+                                <i class="bi bi-info-circle me-1"></i>
+                                Select an <strong>Admission Date range</strong> (From Date and To Date) to preview and
+                                download the patient admission & discharge list.
+                            </div>
+
+                            <!-- Download Actions -->
+                            <div id="pdDlActions" class="d-none mb-3">
+                                <div class="d-flex justify-content-end gap-2">
+                                    <button id="pdDlPdfBtn" class="btn fw-semibold d-flex align-items-center gap-1"
+                                        style="background:#dc3545;color:#fff;border-radius:10px;">
+                                        <i class="bi bi-file-earmark-pdf"></i> Download PDF
+                                    </button>
+                                    <button id="pdDlImgBtn" class="btn fw-semibold d-flex align-items-center gap-1"
+                                        style="background:#0d6efd;color:#fff;border-radius:10px;">
+                                        <i class="bi bi-image"></i> Download Image JPG
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Preview Table Container -->
+                            <div id="pdDlPreviewWrap" class="d-none">
+
+                                <!-- Loading spinner -->
+                                <div id="pdDlLoading" class="d-none text-center py-4">
+                                    <div class="spinner-border" style="color:#00ad8e;"></div>
+                                    <p class="mt-2" style="color:#00ad8e;">Loading patient admission & discharge data...</p>
+                                </div>
+
+                                <!-- Printable Area -->
+                                <div id="pdDlPrintArea"
+                                    style="background:#fff;padding:16px;border:1px solid #dee2e6;border-radius:10px;">
+
+                                    <!-- Header -->
+                                    <div
+                                        style="text-align:center;margin-bottom:12px;border-bottom:1px solid #dee2e6;padding-bottom:8px;">
+                                        <h5 style="font-weight:700;margin:0;color:#000;">Patient Admission & Discharge List
+                                        </h5>
+                                        <p id="pdDlPrintSubtitle" style="font-size:13px;margin:4px 0 8px;color:#555;"></p>
+                                        <div
+                                            style="display:flex;justify-content:space-between;font-size:12px;color:#333;margin-top:6px;font-weight:500;">
+                                            <div><strong>HCP:</strong>
+                                                <?php echo $_SESSION['hcpsName'] . ' (' . $_SESSION['hcpId'] . ')'; ?></div>
+                                            <div><strong>Generated on:</strong> <span id="pdDlGeneratedAt"></span></div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Table -->
+                                    <div class="table-responsive" id="pdDlTableContainer">
+                                        <table id="pdDlTable"
+                                            style="width:100%;border-collapse:collapse;font-size:13px;font-family:'Poppins',sans-serif;">
+                                            <thead>
+                                                <tr>
+                                                    <th
+                                                        style="border:1.5px solid #333;padding:7px 10px;text-align:center;background:#f8f9fa;width:8%;">
+                                                        S.No</th>
+                                                    <th
+                                                        style="border:1.5px solid #333;padding:7px 10px;text-align:center;background:#f8f9fa;width:15%;">
+                                                        Patient ID</th>
+                                                    <th
+                                                        style="border:1.5px solid #333;padding:7px 10px;text-align:center;background:#f8f9fa;width:27%;">
+                                                        Patient Name</th>
+                                                    <th
+                                                        style="border:1.5px solid #333;padding:7px 10px;text-align:center;background:#f8f9fa;width:20%;">
+                                                        Patient Contact Number</th>
+                                                    <th
+                                                        style="border:1.5px solid #333;padding:7px 10px;text-align:center;background:#f8f9fa;width:15%;">
+                                                        Admission Date</th>
+                                                    <th
+                                                        style="border:1.5px solid #333;padding:7px 10px;text-align:center;background:#f8f9fa;width:15%;">
+                                                        Discharge Date</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="pdDlTableBody"></tbody>
+                                        </table>
+                                    </div>
+
+                                    <!-- Footer -->
+                                    <div
+                                        style="margin-top:12px;padding-top:8px;border-top:1px solid #dee2e6;display:flex;justify-content:space-between;align-items:center;font-size:13px;font-weight:600;color:#333;">
+                                        <div id="pdDlPrintDuration"></div>
+                                        <div id="pdDlPrintCountFooter"></div>
+                                    </div>
+                                </div><!-- /pdDlPrintArea -->
+
+                            </div><!-- /pdDlPreviewWrap -->
+
+                        </div><!-- /modal-body -->
+                    </div>
+                </div>
+            </div>
+            <!-- End Post Discharge Download Modal -->
+
+
             <!-- Follow-up Download Modal JavaScript -->
             <script>
-            (function () {
-                'use strict';
+                        (function () {
+                            'use strict';
 
-                /* ── URLs ───────────────────────────────────────────────── */
-                const urlDates = '<?= base_url("Healthcareprovider/getFollowUpDatesInRange") ?>';
-                const urlRange = '<?= base_url("Healthcareprovider/getFollowUpsByDateRange") ?>';
+                            /* ── URLs ───────────────────────────────────────────────── */
+                            const urlDates = '<?= base_url("Healthcareprovider/getFollowUpDatesInRange") ?>';
+                            const urlRange = '<?= base_url("Healthcareprovider/getFollowUpsByDateRange") ?>';
 
-                /* ── DOM refs ───────────────────────────────────────────── */
-                const previewBtn     = document.getElementById('fuDlPreviewBtn');
-                const pdfBtn         = document.getElementById('fuDlPdfBtn');
-                const imgBtn         = document.getElementById('fuDlImgBtn');
-                const actionsDiv     = document.getElementById('fuDlActions');
-                const previewWrap    = document.getElementById('fuDlPreviewWrap');
-                const loadingDiv     = document.getElementById('fuDlLoading');
-                let tableEl          = document.getElementById('fuDlTable');
-                let tableContainer   = document.getElementById('fuDlTableContainer');
-                let printDurEl       = document.getElementById('fuDlPrintDuration');
-                let printCountFoot   = document.getElementById('fuDlPrintCountFooter');
-                let subtitleEl       = document.getElementById('fuDlPrintSubtitle');
+                            /* ── DOM refs ───────────────────────────────── ─────── ───── */
+                        const previewBtn = document.getElementById('fuDlPreviewBtn');
+                    const pdfBtn = document.getElementById('fuDlPdfBtn');
+                    const imgBtn = document.getElementById('fuDlImgBtn');
+                         const actionsDiv = document.getElementById('fuDlActions');
+                            const previewWrap = document.getElementById('fuDlPreviewWrap');
+                            const loadingDiv = document.getElementById('fuDlLoading');
+                            let tableEl = document.getElementById('fuDlTable');
+                            let tableContainer = document.getElementById('fuDlTableContainer');
+                            let printDurEl = document.getElementById('fuDlPrintDuration');
+                            let printCountFoot = document.getElementById('fuDlPrintCountFooter');
+                            let subtitleEl = document.getElementById('fuDlPrintSubtitle');
 
-                function rebindDOMRefs() {
-                    tableEl        = document.getElementById('fuDlTable');
-                    tableContainer = document.getElementById('fuDlTableContainer');
-                    printDurEl     = document.getElementById('fuDlPrintDuration');
-                    printCountFoot = document.getElementById('fuDlPrintCountFooter');
-                    subtitleEl     = document.getElementById('fuDlPrintSubtitle');
-                }
+                            function rebindDOMRefs() {
+                                tableEl = document.getElementById('fuDlTable');
+                                tableContainer = document.getElementById('fuDlTableContainer');
+                                printDurEl = document.getElementById('fuDlPrintDuration');
+                                printCountFoot = document.getElementById('fuDlPrintCountFooter');
+                                subtitleEl = document.getElementById('fuDlPrintSubtitle');
+                            }
 
-                /* ── State ──────────────────────────────────────────────── */
-                let validDates      = [];   // YYYY-MM-DD strings that have follow-ups
-                let datesLoaded     = false;
-                let fpFrom          = null; // flatpickr instance – From
-                let fpTo            = null; // flatpickr instance – To
-                let selectedFrom    = '';
-                let selectedTo      = '';
+                            /* ── State ──────────────────────────────────────────────── */
+                            let validDates = [];   // YYYY-MM-DD strings that have follow-ups
+                            let datesLoaded = false;
+                            let fpFrom = null; // flatpickr instance – From
+                            let fpTo = null; // flatpickr instance – To
+                            let selectedFrom = '';
+                            let selectedTo = '';
 
-                /* Helper to clear table bodies & extra generated tables */
-                function clearTableBodies() {
-                    if (tableContainer) {
-                        const extraTables = tableContainer.querySelectorAll('table:not(#fuDlTable)');
-                        extraTables.forEach(t => t.remove());
-                    }
-                    if (tableEl) {
-                        const tbodies = tableEl.querySelectorAll('tbody');
-                        tbodies.forEach(tb => tb.remove());
-                        tableEl.classList.remove('d-none');
-                    }
-                }
-
-                /* Helper to show table message */
-                function showTableMessage(msg, isError = false) {
-                    clearTableBodies();
-                    const tbody = document.createElement('tbody');
-                    tbody.innerHTML = `<tr><td colspan="6" class="text-center ${isError ? 'text-danger' : 'text-muted'} py-4">${msg}</td></tr>`;
-                    tableEl.appendChild(tbody);
-                }
-
-                /* ── Helpers ────────────────────────────────────────────── */
-                function todayISO() {
-                    const n = new Date();
-                    return `${n.getFullYear()}-${String(n.getMonth()+1).padStart(2,'0')}-${String(n.getDate()).padStart(2,'0')}`;
-                }
-
-                function toISO(dateObj) {
-                    return `${dateObj.getFullYear()}-${String(dateObj.getMonth()+1).padStart(2,'0')}-${String(dateObj.getDate()).padStart(2,'0')}`;
-                }
-
-                /** "YYYY-MM-DD" → "dd-mm-yyyy"  e.g. 13-07-2026 */
-                function fmtShort(isoStr) {
-                    if (!isoStr) return '-';
-                    const [y, m, d] = isoStr.split('-');
-                    return `${d.padStart(2,'0')}-${m.padStart(2,'0')}-${y}`;
-                }
-
-                function getNowTimestamp() {
-                    const now = new Date();
-                    const d = String(now.getDate()).padStart(2, '0');
-                    const m = String(now.getMonth() + 1).padStart(2, '0');
-                    const y = now.getFullYear();
-                    let hours = now.getHours();
-                    const minutes = String(now.getMinutes()).padStart(2, '0');
-                    const ampm = hours >= 12 ? 'PM' : 'AM';
-                    hours = hours % 12;
-                    hours = hours ? hours : 12; // the hour '0' should be '12'
-                    const hrs = String(hours).padStart(2, '0');
-                    return `${d}-${m}-${y} ${hrs}:${minutes} ${ampm}`;
-                }
-
-                /** "YYYY-MM-DD" → "dd Mon yyyy"  e.g. 13 Jul 2026 */
-                function fmtLong(isoStr) {
-                    if (!isoStr) return '-';
-                    const dt = new Date(isoStr + 'T00:00:00');
-                    return dt.toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' });
-                }
-
-                function daysBetween(f, t) {
-                    return Math.round((new Date(t+'T00:00:00') - new Date(f+'T00:00:00')) / 86400000) + 1;
-                }
-
-                /* ── Fetch valid follow-up dates & initialise flatpickr ─── */
-                function loadValidDates() {
-                    if (datesLoaded) return Promise.resolve();
-                    const today = todayISO();
-                    const far   = toISO(new Date(Date.now() + 365 * 86400000));
-
-                    return fetch(`${urlDates}?from=${today}&to=${far}`)
-                        .then(r => r.json())
-                        .then(res => {
-                            validDates  = (res.success && res.dates) ? res.dates : [];
-                            datesLoaded = true;
-                            initPickers();
-                        })
-                        .catch(() => { datesLoaded = true; initPickers(); });
-                }
-
-                /* ── Initialise flatpickr instances ─────────────────────── */
-                function initPickers() {
-                    const today = todayISO();
-
-                    // Destroy old instances if re-opened
-                    if (fpFrom) { fpFrom.destroy(); fpFrom = null; }
-                    if (fpTo)   { fpTo.destroy();   fpTo   = null; }
-
-                    /* Disable dates that have NO follow-ups or are before today.
-                       NO minDate set — so the full month grid is always rendered.
-                       disableFn grays out past dates AND dates with no follow-ups. */
-                    const disableFn = (date) => {
-                        const iso = toISO(date);
-                        return iso < today || !validDates.includes(iso);
-                    };
-
-                    fpFrom = flatpickr('#fuDlFromDate', {
-                        dateFormat   : 'Y-m-d',
-                        disable      : [disableFn],   // no minDate so all grid days render
-                        disableMobile: true,
-                        onChange(selDates) {
-                            selectedFrom = selDates.length ? toISO(selDates[0]) : '';
-                            document.getElementById('fuDlFromErr').classList.add('d-none');
-                            resetPreview();
-                            // When From changes, re-disable To picker so dates before From are also grayed
-                            if (fpTo) {
-                                fpTo.set('disable', [(date) => {
-                                    const iso = toISO(date);
-                                    return iso < today || !validDates.includes(iso) || (selectedFrom && iso < selectedFrom);
-                                }]);
-                                // Clear To if it is now before the new From
-                                if (selectedTo && selectedTo < selectedFrom) {
-                                    fpTo.clear();
-                                    selectedTo = '';
+                            /* Helper to clear table bodies & extra generated tables */
+                            function clearTableBodies() {
+                                if (tableContainer) {
+                                    const extraTables = tableContainer.querySelectorAll('table:not(#fuDlTable)');
+                                    extraTables.forEach(t => t.remove());
+                                }
+                                if (tableEl) {
+                                    const tbodies = tableEl.querySelectorAll('tbody');
+                                    tbodies.forEach(tb => tb.remove());
+                                    tableEl.classList.remove('d-none');
                                 }
                             }
-                        }
-                    });
 
-                    fpTo = flatpickr('#fuDlToDate', {
-                        dateFormat   : 'Y-m-d',
-                        disable      : [disableFn],   // no minDate
-                        disableMobile: true,
-                        onChange(selDates) {
-                            selectedTo = selDates.length ? toISO(selDates[0]) : '';
-                            document.getElementById('fuDlToErr').classList.add('d-none');
-                            resetPreview();
-                        }
-                    });
-                }
-
-                function resetPreview() {
-                    actionsDiv.classList.add('d-none');
-                    previewWrap.classList.add('d-none');
-                    clearTableBodies();
-                }
-
-                /* ── Load & render preview table ────────────────────────── */
-                function loadPreview() {
-                    const fromErrEl = document.getElementById('fuDlFromErr');
-                    const toErrEl   = document.getElementById('fuDlToErr');
-                    let valid = true;
-
-                    if (!selectedFrom) {
-                        fromErrEl.classList.remove('d-none');
-                        valid = false;
-                    } else {
-                        fromErrEl.classList.add('d-none');
-                    }
-
-                    if (!selectedTo) {
-                        toErrEl.classList.remove('d-none');
-                        valid = false;
-                    } else if (selectedFrom && selectedTo < selectedFrom) {
-                        toErrEl.querySelector ? (toErrEl.innerHTML = '<i class="bi bi-exclamation-circle me-1"></i>To date must be on or after From date.') : null;
-                        toErrEl.classList.remove('d-none');
-                        valid = false;
-                    } else {
-                        toErrEl.classList.add('d-none');
-                    }
-
-                    if (!valid) return;
-
-                    previewWrap.classList.remove('d-none');
-                    loadingDiv.classList.remove('d-none');
-                    clearTableBodies();
-                    actionsDiv.classList.add('d-none');
-
-                    fetch(`${urlRange}?from=${selectedFrom}&to=${selectedTo}`)
-                        .then(r => r.json())
-                        .then(res => {
-                            loadingDiv.classList.add('d-none');
-                            if (!res.success || !res.data || !res.data.length) {
-                                showTableMessage('No follow-ups found for the selected date range.');
-                                return;
+                            /* Helper to show table message */
+                            function showTableMessage(msg, isError = false) {
+                                clearTableBodies();
+                                const tbody = document.createElement('tbody');
+                                tbody.innerHTML = `<tr><td colspan="6" class="text-center ${isError ? 'text-danger' : 'text-muted'} py-4">${msg}</td></tr>`;
+                                tableEl.appendChild(tbody);
                             }
-                            renderPreviewTable(res.data, selectedFrom, selectedTo);
-                        })
-                        .catch(() => {
-                            loadingDiv.classList.add('d-none');
-                            showTableMessage('Error loading data. Please try again.', true);
-                        });
-                }
 
-                function renderPreviewTable(data, from, to) {
-                    /* Group rows by follow_date */
-                    const grouped = {};
-                    data.forEach(row => {
-                        if (!grouped[row.follow_date]) grouped[row.follow_date] = [];
-                        grouped[row.follow_date].push(row);
-                    });
+                            /* ── Helpers ────────────────────────────────────────────── */
+                            function todayISO() {
+                                const n = new Date();
+                                return `${n.getFullYear()}-${String(n.getMonth() + 1).padStart(2, '0')}-${String(n.getDate()).padStart(2, '0')}`;
+                            }
 
-                    const sortedDates = Object.keys(grouped).sort();
-                    clearTableBodies(); // Resets container and ensures tableEl is visible
+                            function toISO(dateObj) {
+                                return `${dateObj.getFullYear()}-${String(dateObj.getMonth() + 1).padStart(2, '0')}-${String(dateObj.getDate()).padStart(2, '0')}`;
+                            }
 
-                    const colGroupHtml = `
+                            /** "YYYY-MM-DD" → "dd-mm-yyyy"  e.g. 13-07-2026 */
+                            function fmtShort(isoStr) {
+                                if (!isoStr) return '-';
+                                const [y, m, d] = isoStr.split('-');
+                                return `${d.padStart(2, '0')}-${m.padStart(2, '0')}-${y}`;
+                            }
+
+                            function getNowTimestamp() {
+                                const now = new Date();
+                                const d = String(now.getDate()).padStart(2, '0');
+                                const m = String(now.getMonth() + 1).padStart(2, '0');
+                                const y = now.getFullYear();
+                                let hours = now.getHours();
+                                const minutes = String(now.getMinutes()).padStart(2, '0');
+                                const ampm = hours >= 12 ? 'PM' : 'AM';
+                                hours = hours % 12;
+                                hours = hours ? hours : 12; // the hour '0' should be '12'
+                                const hrs = String(hours).padStart(2, '0');
+                                return `${d}-${m}-${y} ${hrs}:${minutes} ${ampm}`;
+                            }
+
+                            /** "YYYY-MM-DD" → "dd Mon yyyy"  e.g. 13 Jul 2026 */
+                            function fmtLong(isoStr) {
+                                if (!isoStr) return '-';
+                                const dt = new Date(isoStr + 'T00:00:00');
+                                return dt.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+                            }
+
+                            function daysBetween(f, t) {
+                                return Math.round((new Date(t + 'T00:00:00') - new Date(f + 'T00:00:00')) / 86400000) + 1;
+                            }
+
+                            /* ── Fetch valid follow-up dates & initialise flatpickr ─── */
+                            function loadValidDates() {
+                                if (datesLoaded) return Promise.resolve();
+                                const today = todayISO();
+                                const far = toISO(new Date(Date.now() + 365 * 86400000));
+
+                                return fetch(`${urlDates}?from=${today}&to=${far}`)
+                                    .then(r => r.json())
+                                    .then(res => {
+                                        validDates = (res.success && res.dates) ? res.dates : [];
+                                        datesLoaded = true;
+                                        initPickers();
+                                    })
+                                    .catch(() => { datesLoaded = true; initPickers(); });
+                            }
+
+                            /* ── Initialise flatpickr instances ─────────────────────── */
+                            function initPickers() {
+                                const today = todayISO();
+
+                                // Destroy old instances if re-opened
+                                if (fpFrom) { fpFrom.destroy(); fpFrom = null; }
+                                if (fpTo) { fpTo.destroy(); fpTo = null; }
+
+                                /* Disable dates that have NO follow-ups or are before today.
+                                   NO minDate set — so the full month grid is always rendered.
+                                   disableFn grays out past dates AND dates with no follow-ups. */
+                                const disableFn = (date) => {
+                                    const iso = toISO(date);
+                                    return iso < today || !validDates.includes(iso);
+                                };
+
+                                fpFrom = flatpickr('#fuDlFromDate', {
+                                    dateFormat: 'Y-m-d',
+                                    disable: [disableFn],   // no minDate so all grid days render
+                                    disableMobile: true,
+                                    onChange(selDates) {
+                                        selectedFrom = selDates.length ? toISO(selDates[0]) : '';
+                                        document.getElementById('fuDlFromErr').classList.add('d-none');
+                                        resetPreview();
+                                        // When From changes, re-disable To picker so dates before From are also grayed
+                                        if (fpTo) {
+                                            fpTo.set('disable', [(date) => {
+                                                const iso = toISO(date);
+                                                return iso < today || !validDates.includes(iso) || (selectedFrom && iso < selectedFrom);
+                                            }]);
+                                            // Clear To if it is now before the new From
+                                            if (selectedTo && selectedTo < selectedFrom) {
+                                                fpTo.clear();
+                                                selectedTo = '';
+                                            }
+                                        }
+                                    }
+                                });
+
+                                fpTo = flatpickr('#fuDlToDate', {
+                                    dateFormat: 'Y-m-d',
+                                    disable: [disableFn],   // no minDate
+                                    disableMobile: true,
+                                    onChange(selDates) {
+                                        selectedTo = selDates.length ? toISO(selDates[0]) : '';
+                                        document.getElementById('fuDlToErr').classList.add('d-none');
+                                        resetPreview();
+                                    }
+                                });
+                            }
+
+                            function resetPreview() {
+                                actionsDiv.classList.add('d-none');
+                                previewWrap.classList.add('d-none');
+                                clearTableBodies();
+                            }
+
+                            /* ── Load & render preview table ────────────────────────── */
+                            function loadPreview() {
+                                const fromErrEl = document.getElementById('fuDlFromErr');
+                                const toErrEl = document.getElementById('fuDlToErr');
+                                let valid = true;
+
+                                if (!selectedFrom) {
+                                    fromErrEl.classList.remove('d-none');
+                                    valid = false;
+                                } else {
+                                    fromErrEl.classList.add('d-none');
+                                }
+
+                                if (!selectedTo) {
+                                    toErrEl.classList.remove('d-none');
+                                    valid = false;
+                                } else if (selectedFrom && selectedTo < selectedFrom) {
+                                    toErrEl.querySelector ? (toErrEl.innerHTML = '<i class="bi bi-exclamation-circle me-1"></i>To date must be on or after From date.') : null;
+                                    toErrEl.classList.remove('d-none');
+                                    valid = false;
+                                } else {
+                                    toErrEl.classList.add('d-none');
+                                }
+
+                                if (!valid) return;
+
+                                previewWrap.classList.remove('d-none');
+                                loadingDiv.classList.remove('d-none');
+                                clearTableBodies();
+                                actionsDiv.classList.add('d-none');
+
+                                fetch(`${urlRange}?from=${selectedFrom}&to=${selectedTo}`)
+                                    .then(r => r.json())
+                                    .then(res => {
+                                        loadingDiv.classList.add('d-none');
+                                        if (!res.success || !res.data || !res.data.length) {
+                                            showTableMessage('No follow-ups found for the selected date range.');
+                                            return;
+                                        }
+                                        renderPreviewTable(res.data, selectedFrom, selectedTo);
+                                    })
+                                    .catch(() => {
+                                        loadingDiv.classList.add('d-none');
+                                        showTableMessage('Error loading data. Please try again.', true);
+                                    });
+                            }
+
+                            function renderPreviewTable(data, from, to) {
+                                /* Group rows by follow_date */
+                                const grouped = {};
+                                data.forEach(row => {
+                                    if (!grouped[row.follow_date]) grouped[row.follow_date] = [];
+                                    grouped[row.follow_date].push(row);
+                                });
+
+                                const sortedDates = Object.keys(grouped).sort();
+                                clearTableBodies(); // Resets container and ensures tableEl is visible
+
+                                const colGroupHtml = `
                         <colgroup>
                             <col style="width: 15%;">
                             <col style="width: 7%;">
@@ -1052,8 +1258,8 @@
                         </colgroup>
                     `;
 
-                    // Populate tableEl with colgroup and headers
-                    tableEl.innerHTML = colGroupHtml + `
+                                // Populate tableEl with colgroup and headers
+                                tableEl.innerHTML = colGroupHtml + `
                         <thead>
                             <tr>
                                 <th rowspan="2"
@@ -1081,118 +1287,122 @@
                         </thead>
                     `;
 
-                    sortedDates.forEach(date => {
-                        const rows = grouped[date];
-                        const tbody = document.createElement('tbody');
-                        tbody.className = 'fu-date-group';
-                        tbody.setAttribute('data-date', date);
+                                sortedDates.forEach(date => {
+                                    const rows = grouped[date];
+                                    const tbody = document.createElement('tbody');
+                                    tbody.className = 'fu-date-group';
+                                    tbody.setAttribute('data-date', date);
 
-                        rows.forEach((row, i) => {
-                            const tr = document.createElement('tr');
-                            tr.style.cssText = 'page-break-inside: avoid; break-inside: avoid;';
+                                    rows.forEach((row, i) => {
+                                        const tr = document.createElement('tr');
+                                        tr.style.cssText = 'page-break-inside: avoid; break-inside: avoid;';
 
-                            /* Date cell with rowspan on first row only */
-                            if (i === 0) {
-                                const dateTd = document.createElement('td');
-                                dateTd.rowSpan = rows.length;
-                                dateTd.style.cssText = 'border:1.5px solid #333;padding:7px 10px;text-align:center;vertical-align:middle;font-weight:600;white-space:nowrap;page-break-inside: avoid; break-inside: avoid;';
-                                dateTd.textContent = fmtShort(date);
-                                tr.appendChild(dateTd);
-                            }
+                                        /* Date cell with rowspan on first row only */
+                                        if (i === 0) {
+                                            const dateTd = document.createElement('td');
+                                            dateTd.rowSpan = rows.length;
+                                            dateTd.style.cssText = 'border:1.5px solid #333;padding:7px 10px;text-align:center;vertical-align:middle;font-weight:600;white-space:nowrap;page-break-inside: avoid; break-inside: avoid;';
+                                            dateTd.textContent = fmtShort(date);
+                                            tr.appendChild(dateTd);
+                                        }
 
-                            tr.innerHTML += `
+                                        tr.innerHTML += `
                                 <td style="border:1.5px solid #333;padding:7px 10px;text-align:center;page-break-inside: avoid; break-inside: avoid;">${i + 1}</td>
                                 <td style="border:1.5px solid #333;padding:7px 10px;page-break-inside: avoid; break-inside: avoid; word-break: break-all;">${row.patientId || '-'}</td>
                                 <td style="border:1.5px solid #333;padding:7px 10px;page-break-inside: avoid; break-inside: avoid; word-break: break-word;">${row.patientName || '-'}</td>
                                 <td style="border:1.5px solid #333;padding:7px 10px;text-align:center;page-break-inside: avoid; break-inside: avoid; white-space: nowrap;">${fmtShort(row.consult_date)}</td>
                                 <td style="border:1.5px solid #333;padding:7px 10px;text-align:center;page-break-inside: avoid; break-inside: avoid; white-space: nowrap;">${row.mobileNumber || '-'}</td>
                             `;
-                            tbody.appendChild(tr);
-                        });
-                        tableEl.appendChild(tbody);
-                    });
+                                        tbody.appendChild(tr);
+                                    });
+                                    tableEl.appendChild(tbody);
+                                });
 
-                    /* Duration & count — written ONLY to the printable footer */
-                    const totalPatients = data.length;
-                    const days    = daysBetween(from, to);
-                    const durTxt  = `${fmtLong(from)} — ${fmtLong(to)} (${days} day${days !== 1 ? 's' : ''})`;
-                    const cntTxt  = `Total Patients: ${totalPatients}`;
+                                /* Duration & count — written ONLY to the printable footer */
+                                const totalPatients = data.length;
+                                const days = daysBetween(from, to);
+                                const durTxt = `${fmtLong(from)} — ${fmtLong(to)} (${days} day${days !== 1 ? 's' : ''})`;
+                                const cntTxt = `Total Patients: ${totalPatients}`;
 
-                    subtitleEl.textContent     = `From ${fmtLong(from)} to ${fmtLong(to)}`;
-                    printDurEl.textContent     = `Duration: ${durTxt}`;
-                    printCountFoot.textContent = cntTxt;
+                                subtitleEl.textContent = `From ${fmtLong(from)} to ${fmtLong(to)}`;
+                                printDurEl.textContent = `Duration: ${durTxt}`;
+                                printCountFoot.textContent = cntTxt;
 
-                    // Set generated timestamp in the preview header
-                    document.getElementById('fuDlGeneratedAt').textContent = getNowTimestamp();
+                                // Set generated timestamp in the preview header
+                                document.getElementById('fuDlGeneratedAt').textContent = getNowTimestamp();
 
-                    actionsDiv.classList.remove('d-none');
-                }
+                                actionsDiv.classList.remove('d-none');
+                            }
 
-                /* ── Pagination Logic before downloading ───────────────── */
-                function paginateTable() {
-                    const area = document.getElementById('fuDlPrintArea');
-                    const table = document.getElementById('fuDlTable');
-                    if (!table || table.classList.contains('d-none')) return;
+                            /* ── Pagination Logic before downloading ───────────────── */
+                            function paginateTable() {
+                                const area = document.getElementById('fuDlPrintArea');
+                                const table = document.getElementById('fuDlTable');
+                                if (!table || table.classList.contains('d-none')) return;
 
-                    // Temporarily set width to standard A4 (794px at 96 DPI) so measurements match PDF exactly
-                    area.style.width = '794px';
+                                // Temporarily set width to standard A4 (794px at 96 DPI) so measurements match PDF exactly
+                                area.style.width = '794px';
 
-                    // Measure layout elements at the correct width
-                    const headerEl = area.querySelector('div:first-child');
-                    const footerEl = area.querySelector('div:last-child');
-                    const theadEl = table.querySelector('thead');
+                                // Measure layout elements at the correct width
+                                const headerEl = area.querySelector('div:first-child');
+                                const footerEl = area.querySelector('div:last-child');
+                                const theadEl = table.querySelector('thead');
 
-                    const headerHeight = headerEl ? headerEl.offsetHeight : 0;
-                    const footerHeight = footerEl ? footerEl.offsetHeight : 0;
-                    const theadHeight = theadEl ? theadEl.offsetHeight : 0;
+                                const headerHeight = headerEl ? headerEl.offsetHeight : 0;
+                                const footerHeight = footerEl ? footerEl.offsetHeight : 0;
+                                const theadHeight = theadEl ? theadEl.offsetHeight : 0;
 
-                    // A4 page at 96 DPI = 1123px tall. html2pdf margin 10mm ≈ 38px each side.
-                    // Net printable height = 1123 - 38 - 38 = 1047px
-                    const PAGE_HEIGHT = 1047;
+                                // A4 page at 96 DPI = 1123px tall. html2pdf margin 10mm ≈ 38px each side.
+                                // Net printable height = 1123 - 38 - 38 = 1047px
+                                const PAGE_HEIGHT = 1047;
 
-                    // Gather all rows with their corresponding dates and actual heights at 794px width
-                    const rowData = [];
-                    const tbodies = table.querySelectorAll('tbody.fu-date-group');
-                    tbodies.forEach(tbody => {
-                        const date = tbody.getAttribute('data-date');
-                        const trs = tbody.querySelectorAll('tr');
-                        trs.forEach(tr => {
-                            rowData.push({ 
-                                tr: tr.cloneNode(true), 
-                                date: date, 
-                                height: tr.offsetHeight || 37 
-                            });
-                        });
-                    });
+                                // Gather all rows with their corresponding dates and actual heights at 794px width
+                                const rowData = [];
+                                const tbodies = table.querySelectorAll('tbody.fu-date-group');
+                                tbodies.forEach(tbody => {
+                                    const date = tbody.getAttribute('data-date');
+                                    const trs = tbody.querySelectorAll('tr');
+                                    trs.forEach(tr => {
+                                        const rowHeight = tr.offsetHeight || tr.getBoundingClientRect().height || 37;
+                                        rowData.push({
+                                            tr: tr.cloneNode(true),
+                                            date: date,
+                                            height: rowHeight
+                                        });
+                                    });
+                                });
 
-                    if (rowData.length === 0) return;
+                                if (rowData.length === 0) return;
 
-                    // Clear the container
-                    const container = document.getElementById('fuDlTableContainer');
-                    if (container) {
-                        container.innerHTML = '';
-                    }
+                                // Clear the container
+                                const container = document.getElementById('fuDlTableContainer');
+                                if (container) {
+                                    container.innerHTML = '';
+                                }
 
-                    // Reconstruct pages
-                    // Page 1 starts with: header + thead already occupying space
-                    let currentPageHeight = headerHeight + theadHeight;
-                    let isFirstPage = true;
-                    let currentTable = null;
-                    let currentTbody = null;
-                    let currentDate = null;
-                    let currentDateTd = null;
-                    let currentRowsInDateGroup = 0;
+                                // Reconstruct pages
+                                // Page 1 starts with: header + thead already occupying space
+                                let currentPageHeight = headerHeight + theadHeight;
+                                let isFirstPage = true;
+                            let currentWrapper = null;
+                            let currentTable = null;
+                            let currentTbody = null;
+                            let currentDate = null;
+                            let currentDateTd = null;
+                            let currentRowsInDateGroup = 0;
 
-                    function startNewPage() {
-                        // Adjust the final rowspan of the last dateTd on the page
-                        if (currentDateTd) {
-                            currentDateTd.rowSpan = currentRowsInDateGroup;
-                        }
+                            function startNewPage() {
+                                // Adjust the final rowspan of the last dateTd on the page
+                                if (currentDateTd) {
+                                    currentDateTd.rowSpan = currentRowsInDateGroup;
+                                }
 
-                        // Create a table for this page — page-break-before on the table itself
-                        currentTable = document.createElement('table');
-                        currentTable.style.cssText = 'width:100%; border-collapse:collapse; font-size:13px; font-family:\'Poppins\',sans-serif; page-break-before: always; break-before: always;';
-                        currentTable.innerHTML = `
+                                currentWrapper = document.createElement('div');
+                                currentWrapper.style.cssText = 'display:block; page-break-before: always; break-before: always; page-break-inside: avoid; break-inside: avoid; padding-top: 2px;';
+
+                                currentTable = document.createElement('table');
+                                currentTable.style.cssText = 'width:100%; border-collapse:collapse; border-spacing:0; font-size:13px; font-family:\'Poppins\',sans-serif; page-break-inside: avoid; break-inside: avoid; margin-top: 0;';
+                                currentTable.innerHTML = `
                             <colgroup>
                                 <col style="width: 15%;">
                                 <col style="width: 7%;">
@@ -1203,261 +1413,756 @@
                             </colgroup>
                         `;
 
-                        // Repeat the thead on every page
-                        const thead = document.createElement('thead');
-                        thead.innerHTML = theadEl.innerHTML;
-                        currentTable.appendChild(thead);
+                                // Repeat the thead on every page
+                                const thead = document.createElement('thead');
+                                thead.innerHTML = theadEl.innerHTML;
+                                thead.style.cssText = 'display: table-header-group; page-break-inside: avoid; break-inside: avoid; border-collapse:collapse; border-spacing:0;';
+                                thead.querySelectorAll('th').forEach(th => {
+                                    th.style.borderTop = '1.5px solid #333';
+                                });
+                                currentTable.appendChild(thead);
+                                currentTbody = document.createElement('tbody');
+                                currentTable.appendChild(currentTbody);
+                                currentWrapper.appendChild(currentTable);
+                                container.appendChild(currentWrapper);
 
-                        container.appendChild(currentTable);
+                                // Subsequent pages only have thead (no page-level header)
+                                currentPageHeight = theadHeight;
+                                isFirstPage = false;
+                                currentDate = null;
+                                currentDateTd = null;
+                                currentRowsInDateGroup = 0;
+                            }
 
-                        // Subsequent pages only have thead (no page-level header)
-                        currentPageHeight = theadHeight;
-                        isFirstPage = false;
-                        currentDate = null;
-                        currentDateTd = null;
-                        currentTbody = null;
-                        currentRowsInDateGroup = 0;
-                    }
+                            function startFirstPage() {
+                                currentWrapper = document.createElement('div');
+                                currentWrapper.style.cssText = 'page-break-inside: avoid; break-inside: avoid;';
 
-                    // Initialize first page (no page break wrapper before first page)
-                    currentTable = document.createElement('table');
-                    currentTable.style.cssText = 'width:100%; border-collapse:collapse; font-size:13px; font-family:\'Poppins\',sans-serif;';
-                    currentTable.innerHTML = `
+                                currentTable = document.createElement('table');
+                                currentTable.style.cssText = 'width:100%; border-collapse:collapse; border-spacing:0; font-size:13px; font-family:\'Poppins\',sans-serif; page-break-inside: avoid; break-inside: avoid;';
+                                currentTable.innerHTML = `
+                            <colgroup>
+                                <col style="width: 15%;">
+                                <col style="width: 7%;">
+                                <col style="width: 15%;">
+                                <col style="width: 33%;">
+                                <col style="width: 15%;">
+                                <col style="width: 15%;">
+                            </colgroup>
+                        `;
+                                const initialThead = document.createElement('thead');
+                                initialThead.innerHTML = theadEl.innerHTML;
+                                initialThead.style.cssText = 'display: table-header-group; page-break-inside: avoid; break-inside: avoid; border-collapse:collapse; border-spacing:0;';
+                                initialThead.querySelectorAll('th').forEach(th => {
+                                    th.style.borderTop = '1.5px solid #333';
+                                });
+                                currentTable.appendChild(initialThead);
+                                currentWrapper.appendChild(currentTable);
+                                container.appendChild(currentWrapper);
+                            }
+
+                            startFirstPage();
+                                rowData.forEach(item => {
+                                    const rowHeight = item.height;
+                                    // footerHeight only affects last page; deduct it always as a safe approximation
+                                    const SAFE_BOTTOM = 80;
+                                    const limit = PAGE_HEIGHT - footerHeight - SAFE_BOTTOM;
+
+                                    // Check if adding this row exceeds page limit
+                                    if (currentPageHeight + rowHeight > limit) {
+                                        startNewPage();
+                                        isFirstPage = false;
+                                    }
+
+                                    // If date changes or it's a new page/tbody, create a new tbody
+                                    if (item.date !== currentDate) {
+                                        if (currentDateTd) {
+                                            currentDateTd.rowSpan = currentRowsInDateGroup;
+                                        }
+                                        currentDate = item.date;
+                                        currentRowsInDateGroup = 0;
+
+                                        currentTbody = document.createElement('tbody');
+                                        currentTbody.className = 'fu-date-group';
+                                        currentTable.appendChild(currentTbody);
+
+                                        // Remove any existing date td
+                                        const existingDateTd = item.tr.querySelector('td[rowspan]');
+                                        if (existingDateTd) {
+                                            existingDateTd.remove();
+                                        }
+
+                                        // Create a new date cell
+                                        currentDateTd = document.createElement('td');
+                                        currentDateTd.style.cssText = 'border:1.5px solid #333;padding:7px 10px;text-align:center;vertical-align:middle;font-weight:600;white-space:nowrap;';
+                                        currentDateTd.textContent = fmtShort(currentDate);
+                                        item.tr.insertBefore(currentDateTd, item.tr.firstChild);
+                                    } else {
+                                        // Same date group on same page, ensure it doesn't have an extra date td
+                                        const existingDateTd = item.tr.querySelector('td[rowspan]');
+                                        if (existingDateTd) {
+                                            existingDateTd.remove();
+                                        }
+                                    }
+
+                                    currentTbody.appendChild(item.tr);
+                                    currentRowsInDateGroup++;
+                                    currentPageHeight += rowHeight;
+                                });
+
+                                // Finalize last page rowspan
+                                if (currentDateTd) {
+                                    currentDateTd.rowSpan = currentRowsInDateGroup;
+                                }
+                            }
+
+                            /* ── PDF Download — modal stays open after download ──── */
+                            function downloadPDF() {
+                                const area = document.getElementById('fuDlPrintArea');
+                                const filename = `EDF_next_followup_${fmtShort(selectedFrom)}_to_${fmtShort(selectedTo)}.pdf`;
+
+                                // Update timestamp to the exact download time
+                                document.getElementById('fuDlGeneratedAt').textContent = getNowTimestamp();
+
+                                pdfBtn.disabled = true;
+                                pdfBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Generating…';
+
+                                // Save original HTML content & width style to restore after download
+                                const originalHTML = area.innerHTML;
+                                const originalWidthStyle = area.style.width;
+
+                                // Run the pagination to dynamically break table rows across pages safely
+                                paginateTable();
+
+                                html2pdf().set({
+                                    margin: [10, 10, 10, 10],
+                                    filename,
+                                    image: { type: 'jpeg', quality: 0.98 },
+                                    html2canvas: { scale: 2, useCORS: true },
+                                    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+                                    pagebreak: { mode: 'css' }
+                                }).from(area).save().then(() => {
+                                    // Restore preview DOM and width style
+                                    area.innerHTML = originalHTML;
+                                    area.style.width = originalWidthStyle;
+                                    rebindDOMRefs();
+
+                                    pdfBtn.disabled = false;
+                                    pdfBtn.innerHTML = '<i class="bi bi-file-earmark-pdf"></i> Download PDF';
+                                });
+                            }
+
+                            /* ── Image Download — modal stays open after download ─── */
+                            function downloadImage() {
+                                const area = document.getElementById('fuDlPrintArea');
+                                const filename = `EDF_next_followup_${fmtShort(selectedFrom)}_to_${fmtShort(selectedTo)}.jpg`;
+
+                                // Update timestamp to the exact download time
+                                document.getElementById('fuDlGeneratedAt').textContent = getNowTimestamp();
+
+                                imgBtn.disabled = true;
+                                imgBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Generating…';
+
+                                // Save original HTML content & width style to restore after download
+                                const originalHTML = area.innerHTML;
+                                const originalWidthStyle = area.style.width;
+
+                                // Run the pagination to dynamically break table rows across pages safely
+                                paginateTable();
+
+                                html2canvas(area, { scale: 2, useCORS: true, backgroundColor: '#ffffff' })
+                                    .then(canvas => {
+                                        const link = document.createElement('a');
+                                        link.download = filename;
+                                        link.href = canvas.toDataURL('image/jpeg');
+                                        link.click();
+
+                                        // Restore preview DOM and width style
+                                        area.innerHTML = originalHTML;
+                                        area.style.width = originalWidthStyle;
+                                        rebindDOMRefs();
+
+                                        imgBtn.disabled = false;
+                                        imgBtn.innerHTML = '<i class="bi bi-image"></i> Download Image JPG';
+                                    });
+                            }
+
+                            /* ── Event listeners ────────────────────────────────────── */
+                            previewBtn.addEventListener('click', loadPreview);
+                            pdfBtn.addEventListener('click', downloadPDF);
+                            imgBtn.addEventListener('click', downloadImage);
+
+                            /* ── Reset & reload on modal open ───────────────────────── */
+                            const modalEl = document.getElementById('followUpDownloadModal');
+                            if (modalEl) {
+                                modalEl.addEventListener('show.bs.modal', function () {
+                                    selectedFrom = '';
+                                    selectedTo = '';
+                                    resetPreview();
+                                    document.getElementById('fuDlFromErr').classList.add('d-none');
+                                    document.getElementById('fuDlToErr').classList.add('d-none');
+                                    // Reload dates each open so new follow-ups are reflected
+                                    datesLoaded = false;
+                                    document.getElementById('fuDlFromDate').value = '';
+                                    document.getElementById('fuDlToDate').value = '';
+                                    loadValidDates();
+                                });
+                            }
+
+                        })();
+                    </script>
+
+
+                    <!-- Post Discharge Follow-up Download Modal JavaScript -->
+                    <script>
+                        (function () {
+                            'use strict';
+
+                            /* ── URLs ───────────────────────────────────────────────── */
+                            const urlDates = '<?= base_url("Healthcareprovider/getDischargeFollowUpDatesInRange") ?>';
+                            const urlRange = '<?= base_url("Healthcareprovider/getDischargeFollowUpsByDateRange") ?>';
+
+                            /* ── DOM refs ───────────────────────────────────────────── */
+                            const previewBtn = document.getElementById('pdDlPreviewBtn');
+                            const pdfBtn = document.getElementById('pdDlPdfBtn');
+                            const imgBtn = document.getElementById('pdDlImgBtn');
+                            const actionsDiv = document.getElementById('pdDlActions');
+                            const previewWrap = document.getElementById('pdDlPreviewWrap');
+                            const loadingDiv = document.getElementById('pdDlLoading');
+                            let tableEl = document.getElementById('pdDlTable');
+                            let tableContainer = document.getElementById('pdDlTableContainer');
+                            let printDurEl = document.getElementById('pdDlPrintDuration');
+                            let printCountFoot = document.getElementById('pdDlPrintCountFooter');
+                            let subtitleEl = document.getElementById('pdDlPrintSubtitle');
+
+                            function rebindDOMRefs() {
+                                tableEl = document.getElementById('pdDlTable');
+                                tableContainer = document.getElementById('pdDlTableContainer');
+                                printDurEl = document.getElementById('pdDlPrintDuration');
+                                printCountFoot = document.getElementById('pdDlPrintCountFooter');
+                                subtitleEl = document.getElementById('pdDlPrintSubtitle');
+                            }
+
+                            /* ── State ──────────────────────────────────────────────── */
+                            let validDates = [];   // YYYY-MM-DD strings that have follow-ups
+                            let datesLoaded = false;
+                            let fpFrom = null; // flatpickr instance – From
+                            let fpTo = null; // flatpickr instance – To
+                            let selectedFrom = '';
+                            let selectedTo = '';
+
+                            /* Helper to clear table bodies & extra generated tables */
+                            function clearTableBodies() {
+                                if (tableContainer) {
+                                    const extraTables = tableContainer.querySelectorAll('table:not(#pdDlTable)');
+                                    extraTables.forEach(t => t.remove());
+                                }
+                                if (tableEl) {
+                                    const tbodies = tableEl.querySelectorAll('tbody');
+                                    tbodies.forEach(tb => tb.remove());
+                                    tableEl.classList.remove('d-none');
+                                }
+                            }
+
+                            /* Helper to show table message */
+                            function showTableMessage(msg, isError = false) {
+                                clearTableBodies();
+                                const tbody = document.createElement('tbody');
+                                tbody.innerHTML = `<tr><td colspan="6" class="text-center ${isError ? 'text-danger' : 'text-muted'} py-4">${msg}</td></tr>`;
+                                tableEl.appendChild(tbody);
+                            }
+
+                            /* ── Helpers ────────────────────────────────────────────── */
+                            function todayISO() {
+                                const n = new Date();
+                                return `${n.getFullYear()}-${String(n.getMonth() + 1).padStart(2, '0')}-${String(n.getDate()).padStart(2, '0')}`;
+                            }
+
+                            function toISO(dateObj) {
+                                return `${dateObj.getFullYear()}-${String(dateObj.getMonth() + 1).padStart(2, '0')}-${String(dateObj.getDate()).padStart(2, '0')}`;
+                            }
+
+                            /** "YYYY-MM-DD" → "dd-mm-yyyy"  e.g. 13-07-2026 */
+                            function fmtShort(isoStr) {
+                                if (!isoStr) return '-';
+                                const [y, m, d] = isoStr.split('-');
+                                return `${d.padStart(2, '0')}-${m.padStart(2, '0')}-${y}`;
+                            }
+
+                            function getNowTimestamp() {
+                                const now = new Date();
+                                const d = String(now.getDate()).padStart(2, '0');
+                                const m = String(now.getMonth() + 1).padStart(2, '0');
+                                const y = now.getFullYear();
+                                let hours = now.getHours();
+                                const minutes = String(now.getMinutes()).padStart(2, '0');
+                                const ampm = hours >= 12 ? 'PM' : 'AM';
+                                hours = hours % 12;
+                                hours = hours ? hours : 12; // the hour '0' should be '12'
+                                const hrs = String(hours).padStart(2, '0');
+                                return `${d}-${m}-${y} ${hrs}:${minutes} ${ampm}`;
+                            }
+
+                            /** "YYYY-MM-DD" → "dd Mon yyyy"  e.g. 13 Jul 2026 */
+                            function fmtLong(isoStr) {
+                                if (!isoStr) return '-';
+                                const dt = new Date(isoStr + 'T00:00:00');
+                                return dt.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+                            }
+
+                            function daysBetween(f, t) {
+                                return Math.round((new Date(t + 'T00:00:00') - new Date(f + 'T00:00:00')) / 86400000) + 1;
+                            }
+
+                            /* ── Fetch valid admission dates & initialise flatpickr ─── */
+                            function loadValidDates() {
+                                if (datesLoaded) return Promise.resolve();
+                                const past = toISO(new Date(Date.now() - 365 * 86400000));
+                                const far = toISO(new Date(Date.now() + 365 * 86400000));
+
+                                return fetch(`${urlDates}?from=${past}&to=${far}`)
+                                    .then(r => r.json())
+                                    .then(res => {
+                                        validDates = (res.success && res.dates) ? res.dates : [];
+                                        datesLoaded = true;
+                                        initPickers();
+                                    })
+                                    .catch(() => { datesLoaded = true; initPickers(); });
+                            }
+
+                            /* ── Initialise flatpickr instances ─────────────────────── */
+                            function initPickers() {
+                                if (fpFrom) { fpFrom.destroy(); fpFrom = null; }
+                                if (fpTo) { fpTo.destroy(); fpTo = null; }
+
+                                fpFrom = flatpickr('#pdDlFromDate', {
+                                    dateFormat: 'Y-m-d',
+                                    disableMobile: true,
+                                    onChange(selDates) {
+                                        selectedFrom = selDates.length ? toISO(selDates[0]) : '';
+                                        document.getElementById('pdDlFromErr').classList.add('d-none');
+                                        resetPreview();
+                                        if (fpTo) {
+                                            if (selectedTo && selectedTo < selectedFrom) {
+                                                fpTo.clear();
+                                                selectedTo = '';
+                                            }
+                                        }
+                                    }
+                                });
+
+                                fpTo = flatpickr('#pdDlToDate', {
+                                    dateFormat: 'Y-m-d',
+                                    disableMobile: true,
+                                    onChange(selDates) {
+                                        selectedTo = selDates.length ? toISO(selDates[0]) : '';
+                                        document.getElementById('pdDlToErr').classList.add('d-none');
+                                        resetPreview();
+                                    }
+                                });
+                            }
+
+                            function resetPreview() {
+                                actionsDiv.classList.add('d-none');
+                                previewWrap.classList.add('d-none');
+                                clearTableBodies();
+                            }
+
+                            /* ── Load & render preview table ────────────────────────── */
+                            function loadPreview() {
+                                const fromErrEl = document.getElementById('pdDlFromErr');
+                                const toErrEl = document.getElementById('pdDlToErr');
+                                let valid = true;
+
+                                if (!selectedFrom) {
+                                    fromErrEl.classList.remove('d-none');
+                                    valid = false;
+                                } else {
+                                    fromErrEl.classList.add('d-none');
+                                }
+
+                                if (!selectedTo) {
+                                    toErrEl.classList.remove('d-none');
+                                    valid = false;
+                                } else if (selectedFrom && selectedTo < selectedFrom) {
+                                    toErrEl.innerHTML = '<i class="bi bi-exclamation-circle me-1"></i>To date must be on or after From date.';
+                                    toErrEl.classList.remove('d-none');
+                                    valid = false;
+                                } else {
+                                    toErrEl.classList.add('d-none');
+                                }
+
+                                if (!valid) return;
+
+                                previewWrap.classList.remove('d-none');
+                                loadingDiv.classList.remove('d-none');
+                                clearTableBodies();
+                                actionsDiv.classList.add('d-none');
+
+                                fetch(`${urlRange}?from=${selectedFrom}&to=${selectedTo}`)
+                                    .then(r => r.json())
+                                    .then(res => {
+                                        loadingDiv.classList.add('d-none');
+                                        if (!res.success || !res.data || !res.data.length) {
+                                            const days = daysBetween(selectedFrom, selectedTo);
+                                            subtitleEl.textContent = `Admission Date: From ${fmtLong(selectedFrom)} to ${fmtLong(selectedTo)}`;
+                                            printDurEl.textContent = `Duration: ${fmtLong(selectedFrom)} — ${fmtLong(selectedTo)} (${days} day${days !== 1 ? 's' : ''})`;
+                                            printCountFoot.textContent = 'Total Patients: 0';
+                                            document.getElementById('pdDlGeneratedAt').textContent = getNowTimestamp();
+                                            showTableMessage('No admissions on the selected interval.');
+                                            return;
+                                        }
+                                        renderPreviewTable(res.data, selectedFrom, selectedTo);
+                                    })
+                                    .catch(() => {
+                                        loadingDiv.classList.add('d-none');
+                                        showTableMessage('Error loading data. Please try again.', true);
+                                    });
+                            }
+
+                            function renderPreviewTable(data, from, to) {
+                                clearTableBodies();
+
+                                const colGroupHtml = `
                         <colgroup>
+                            <col style="width: 8%;">
                             <col style="width: 15%;">
-                            <col style="width: 7%;">
-                            <col style="width: 15%;">
-                            <col style="width: 33%;">
+                            <col style="width: 27%;">
+                            <col style="width: 20%;">
                             <col style="width: 15%;">
                             <col style="width: 15%;">
                         </colgroup>
                     `;
-                    const initialThead = document.createElement('thead');
-                    initialThead.innerHTML = theadEl.innerHTML;
-                    currentTable.appendChild(initialThead);
-                    container.appendChild(currentTable);
 
-                    // Process rows
-                    rowData.forEach(item => {
-                        const rowHeight = item.height;
-                        // footerHeight only affects last page; deduct it always as a safe approximation
-                        const limit = PAGE_HEIGHT - footerHeight;
+                                tableEl.innerHTML = colGroupHtml + `
+                        <thead>
+                            <tr>
+                                <th style="border:1.5px solid #333;padding:7px 10px;text-align:center;background:#f8f9fa;">S.No</th>
+                                <th style="border:1.5px solid #333;padding:7px 10px;text-align:center;background:#f8f9fa;">Patient ID</th>
+                                <th style="border:1.5px solid #333;padding:7px 10px;text-align:center;background:#f8f9fa;">Patient Name</th>
+                                <th style="border:1.5px solid #333;padding:7px 10px;text-align:center;background:#f8f9fa;">Patient Contact Number</th>
+                                <th style="border:1.5px solid #333;padding:7px 10px;text-align:center;background:#f8f9fa;">Admission Date</th>
+                                <th style="border:1.5px solid #333;padding:7px 10px;text-align:center;background:#f8f9fa;">Discharge Date</th>
+                            </tr>
+                        </thead>
+                    `;
 
-                        // Check if adding this row exceeds page limit
-                        if (currentPageHeight + rowHeight > limit) {
-                            startNewPage();
-                            isFirstPage = false;
-                        }
+                                const tbody = document.createElement('tbody');
+                                data.forEach((row, i) => {
+                                    const tr = document.createElement('tr');
+                                    tr.style.cssText = 'page-break-inside: avoid; break-inside: avoid;';
+                                    tr.innerHTML = `
+                            <td style="border:1.5px solid #333;padding:7px 10px;text-align:center;page-break-inside: avoid; break-inside: avoid;">${i + 1}</td>
+                            <td style="border:1.5px solid #333;padding:7px 10px;page-break-inside: avoid; break-inside: avoid; word-break: break-all;">${row.patientId || '-'}</td>
+                            <td style="border:1.5px solid #333;padding:7px 10px;page-break-inside: avoid; break-inside: avoid; word-break: break-word;">${row.patient_name || '-'}</td>
+                            <td style="border:1.5px solid #333;padding:7px 10px;text-align:center;page-break-inside: avoid; break-inside: avoid; white-space: nowrap;">${row.mobileNumber || '-'}</td>
+                            <td style="border:1.5px solid #333;padding:7px 10px;text-align:center;page-break-inside: avoid; break-inside: avoid; white-space: nowrap;">${fmtShort(row.appointment_date)}</td>
+                            <td style="border:1.5px solid #333;padding:7px 10px;text-align:center;page-break-inside: avoid; break-inside: avoid; white-space: nowrap;">${fmtShort(row.discharge_date)}</td>
+                        `;
+                                    tbody.appendChild(tr);
+                                });
+                                tableEl.appendChild(tbody);
 
-                        // If date changes or it's a new page/tbody, create a new tbody
-                        if (item.date !== currentDate) {
-                            if (currentDateTd) {
-                                currentDateTd.rowSpan = currentRowsInDateGroup;
+                                const totalPatients = data.length;
+                                const days = daysBetween(from, to);
+                                const durTxt = `${fmtLong(from)} — ${fmtLong(to)} (${days} day${days !== 1 ? 's' : ''})`;
+                                const cntTxt = `Total Patients: ${totalPatients}`;
+
+                                subtitleEl.textContent = `Admission Date: From ${fmtLong(from)} to ${fmtLong(to)}`;
+                                printDurEl.textContent = `Duration: ${durTxt}`;
+                                printCountFoot.textContent = cntTxt;
+
+                                document.getElementById('pdDlGeneratedAt').textContent = getNowTimestamp();
+
+                                actionsDiv.classList.remove('d-none');
                             }
-                            currentDate = item.date;
-                            currentRowsInDateGroup = 0;
 
-                            currentTbody = document.createElement('tbody');
-                            currentTbody.className = 'fu-date-group';
-                            currentTable.appendChild(currentTbody);
+                            /* ── Pagination Logic before downloading ───────────────── */
+                            function paginateTable() {
+                                const area = document.getElementById('pdDlPrintArea');
+                                const table = document.getElementById('pdDlTable');
+                                if (!table || table.classList.contains('d-none')) return;
 
-                            // Remove any existing date td
-                            const existingDateTd = item.tr.querySelector('td[rowspan]');
-                            if (existingDateTd) {
-                                existingDateTd.remove();
+                                area.style.width = '794px';
+
+                                const headerEl = area.querySelector('div:first-child');
+                                const footerEl = area.querySelector('div:last-child');
+                                const theadEl = table.querySelector('thead');
+
+                                const headerHeight = headerEl ? headerEl.offsetHeight : 0;
+                                const footerHeight = footerEl ? footerEl.offsetHeight : 0;
+                                const theadHeight = theadEl ? theadEl.offsetHeight : 0;
+
+                                const PAGE_HEIGHT = 1047;
+
+                                const rowData = [];
+                                const trs = table.querySelectorAll('tbody tr');
+                                trs.forEach(tr => {
+                                    const rowHeight = tr.offsetHeight || tr.getBoundingClientRect().height || 37;
+                                    rowData.push({
+                                        tr: tr.cloneNode(true),
+                                        height: rowHeight
+                                    });
+                                });
+
+                                if (rowData.length === 0) return;
+
+                                const container = document.getElementById('pdDlTableContainer');
+                                if (container) {
+                                    container.innerHTML = '';
+                                }
+
+                                let currentPageHeight = headerHeight + theadHeight;
+                            let currentWrapper = null;
+                            let currentTable = null;
+                            let currentTbody = null;
+
+                            function startNewPage() {
+                                currentWrapper = document.createElement('div');
+                                currentWrapper.style.cssText = 'display:block; page-break-before: always; break-before: always; page-break-inside: avoid; break-inside: avoid; padding-top: 2px;';
+
+                                currentTable = document.createElement('table');
+                                currentTable.style.cssText = 'width:100%; border-collapse:collapse; border-spacing:0; font-size:13px; font-family:\'Poppins\',sans-serif; page-break-inside: avoid; break-inside: avoid; margin-top: 0;';
+                                currentTable.innerHTML = `
+                            <colgroup>
+                                <col style="width: 8%;">
+                                <col style="width: 15%;">
+                                <col style="width: 27%;">
+                                <col style="width: 20%;">
+                                <col style="width: 15%;">
+                                <col style="width: 15%;">
+                            </colgroup>
+                        `;
+
+                                const thead = document.createElement('thead');
+                                thead.innerHTML = theadEl.innerHTML;
+                                thead.style.cssText = 'display: table-header-group; page-break-inside: avoid; break-inside: avoid; border-collapse:collapse; border-spacing:0;';
+                                thead.querySelectorAll('th').forEach(th => {
+                                    th.style.borderTop = '1.5px solid #333';
+                                });
+                                currentTable.appendChild(thead);
+
+                                currentTbody = document.createElement('tbody');
+                                currentTable.appendChild(currentTbody);
+
+                                currentWrapper.appendChild(currentTable);
+                                container.appendChild(currentWrapper);
+                                currentPageHeight = theadHeight;
                             }
 
-                            // Create a new date cell
-                            currentDateTd = document.createElement('td');
-                            currentDateTd.style.cssText = 'border:1.5px solid #333;padding:7px 10px;text-align:center;vertical-align:middle;font-weight:600;white-space:nowrap;';
-                            currentDateTd.textContent = fmtShort(currentDate);
-                            item.tr.insertBefore(currentDateTd, item.tr.firstChild);
-                        } else {
-                            // Same date group on same page, ensure it doesn't have an extra date td
-                            const existingDateTd = item.tr.querySelector('td[rowspan]');
-                            if (existingDateTd) {
-                                existingDateTd.remove();
+                            function startFirstPage() {
+                                currentWrapper = document.createElement('div');
+                                currentWrapper.style.cssText = 'page-break-inside: avoid; break-inside: avoid;';
+
+                                currentTable = document.createElement('table');
+                                currentTable.style.cssText = 'width:100%; border-collapse:collapse; border-spacing:0; font-size:13px; font-family:\'Poppins\',sans-serif; page-break-inside: avoid; break-inside: avoid;';
+                                currentTable.innerHTML = `
+                            <colgroup>
+                                <col style="width: 8%;">
+                                <col style="width: 15%;">
+                                <col style="width: 27%;">
+                                <col style="width: 20%;">
+                                <col style="width: 15%;">
+                                <col style="width: 15%;">
+                            </colgroup>
+                        `;
+                                const initialThead = document.createElement('thead');
+                                initialThead.innerHTML = theadEl.innerHTML;
+                                initialThead.style.cssText = 'display: table-header-group; page-break-inside: avoid; break-inside: avoid; border-collapse:collapse; border-spacing:0;';
+                                initialThead.querySelectorAll('th').forEach(th => {
+                                    th.style.borderTop = '1.5px solid #333';
+                                });
+                                currentTable.appendChild(initialThead);
+
+                                currentTbody = document.createElement('tbody');
+                                currentTable.appendChild(currentTbody);
+                                currentWrapper.appendChild(currentTable);
+                                container.appendChild(currentWrapper);
                             }
-                        }
 
-                        currentTbody.appendChild(item.tr);
-                        currentRowsInDateGroup++;
-                        currentPageHeight += rowHeight;
-                    });
+                            startFirstPage();
+                                rowData.forEach(item => {
+                                    const rowHeight = item.height;
+                                    const SAFE_BOTTOM = 80;
+                                    const limit = PAGE_HEIGHT - footerHeight - SAFE_BOTTOM;
 
-                    // Finalize last page rowspan
-                    if (currentDateTd) {
-                        currentDateTd.rowSpan = currentRowsInDateGroup;
-                    }
-                }
+                                    if (currentPageHeight + rowHeight > limit) {
+                                        startNewPage();
+                                    }
 
-                /* ── PDF Download — modal stays open after download ──── */
-                function downloadPDF() {
-                    const area     = document.getElementById('fuDlPrintArea');
-                    const filename = `EDF_next_followup_${fmtShort(selectedFrom)}_to_${fmtShort(selectedTo)}.pdf`;
+                                    currentTbody.appendChild(item.tr);
+                                    currentPageHeight += rowHeight;
+                                });
+                            }
 
-                    // Update timestamp to the exact download time
-                    document.getElementById('fuDlGeneratedAt').textContent = getNowTimestamp();
+                            /* ── PDF Download — modal stays open after download ──── */
+                            function downloadPDF() {
+                                const area = document.getElementById('pdDlPrintArea');
+                                const filename = `EDF_patient_admission_and_discharge_list_${fmtShort(selectedFrom)}_to_${fmtShort(selectedTo)}.pdf`;
 
-                    pdfBtn.disabled = true;
-                    pdfBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Generating…';
+                                // Update timestamp to the exact download time
+                                document.getElementById('pdDlGeneratedAt').textContent = getNowTimestamp();
 
-                    // Save original HTML content & width style to restore after download
-                    const originalHTML = area.innerHTML;
-                    const originalWidthStyle = area.style.width;
+                                pdfBtn.disabled = true;
+                                pdfBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Generating…';
 
-                    // Run the pagination to dynamically break table rows across pages safely
-                    paginateTable();
+                                // Save original HTML content & width style to restore after download
+                                const originalHTML = area.innerHTML;
+                                const originalWidthStyle = area.style.width;
 
-                    html2pdf().set({
-                        margin      : [10, 10, 10, 10],
-                        filename,
-                        image       : { type:'jpeg', quality:0.98 },
-                        html2canvas : { scale:2, useCORS:true },
-                        jsPDF       : { unit:'mm', format:'a4', orientation:'portrait' },
-                        pagebreak   : { mode: 'css' }
-                    }).from(area).save().then(() => {
-                        // Restore preview DOM and width style
-                        area.innerHTML = originalHTML;
-                        area.style.width = originalWidthStyle;
-                        rebindDOMRefs();
+                                // Run the pagination to dynamically break table rows across pages safely
+                                paginateTable();
 
-                        pdfBtn.disabled = false;
-                        pdfBtn.innerHTML = '<i class="bi bi-file-earmark-pdf"></i> Download PDF';
-                    });
-                }
+                                html2pdf().set({
+                                    margin: [10, 10, 10, 10],
+                                    filename,
+                                    image: { type: 'jpeg', quality: 0.98 },
+                                    html2canvas: { scale: 2, useCORS: true },
+                                    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+                                    pagebreak: { mode: 'css' }
+                                }).from(area).save().then(() => {
+                                    // Restore preview DOM and width style
+                                    area.innerHTML = originalHTML;
+                                    area.style.width = originalWidthStyle;
+                                    rebindDOMRefs();
 
-                /* ── Image Download — modal stays open after download ─── */
-                function downloadImage() {
-                    const area     = document.getElementById('fuDlPrintArea');
-                    const filename = `EDF_next_followup_${fmtShort(selectedFrom)}_to_${fmtShort(selectedTo)}.jpg`;
+                                    pdfBtn.disabled = false;
+                                    pdfBtn.innerHTML = '<i class="bi bi-file-earmark-pdf"></i> Download PDF';
+                                });
+                            }
 
-                    // Update timestamp to the exact download time
-                    document.getElementById('fuDlGeneratedAt').textContent = getNowTimestamp();
+                            /* ── Image Download — modal stays open after download ─── */
+                            function downloadImage() {
+                                const area = document.getElementById('pdDlPrintArea');
+                                const filename = `EDF_patient_admission_and_discharge_list_${fmtShort(selectedFrom)}_to_${fmtShort(selectedTo)}.jpg`;
 
-                    imgBtn.disabled = true;
-                    imgBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Generating…';
+                                // Update timestamp to the exact download time
+                                document.getElementById('pdDlGeneratedAt').textContent = getNowTimestamp();
 
-                    // Save original HTML content & width style to restore after download
-                    const originalHTML = area.innerHTML;
-                    const originalWidthStyle = area.style.width;
+                                imgBtn.disabled = true;
+                                imgBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Generating…';
 
-                    // Run the pagination to dynamically break table rows across pages safely
-                    paginateTable();
+                                // Save original HTML content & width style to restore after download
+                                const originalHTML = area.innerHTML;
+                                const originalWidthStyle = area.style.width;
 
-                    html2canvas(area, { scale:2, useCORS:true, backgroundColor:'#ffffff' })
-                        .then(canvas => {
-                            const link  = document.createElement('a');
-                            link.download = filename;
-                            link.href = canvas.toDataURL('image/jpeg');
-                            link.click();
+                                // Run the pagination to dynamically break table rows across pages safely
+                                paginateTable();
 
-                            // Restore preview DOM and width style
-                            area.innerHTML = originalHTML;
-                            area.style.width = originalWidthStyle;
-                            rebindDOMRefs();
+                                html2canvas(area, { scale: 2, useCORS: true, backgroundColor: '#ffffff' })
+                                    .then(canvas => {
+                                        const link = document.createElement('a');
+                                        link.download = filename;
+                                        link.href = canvas.toDataURL('image/jpeg');
+                                        link.click();
 
-                            imgBtn.disabled = false;
-                            imgBtn.innerHTML = '<i class="bi bi-image"></i> Download Image JPG';
-                        });
-                }
+                                        // Restore preview DOM and width style
+                                        area.innerHTML = originalHTML;
+                                        area.style.width = originalWidthStyle;
+                                        rebindDOMRefs();
 
-                /* ── Event listeners ────────────────────────────────────── */
-                previewBtn.addEventListener('click', loadPreview);
-                pdfBtn.addEventListener('click', downloadPDF);
-                imgBtn.addEventListener('click', downloadImage);
+                                        imgBtn.disabled = false;
+                                        imgBtn.innerHTML = '<i class="bi bi-image"></i> Download Image JPG';
+                                    });
+                            }
 
-                /* ── Reset & reload on modal open ───────────────────────── */
-                const modalEl = document.getElementById('followUpDownloadModal');
-                if (modalEl) {
-                    modalEl.addEventListener('show.bs.modal', function () {
-                        selectedFrom = '';
-                        selectedTo   = '';
-                        resetPreview();
-                        document.getElementById('fuDlFromErr').classList.add('d-none');
-                        document.getElementById('fuDlToErr').classList.add('d-none');
-                        // Reload dates each open so new follow-ups are reflected
-                        datesLoaded = false;
-                        document.getElementById('fuDlFromDate').value = '';
-                        document.getElementById('fuDlToDate').value   = '';
-                        loadValidDates();
-                    });
-                }
+                            /* ── Event listeners ────────────────────────────────────── */
+                            previewBtn.addEventListener('click', loadPreview);
+                            pdfBtn.addEventListener('click', downloadPDF);
+                            imgBtn.addEventListener('click', downloadImage);
 
-            })();
-            </script>
+                            /* ── Reset & reload on modal open ───────────────────────── */
+                            const modalEl = document.getElementById('postDischargeDownloadModal');
+                            if (modalEl) {
+                                modalEl.addEventListener('show.bs.modal', function () {
+                                    selectedFrom = '';
+                                    selectedTo = '';
+                                    resetPreview();
+                                    document.getElementById('pdDlFromErr').classList.add('d-none');
+                                    document.getElementById('pdDlToErr').classList.add('d-none');
+                                    // Reload dates each open so new follow-ups are reflected
+                                    datesLoaded = false;
+                                    document.getElementById('pdDlFromDate').value = '';
+                                    document.getElementById('pdDlToDate').value = '';
+                                    loadValidDates();
+                                });
+                            }
+
+                        })();
+                    </script>
 
 
-            <!-- Completed Consultations script -->
-            <script>
-                document.addEventListener('DOMContentLoaded', function () {
 
-                    const dateEl = document.getElementById('completedConsultDate');
-                    const dayEl = document.getElementById('completedConsultDay');
-                    const tbody = document.getElementById('completedConsultTableBody');
-                    const prevBtn = document.getElementById('prevDayBtnCompletedConsult');
-                    const nextBtn = document.getElementById('nextDayBtnCompletedConsult');
-                    const calIn = document.getElementById('completedConsultCalendar');
-                    const calIcon = document.getElementById('completedConsultCalendarIcon');
-                    const countEl = document.getElementById('completedConsultCount');
+                    <!-- Completed Consultations script -->
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function () {
 
-                    let currentDate = new Date();
+                            const dateEl = document.getElementById('completedConsultDate');
+                            const dayEl = document.getElementById('completedConsultDay');
+                            const tbody = document.getElementById('completedConsultTableBody');
+                            const prevBtn = document.getElementById('prevDayBtnCompletedConsult');
+                            const nextBtn = document.getElementById('nextDayBtnCompletedConsult');
+                            const calIn = document.getElementById('completedConsultCalendar');
+                            const calIcon = document.getElementById('completedConsultCalendarIcon');
+                            const countEl = document.getElementById('completedConsultCount');
 
-                    const baseUrl = '<?= base_url("Healthcareprovider/getCompletedConsultByDate") ?>';
+                            let currentDate = new Date();
 
-                    function formatDisplayDate(date) {
-                        return date.toLocaleDateString('en-GB', {
-                            day: '2-digit', month: 'short', year: 'numeric'
-                        }).replace(/ /g, ' ');
-                    }
+                            const baseUrl = '<?= base_url("Healthcareprovider/getCompletedConsultByDate") ?>';
 
-                    function formatApiDate(date) {
-                        return date.toISOString().split('T')[0];
-                    }
+                            function formatDisplayDate(date) {
+                                return date.toLocaleDateString('en-GB', {
+                                    day: '2-digit', month: 'short', year: 'numeric'
+                                }).replace(/ /g, ' ');
+                            }
 
-                    function updateHeader() {
-                        dateEl.textContent = formatDisplayDate(currentDate);
-                        dayEl.textContent = currentDate.toLocaleDateString('en-US', { weekday: 'long' });
-                        calIn.value = formatApiDate(currentDate);
-                    }
+                            function formatApiDate(date) {
+                                return date.toISOString().split('T')[0];
+                            }
 
-                    function loadCompletedConsult() {
-                        updateHeader();
-                        tbody.innerHTML = `<tr><td colspan="6" class="text-center py-4">Loading...</td></tr>`;
+                            function updateHeader() {
+                                dateEl.textContent = formatDisplayDate(currentDate);
+                                dayEl.textContent = currentDate.toLocaleDateString('en-US', { weekday: 'long' });
+                                calIn.value = formatApiDate(currentDate);
+                            }
 
-                        fetch(`${baseUrl}?date=${formatApiDate(currentDate)}`)
-                            .then(res => res.json())
-                            .then(res => {
-                                if (res.success && res.data.length) {
-                                    renderCompletedConsult(res.data);
-                                    countEl.textContent = res.data.length;
-                                } else {
-                                    tbody.innerHTML = `
+                            function loadCompletedConsult() {
+                                updateHeader();
+                                tbody.innerHTML = `<tr><td colspan="6" class="text-center py-4">Loading...</td></tr>`;
+
+                                fetch(`${baseUrl}?date=${formatApiDate(currentDate)}`)
+                                    .then(res => res.json())
+                                    .then(res => {
+                                        if (res.success && res.data.length) {
+                                            renderCompletedConsult(res.data);
+                                            countEl.textContent = res.data.length;
+                                        } else {
+                                            tbody.innerHTML = `
                                                 <tr>
                                                     <td colspan="6" class="text-center text-muted py-4">
                                                         No completed consultations
                                                     </td>
                                                 </tr>`;
-                                    countEl.textContent = 0;
-                                }
-                            })
-                            .catch(() => {
-                                tbody.innerHTML = `
+                                            countEl.textContent = 0;
+                                        }
+                                    })
+                                    .catch(() => {
+                                        tbody.innerHTML = `
                                             <tr>
                                                 <td colspan="6" class="text-center text-danger">
                                                     Error loading data
                                                 </td>
                                             </tr>`;
-                                countEl.textContent = 0;
-                            });
-                    }
+                                        countEl.textContent = 0;
+                                    });
+                            }
 
-                    function renderCompletedConsult(data) {
-                        tbody.innerHTML = '';
-                        data.forEach((row, i) => {
-                            const consultDate = new Date(row.consult_date + 'T00:00:00');
+                            function renderCompletedConsult(data) {
+                                tbody.innerHTML = '';
+                                data.forEach((row, i) => {
+                                    const consultDate = new Date(row.consult_date + 'T00:00:00');
 
-                            tbody.innerHTML += `
+                                    tbody.innerHTML += `
                  <tr>
                     <td>${i + 1}.</td>
                      <td><a href="<?php echo base_url('Consultation/consultation/'); ?>${row.consultationPatientId}" class="fieldLink text-dark">${row.patientId}</a></td>
@@ -1470,107 +2175,107 @@
                         </a>
                     </td>
                 </tr>`;
+                                });
+                            }
+
+                            prevBtn.onclick = () => {
+                                currentDate.setDate(currentDate.getDate() - 1);
+                                loadCompletedConsult();
+                            };
+
+                            nextBtn.onclick = () => {
+                                currentDate.setDate(currentDate.getDate() + 1);
+                                loadCompletedConsult();
+                            };
+
+                            calIcon.onclick = () => calIn.showPicker();
+
+                            calIn.onchange = () => {
+                                currentDate = new Date(calIn.value);
+                                loadCompletedConsult();
+                            };
+
+                            loadCompletedConsult(); // default = today
                         });
-                    }
+                    </script>
 
-                    prevBtn.onclick = () => {
-                        currentDate.setDate(currentDate.getDate() - 1);
-                        loadCompletedConsult();
-                    };
+                    <!-- Today Follow up Script -->
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function () {
+                            const dateEl = document.getElementById('appointmentsDate');
+                            const dayEl = document.getElementById('appointmentsDay');
+                            const prevBtn = document.getElementById('prevDayBtnFollowUp');
+                            const nextBtn = document.getElementById('nextDayBtnFollowUp');
+                            const tbody = document.getElementById('followUpTableBody');
+                            const countEl = document.getElementById('followUpCount');
+                            const calIn = document.getElementById('followUpCalendar');
+                            const calIcon = document.getElementById('followUpCalendarIcon');
 
-                    nextBtn.onclick = () => {
-                        currentDate.setDate(currentDate.getDate() + 1);
-                        loadCompletedConsult();
-                    };
+                            let currentDate = new Date();
 
-                    calIcon.onclick = () => calIn.showPicker();
+                            const baseUrl = '<?= base_url("Healthcareprovider/getFollowUpConsultations") ?>';
 
-                    calIn.onchange = () => {
-                        currentDate = new Date(calIn.value);
-                        loadCompletedConsult();
-                    };
+                            function formatDate(date) {
+                                return date.toLocaleDateString('en-GB', {
+                                    day: '2-digit', month: 'short', year: 'numeric'
+                                }).replace(/ /g, ' ');
+                            }
 
-                    loadCompletedConsult(); // default = today
-                });
-            </script>
+                            function formatApiDate(date) {
+                                return date.toISOString().split('T')[0];
+                            }
 
-            <!-- Today Follow up Script -->
-            <script>
-                document.addEventListener('DOMContentLoaded', function () {
-                    const dateEl = document.getElementById('appointmentsDate');
-                    const dayEl = document.getElementById('appointmentsDay');
-                    const prevBtn = document.getElementById('prevDayBtnFollowUp');
-                    const nextBtn = document.getElementById('nextDayBtnFollowUp');
-                    const tbody = document.getElementById('followUpTableBody');
-                    const countEl = document.getElementById('followUpCount');
-                    const calIn = document.getElementById('followUpCalendar');
-                    const calIcon = document.getElementById('followUpCalendarIcon');
+                            function formatConsultDate(dateStr) {
+                                if (!dateStr) return '-';
+                                const date = new Date(dateStr + 'T00:00:00');
+                                return date.toLocaleDateString('en-GB', {
+                                    day: '2-digit', month: 'short', year: 'numeric'
+                                }).replace(/ /g, '-');
+                            }
 
-                    let currentDate = new Date();
+                            function updateHeader() {
+                                dateEl.textContent = formatDate(currentDate);
+                                dayEl.textContent = currentDate.toLocaleDateString('en-US', { weekday: 'long' });
+                                calIn.value = formatApiDate(currentDate);
+                            }
 
-                    const baseUrl = '<?= base_url("Healthcareprovider/getFollowUpConsultations") ?>';
+                            function loadAppointments() {
+                                updateHeader();
+                                tbody.innerHTML = `<tr><td colspan="7" class="text-center py-4">Loading...</td></tr>`;
+                                countEl.textContent = 0;
 
-                    function formatDate(date) {
-                        return date.toLocaleDateString('en-GB', {
-                            day: '2-digit', month: 'short', year: 'numeric'
-                        }).replace(/ /g, ' ');
-                    }
-
-                    function formatApiDate(date) {
-                        return date.toISOString().split('T')[0];
-                    }
-
-                    function formatConsultDate(dateStr) {
-                        if (!dateStr) return '-';
-                        const date = new Date(dateStr + 'T00:00:00');
-                        return date.toLocaleDateString('en-GB', {
-                            day: '2-digit', month: 'short', year: 'numeric'
-                        }).replace(/ /g, '-');
-                    }
-
-                    function updateHeader() {
-                        dateEl.textContent = formatDate(currentDate);
-                        dayEl.textContent = currentDate.toLocaleDateString('en-US', { weekday: 'long' });
-                        calIn.value = formatApiDate(currentDate);
-                    }
-
-                    function loadAppointments() {
-                        updateHeader();
-                        tbody.innerHTML = `<tr><td colspan="7" class="text-center py-4">Loading...</td></tr>`;
-                        countEl.textContent = 0;
-
-                        fetch(`${baseUrl}?date=${formatApiDate(currentDate)}`)
-                            .then(r => r.json())
-                            .then(res => {
-                                if (res.success && res.data.length > 0) {
-                                    renderTable(res.data);
-                                    countEl.textContent = res.data.length;
-                                } else {
-                                    tbody.innerHTML = `
+                                fetch(`${baseUrl}?date=${formatApiDate(currentDate)}`)
+                                    .then(r => r.json())
+                                    .then(res => {
+                                        if (res.success && res.data.length > 0) {
+                                            renderTable(res.data);
+                                            countEl.textContent = res.data.length;
+                                        } else {
+                                            tbody.innerHTML = `
                         <tr>
                             <td colspan="7" class="text-center text-muted py-4">
                                 No follow-ups scheduled
                             </td>
                         </tr>`;
-                                    countEl.textContent = 0;
-                                }
-                            })
-                            .catch(() => {
-                                tbody.innerHTML = `
+                                            countEl.textContent = 0;
+                                        }
+                                    })
+                                    .catch(() => {
+                                        tbody.innerHTML = `
                     <tr>
                         <td colspan="7" class="text-center text-danger">
                             Error loading data
                         </td>
                     </tr>`;
-                                countEl.textContent = 0;
-                            });
-                    }
+                                        countEl.textContent = 0;
+                                    });
+                            }
 
-                    function renderTable(data) {
-                        tbody.innerHTML = '';
-                        data.forEach((row, i) => {
-                            const tr = document.createElement('tr');
-                            tr.innerHTML = `
+                            function renderTable(data) {
+                                tbody.innerHTML = '';
+                                data.forEach((row, i) => {
+                                    const tr = document.createElement('tr');
+                                    tr.innerHTML = `
                                         <td>${i + 1}.</td>
                                         <td><a href="<?php echo base_url('Consultation/consultation/'); ?>${row.consultationPatientId}" class="fieldLink text-dark">${row.patientId}</a></td> 
                                         <td><a href="<?php echo base_url('Consultation/consultation/'); ?>${row.consultationPatientId}" class="fieldLink text-dark">${row.patientName}</a></td>
@@ -1583,115 +2288,115 @@
                                             class="btn btn-sm btn-secondary text-light"> <i class="bi bi-calendar-check"></i></a>
                                         </td>
                                            `;
-                            tbody.appendChild(tr);
+                                    tbody.appendChild(tr);
+                                });
+                            }
+
+                            prevBtn.onclick = () => {
+                                currentDate.setDate(currentDate.getDate() - 1);
+                                loadAppointments();
+                            };
+
+                            nextBtn.onclick = () => {
+                                currentDate.setDate(currentDate.getDate() + 1);
+                                loadAppointments();
+                            };
+
+                            calIcon.onclick = () => calIn.showPicker();
+
+                            calIn.onchange = () => {
+                                currentDate = new Date(calIn.value);
+                                loadAppointments();
+                            };
+
+                            loadAppointments();
                         });
-                    }
+                    </script>
 
-                    prevBtn.onclick = () => {
-                        currentDate.setDate(currentDate.getDate() - 1);
-                        loadAppointments();
-                    };
+                    <!-- Discharge followup summary script -->
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function () {
 
-                    nextBtn.onclick = () => {
-                        currentDate.setDate(currentDate.getDate() + 1);
-                        loadAppointments();
-                    };
+                            const dateEl = document.getElementById('followupDate');
+                            const dayEl = document.getElementById('followupDay');
+                            const tbody = document.getElementById('followupTableBody');
+                            const prevBtn = document.getElementById('prevDayBtnFollowup');
+                            const nextBtn = document.getElementById('nextDayBtnFollowup');
+                            const calIn = document.getElementById('followupCalendar');
+                            const calIcon = document.getElementById('followupCalendarIcon');
+                            const countEl = document.getElementById('followupCount');
 
-                    calIcon.onclick = () => calIn.showPicker();
+                            let currentDate = new Date();
+                            const today = new Date();
 
-                    calIn.onchange = () => {
-                        currentDate = new Date(calIn.value);
-                        loadAppointments();
-                    };
+                            const baseUrl = '<?= base_url("Healthcareprovider/getDischargeFollwupByDate") ?>';
 
-                    loadAppointments();
-                });
-            </script>
+                            function formatDisplayDate(date) {
+                                return date.toLocaleDateString('en-GB', {
+                                    day: '2-digit', month: 'short', year: 'numeric'
+                                });
+                            }
 
-            <!-- Discharge followup summary script -->
-            <script>
-                document.addEventListener('DOMContentLoaded', function () {
+                            function formatApiDate(date) {
+                                return date.toISOString().split('T')[0];
+                            }
 
-                    const dateEl = document.getElementById('followupDate');
-                    const dayEl = document.getElementById('followupDay');
-                    const tbody = document.getElementById('followupTableBody');
-                    const prevBtn = document.getElementById('prevDayBtnFollowup');
-                    const nextBtn = document.getElementById('nextDayBtnFollowup');
-                    const calIn = document.getElementById('followupCalendar');
-                    const calIcon = document.getElementById('followupCalendarIcon');
-                    const countEl = document.getElementById('followupCount');
+                            function updateHeader() {
+                                dateEl.textContent = formatDisplayDate(currentDate);
+                                dayEl.textContent = currentDate.toLocaleDateString('en-US', { weekday: 'long' });
+                                calIn.value = formatApiDate(currentDate);
+                            }
 
-                    let currentDate = new Date();
-                    const today = new Date();
+                            function loadFollowups() {
+                                updateHeader();
 
-                    const baseUrl = '<?= base_url("Healthcareprovider/getDischargeFollwupByDate") ?>';
+                                tbody.innerHTML = `<tr><td colspan="6" class="text-center py-4">Loading...</td></tr>`;
 
-                    function formatDisplayDate(date) {
-                        return date.toLocaleDateString('en-GB', {
-                            day: '2-digit', month: 'short', year: 'numeric'
-                        });
-                    }
+                                fetch(`${baseUrl}?date=${formatApiDate(currentDate)}`)
+                                    .then(res => res.json())
+                                    .then(res => {
 
-                    function formatApiDate(date) {
-                        return date.toISOString().split('T')[0];
-                    }
-
-                    function updateHeader() {
-                        dateEl.textContent = formatDisplayDate(currentDate);
-                        dayEl.textContent = currentDate.toLocaleDateString('en-US', { weekday: 'long' });
-                        calIn.value = formatApiDate(currentDate);
-                    }
-
-                    function loadFollowups() {
-                        updateHeader();
-
-                        tbody.innerHTML = `<tr><td colspan="6" class="text-center py-4">Loading...</td></tr>`;
-
-                        fetch(`${baseUrl}?date=${formatApiDate(currentDate)}`)
-                            .then(res => res.json())
-                            .then(res => {
-
-                                if (res.success && res.data.length) {
-                                    renderFollowups(res.data);
-                                    countEl.textContent = res.data.length;
-                                } else {
-                                    tbody.innerHTML = `
+                                        if (res.success && res.data.length) {
+                                            renderFollowups(res.data);
+                                            countEl.textContent = res.data.length;
+                                        } else {
+                                            tbody.innerHTML = `
                         <tr>
                             <td colspan="6" class="text-center text-muted py-4">
                                 No follow-ups
                             </td>
                         </tr>`;
-                                    countEl.textContent = 0;
-                                }
-                            });
-                    }
-
-                    function renderFollowups(data) {
-
-                        tbody.innerHTML = '';
-
-                        data.forEach((row, i) => {
-
-                            const selected = new Date(formatApiDate(currentDate));
-                            const todayDate = new Date(formatApiDate(today));
-
-                            let status = 'Pending';
-                            let badge = 'bg-warning';
-
-                            if (row.status === 'completed') {
-                                status = 'Completed';
-                                badge = 'bg-success';
-                            } else if (selected < todayDate) {
-                                status = 'Missed';
-                                badge = 'bg-danger';
-                            } else if (selected > todayDate) {
-                                status = 'Upcoming';
-                                badge = 'bg-secondary';
+                                            countEl.textContent = 0;
+                                        }
+                                    });
                             }
 
-                            let disableBtn = selected > todayDate ? 'disabled' : '';
+                            function renderFollowups(data) {
 
-                            tbody.innerHTML += `
+                                tbody.innerHTML = '';
+
+                                data.forEach((row, i) => {
+
+                                    const selected = new Date(formatApiDate(currentDate));
+                                    const todayDate = new Date(formatApiDate(today));
+
+                                    let status = 'Pending';
+                                    let badge = 'bg-warning';
+
+                                    if (row.status === 'completed') {
+                                        status = 'Completed';
+                                        badge = 'bg-success';
+                                    } else if (selected < todayDate) {
+                                        status = 'Missed';
+                                        badge = 'bg-danger';
+                                    } else if (selected > todayDate) {
+                                        status = 'Upcoming';
+                                        badge = 'bg-secondary';
+                                    }
+
+                                    let disableBtn = selected > todayDate ? 'disabled' : '';
+
+                                    tbody.innerHTML += `
                 <tr>
                     <td>${i + 1}.</td>
                     <td><a href="<?php echo base_url('Consultation/consultation/'); ?>${row.patientDbId}" class="fieldLink text-dark">${row.patientId}</a></td>
@@ -1702,248 +2407,248 @@
                             onclick="openRemarksModal(${row.id})">Done</button>
                     </td>
                 </tr>`;
-                        });
-                    }
-
-                    prevBtn.onclick = () => {
-                        currentDate.setDate(currentDate.getDate() - 1);
-                        loadFollowups();
-                    };
-
-                    nextBtn.onclick = () => {
-                        currentDate.setDate(currentDate.getDate() + 1);
-                        loadFollowups();
-                    };
-
-                    calIcon.onclick = () => calIn.showPicker();
-
-                    calIn.onchange = () => {
-                        currentDate = new Date(calIn.value);
-                        loadFollowups();
-                    };
-
-                    loadFollowups();
-                });
-
-                function openRemarksModal(id) {
-                    document.getElementById('followupId').value = id;
-                    document.getElementById('remarksInput').value = '';
-
-                    let modal = new bootstrap.Modal(document.getElementById('remarksModal'));
-                    modal.show();
-                }
-
-                function submitFollowup() {
-                    const id = document.getElementById('followupId').value;
-                    const remarks = document.getElementById('remarksInput').value;
-
-                    fetch("<?= base_url('Healthcareprovider/mark_discharge_followup_done') ?>", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/x-www-form-urlencoded"
-                        },
-                        body: "id=" + encodeURIComponent(id) + "&remarks=" + encodeURIComponent(remarks)
-                    })
-                        .then(res => res.json())
-                        .then(data => {
-                            // Close the modal
-                            let modalEl = document.getElementById('remarksModal');
-                            let modal = bootstrap.Modal.getInstance(modalEl);
-                            modal.hide();
-
-                            // Remove the row and update count
-                            const btn = document.getElementById(`doneBtn-${id}`);
-                            if (btn) {
-                                const row = btn.closest('tr');
-                                row.remove();
-                                // Decrement count
-                                const countEl = document.getElementById('followupCount');
-                                countEl.textContent = Math.max(0, parseInt(countEl.textContent) - 1);
+                                });
                             }
-                        });
-                }
-            </script>
 
-            <?php
+                            prevBtn.onclick = () => {
+                                currentDate.setDate(currentDate.getDate() - 1);
+                                loadFollowups();
+                            };
+
+                            nextBtn.onclick = () => {
+                                currentDate.setDate(currentDate.getDate() + 1);
+                                loadFollowups();
+                            };
+
+                            calIcon.onclick = () => calIn.showPicker();
+
+                            calIn.onchange = () => {
+                                currentDate = new Date(calIn.value);
+                                loadFollowups();
+                            };
+
+                            loadFollowups();
+                        });
+
+                        function openRemarksModal(id) {
+                            document.getElementById('followupId').value = id;
+                            document.getElementById('remarksInput').value = '';
+
+                            let modal = new bootstrap.Modal(document.getElementById('remarksModal'));
+                            modal.show();
+                        }
+
+                        function submitFollowup() {
+                            const id = document.getElementById('followupId').value;
+                            const remarks = document.getElementById('remarksInput').value;
+
+                            fetch("<?= base_url('Healthcareprovider/mark_discharge_followup_done') ?>", {
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/x-www-form-urlencoded"
+                                },
+                                body: "id=" + encodeURIComponent(id) + "&remarks=" + encodeURIComponent(remarks)
+                            })
+                                .then(res => res.json())
+                                .then(data => {
+                                    // Close the modal
+                                    let modalEl = document.getElementById('remarksModal');
+                                    let modal = bootstrap.Modal.getInstance(modalEl);
+                                    modal.hide();
+
+                                    // Remove the row and update count
+                                    const btn = document.getElementById(`doneBtn-${id}`);
+                                    if (btn) {
+                                        const row = btn.closest('tr');
+                                        row.remove();
+                                        // Decrement count
+                                        const countEl = document.getElementById('followupCount');
+                                        countEl.textContent = Math.max(0, parseInt(countEl.textContent) - 1);
+                                    }
+                                });
+                        }
+                    </script>
+
+                    <?php
         } else if ($method == "appointments") {
             ?>
-                <section>
-                    <!-- Appointments List -->
-                    <div class="card rounded">
-                        <div class="d-sm-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
-                            <p style="font-size: 24px; font-weight: 500">
-                                Online Appointments
-                            </p>
-                            <a href="<?php echo base_url() . "Healthcareprovider/appointmentsForm" ?>"> <button
-                                    style="background-color: #00ad8e;" class="float-end text-light border-0 rounded p-2">
-                                    <i class="bi bi-plus-square-fill"></i> Book Appointment
-                                </button></a>
-                        </div>
+                                <section>
+                                    <!-- Appointments List -->
+                                    <div class="card rounded">
+                                        <div class="d-sm-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
+                                            <p style="font-size: 24px; font-weight: 500">
+                                                Online Appointments
+                                            </p>
+                                            <a href="<?php echo base_url() . "Healthcareprovider/appointmentsForm" ?>"> <button
+                                                    style="background-color: #00ad8e;" class="float-end text-light border-0 rounded p-2">
+                                                    <i class="bi bi-plus-square-fill"></i> Book Appointment
+                                                </button></a>
+                                        </div>
 
 
-                    <?php if (isset($appointmentList[0]['id'])) {
-                        ?>
-                            <div id="entriesPerPage" class="d-md-flex align-items-center justify-content-between mx-4">
-                                <!-- FILTER -->
-                                <select id="filterDropdown" class="form-select border border-2 rounded-3 px-3 py-2"
-                                    style="height: 50px; width: 280px;">
-                                    <option value="All">Filter Appoinmtent with (All)</option>
-                                    <option value="CC">CC & HCP</option>
-                                    <option value="PATIENT">PATIENT & HCP</option>
-                                </select>
+                            <?php if (isset($appointmentList[0]['id'])) {
+                                ?>
+                                                    <div id="entriesPerPage" class="d-md-flex align-items-center justify-content-between mx-4">
+                                                        <!-- FILTER -->
+                                                        <select id="filterDropdown" class="form-select border border-2 rounded-3 px-3 py-2"
+                                                            style="height: 50px; width: 280px;">
+                                                            <option value="All">Filter Appoinmtent with (All)</option>
+                                                            <option value="CC">CC & HCP</option>
+                                                            <option value="PATIENT">PATIENT & HCP</option>
+                                                        </select>
 
-                                <!-- SEARCH -->
-                                <div class="d-flex align-items-center position-relative pt-2 pt-md-0">
-                                    <input type="text" id="searchBar" class="border border-2 rounded-3 px-3 py-2"
-                                        style="height: 50px; width: 260px" placeholder="Search (PATIENT ID / CC ID)">
-                                    <span id="clearSearch" class="position-absolute" style="right: 10px; top: 50%; transform: translateY(-50%);
+                                                        <!-- SEARCH -->
+                                                        <div class="d-flex align-items-center position-relative pt-2 pt-md-0">
+                                                            <input type="text" id="searchBar" class="border border-2 rounded-3 px-3 py-2"
+                                                                style="height: 50px; width: 260px" placeholder="Search (PATIENT ID / CC ID)">
+                                                            <span id="clearSearch" class="position-absolute" style="right: 10px; top: 50%; transform: translateY(-50%);
                                         cursor: pointer; display: none; font-size: 22px;">×</span>
-                                </div>
-                            </div>
+                                                        </div>
+                                                    </div>
 
-                            <!-- ITEMS PER PAGE -->
-                            <div class="mt-3 ms-4">
-                                <label>Show</label>
-                                <select id="itemsPerPageDropdown"
-                                    class="form-select d-inline-block border border-2 rounded-2 w-auto mx-2">
-                                    <option value="10" selected>10</option>
-                                    <option value="25">25</option>
-                                    <option value="50">50</option>
-                                </select>
-                                <label>Entries</label>
-                            </div>
-                            <div class="card-body p-2 p-sm-4">
-                                <div class="table-responsive">
-                                    <table class="table text-center table-hoverr" id="appointmentTable">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">S.NO</th>
-                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">
-                                                    APP WITH</th>
-                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">CC ID</th>
-                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">VIDEO</th>
-                                                <th scope="col"
-                                                    style="font-size:16px; font-weight:500; color:#00ad8e; cursor:pointer;"
-                                                    id="sortPatientId">
-                                                    <span onmouseover="this.style.textDecoration='underline'"
-                                                        onmouseout="this.style.textDecoration='none'">
-                                                        PATIENT ID <span id="sortPatientIdIndicator"></span>
-                                                    </span>
-                                                </th>
-                                                <th scope="col"
-                                                    style="font-size:16px; font-weight:500; color:#00ad8e; cursor:pointer;"
-                                                    id="sortDate">
-                                                    <span onmouseover="this.style.textDecoration='underline'"
-                                                        onmouseout="this.style.textDecoration='none'">
-                                                        DATE <span id="sortDateIndicator">🡱</span>
-                                                    </span>
-                                                </th>
-                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">TIME</th>
+                                                    <!-- ITEMS PER PAGE -->
+                                                    <div class="mt-3 ms-4">
+                                                        <label>Show</label>
+                                                        <select id="itemsPerPageDropdown"
+                                                            class="form-select d-inline-block border border-2 rounded-2 w-auto mx-2">
+                                                            <option value="10" selected>10</option>
+                                                            <option value="25">25</option>
+                                                            <option value="50">50</option>
+                                                        </select>
+                                                        <label>Entries</label>
+                                                    </div>
+                                                    <div class="card-body p-2 p-sm-4">
+                                                        <div class="table-responsive">
+                                                            <table class="table text-center table-hoverr" id="appointmentTable">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">S.NO</th>
+                                                                        <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">
+                                                                            APP WITH</th>
+                                                                        <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">CC ID</th>
+                                                                        <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">VIDEO</th>
+                                                                        <th scope="col"
+                                                                            style="font-size:16px; font-weight:500; color:#00ad8e; cursor:pointer;"
+                                                                            id="sortPatientId">
+                                                                            <span onmouseover="this.style.textDecoration='underline'"
+                                                                                onmouseout="this.style.textDecoration='none'">
+                                                                                PATIENT ID <span id="sortPatientIdIndicator"></span>
+                                                                            </span>
+                                                                        </th>
+                                                                        <th scope="col"
+                                                                            style="font-size:16px; font-weight:500; color:#00ad8e; cursor:pointer;"
+                                                                            id="sortDate">
+                                                                            <span onmouseover="this.style.textDecoration='underline'"
+                                                                                onmouseout="this.style.textDecoration='none'">
+                                                                                DATE <span id="sortDateIndicator">🡱</span>
+                                                                            </span>
+                                                                        </th>
+                                                                        <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">TIME</th>
 
-                                                <!-- <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">PURPOSE
+                                                                        <!-- <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">PURPOSE
                                                 </th> -->
-                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">ACTIONS
-                                                </th>
-                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">COMPLETED
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="appointmentTableBody">
-                                    </table>
-                                    <div class="d-md-flex justify-content-between ms-2">
-                                        <div id="entriesInfoAppointment" class="mt-4"></div>
-                                        <div class="pagination justify-content-end mt-4" id="paginationContainerAppointment"></div>
+                                                                        <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">ACTIONS
+                                                                        </th>
+                                                                        <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">COMPLETED
+                                                                        </th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody id="appointmentTableBody">
+                                                            </table>
+                                                            <div class="d-md-flex justify-content-between ms-2">
+                                                                <div id="entriesInfoAppointment" class="mt-4"></div>
+                                                                <div class="pagination justify-content-end mt-4" id="paginationContainerAppointment"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                            <?php } else { ?>
+                                                    <h5 class="text-center my-5"><b> No Online Appointments Found.</b> </h5>
+                            <?php } ?>
                                     </div>
-                                </div>
-                            </div>
-                    <?php } else { ?>
-                            <h5 class="text-center my-5"><b> No Online Appointments Found.</b> </h5>
-                    <?php } ?>
-                    </div>
-                </section>
+                                </section>
 
-                <!-- Tick Box Model - Appointment Completed -->
-                <div class="modal fade" id="completionModal" data-bs-backdrop="static" tabindex="-1" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered" style="max-width: 350px;">
-                        <div class="modal-content border-0 shadow-lg">
-                            <div class="modal-body text-center p-4">
-                                <div class="mb-4">
-                                    <i class="bi bi-check2-circle text-success" style="font-size: 80px; line-height: 1;"></i>
-                                </div>
+                                <!-- Tick Box Model - Appointment Completed -->
+                                <div class="modal fade" id="completionModal" data-bs-backdrop="static" tabindex="-1" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" style="max-width: 350px;">
+                                        <div class="modal-content border-0 shadow-lg">
+                                            <div class="modal-body text-center p-4">
+                                                <div class="mb-4">
+                                                    <i class="bi bi-check2-circle text-success" style="font-size: 80px; line-height: 1;"></i>
+                                                </div>
 
-                                <h5 class="fw-bold mb-2">Finish Appointment?</h5>
-                                <p class="text-muted small px-3">Mark this appointment as completed in the system.</p>
+                                                <h5 class="fw-bold mb-2">Finish Appointment?</h5>
+                                                <p class="text-muted small px-3">Mark this appointment as completed in the system.</p>
 
-                                <div class="my-4 d-flex justify-content-center align-items-center">
-                                    <div class="form-check p-0 text-center">
-                                        <input type="checkbox" id="modalBigTick" class="form-check-input border-success" style="width: 50px; height: 50px; cursor: pointer; float: none; margin: 0 auto; 
+                                                <div class="my-4 d-flex justify-content-center align-items-center">
+                                                    <div class="form-check p-0 text-center">
+                                                        <input type="checkbox" id="modalBigTick" class="form-check-input border-success" style="width: 50px; height: 50px; cursor: pointer; float: none; margin: 0 auto; 
                                                 display: block; background-color: #fff;
                                                 transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
                                                 box-shadow: 0 4px 10px rgba(25, 135, 84, 0.2);" onmouseover="this.style.transform='scale(1.15) translateY(-5px)'; 
                                                         this.style.boxShadow='0 12px 20px rgba(25, 135, 84, 0.4)';"
-                                            onmouseout="this.style.transform='scale(1) translateY(0)'; 
+                                                            onmouseout="this.style.transform='scale(1) translateY(0)'; 
                                                         this.style.boxShadow='0 4px 10px rgba(25, 135, 84, 0.2)';"
-                                            onclick="initiateCompletion(${row.id}, this)">
+                                                            onclick="initiateCompletion(${row.id}, this)">
 
-                                        <label class="d-block mt-3 text-success fw-bold" for="modalBigTick"
-                                            style="letter-spacing: 0.5px;">
-                                            Tick to Complete
-                                        </label>
+                                                        <label class="d-block mt-3 text-success fw-bold" for="modalBigTick"
+                                                            style="letter-spacing: 0.5px;">
+                                                            Tick to Complete
+                                                        </label>
+                                                    </div>
+                                                </div>
+
+                                                <input type="hidden" id="pendingAppointmentId">
+
+                                                <button type="button" class="btn w-100 mt-2"
+                                                    style="background-color: transparent; border: 2px solid #aab1b8; color: #6c757d; transition: all 0.2s ease-in-out; font-weight: 500;"
+                                                    onmouseover="this.style.transform='scale(1.05)'; this.style.backgroundColor='#aab1b8'; this.style.color='#ffffff';"
+                                                    onmouseout="this.style.transform='scale(1)'; this.style.backgroundColor='transparent'; this.style.color='#6c757d';"
+                                                    data-bs-dismiss="modal">
+                                                    Cancel and Close
+                                                </button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
 
-                                <input type="hidden" id="pendingAppointmentId">
+                                <!-- Display Appointments -->
+                                <script>
+                                    const appointmentList = <?php echo json_encode($appointmentList, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>;
+                                    const baseUrl = '<?php echo base_url(); ?>';
 
-                                <button type="button" class="btn w-100 mt-2"
-                                    style="background-color: transparent; border: 2px solid #aab1b8; color: #6c757d; transition: all 0.2s ease-in-out; font-weight: 500;"
-                                    onmouseover="this.style.transform='scale(1.05)'; this.style.backgroundColor='#aab1b8'; this.style.color='#ffffff';"
-                                    onmouseout="this.style.transform='scale(1)'; this.style.backgroundColor='transparent'; this.style.color='#6c757d';"
-                                    data-bs-dismiss="modal">
-                                    Cancel and Close
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                                    let activeCheckboxElement = null;
+                                    let completionModalInstance = null;
 
-                <!-- Display Appointments -->
-                <script>
-                    const appointmentList = <?php echo json_encode($appointmentList, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>;
-                    const baseUrl = '<?php echo base_url(); ?>';
+                                    let filteredList = [...appointmentList];
+                                    let itemsPerPageAppointment = parseInt(localStorage.getItem('itemsPerPageAppointment')) || 10;
+                                    let currentPageAppointment = 1;
 
-                    let activeCheckboxElement = null;
-                    let completionModalInstance = null;
+                                    let sortBy = 'patientId';
+                                    let sortOrder = 'asc';
 
-                    let filteredList = [...appointmentList];
-                    let itemsPerPageAppointment = parseInt(localStorage.getItem('itemsPerPageAppointment')) || 10;
-                    let currentPageAppointment = 1;
+                                    const itemsDropdown = document.getElementById('itemsPerPageDropdown');
+                                    const searchBar = document.getElementById('searchBar');
+                                    const clearSearch = document.getElementById('clearSearch');
+                                    const filterDropdown = document.getElementById('filterDropdown');
 
-                    let sortBy = 'patientId';
-                    let sortOrder = 'asc';
+                                    const sortPatientId = document.getElementById('sortPatientId');
+                                    const sortDate = document.getElementById('sortDate');
+                                    const pidIndicator = document.getElementById('sortPatientIdIndicator');
+                                    const dateIndicator = document.getElementById('sortDateIndicator');
 
-                    const itemsDropdown = document.getElementById('itemsPerPageDropdown');
-                    const searchBar = document.getElementById('searchBar');
-                    const clearSearch = document.getElementById('clearSearch');
-                    const filterDropdown = document.getElementById('filterDropdown');
+                                    itemsDropdown.value = itemsPerPageAppointment;
 
-                    const sortPatientId = document.getElementById('sortPatientId');
-                    const sortDate = document.getElementById('sortDate');
-                    const pidIndicator = document.getElementById('sortPatientIdIndicator');
-                    const dateIndicator = document.getElementById('sortDateIndicator');
+                                    function copyAppointmentDetails(id, btn) {
+                                        const app = appointmentList.find(item => item.id == id);
+                                        if (!app) return;
 
-                    itemsDropdown.value = itemsPerPageAppointment;
+                                        const fDate = formatDateOrToday(app.dateOfAppoint).replace(/<\/?b>/g, '');
+                                        const fTime = formatTimeAMPM(app.timeOfAppoint);
+                                        const videoMode = (app.modeOfConsultant !== 'video' && app.modeOfConsultant === 'audio') ? 'No' : 'Yes';
+                                        const joinUrl = `${baseUrl}patient/join/${app.appointmentLink}`;
 
-                    function copyAppointmentDetails(id, btn) {
-                        const app = appointmentList.find(item => item.id == id);
-                        if (!app) return;
-
-                        const fDate = formatDateOrToday(app.dateOfAppoint).replace(/<\/?b>/g, '');
-                        const fTime = formatTimeAMPM(app.timeOfAppoint);
-                        const videoMode = (app.modeOfConsultant !== 'video' && app.modeOfConsultant === 'audio') ? 'No' : 'Yes';
-                        const joinUrl = `${baseUrl}patient/join/${app.appointmentLink}`;
-
-                        // Don't indent the below temmplate
-                        const textToCopy = `Dear ${app.firstName} ${app.lastName},
+                                        // Don't indent the below temmplate
+                                        const textToCopy = `Dear ${app.firstName} ${app.lastName},
 
 Your appointment has been successfully booked. 
 
@@ -1958,48 +2663,48 @@ Please join the meeting at the scheduled time.
 
 Thank you.`;
 
-                        navigator.clipboard.writeText(textToCopy).then(() => {
-                            const originalContent = btn.innerHTML;
-                            btn.innerHTML = '<small>Copied!</small>';
-                            btn.classList.replace('btn-outline-info', 'btn-success');
+                                        navigator.clipboard.writeText(textToCopy).then(() => {
+                                            const originalContent = btn.innerHTML;
+                                            btn.innerHTML = '<small>Copied!</small>';
+                                            btn.classList.replace('btn-outline-info', 'btn-success');
 
-                            setTimeout(() => {
-                                btn.innerHTML = originalContent;
-                                btn.classList.replace('btn-success', 'btn-outline-info');
-                            }, 3000);
-                        });
-                    }
+                                            setTimeout(() => {
+                                                btn.innerHTML = originalContent;
+                                                btn.classList.replace('btn-success', 'btn-outline-info');
+                                            }, 3000);
+                                        });
+                                    }
 
-                    function confirmDeleteApp(id) {
-                        const app = appointmentList.find(item => item.id == id);
-                        let formattedTime = app.timeOfAppoint;
+                                    function confirmDeleteApp(id) {
+                                        const app = appointmentList.find(item => item.id == id);
+                                        let formattedTime = app.timeOfAppoint;
 
-                        if (app.timeOfAppoint) {
-                            const timeParts = app.timeOfAppoint.split(':');
-                            let hours = parseInt(timeParts[0]);
-                            let minutes = timeParts[1];
+                                        if (app.timeOfAppoint) {
+                                            const timeParts = app.timeOfAppoint.split(':');
+                                            let hours = parseInt(timeParts[0]);
+                                            let minutes = timeParts[1];
 
-                            const ampm = hours >= 12 ? 'PM' : 'AM';
+                                            const ampm = hours >= 12 ? 'PM' : 'AM';
 
-                            hours = hours % 12;
-                            hours = hours ? hours : 12;
+                                            hours = hours % 12;
+                                            hours = hours ? hours : 12;
 
-                            formattedTime = `${hours}:${minutes} ${ampm}`;
-                        }
-                        let formattedDate = app.dateOfAppoint;
-                        if (app.dateOfAppoint) {
-                            const dateParts = app.dateOfAppoint.split('-');
-                            if (dateParts.length === 3) {
-                                formattedDate = `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`;
-                            }
-                        }
-                        let emailNotice = '';
-                        if (app.appointmentType === 'PATIENT') {
-                            emailNotice = ' A cancellation email will be sent to the patient.';
-                        }
+                                            formattedTime = `${hours}:${minutes} ${ampm}`;
+                                        }
+                                        let formattedDate = app.dateOfAppoint;
+                                        if (app.dateOfAppoint) {
+                                            const dateParts = app.dateOfAppoint.split('-');
+                                            if (dateParts.length === 3) {
+                                                formattedDate = `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`;
+                                            }
+                                        }
+                                        let emailNotice = '';
+                                        if (app.appointmentType === 'PATIENT') {
+                                            emailNotice = ' A cancellation email will be sent to the patient.';
+                                        }
 
-                        if (app) {
-                            var content = `
+                                        if (app) {
+                                            var content = `
                                     <p>Are you sure you want to delete this Appointment?</p>
                                     <div class="alert alert-light border">
                                         <strong>Patient Name:</strong> ${app.firstName} ${app.lastName}<br>
@@ -2012,111 +2717,111 @@ Thank you.`;
                                     ${emailNotice}</p>
                                 `;
 
-                            document.getElementById('deleteModalBody').innerHTML = content;
+                                            document.getElementById('deleteModalBody').innerHTML = content;
 
-                            var deleteUrl = "<?php echo base_url(); ?>Healthcareprovider/deleteAppointment/" + id;
-                            var deleteBtn = document.getElementById('confirmDeleteBtn');
+                                            var deleteUrl = "<?php echo base_url(); ?>Healthcareprovider/deleteAppointment/" + id;
+                                            var deleteBtn = document.getElementById('confirmDeleteBtn');
 
-                            deleteBtn.disabled = false;
-                            deleteBtn.innerHTML = 'Cancel & Delete';
+                                            deleteBtn.disabled = false;
+                                            deleteBtn.innerHTML = 'Cancel & Delete';
 
-                            deleteBtn.onclick = function () {
-                                this.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Deleting...';
-                                this.disabled = true;
+                                            deleteBtn.onclick = function () {
+                                                this.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Deleting...';
+                                                this.disabled = true;
 
-                                window.location.href = deleteUrl;
-                            };
+                                                window.location.href = deleteUrl;
+                                            };
 
-                            var myModal = new bootstrap.Modal(document.getElementById('deleteConfirmModal'));
-                            myModal.show();
-                        } else {
-                            console.error("Appointment not found in list");
-                        }
-                    }
-                    function escapeHTML(value) {
-                        return String(value)
-                            .replace(/&/g, '&amp;')
-                            .replace(/</g, '&lt;')
-                            .replace(/>/g, '&gt;')
-                            .replace(/"/g, '&quot;')
-                            .replace(/'/g, '&#039;');
-                    }
+                                            var myModal = new bootstrap.Modal(document.getElementById('deleteConfirmModal'));
+                                            myModal.show();
+                                        } else {
+                                            console.error("Appointment not found in list");
+                                        }
+                                    }
+                                    function escapeHTML(value) {
+                                        return String(value)
+                                            .replace(/&/g, '&amp;')
+                                            .replace(/</g, '&lt;')
+                                            .replace(/>/g, '&gt;')
+                                            .replace(/"/g, '&quot;')
+                                            .replace(/'/g, '&#039;');
+                                    }
 
-                    itemsDropdown.onchange = e => {
-                        itemsPerPageAppointment = parseInt(e.target.value);
-                        localStorage.setItem('itemsPerPageAppointment', itemsPerPageAppointment);
-                        applyFilters();
-                    };
+                                    itemsDropdown.onchange = e => {
+                                        itemsPerPageAppointment = parseInt(e.target.value);
+                                        localStorage.setItem('itemsPerPageAppointment', itemsPerPageAppointment);
+                                        applyFilters();
+                                    };
 
-                    searchBar.oninput = () => {
-                        clearSearch.style.display = searchBar.value ? 'block' : 'none';
-                        applyFilters();
-                    };
+                                    searchBar.oninput = () => {
+                                        clearSearch.style.display = searchBar.value ? 'block' : 'none';
+                                        applyFilters();
+                                    };
 
-                    clearSearch.onclick = () => {
-                        searchBar.value = '';
-                        clearSearch.style.display = 'none';
-                        applyFilters();
-                    };
+                                    clearSearch.onclick = () => {
+                                        searchBar.value = '';
+                                        clearSearch.style.display = 'none';
+                                        applyFilters();
+                                    };
 
-                    filterDropdown.onchange = applyFilters;
+                                    filterDropdown.onchange = applyFilters;
 
-                    sortPatientId.onclick = () => toggleSort('patientId');
-                    sortDate.onclick = () => toggleSort('dateOfAppoint');
+                                    sortPatientId.onclick = () => toggleSort('patientId');
+                                    sortDate.onclick = () => toggleSort('dateOfAppoint');
 
-                    function toggleSort(field) {
-                        if (sortBy === field) {
-                            sortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
-                        } else {
-                            sortBy = field;
-                            sortOrder = 'asc';
-                        }
-                        updateSortIcons();
-                        applyFilters();
-                    }
+                                    function toggleSort(field) {
+                                        if (sortBy === field) {
+                                            sortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
+                                        } else {
+                                            sortBy = field;
+                                            sortOrder = 'asc';
+                                        }
+                                        updateSortIcons();
+                                        applyFilters();
+                                    }
 
-                    function updateSortIcons() {
-                        pidIndicator.textContent = sortBy === 'patientId' ? (sortOrder === 'asc' ? '🡱' : '🡳') : '';
-                        dateIndicator.textContent = sortBy === 'dateOfAppoint' ? (sortOrder === 'asc' ? '🡱' : '🡳') : '';
-                    }
+                                    function updateSortIcons() {
+                                        pidIndicator.textContent = sortBy === 'patientId' ? (sortOrder === 'asc' ? '🡱' : '🡳') : '';
+                                        dateIndicator.textContent = sortBy === 'dateOfAppoint' ? (sortOrder === 'asc' ? '🡱' : '🡳') : '';
+                                    }
 
-                    function applyFilters() {
-                        const search = searchBar.value.toLowerCase();
-                        const typeFilter = filterDropdown.value;
+                                    function applyFilters() {
+                                        const search = searchBar.value.toLowerCase();
+                                        const typeFilter = filterDropdown.value;
 
-                        filteredList = appointmentList.filter(a => {
-                            const patientId = a.patientId?.toLowerCase() || '';
-                            const ccId = a.referalDoctor?.toLowerCase() || '';
+                                        filteredList = appointmentList.filter(a => {
+                                            const patientId = a.patientId?.toLowerCase() || '';
+                                            const ccId = a.referalDoctor?.toLowerCase() || '';
 
-                            const matchSearch = patientId.includes(search) || ccId.includes(search);
-                            const matchType = typeFilter === 'All' || a.appointmentType === typeFilter;
+                                            const matchSearch = patientId.includes(search) || ccId.includes(search);
+                                            const matchType = typeFilter === 'All' || a.appointmentType === typeFilter;
 
-                            return matchSearch && matchType;
-                        });
+                                            return matchSearch && matchType;
+                                        });
 
-                        if (sortBy) {
-                            filteredList.sort((a, b) => {
-                                let x = a[sortBy] || '';
-                                let y = b[sortBy] || '';
-                                return sortOrder === 'asc'
-                                    ? x.localeCompare(y)
-                                    : y.localeCompare(x);
-                            });
-                        }
+                                        if (sortBy) {
+                                            filteredList.sort((a, b) => {
+                                                let x = a[sortBy] || '';
+                                                let y = b[sortBy] || '';
+                                                return sortOrder === 'asc'
+                                                    ? x.localeCompare(y)
+                                                    : y.localeCompare(x);
+                                            });
+                                        }
 
-                        displayAppointmentPage(1);
-                    }
+                                        displayAppointmentPage(1);
+                                    }
 
-                    function renderActionButtons(row) {
-                        const fullJoinUrl = `${baseUrl}healthcareprovider/join/${row.appointmentLink}`;
+                                    function renderActionButtons(row) {
+                                        const fullJoinUrl = `${baseUrl}healthcareprovider/join/${row.appointmentLink}`;
 
-                        const copyBtn = `
+                                        const copyBtn = `
                             <button class="btn btn-outline-primary mx-1" onclick="copyAppointmentDetails(${row.id}, this)" title="Copy Appointment Details">
                                 <i class="bi bi-clipboard"></i>
                             </button>
                         `;
 
-                        const consultBtn = `
+                                        const consultBtn = `
                                 <a href="${baseUrl}Consultation/consultation/${row.patientDbId}">
                                     <button class="btn btn-secondary mx-1"
                                         style="cursor:pointer;" title="Consult Patient">
@@ -2124,24 +2829,24 @@ Thank you.`;
                                     </button>
                                 </a>
                             `;
-                        const now = new Date();
-                        const appointmentDateTime = new Date(
-                            row.dateOfAppoint + ' ' + row.timeOfAppoint
-                        );
+                                        const now = new Date();
+                                        const appointmentDateTime = new Date(
+                                            row.dateOfAppoint + ' ' + row.timeOfAppoint
+                                        );
 
-                        const diffMinutes = (now - appointmentDateTime) / (1000 * 60);
-                        const isToday = now.toISOString().slice(0, 10) === row.dateOfAppoint;
-                        const isWithin10Minutes = diffMinutes >= -0 && diffMinutes <= 20;
-                        const shouldEnableJoin = isToday && isWithin10Minutes;
+                                        const diffMinutes = (now - appointmentDateTime) / (1000 * 60);
+                                        const isToday = now.toISOString().slice(0, 10) === row.dateOfAppoint;
+                                        const isWithin10Minutes = diffMinutes >= -0 && diffMinutes <= 20;
+                                        const shouldEnableJoin = isToday && isWithin10Minutes;
 
-                        const joinBtn = shouldEnableJoin
-                            ? `
+                                        const joinBtn = shouldEnableJoin
+                                            ? `
                             <a href="${safeUrl(fullJoinUrl)}"
                                 target="_blank" rel="noopener noreferrer">
                                 <button class="btn btn-success">Join</button>
                             </a>
                             `
-                            : `
+                                            : `
                             <div
                                 style="display:inline-block; position:relative; cursor:not-allowed;"
                                 onmouseenter="this.querySelector('.ban').style.display='block'"
@@ -2157,9 +2862,9 @@ Thank you.`;
                             </div>
                             `;
 
-                        const isTooLateToDelete = diffMinutes > -0;
-                        const deleteBtn = isTooLateToDelete
-                            ? `
+                                        const isTooLateToDelete = diffMinutes > -0;
+                                        const deleteBtn = isTooLateToDelete
+                                            ? `
                                     <div
                                         style="display:inline-block; position:relative; cursor:not-allowed;"
                                         title="Cannot delete 10 mins before appointment"
@@ -2175,149 +2880,149 @@ Thank you.`;
                                             </button>
                                     </div>
                                 `
-                            : `
+                                            : `
                                     <button class="btn btn-danger" title="Delete Appointment"
                                         onclick="confirmDeleteApp(${row.id})">
                                         <i class="bi bi-trash"></i>
                                     </button>
                                 `;
 
-                        return `
+                                        return `
                                 ${copyBtn}
                                 ${deleteBtn}
                                 ${consultBtn}
                                 ${joinBtn}
                             `;
-                    }
-
-                    function initiateCompletion(id, element) {
-                        if (element.checked) {
-                            element.checked = false;
-
-                            document.getElementById('pendingAppointmentId').value = id;
-                            document.getElementById('modalBigTick').checked = false;
-                            activeCheckboxElement = element;
-
-                            const modalEl = document.getElementById('completionModal');
-                            if (!completionModalInstance) {
-                                completionModalInstance = new bootstrap.Modal(modalEl);
-                            }
-                            completionModalInstance.show();
-                        }
-                    }
-
-                    document.getElementById('modalBigTick').onchange = function () {
-                        if (this.checked) {
-                            const id = document.getElementById('pendingAppointmentId').value;
-                            const status = '1';
-
-                            console.log("Sending update for ID:", id);
-
-                            fetch(`${baseUrl}Healthcareprovider/updateStatus`, {
-                                method: 'POST',
-                                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                                body: `id=${id}&status=${status}`
-                            })
-                                .then(res => res.json())
-                                .then(data => {
-                                    console.log("Server Response:", data);
-
-                                    if (data.success) {
-                                        if (activeCheckboxElement) {
-                                            activeCheckboxElement.checked = true;
-                                            activeCheckboxElement.disabled = true;
-                                        }
-
-                                        const app = appointmentList.find(a => a.id == id);
-                                        if (app) app.appStatus = '1';
-
-                                        if (completionModalInstance) {
-                                            completionModalInstance.hide();
-                                        }
-                                        window.location.reload();
-                                    } else {
-                                        alert("Failed to update status. Server responded with error.");
-                                        this.checked = false;
                                     }
-                                })
-                                .catch(err => {
-                                    console.error("Fetch Error:", err);
-                                    alert("Error connecting to server.");
-                                    this.checked = false;
-                                });
-                        }
-                    };
-                    function formatTimeAMPM(timeStr) {
-                        if (!timeStr) return '';
 
-                        const date = new Date('1970-01-01 ' + timeStr);
-                        return date.toLocaleTimeString('en-US', {
-                            hour: 'numeric',
-                            minute: '2-digit',
-                            hour12: true
-                        });
-                    }
+                                    function initiateCompletion(id, element) {
+                                        if (element.checked) {
+                                            element.checked = false;
 
-                    function formatDateOrToday(dateStr) {
-                        const today = new Date().toISOString().slice(0, 10);
+                                            document.getElementById('pendingAppointmentId').value = id;
+                                            document.getElementById('modalBigTick').checked = false;
+                                            activeCheckboxElement = element;
 
-                        if (dateStr === today) {
-                            return '<b>Today</b>';
-                        }
+                                            const modalEl = document.getElementById('completionModal');
+                                            if (!completionModalInstance) {
+                                                completionModalInstance = new bootstrap.Modal(modalEl);
+                                            }
+                                            completionModalInstance.show();
+                                        }
+                                    }
 
-                        const [year, month, day] = dateStr.split('-');
-                        return `${day}-${month}-${year}`;
-                    }
+                                    document.getElementById('modalBigTick').onchange = function () {
+                                        if (this.checked) {
+                                            const id = document.getElementById('pendingAppointmentId').value;
+                                            const status = '1';
 
-                    function safeUrl(url) {
-                        return /^https?:\/\//i.test(url) ? url : '#';
-                    }
+                                            console.log("Sending update for ID:", id);
 
-                    function displayAppointmentPage(page) {
-                        currentPageAppointment = page;
+                                            fetch(`${baseUrl}Healthcareprovider/updateStatus`, {
+                                                method: 'POST',
+                                                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                                                body: `id=${id}&status=${status}`
+                                            })
+                                                .then(res => res.json())
+                                                .then(data => {
+                                                    console.log("Server Response:", data);
 
-                        const start = (page - 1) * itemsPerPageAppointment;
-                        const end = start + itemsPerPageAppointment;
-                        const rows = filteredList.slice(start, end);
+                                                    if (data.success) {
+                                                        if (activeCheckboxElement) {
+                                                            activeCheckboxElement.checked = true;
+                                                            activeCheckboxElement.disabled = true;
+                                                        }
 
-                        const tbody = document.getElementById('appointmentTableBody');
-                        tbody.innerHTML = '';
+                                                        const app = appointmentList.find(a => a.id == id);
+                                                        if (app) app.appStatus = '1';
 
-                        updateAppointmentEntriesInfo(
-                            start + 1,
-                            Math.min(end, filteredList.length),
-                            filteredList.length
-                        );
+                                                        if (completionModalInstance) {
+                                                            completionModalInstance.hide();
+                                                        }
+                                                        window.location.reload();
+                                                    } else {
+                                                        alert("Failed to update status. Server responded with error.");
+                                                        this.checked = false;
+                                                    }
+                                                })
+                                                .catch(err => {
+                                                    console.error("Fetch Error:", err);
+                                                    alert("Error connecting to server.");
+                                                    this.checked = false;
+                                                });
+                                        }
+                                    };
+                                    function formatTimeAMPM(timeStr) {
+                                        if (!timeStr) return '';
 
-                        rows.forEach((r, i) => {
-                            const complaintText = r.patientComplaint
-                                ? escapeHTML(r.patientComplaint)
-                                : 'No complaint provided';
+                                        const date = new Date('1970-01-01 ' + timeStr);
+                                        return date.toLocaleTimeString('en-US', {
+                                            hour: 'numeric',
+                                            minute: '2-digit',
+                                            hour12: true
+                                        });
+                                    }
 
-                            const patientLink = `<a href="${baseUrl}Healthcareprovider/patientdetails/${r.patientDbId}" 
+                                    function formatDateOrToday(dateStr) {
+                                        const today = new Date().toISOString().slice(0, 10);
+
+                                        if (dateStr === today) {
+                                            return '<b>Today</b>';
+                                        }
+
+                                        const [year, month, day] = dateStr.split('-');
+                                        return `${day}-${month}-${year}`;
+                                    }
+
+                                    function safeUrl(url) {
+                                        return /^https?:\/\//i.test(url) ? url : '#';
+                                    }
+
+                                    function displayAppointmentPage(page) {
+                                        currentPageAppointment = page;
+
+                                        const start = (page - 1) * itemsPerPageAppointment;
+                                        const end = start + itemsPerPageAppointment;
+                                        const rows = filteredList.slice(start, end);
+
+                                        const tbody = document.getElementById('appointmentTableBody');
+                                        tbody.innerHTML = '';
+
+                                        updateAppointmentEntriesInfo(
+                                            start + 1,
+                                            Math.min(end, filteredList.length),
+                                            filteredList.length
+                                        );
+
+                                        rows.forEach((r, i) => {
+                                            const complaintText = r.patientComplaint
+                                                ? escapeHTML(r.patientComplaint)
+                                                : 'No complaint provided';
+
+                                            const patientLink = `<a href="${baseUrl}Healthcareprovider/patientdetails/${r.patientDbId}" 
                                     class="text-dark" onmouseover="this.style.textDecoration='underline'" 
                                     onmouseout="this.style.textDecoration='none'">${escapeHTML(r.patientId)}</a>`;
 
-                            let ccLink = 'NA';
-                            if (r.referalDoctor && r.referalDoctor !== 'Nil' && r.referalDoctorDbId) {
-                                ccLink = `<a href="${baseUrl}Healthcareprovider/chiefDoctorsProfile/${r.referalDoctorDbId}" 
+                                            let ccLink = 'NA';
+                                            if (r.referalDoctor && r.referalDoctor !== 'Nil' && r.referalDoctorDbId) {
+                                                ccLink = `<a href="${baseUrl}Healthcareprovider/chiefDoctorsProfile/${r.referalDoctorDbId}" 
                             class="text-dark" onmouseover="this.style.textDecoration='underline'" 
                             onmouseout="this.style.textDecoration='none'">${escapeHTML(r.referalDoctor)}</a>`;
-                            }
+                                            }
 
-                            let videoMode = 'YES';
-                            if (r.modeOfConsultant !== 'video' && r.modeOfConsultant === 'audio') {
-                                videoMode = 'NO';
-                            }
+                                            let videoMode = 'YES';
+                                            if (r.modeOfConsultant !== 'video' && r.modeOfConsultant === 'audio') {
+                                                videoMode = 'NO';
+                                            }
 
-                            const now = new Date();
-                            const appointmentDateTime = new Date(r.dateOfAppoint + ' ' + r.timeOfAppoint);
-                            const diffMinutes = (now - appointmentDateTime) / (1000 * 60);
-                            const isToday = now.toISOString().slice(0, 10) === r.dateOfAppoint;
+                                            const now = new Date();
+                                            const appointmentDateTime = new Date(r.dateOfAppoint + ' ' + r.timeOfAppoint);
+                                            const diffMinutes = (now - appointmentDateTime) / (1000 * 60);
+                                            const isToday = now.toISOString().slice(0, 10) === r.dateOfAppoint;
 
-                            const shouldShowCheckbox = isToday && diffMinutes >= -0 && diffMinutes <= 20;
+                                            const shouldShowCheckbox = isToday && diffMinutes >= -0 && diffMinutes <= 20;
 
-                            tbody.insertAdjacentHTML('beforeend', `
+                                            tbody.insertAdjacentHTML('beforeend', `
                                     <tr data-bs-toggle="tooltip"
                                         data-bs-placement="top"
                                         title="${complaintText}">
@@ -2362,7 +3067,7 @@ Thank you.`;
                                                     <!-- Hover catcher -->
                                                     <div
                                                         style="position:absolute;top:0;left:0;width:24px;height:24px;cursor:not-allowed;
-                                                                                                                                                                                                                                                                                                        "
+                                                                                                                                                                                                                                                                                                                                "
                                                         onmouseenter="this.nextElementSibling.style.display='flex'"
                                                         onmouseleave="this.nextElementSibling.style.display='none'"
                                                     ></div>
@@ -2377,195 +3082,195 @@ Thank you.`;
                                     
                                     </tr>
                                 `);
-                        });
+                                        });
 
-                        generateAppointmentPagination(filteredList.length, page);
-                        initBootstrapTooltips();
-                    }
+                                        generateAppointmentPagination(filteredList.length, page);
+                                        initBootstrapTooltips();
+                                    }
 
-                    function updateAppointmentEntriesInfo(start, end, total) {
-                        document.getElementById('entriesInfoAppointment')
-                            .textContent = `Showing ${start} to ${end} of ${total} entries.`;
-                    }
+                                    function updateAppointmentEntriesInfo(start, end, total) {
+                                        document.getElementById('entriesInfoAppointment')
+                                            .textContent = `Showing ${start} to ${end} of ${total} entries.`;
+                                    }
 
-                    function generateAppointmentPagination(totalItems, currentPage) {
-                        const totalPages = Math.ceil(totalItems / itemsPerPageAppointment);
-                        const container = document.getElementById('paginationContainerAppointment');
-                        container.innerHTML = '';
+                                    function generateAppointmentPagination(totalItems, currentPage) {
+                                        const totalPages = Math.ceil(totalItems / itemsPerPageAppointment);
+                                        const container = document.getElementById('paginationContainerAppointment');
+                                        container.innerHTML = '';
 
-                        const ul = document.createElement('ul');
-                        ul.className = 'pagination';
+                                        const ul = document.createElement('ul');
+                                        ul.className = 'pagination';
 
-                        const prev = document.createElement('li');
-                        prev.innerHTML = `<button class="bg-light border px-3 py-2" ${currentPage === 1 ? 'disabled' : ''}>Previous</button>`;
-                        prev.onclick = () => currentPage > 1 && displayAppointmentPage(currentPage - 1);
-                        ul.appendChild(prev);
+                                        const prev = document.createElement('li');
+                                        prev.innerHTML = `<button class="bg-light border px-3 py-2" ${currentPage === 1 ? 'disabled' : ''}>Previous</button>`;
+                                        prev.onclick = () => currentPage > 1 && displayAppointmentPage(currentPage - 1);
+                                        ul.appendChild(prev);
 
-                        const startPage = Math.max(1, currentPage - 2);
-                        const endPage = Math.min(totalPages, startPage + 4);
+                                        const startPage = Math.max(1, currentPage - 2);
+                                        const endPage = Math.min(totalPages, startPage + 4);
 
-                        for (let i = startPage; i <= endPage; i++) {
-                            const li = document.createElement('li');
-                            li.innerHTML = `<button class="btn border px-3 py-2 ${i === currentPage ? 'text-light' : ''}"
+                                        for (let i = startPage; i <= endPage; i++) {
+                                            const li = document.createElement('li');
+                                            li.innerHTML = `<button class="btn border px-3 py-2 ${i === currentPage ? 'text-light' : ''}"
                                     style="background-color:${i === currentPage ? '#00ad8e' : 'transparent'}">${i}</button>`;
-                            li.onclick = () => displayAppointmentPage(i);
-                            ul.appendChild(li);
-                        }
+                                            li.onclick = () => displayAppointmentPage(i);
+                                            ul.appendChild(li);
+                                        }
 
-                        const next = document.createElement('li');
-                        next.innerHTML = `<button class="border px-3 py-2" ${currentPage === totalPages ? 'disabled' : ''}>Next</button>`;
-                        next.onclick = () => currentPage < totalPages && displayAppointmentPage(currentPage + 1);
-                        ul.appendChild(next);
+                                        const next = document.createElement('li');
+                                        next.innerHTML = `<button class="border px-3 py-2" ${currentPage === totalPages ? 'disabled' : ''}>Next</button>`;
+                                        next.onclick = () => currentPage < totalPages && displayAppointmentPage(currentPage + 1);
+                                        ul.appendChild(next);
 
-                        container.appendChild(ul);
-                    }
-                    startLiveUpdates();
-                    displayAppointmentPage(1);
+                                        container.appendChild(ul);
+                                    }
+                                    startLiveUpdates();
+                                    displayAppointmentPage(1);
 
-                    function initBootstrapTooltips() {
-                        const tooltipTriggerList = [].slice.call(
-                            document.querySelectorAll('[data-bs-toggle="tooltip"]')
-                        );
+                                    function initBootstrapTooltips() {
+                                        const tooltipTriggerList = [].slice.call(
+                                            document.querySelectorAll('[data-bs-toggle="tooltip"]')
+                                        );
 
-                        tooltipTriggerList.forEach(el => {
-                            if (bootstrap.Tooltip.getInstance(el)) {
-                                bootstrap.Tooltip.getInstance(el).dispose();
-                            }
+                                        tooltipTriggerList.forEach(el => {
+                                            if (bootstrap.Tooltip.getInstance(el)) {
+                                                bootstrap.Tooltip.getInstance(el).dispose();
+                                            }
 
-                            new bootstrap.Tooltip(el, {
-                                placement: 'top',
-                                html: false,
-                                trigger: 'hover',
-                                container: 'body'
-                            });
-                        });
-                    }
-                    function startLiveUpdates() {
-                        const refreshUI = () => displayAppointmentPage(currentPageAppointment);
+                                            new bootstrap.Tooltip(el, {
+                                                placement: 'top',
+                                                html: false,
+                                                trigger: 'hover',
+                                                container: 'body'
+                                            });
+                                        });
+                                    }
+                                    function startLiveUpdates() {
+                                        const refreshUI = () => displayAppointmentPage(currentPageAppointment);
 
-                        const now = new Date();
-                        const delay = 60000 - (now.getSeconds() * 1000 + now.getMilliseconds());
+                                        const now = new Date();
+                                        const delay = 60000 - (now.getSeconds() * 1000 + now.getMilliseconds());
 
-                        setTimeout(() => {
-                            refreshUI();
-                            setInterval(refreshUI, 60000);
-                        }, delay);
-                    }
+                                        setTimeout(() => {
+                                            refreshUI();
+                                            setInterval(refreshUI, 60000);
+                                        }, delay);
+                                    }
 
-                </script>
+                                </script>
 
-                <!-- Reschedule Appointment Section -->
-            <?php if (isset($appointmentReschedule[0]['id'])) { ?>
-                    <section>
-                        <div class="card rounded mt-4">
-                            <div class="d-sm-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
-                                <p style="font-size: 24px; font-weight: 500">
-                                    Reschedule Online Appointments
-                                </p>
-                            </div>
+                                <!-- Reschedule Appointment Section -->
+                    <?php if (isset($appointmentReschedule[0]['id'])) { ?>
+                                            <section>
+                                                <div class="card rounded mt-4">
+                                                    <div class="d-sm-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
+                                                        <p style="font-size: 24px; font-weight: 500">
+                                                            Reschedule Online Appointments
+                                                        </p>
+                                                    </div>
 
-                            <div id="entriesPerPageReschedule" class="d-md-flex align-items-center justify-content-between mx-4">
-                                <select id="filterDropdownReschedule" class="form-select border border-2 rounded-3 px-3 py-2"
-                                    style="height: 50px; width: 280px;">
-                                    <option value="All">Filter Appoinmtent with (All)</option>
-                                    <option value="PATIENT">HCP</option>
-                                    <option value="CC">CC</option>
-                                </select>
+                                                    <div id="entriesPerPageReschedule" class="d-md-flex align-items-center justify-content-between mx-4">
+                                                        <select id="filterDropdownReschedule" class="form-select border border-2 rounded-3 px-3 py-2"
+                                                            style="height: 50px; width: 280px;">
+                                                            <option value="All">Filter Appoinmtent with (All)</option>
+                                                            <option value="PATIENT">HCP</option>
+                                                            <option value="CC">CC</option>
+                                                        </select>
 
-                                <div class="d-flex align-items-center position-relative pt-2 pt-md-0">
-                                    <input type="text" id="searchBarReschedule" class="border border-2 rounded-3 px-3 py-2"
-                                        style="height: 50px; width: 260px" placeholder="Search (PATIENT ID / CC ID)">
-                                    <span id="clearSearchReschedule" class="position-absolute"
-                                        style="right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer; display: none; font-size: 22px;">&times;</span>
-                                </div>
-                            </div>
+                                                        <div class="d-flex align-items-center position-relative pt-2 pt-md-0">
+                                                            <input type="text" id="searchBarReschedule" class="border border-2 rounded-3 px-3 py-2"
+                                                                style="height: 50px; width: 260px" placeholder="Search (PATIENT ID / CC ID)">
+                                                            <span id="clearSearchReschedule" class="position-absolute"
+                                                                style="right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer; display: none; font-size: 22px;">&times;</span>
+                                                        </div>
+                                                    </div>
 
-                            <div class="mt-3 ms-4">
-                                <label>Show</label>
-                                <select id="itemsPerPageDropdownReschedule"
-                                    class="form-select d-inline-block border border-2 rounded-2 w-auto mx-2">
-                                    <option value="10" selected>10</option>
-                                    <option value="25">25</option>
-                                    <option value="50">50</option>
-                                </select>
-                                <label>Entries</label>
-                            </div>
+                                                    <div class="mt-3 ms-4">
+                                                        <label>Show</label>
+                                                        <select id="itemsPerPageDropdownReschedule"
+                                                            class="form-select d-inline-block border border-2 rounded-2 w-auto mx-2">
+                                                            <option value="10" selected>10</option>
+                                                            <option value="25">25</option>
+                                                            <option value="50">50</option>
+                                                        </select>
+                                                        <label>Entries</label>
+                                                    </div>
 
-                            <div class="card-body p-2 p-sm-4">
-                                <div class="table-responsive">
-                                    <table class="table text-center table-hoverr" id="appointmentRescheduleTable">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">S.NO
-                                                </th>
-                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">
-                                                    APP WITH</th>
-                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">CC ID
-                                                </th>
-                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">VIDEO
-                                                </th>
-                                                <th scope="col"
-                                                    style="font-size: 16px; font-weight: 500; color: #00ad8e; cursor:pointer;"
-                                                    id="sortPatientIdReschedule">
-                                                    <span onmouseover="this.style.textDecoration='underline'"
-                                                        onmouseout="this.style.textDecoration='none'">
-                                                        PATIENT ID <span id="sortPatientIdIndicatorReschedule"></span>
-                                                    </span>
-                                                </th>
+                                                    <div class="card-body p-2 p-sm-4">
+                                                        <div class="table-responsive">
+                                                            <table class="table text-center table-hoverr" id="appointmentRescheduleTable">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">S.NO
+                                                                        </th>
+                                                                        <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">
+                                                                            APP WITH</th>
+                                                                        <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">CC ID
+                                                                        </th>
+                                                                        <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">VIDEO
+                                                                        </th>
+                                                                        <th scope="col"
+                                                                            style="font-size: 16px; font-weight: 500; color: #00ad8e; cursor:pointer;"
+                                                                            id="sortPatientIdReschedule">
+                                                                            <span onmouseover="this.style.textDecoration='underline'"
+                                                                                onmouseout="this.style.textDecoration='none'">
+                                                                                PATIENT ID <span id="sortPatientIdIndicatorReschedule"></span>
+                                                                            </span>
+                                                                        </th>
 
-                                                <th scope="col"
-                                                    style="font-size: 16px; font-weight: 500; color: #00ad8e; cursor:pointer;"
-                                                    id="sortDateReschedule">
-                                                    <span onmouseover="this.style.textDecoration='underline'"
-                                                        onmouseout="this.style.textDecoration='none'">
-                                                        DATE <span id="sortDateIndicatorReschedule">🡳</span>
-                                                    </span>
-                                                </th>
+                                                                        <th scope="col"
+                                                                            style="font-size: 16px; font-weight: 500; color: #00ad8e; cursor:pointer;"
+                                                                            id="sortDateReschedule">
+                                                                            <span onmouseover="this.style.textDecoration='underline'"
+                                                                                onmouseout="this.style.textDecoration='none'">
+                                                                                DATE <span id="sortDateIndicatorReschedule">🡳</span>
+                                                                            </span>
+                                                                        </th>
 
-                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">TIME
-                                                </th>
+                                                                        <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">TIME
+                                                                        </th>
 
-                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">ACTION
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="rescheduleTableBody">
-                                        </tbody>
-                                    </table>
+                                                                        <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">ACTION
+                                                                        </th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody id="rescheduleTableBody">
+                                                                </tbody>
+                                                            </table>
 
-                                    <div class="d-md-flex justify-content-between ms-2">
-                                        <div id="entriesInfoReschedule" class="mt-4"></div>
-                                        <div class="pagination justify-content-end mt-4" id="paginationContainerReschedule">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-            <?php } ?>
+                                                            <div class="d-md-flex justify-content-between ms-2">
+                                                                <div id="entriesInfoReschedule" class="mt-4"></div>
+                                                                <div class="pagination justify-content-end mt-4" id="paginationContainerReschedule">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </section>
+                    <?php } ?>
 
-                <!-- Reschedule Display Appointments -->
-                <script>
-                    const rescheduleList = <?php echo json_encode($appointmentReschedule, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>;
+                                <!-- Reschedule Display Appointments -->
+                                <script>
+                                    const rescheduleList = <?php echo json_encode($appointmentReschedule, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>;
 
-                    let filteredRescheduleList = [...rescheduleList];
-                    let itemsPerPageReschedule = 10;
-                    let currentPageReschedule = 1;
-                    let sortByReschedule = 'dateOfAppoint';
-                    let sortOrderReschedule = 'desc';
+                                    let filteredRescheduleList = [...rescheduleList];
+                                    let itemsPerPageReschedule = 10;
+                                    let currentPageReschedule = 1;
+                                    let sortByReschedule = 'dateOfAppoint';
+                                    let sortOrderReschedule = 'desc';
 
-                    const itemsDropdownRes = document.getElementById('itemsPerPageDropdownReschedule');
-                    const searchBarRes = document.getElementById('searchBarReschedule');
-                    const clearSearchRes = document.getElementById('clearSearchReschedule');
-                    const filterDropdownRes = document.getElementById('filterDropdownReschedule');
+                                    const itemsDropdownRes = document.getElementById('itemsPerPageDropdownReschedule');
+                                    const searchBarRes = document.getElementById('searchBarReschedule');
+                                    const clearSearchRes = document.getElementById('clearSearchReschedule');
+                                    const filterDropdownRes = document.getElementById('filterDropdownReschedule');
 
-                    const sortPidRes = document.getElementById('sortPatientIdReschedule');
-                    const sortDateRes = document.getElementById('sortDateReschedule');
-                    const pidIndRes = document.getElementById('sortPatientIdIndicatorReschedule');
-                    const dateIndRes = document.getElementById('sortDateIndicatorReschedule');
+                                    const sortPidRes = document.getElementById('sortPatientIdReschedule');
+                                    const sortDateRes = document.getElementById('sortDateReschedule');
+                                    const pidIndRes = document.getElementById('sortPatientIdIndicatorReschedule');
+                                    const dateIndRes = document.getElementById('sortDateIndicatorReschedule');
 
-                    function renderRescheduleActions(row) {
-                        const rescheduleBtn = `
+                                    function renderRescheduleActions(row) {
+                                        const rescheduleBtn = `
                         <a href="${baseUrl}Healthcareprovider/appointmentReschedule/${row.id}">
                             <button class="btn btn-secondary" title="Reschedule">
                                 Reschedule
@@ -2573,33 +3278,33 @@ Thank you.`;
                         </a>
                         `;
 
-                        const deleteBtn = `
+                                        const deleteBtn = `
                             <button class="btn btn-danger" onclick="confirmDeleteReschedule(${row.id})" title="Delete">
                                 <i class="bi bi-trash"></i>
                             </button>
                         `;
 
-                        return `
+                                        return `
                             <div class="d-flex justify-content-center gap-2">
                                 ${deleteBtn}
                                 ${rescheduleBtn}
                             </div>
                         `;
-                    }
+                                    }
 
-                    function confirmDeleteReschedule(id) {
-                        const app = rescheduleList.find(item => item.id == id);
+                                    function confirmDeleteReschedule(id) {
+                                        const app = rescheduleList.find(item => item.id == id);
 
-                        let emailNotice = '';
-                        if (app.appointmentType === 'PATIENT') {
-                            emailNotice = ' A cancellation email will be sent to the patient.';
-                        }
+                                        let emailNotice = '';
+                                        if (app.appointmentType === 'PATIENT') {
+                                            emailNotice = ' A cancellation email will be sent to the patient.';
+                                        }
 
-                        if (app) {
-                            let formattedTime = formatTimeAMPM(app.timeOfAppoint);
-                            let formattedDate = formatDateOrToday(app.dateOfAppoint).replace('<b>Today</b>', app.dateOfAppoint); // Strip bold for modal
+                                        if (app) {
+                                            let formattedTime = formatTimeAMPM(app.timeOfAppoint);
+                                            let formattedDate = formatDateOrToday(app.dateOfAppoint).replace('<b>Today</b>', app.dateOfAppoint); // Strip bold for modal
 
-                            var content = `
+                                            var content = `
                                 <p>Are you sure you want to delete this Appointment?</p>
                                 <div class="alert alert-light border">
                                     <strong>Patient ID:</strong> ${app.patientId}<br>
@@ -2611,60 +3316,60 @@ Thank you.`;
                                 ${emailNotice}</p>
                             `;
 
-                            document.getElementById('deleteModalBody').innerHTML = content;
+                                            document.getElementById('deleteModalBody').innerHTML = content;
 
-                            var deleteUrl = "<?php echo base_url(); ?>Healthcareprovider/deleteAppointment/" + id;
-                            var deleteBtn = document.getElementById('confirmDeleteBtn');
+                                            var deleteUrl = "<?php echo base_url(); ?>Healthcareprovider/deleteAppointment/" + id;
+                                            var deleteBtn = document.getElementById('confirmDeleteBtn');
 
-                            deleteBtn.disabled = false;
-                            deleteBtn.innerHTML = 'Delete';
-                            deleteBtn.onclick = function () {
-                                this.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Deleting...';
-                                this.disabled = true;
-                                window.location.href = deleteUrl;
-                            };
+                                            deleteBtn.disabled = false;
+                                            deleteBtn.innerHTML = 'Delete';
+                                            deleteBtn.onclick = function () {
+                                                this.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Deleting...';
+                                                this.disabled = true;
+                                                window.location.href = deleteUrl;
+                                            };
 
-                            var myModal = new bootstrap.Modal(document.getElementById('deleteConfirmModal'));
-                            myModal.show();
-                        }
-                    }
+                                            var myModal = new bootstrap.Modal(document.getElementById('deleteConfirmModal'));
+                                            myModal.show();
+                                        }
+                                    }
 
-                    function displayReschedulePage(page) {
+                                    function displayReschedulePage(page) {
 
-                        currentPageReschedule = page;
-                        const start = (page - 1) * itemsPerPageReschedule;
-                        const end = start + itemsPerPageReschedule;
-                        const rows = filteredRescheduleList.slice(start, end);
+                                        currentPageReschedule = page;
+                                        const start = (page - 1) * itemsPerPageReschedule;
+                                        const end = start + itemsPerPageReschedule;
+                                        const rows = filteredRescheduleList.slice(start, end);
 
-                        const tbody = document.getElementById('rescheduleTableBody');
-                        tbody.innerHTML = '';
+                                        const tbody = document.getElementById('rescheduleTableBody');
+                                        tbody.innerHTML = '';
 
-                        if (rows.length === 0) {
-                            tbody.innerHTML = '<tr><td colspan="8" class="py-4">No online appointments found</td></tr>';
-                            document.getElementById('entriesInfoReschedule').textContent = '';
-                            document.getElementById('paginationContainerReschedule').innerHTML = '';
-                            return;
-                        }
+                                        if (rows.length === 0) {
+                                            tbody.innerHTML = '<tr><td colspan="8" class="py-4">No online appointments found</td></tr>';
+                                            document.getElementById('entriesInfoReschedule').textContent = '';
+                                            document.getElementById('paginationContainerReschedule').innerHTML = '';
+                                            return;
+                                        }
 
-                        rows.forEach((r, i) => {
-                            const complaintText = r.patientComplaint
-                                ? escapeHTML(r.patientComplaint)
-                                : 'No complaint provided';
+                                        rows.forEach((r, i) => {
+                                            const complaintText = r.patientComplaint
+                                                ? escapeHTML(r.patientComplaint)
+                                                : 'No complaint provided';
 
-                            const patientLink = `<a href="${baseUrl}Healthcareprovider/patientdetails/${r.patientDbId}" 
+                                            const patientLink = `<a href="${baseUrl}Healthcareprovider/patientdetails/${r.patientDbId}" 
                                     class="text-dark" onmouseover="this.style.textDecoration='underline'" 
                                     onmouseout="this.style.textDecoration='none'">${escapeHTML(r.patientId)}</a>`;
 
-                            let ccLink = 'NA';
-                            if (r.referalDoctor && r.referalDoctor !== 'Nil' && r.referalDoctorDbId) {
-                                ccLink = `<a href="${baseUrl}Healthcareprovider/chiefDoctorsProfile/${r.referalDoctorDbId}" 
+                                            let ccLink = 'NA';
+                                            if (r.referalDoctor && r.referalDoctor !== 'Nil' && r.referalDoctorDbId) {
+                                                ccLink = `<a href="${baseUrl}Healthcareprovider/chiefDoctorsProfile/${r.referalDoctorDbId}" 
                             class="text-dark" onmouseover="this.style.textDecoration='underline'" 
                             onmouseout="this.style.textDecoration='none'">${escapeHTML(r.referalDoctor)}</a>`;
-                            }
+                                            }
 
-                            let videoMode = (r.modeOfConsultant === 'audio') ? 'NO' : 'YES';
+                                            let videoMode = (r.modeOfConsultant === 'audio') ? 'NO' : 'YES';
 
-                            tbody.insertAdjacentHTML('beforeend', `
+                                            tbody.insertAdjacentHTML('beforeend', `
                                 <tr data-bs-toggle="tooltip"
                                         data-bs-placement="top"
                                         title="${complaintText}">
@@ -2678,293 +3383,293 @@ Thank you.`;
                                     <td class="align-middle">${renderRescheduleActions(r)}</td>
                                 </tr>
                             `);
-                        });
+                                        });
 
-                        document.getElementById('entriesInfoReschedule').textContent =
-                            `Showing ${start + 1} to ${Math.min(end, filteredRescheduleList.length)} of ${filteredRescheduleList.length} entries.`;
+                                        document.getElementById('entriesInfoReschedule').textContent =
+                                            `Showing ${start + 1} to ${Math.min(end, filteredRescheduleList.length)} of ${filteredRescheduleList.length} entries.`;
 
-                        generateReschedulePagination(filteredRescheduleList.length, page);
-                        initRescheduleTooltips();
-                    }
+                                        generateReschedulePagination(filteredRescheduleList.length, page);
+                                        initRescheduleTooltips();
+                                    }
 
-                    function generateReschedulePagination(totalItems, currentPage) {
-                        const totalPages = Math.ceil(totalItems / itemsPerPageReschedule);
-                        const container = document.getElementById('paginationContainerReschedule');
-                        container.innerHTML = '';
+                                    function generateReschedulePagination(totalItems, currentPage) {
+                                        const totalPages = Math.ceil(totalItems / itemsPerPageReschedule);
+                                        const container = document.getElementById('paginationContainerReschedule');
+                                        container.innerHTML = '';
 
-                        if (totalPages <= 0) return;
+                                        if (totalPages <= 0) return;
 
-                        const ul = document.createElement('ul');
-                        ul.className = 'pagination';
+                                        const ul = document.createElement('ul');
+                                        ul.className = 'pagination';
 
-                        const prev = document.createElement('li');
-                        prev.innerHTML = `<button class="bg-light border px-3 py-2" ${currentPage === 1 ? 'disabled' : ''}>Previous</button>`;
-                        prev.onclick = () => currentPage > 1 && displayReschedulePage(currentPage - 1);
-                        ul.appendChild(prev);
+                                        const prev = document.createElement('li');
+                                        prev.innerHTML = `<button class="bg-light border px-3 py-2" ${currentPage === 1 ? 'disabled' : ''}>Previous</button>`;
+                                        prev.onclick = () => currentPage > 1 && displayReschedulePage(currentPage - 1);
+                                        ul.appendChild(prev);
 
-                        const startPage = Math.max(1, currentPage - 2);
-                        const endPage = Math.min(totalPages, startPage + 4);
+                                        const startPage = Math.max(1, currentPage - 2);
+                                        const endPage = Math.min(totalPages, startPage + 4);
 
-                        for (let i = startPage; i <= endPage; i++) {
-                            const li = document.createElement('li');
-                            li.innerHTML = `<button class="btn border px-3 py-2 ${i === currentPage ? 'text-light' : ''}"
+                                        for (let i = startPage; i <= endPage; i++) {
+                                            const li = document.createElement('li');
+                                            li.innerHTML = `<button class="btn border px-3 py-2 ${i === currentPage ? 'text-light' : ''}"
                         style="background-color:${i === currentPage ? '#00ad8e' : 'transparent'}">${i}</button>`;
-                            li.onclick = () => displayReschedulePage(i);
-                            ul.appendChild(li);
-                        }
+                                            li.onclick = () => displayReschedulePage(i);
+                                            ul.appendChild(li);
+                                        }
 
-                        const next = document.createElement('li');
-                        next.innerHTML = `<button class="border px-3 py-2" ${currentPage === totalPages ? 'disabled' : ''}>Next</button>`;
-                        next.onclick = () => currentPage < totalPages && displayReschedulePage(currentPage + 1);
-                        ul.appendChild(next);
+                                        const next = document.createElement('li');
+                                        next.innerHTML = `<button class="border px-3 py-2" ${currentPage === totalPages ? 'disabled' : ''}>Next</button>`;
+                                        next.onclick = () => currentPage < totalPages && displayReschedulePage(currentPage + 1);
+                                        ul.appendChild(next);
 
-                        container.appendChild(ul);
-                    }
+                                        container.appendChild(ul);
+                                    }
 
-                    function applyRescheduleFilters() {
-                        const search = searchBarRes.value.toLowerCase();
-                        const typeFilter = filterDropdownRes.value; // 'All', 'PATIENT', 'CC'
+                                    function applyRescheduleFilters() {
+                                        const search = searchBarRes.value.toLowerCase();
+                                        const typeFilter = filterDropdownRes.value; // 'All', 'PATIENT', 'CC'
 
-                        filteredRescheduleList = rescheduleList.filter(a => {
-                            const patientId = a.patientId?.toLowerCase() || '';
-                            const ccId = a.referalDoctor?.toLowerCase() || '';
+                                        filteredRescheduleList = rescheduleList.filter(a => {
+                                            const patientId = a.patientId?.toLowerCase() || '';
+                                            const ccId = a.referalDoctor?.toLowerCase() || '';
 
-                            const matchSearch = patientId.includes(search) || ccId.includes(search);
-                            const matchType = typeFilter === 'All' || a.appointmentType === typeFilter;
+                                            const matchSearch = patientId.includes(search) || ccId.includes(search);
+                                            const matchType = typeFilter === 'All' || a.appointmentType === typeFilter;
 
-                            return matchSearch && matchType;
-                        });
+                                            return matchSearch && matchType;
+                                        });
 
-                        if (sortByReschedule) {
-                            filteredRescheduleList.sort((a, b) => {
+                                        if (sortByReschedule) {
+                                            filteredRescheduleList.sort((a, b) => {
 
-                                if (sortByReschedule === 'dateOfAppoint') {
-                                    return sortOrderReschedule === 'asc'
-                                        ? new Date(a.dateOfAppoint) - new Date(b.dateOfAppoint)
-                                        : new Date(b.dateOfAppoint) - new Date(a.dateOfAppoint);
-                                }
+                                                if (sortByReschedule === 'dateOfAppoint') {
+                                                    return sortOrderReschedule === 'asc'
+                                                        ? new Date(a.dateOfAppoint) - new Date(b.dateOfAppoint)
+                                                        : new Date(b.dateOfAppoint) - new Date(a.dateOfAppoint);
+                                                }
 
-                                let x = a[sortByReschedule] || '';
-                                let y = b[sortByReschedule] || '';
-                                return sortOrderReschedule === 'asc' ? x.localeCompare(y) : y.localeCompare(x);
-                            });
-                        }
+                                                let x = a[sortByReschedule] || '';
+                                                let y = b[sortByReschedule] || '';
+                                                return sortOrderReschedule === 'asc' ? x.localeCompare(y) : y.localeCompare(x);
+                                            });
+                                        }
 
-                        displayReschedulePage(1);
-                    }
+                                        displayReschedulePage(1);
+                                    }
 
-                    function toggleRescheduleSort(field) {
-                        if (sortByReschedule === field) {
-                            sortOrderReschedule = sortOrderReschedule === 'asc' ? 'desc' : 'asc';
-                        } else {
-                            sortByReschedule = field;
-                            sortOrderReschedule = 'desc';
-                        }
+                                    function toggleRescheduleSort(field) {
+                                        if (sortByReschedule === field) {
+                                            sortOrderReschedule = sortOrderReschedule === 'asc' ? 'desc' : 'asc';
+                                        } else {
+                                            sortByReschedule = field;
+                                            sortOrderReschedule = 'desc';
+                                        }
 
-                        pidIndRes.textContent = sortByReschedule === 'patientId' ? (sortOrderReschedule === 'asc' ? '🡱' : '🡳') : '';
-                        dateIndRes.textContent = sortByReschedule === 'dateOfAppoint' ? (sortOrderReschedule === 'asc' ? '🡱' : '🡳') : '';
+                                        pidIndRes.textContent = sortByReschedule === 'patientId' ? (sortOrderReschedule === 'asc' ? '🡱' : '🡳') : '';
+                                        dateIndRes.textContent = sortByReschedule === 'dateOfAppoint' ? (sortOrderReschedule === 'asc' ? '🡱' : '🡳') : '';
 
-                        applyRescheduleFilters();
-                    }
+                                        applyRescheduleFilters();
+                                    }
 
-                    itemsDropdownRes.onchange = e => {
-                        itemsPerPageReschedule = parseInt(e.target.value);
-                        displayReschedulePage(1);
-                    };
+                                    itemsDropdownRes.onchange = e => {
+                                        itemsPerPageReschedule = parseInt(e.target.value);
+                                        displayReschedulePage(1);
+                                    };
 
-                    searchBarRes.oninput = () => {
-                        clearSearchRes.style.display = searchBarRes.value ? 'block' : 'none';
-                        applyRescheduleFilters();
-                    };
+                                    searchBarRes.oninput = () => {
+                                        clearSearchRes.style.display = searchBarRes.value ? 'block' : 'none';
+                                        applyRescheduleFilters();
+                                    };
 
-                    clearSearchRes.onclick = () => {
-                        searchBarRes.value = '';
-                        clearSearchRes.style.display = 'none';
-                        applyRescheduleFilters();
-                    };
+                                    clearSearchRes.onclick = () => {
+                                        searchBarRes.value = '';
+                                        clearSearchRes.style.display = 'none';
+                                        applyRescheduleFilters();
+                                    };
 
-                    filterDropdownRes.onchange = applyRescheduleFilters;
+                                    filterDropdownRes.onchange = applyRescheduleFilters;
 
-                    sortPidRes.onclick = () => toggleRescheduleSort('patientId');
-                    sortDateRes.onclick = () => toggleRescheduleSort('dateOfAppoint');
+                                    sortPidRes.onclick = () => toggleRescheduleSort('patientId');
+                                    sortDateRes.onclick = () => toggleRescheduleSort('dateOfAppoint');
 
-                    applyRescheduleFilters();
+                                    applyRescheduleFilters();
 
-                    function initRescheduleTooltips() {
-                        const tooltipTriggerList = [].slice.call(
-                            document.querySelectorAll('[data-bs-toggle="tooltip"]')
-                        );
+                                    function initRescheduleTooltips() {
+                                        const tooltipTriggerList = [].slice.call(
+                                            document.querySelectorAll('[data-bs-toggle="tooltip"]')
+                                        );
 
-                        tooltipTriggerList.forEach(el => {
-                            if (bootstrap.Tooltip.getInstance(el)) {
-                                bootstrap.Tooltip.getInstance(el).dispose();
-                            }
+                                        tooltipTriggerList.forEach(el => {
+                                            if (bootstrap.Tooltip.getInstance(el)) {
+                                                bootstrap.Tooltip.getInstance(el).dispose();
+                                            }
 
-                            new bootstrap.Tooltip(el, {
-                                placement: 'top',
-                                html: false,
-                                trigger: 'hover',
-                                container: 'body'
-                            });
-                        });
-                    }
-                </script>
+                                            new bootstrap.Tooltip(el, {
+                                                placement: 'top',
+                                                html: false,
+                                                trigger: 'hover',
+                                                container: 'body'
+                                            });
+                                        });
+                                    }
+                                </script>
 
-                <!-- Completed Appointment Section -->
-                <section>
-                    <div class="card rounded mt-4">
-                        <div class="d-sm-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
-                            <p style="font-size: 24px; font-weight: 500">
-                                Completed Online Appointments </p>
-                            <p class="px-3 pt-1" id="completedCount"
-                                style="font-size:16px;color: #00ad8e;border:2px solid #00ad8e;border-radius:50%;">
-                                0 </p>
-                        </div>
+                                <!-- Completed Appointment Section -->
+                                <section>
+                                    <div class="card rounded mt-4">
+                                        <div class="d-sm-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
+                                            <p style="font-size: 24px; font-weight: 500">
+                                                Completed Online Appointments </p>
+                                            <p class="px-3 pt-1" id="completedCount"
+                                                style="font-size:16px;color: #00ad8e;border:2px solid #00ad8e;border-radius:50%;">
+                                                0 </p>
+                                        </div>
 
-                        <div class="card-body px-4">
-                            <!-- Date Header -->
-                            <div class="col-md-6 mx-auto d-flex justify-content-between align-items-center mb-3"
-                                style="background-color:#fff;color:#00ad8e;border-radius:12px;padding:10px 20px;border:2px solid #00ad8e;">
+                                        <div class="card-body px-4">
+                                            <!-- Date Header -->
+                                            <div class="col-md-6 mx-auto d-flex justify-content-between align-items-center mb-3"
+                                                style="background-color:#fff;color:#00ad8e;border-radius:12px;padding:10px 20px;border:2px solid #00ad8e;">
 
-                                <button id="prevDayBtnCompleted" class="btn btn-link fw-bold p-0"
-                                    style="font-size:1.5rem;color:#00ad8e;">
-                                    <i class="bi bi-chevron-left"></i>
-                                </button>
+                                                <button id="prevDayBtnCompleted" class="btn btn-link fw-bold p-0"
+                                                    style="font-size:1.5rem;color:#00ad8e;">
+                                                    <i class="bi bi-chevron-left"></i>
+                                                </button>
 
-                                <div class="text-center">
-                                    <h5 class="mb-0 fw-semibold d-flex align-items-center gap-2 justify-content-center">
-                                        <span id="completedAppointmentsDate"></span>
-                                        <input type="date" id="completedCalendar"
-                                            style="opacity:0;position:absolute;pointer-events:none">
-                                        <i class="bi bi-calendar-event ms-md-3 ms-1" id="completedCalendarIcon"
-                                            style="cursor:pointer;font-size:1.5rem"></i>
-                                    </h5>
-                                    <small id="completedAppointmentsDay"></small>
-                                </div>
+                                                <div class="text-center">
+                                                    <h5 class="mb-0 fw-semibold d-flex align-items-center gap-2 justify-content-center">
+                                                        <span id="completedAppointmentsDate"></span>
+                                                        <input type="date" id="completedCalendar"
+                                                            style="opacity:0;position:absolute;pointer-events:none">
+                                                        <i class="bi bi-calendar-event ms-md-3 ms-1" id="completedCalendarIcon"
+                                                            style="cursor:pointer;font-size:1.5rem"></i>
+                                                    </h5>
+                                                    <small id="completedAppointmentsDay"></small>
+                                                </div>
 
-                                <button id="nextDayBtnCompleted" class="btn btn-link fw-bold p-0"
-                                    style="font-size:1.5rem;color:#00ad8e;">
-                                    <i class="bi bi-chevron-right"></i>
-                                </button>
-                            </div>
+                                                <button id="nextDayBtnCompleted" class="btn btn-link fw-bold p-0"
+                                                    style="font-size:1.5rem;color:#00ad8e;">
+                                                    <i class="bi bi-chevron-right"></i>
+                                                </button>
+                                            </div>
 
-                            <!-- Table -->
-                            <div class="table-responsive" style="max-height:300px;">
-                                <table class="table text-center table-hoverr">
-                                    <thead>
-                                        <tr style="color:#000;font-weight:700;">
-                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">S.NO
-                                            </th>
-                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">APP
-                                                WITH</th>
-                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">CC ID
-                                            </th>
-                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">VIDEO
-                                            </th>
-                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">
-                                                PATIENT ID
-                                            </th>
-                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">DATE
-                                            </th>
-                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">TIME
-                                            </th>
-                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">
-                                                COMPLAINT
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="completedTableBody">
-                                        <!-- Data loaded here -->
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </section>
+                                            <!-- Table -->
+                                            <div class="table-responsive" style="max-height:300px;">
+                                                <table class="table text-center table-hoverr">
+                                                    <thead>
+                                                        <tr style="color:#000;font-weight:700;">
+                                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">S.NO
+                                                            </th>
+                                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">APP
+                                                                WITH</th>
+                                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">CC ID
+                                                            </th>
+                                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">VIDEO
+                                                            </th>
+                                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">
+                                                                PATIENT ID
+                                                            </th>
+                                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">DATE
+                                                            </th>
+                                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">TIME
+                                                            </th>
+                                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">
+                                                                COMPLAINT
+                                                            </th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="completedTableBody">
+                                                        <!-- Data loaded here -->
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </section>
 
-                <!-- Completed Appointments Script -->
-                <script>
-                    document.addEventListener('DOMContentLoaded', function () {
-                        const dateEl = document.getElementById('completedAppointmentsDate');
-                        const dayEl = document.getElementById('completedAppointmentsDay');
-                        const prevBtn = document.getElementById('prevDayBtnCompleted');
-                        const nextBtn = document.getElementById('nextDayBtnCompleted');
-                        const tbody = document.getElementById('completedTableBody');
-                        const countEl = document.getElementById('completedCount');
-                        const calIn = document.getElementById('completedCalendar');
-                        const calIcon = document.getElementById('completedCalendarIcon');
+                                <!-- Completed Appointments Script -->
+                                <script>
+                                    document.addEventListener('DOMContentLoaded', function () {
+                                        const dateEl = document.getElementById('completedAppointmentsDate');
+                                        const dayEl = document.getElementById('completedAppointmentsDay');
+                                        const prevBtn = document.getElementById('prevDayBtnCompleted');
+                                        const nextBtn = document.getElementById('nextDayBtnCompleted');
+                                        const tbody = document.getElementById('completedTableBody');
+                                        const countEl = document.getElementById('completedCount');
+                                        const calIn = document.getElementById('completedCalendar');
+                                        const calIcon = document.getElementById('completedCalendarIcon');
 
-                        let currentDate = new Date();
+                                        let currentDate = new Date();
 
-                        const baseUrl = '<?= base_url("Healthcareprovider/getCompletedAppointments") ?>';
+                                        const baseUrl = '<?= base_url("Healthcareprovider/getCompletedAppointments") ?>';
 
-                        function formatDate(date) {
-                            return date.toLocaleDateString('en-GB', {
-                                day: '2-digit', month: 'short', year: 'numeric'
-                            }).replace(/ /g, ' ');
-                        }
+                                        function formatDate(date) {
+                                            return date.toLocaleDateString('en-GB', {
+                                                day: '2-digit', month: 'short', year: 'numeric'
+                                            }).replace(/ /g, ' ');
+                                        }
 
-                        function formatApiDate(date) {
-                            return date.toISOString().split('T')[0];
-                        }
+                                        function formatApiDate(date) {
+                                            return date.toISOString().split('T')[0];
+                                        }
 
-                        function formatConsultDate(dateStr) {
-                            if (!dateStr) return '-';
-                            const date = new Date(dateStr + 'T00:00:00');
-                            return date.toLocaleDateString('en-GB', {
-                                day: '2-digit', month: 'short', year: 'numeric'
-                            }).replace(/ /g, '-');
-                        }
+                                        function formatConsultDate(dateStr) {
+                                            if (!dateStr) return '-';
+                                            const date = new Date(dateStr + 'T00:00:00');
+                                            return date.toLocaleDateString('en-GB', {
+                                                day: '2-digit', month: 'short', year: 'numeric'
+                                            }).replace(/ /g, '-');
+                                        }
 
-                        function updateHeader() {
-                            dateEl.textContent = formatDate(currentDate);
-                            dayEl.textContent = currentDate.toLocaleDateString('en-US', { weekday: 'long' });
-                            calIn.value = formatApiDate(currentDate);
-                        }
+                                        function updateHeader() {
+                                            dateEl.textContent = formatDate(currentDate);
+                                            dayEl.textContent = currentDate.toLocaleDateString('en-US', { weekday: 'long' });
+                                            calIn.value = formatApiDate(currentDate);
+                                        }
 
-                        function loadCompletedAppointments() {
-                            updateHeader();
-                            tbody.innerHTML = `<tr><td colspan="8" class="text-center py-4">Loading...</td></tr>`;
-                            countEl.textContent = 0;
+                                        function loadCompletedAppointments() {
+                                            updateHeader();
+                                            tbody.innerHTML = `<tr><td colspan="8" class="text-center py-4">Loading...</td></tr>`;
+                                            countEl.textContent = 0;
 
-                            fetch(`${baseUrl}?date=${formatApiDate(currentDate)}`)
-                                .then(r => r.json())
-                                .then(res => {
-                                    if (res.success && res.data.length > 0) {
-                                        renderTable(res.data);
-                                        countEl.textContent = res.data.length;
-                                    } else {
-                                        tbody.innerHTML = `
+                                            fetch(`${baseUrl}?date=${formatApiDate(currentDate)}`)
+                                                .then(r => r.json())
+                                                .then(res => {
+                                                    if (res.success && res.data.length > 0) {
+                                                        renderTable(res.data);
+                                                        countEl.textContent = res.data.length;
+                                                    } else {
+                                                        tbody.innerHTML = `
                         <tr>
                             <td colspan="8" class="text-center text-muted py-4">
                                 No completed online appointments
                             </td>
                         </tr>`;
-                                    }
-                                })
-                                .catch(() => {
-                                    tbody.innerHTML = `
+                                                    }
+                                                })
+                                                .catch(() => {
+                                                    tbody.innerHTML = `
                     <tr>
                         <td colspan="8" class="text-center text-danger py-4">
                             Error loading data
                         </td>
                     </tr>`;
-                                });
-                        }
+                                                });
+                                        }
 
-                        function renderTable(data) {
-                            tbody.innerHTML = '';
-                            data.forEach((row, i) => {
-                                const tr = document.createElement('tr');
-                                const baseLink = '<?php echo base_url(); ?>';
-                                const patientLink = `<a href="${baseLink}Healthcareprovider/patientdetails/${row.patientDbId}" 
+                                        function renderTable(data) {
+                                            tbody.innerHTML = '';
+                                            data.forEach((row, i) => {
+                                                const tr = document.createElement('tr');
+                                                const baseLink = '<?php echo base_url(); ?>';
+                                                const patientLink = `<a href="${baseLink}Healthcareprovider/patientdetails/${row.patientDbId}" 
                                     class="text-dark" onmouseover="this.style.textDecoration='underline'" 
                                     onmouseout="this.style.textDecoration='none'">${escapeHTML(row.patientId)}</a>`;
-                                const ccLink = `<a href="${baseLink}Healthcareprovider/chiefDoctorsProfile/${row.referalDoctorDbId}" 
+                                                const ccLink = `<a href="${baseLink}Healthcareprovider/chiefDoctorsProfile/${row.referalDoctorDbId}" 
                                     class="text-dark" onmouseover="this.style.textDecoration='underline'" 
                                     onmouseout="this.style.textDecoration='none'">${escapeHTML(row.referalDoctor)}</a>`;
 
-                                tr.innerHTML = `
+                                                tr.innerHTML = `
                                     <td class="align-middle py-3">${i + 1}.</td>
                                     <td class="align-middle">${row.appointmentType}</td>
                                     <td class="align-middle">${ccLink}</td>
@@ -2974,1113 +3679,1113 @@ Thank you.`;
                                     <td class="align-middle"> ${row.time_12hr}</td>
                                     <td class="align-middle"> ${row.patientComplaint}</td>
                                 `;
-                                tbody.appendChild(tr);
-                            });
-                        }
+                                                tbody.appendChild(tr);
+                                            });
+                                        }
 
-                        prevBtn.onclick = () => {
-                            currentDate.setDate(currentDate.getDate() - 1);
-                            loadCompletedAppointments();
-                        };
+                                        prevBtn.onclick = () => {
+                                            currentDate.setDate(currentDate.getDate() - 1);
+                                            loadCompletedAppointments();
+                                        };
 
-                        nextBtn.onclick = () => {
-                            currentDate.setDate(currentDate.getDate() + 1);
-                            loadCompletedAppointments();
-                        };
+                                        nextBtn.onclick = () => {
+                                            currentDate.setDate(currentDate.getDate() + 1);
+                                            loadCompletedAppointments();
+                                        };
 
-                        calIcon.onclick = () => calIn.showPicker();
+                                        calIcon.onclick = () => calIn.showPicker();
 
-                        calIn.onchange = () => {
-                            currentDate = new Date(calIn.value);
-                            loadCompletedAppointments();
-                        };
+                                        calIn.onchange = () => {
+                                            currentDate = new Date(calIn.value);
+                                            loadCompletedAppointments();
+                                        };
 
-                        loadCompletedAppointments();
-                    });
-                </script>
+                                        loadCompletedAppointments();
+                                    });
+                                </script>
 
-            <?php
+                    <?php
         } else if ($method == "appointmentsForm") {
             ?>
-                    <section>
-                        <div class="card rounded">
-                            <div class="d-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
-                                <p style="font-size: 24px; font-weight: 500"> New Online Appointment</p>
-                                <a href="<?php echo base_url() . "Healthcareprovider/appointments" ?>"
-                                    class="float-end text-dark mt-2"><i class="bi bi-arrow-left"></i> Back</a>
-                            </div>
-                            <div class="card-body px-md-4 pb-4">
-                                <!-- Form  -->
-                                <div>
-                                    <div class="col-md-8">
-                                        <form action="<?php echo base_url() . "Healthcareprovider/newAppointment" ?>" method="POST"
-                                            name="patientDetails" onsubmit="return validateAppointment()"
-                                            oninput="clearErrorAppointment()">
-
-                                            <div class="form-group pb-3">
-                                                <label class="form-label fw-bold">Appointment With <span
-                                                        class="text-danger">*</span></label>
-
-                                                <select class="form-select" id="appointmentType" name="appointmentType"
-                                                    onchange="toggleAppointmentFields()"
-                                                    style="border: 2px solid #cfddf0;#c5d1e4 animation: pulse-blue 2s infinite ease-in-out;">
-                                                    <option value="">Select Appointment With</option>
-                                                    <option value="CC">CC & HCP Appointment</option>
-                                                    <option value="PATIENT">PATIENT & HCP Appointment</option>
-                                                </select>
-
-                                                <style>
-                                                    @keyframes pulse-blue {
-                                                        0% {
-                                                            box-shadow: 0 0 0 0 rgba(13, 110, 253, 0.7);
-                                                        }
-
-                                                        70% {
-                                                            box-shadow: 0 0 0 10px rgba(13, 110, 253, 0);
-                                                        }
-
-                                                        100% {
-                                                            box-shadow: 0 0 0 0 rgba(13, 110, 253, 0);
-                                                        }
-                                                    }
-                                                </style>
-                                                <small id="appointmentType_err" class="text-danger pt-1"></small>
-                                            </div>
-
-                                            <fieldset id="appointmentFormFields" disabled>
-
-                                                <div class="form-group pb-3" id="referalDoctorSection" style="display:none;">
-                                                    <label class="form-label" for="referalDoctor">Referal Doctor ID <span
-                                                            class="text-danger">*</span></label>
-                                                    <input type="text" class="form-control mb-1" id="referralDoctorSearch"
-                                                        placeholder="Search Chief Consultant Id / Name" autocomplete="off">
-                                                    <select class="form-select" name="referalDoctor" id="referalDoctor"
-                                                        oninput="adjustTimeOptions()">
-                                                        <option value="">Select Chief Consultant Id</option>
-                                                <?php foreach ($ccsId as $key => $value) { ?>
-                                                            <option
-                                                                value="<?php echo $value['ccId'] . '|' . $value['id'] . '|' . $value['gMeetLink'] ?>">
-                                                        <?php echo $value['ccId'] ?> / <?php echo $value['doctorName'] ?>
-                                                            </option>
-                                                <?php } ?>
-                                                    </select>
-                                                    <small id="referalDoctor_err" class="text-danger pt-1"></small>
-                                                </div>
-
-                                                <div class="form-group pb-3">
-                                                    <label class="form-label" for="patientId">Patient Id <span
-                                                            class="text-danger">*</span></label>
-                                                    <div class="input-group mb-1">
-                                                        <input type="text" class="form-control"
-                                                            placeholder="Search patient Id / Name" id="patientSearch"
-                                                            autocomplete="off">
-                                                        <span class="input-group-text bg-white border-start-0"><i
-                                                                class="bi bi-search"></i></span>
-                                                        <button class="btn text-light d-flex align-items-center"
-                                                            style="background-color: #00ad8e;" type="button" id="addPatientBtn"
-                                                            title="Add New Patient">
-                                                            <i class="bi bi-plus-lg me-1"></i> Add New Patient
-                                                        </button>
+                                            <section>
+                                                <div class="card rounded">
+                                                    <div class="d-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
+                                                        <p style="font-size: 24px; font-weight: 500"> New Online Appointment</p>
+                                                        <a href="<?php echo base_url() . "Healthcareprovider/appointments" ?>"
+                                                            class="float-end text-dark mt-2"><i class="bi bi-arrow-left"></i> Back</a>
                                                     </div>
-                                                    <select class="form-select" name="patientId" id="patientId">
-                                                <?php foreach ($patientsId as $value): ?>
-                                                            <option
-                                                                value="<?php echo htmlspecialchars($value['patientId'] . '|' . $value['id']); ?>">
-                                                        <?php echo htmlspecialchars($value['patientId'] . " / " . $value['firstName'] . " " . $value['lastName']); ?>
-                                                            </option>
-                                                <?php endforeach; ?>
-                                                    </select>
-                                                    <small id="patientId_err" class="text-danger pt-1"></small>
-                                                </div>
+                                                    <div class="card-body px-md-4 pb-4">
+                                                        <!-- Form  -->
+                                                        <div>
+                                                            <div class="col-md-8">
+                                                                <form action="<?php echo base_url() . "Healthcareprovider/newAppointment" ?>" method="POST"
+                                                                    name="patientDetails" onsubmit="return validateAppointment()"
+                                                                    oninput="clearErrorAppointment()">
 
-                                                <div class="form-group pb-3" id="modeSection">
-                                                    <label class="form-label" for="patientId">Enable Video? </label>
+                                                                    <div class="form-group pb-3">
+                                                                        <label class="form-label fw-bold">Appointment With <span
+                                                                                class="text-danger">*</span></label>
 
-                                                    <div class="d-flex gap-2" style="max-width: 160px;">
-                                                        <div class="flex-fill">
-                                                            <input type="radio" class="btn-check" name="appConsult" id="video"
-                                                                value="video" autocomplete="off" checked>
-                                                            <label class="btn btn-sm btn-outline-success w-100 fw-bold"
-                                                                for="video">Yes</label>
-                                                        </div>
-                                                        <div class="flex-fill">
-                                                            <input type="radio" class="btn-check" name="appConsult" id="audio"
-                                                                value="audio" autocomplete="off">
-                                                            <label class="btn btn-sm btn-outline-secondary w-100 fw-bold"
-                                                                for="audio">No</label>
-                                                        </div>
-                                                    </div>
+                                                                        <select class="form-select" id="appointmentType" name="appointmentType"
+                                                                            onchange="toggleAppointmentFields()"
+                                                                            style="border: 2px solid #cfddf0;#c5d1e4 animation: pulse-blue 2s infinite ease-in-out;">
+                                                                            <option value="">Select Appointment With</option>
+                                                                            <option value="CC">CC & HCP Appointment</option>
+                                                                            <option value="PATIENT">PATIENT & HCP Appointment</option>
+                                                                        </select>
 
-                                                    <div id="appConsult_err" class="text-danger pt-1 small"></div>
-                                                </div>
+                                                                        <style>
+                                                                            @keyframes pulse-blue {
+                                                                                0% {
+                                                                                    box-shadow: 0 0 0 0 rgba(13, 110, 253, 0.7);
+                                                                                }
 
-                                                <div class="form-group pb-3">
-                                                    <label class="form-label">Date <span class="text-danger">*</span></label>
-                                                    <input type="date" class="form-control" id="appDate" name="appDate"
-                                                        onchange="generateAllTimeSlots()">
-                                                    <small id="appDate_err" class="text-danger pt-1"></small>
-                                                </div>
+                                                                                70% {
+                                                                                    box-shadow: 0 0 0 10px rgba(13, 110, 253, 0);
+                                                                                }
 
-                                                <div class="form-group pb-1">
-                                                    <label class="form-label">Time <span class="text-danger">*</span></label>
-                                                    <input type="text" class="form-control bg-light" id="appTime" name="appTime"
-                                                        placeholder="Choose a slot below" readonly>
-                                                    <small id="appTime_err" class="text-danger pt-1"></small>
-                                                </div>
+                                                                                100% {
+                                                                                    box-shadow: 0 0 0 0 rgba(13, 110, 253, 0);
+                                                                                }
+                                                                            }
+                                                                        </style>
+                                                                        <small id="appointmentType_err" class="text-danger pt-1"></small>
+                                                                    </div>
 
-                                                <div id="allTimeSlotsWrapper" class="mt-1">
-                                                </div>
+                                                                    <fieldset id="appointmentFormFields" disabled>
 
-                                                <div class="form-group py-3">
-                                                    <label class="form-label" for="appReason">Complaint <span
-                                                            class="text-danger">*</span></label></label>
-                                                    <textarea class="form-control" id="appReason" name="appReason" rows="3"
-                                                        maxlength="250"
-                                                        placeholder="Enter complaint to book appointment"></textarea>
-                                                    <small id="appReason_err" class="text-danger pt-1"></small>
-                                                </div>
+                                                                        <div class="form-group pb-3" id="referalDoctorSection" style="display:none;">
+                                                                            <label class="form-label" for="referalDoctor">Referal Doctor ID <span
+                                                                                    class="text-danger">*</span></label>
+                                                                            <input type="text" class="form-control mb-1" id="referralDoctorSearch"
+                                                                                placeholder="Search Chief Consultant Id / Name" autocomplete="off">
+                                                                            <select class="form-select" name="referalDoctor" id="referalDoctor"
+                                                                                oninput="adjustTimeOptions()">
+                                                                                <option value="">Select Chief Consultant Id</option>
+                                                        <?php foreach ($ccsId as $key => $value) { ?>
+                                                                                            <option
+                                                                                                value="<?php echo $value['ccId'] . '|' . $value['id'] . '|' . $value['gMeetLink'] ?>">
+                                                                        <?php echo $value['ccId'] ?> / <?php echo $value['doctorName'] ?>
+                                                                                            </option>
+                                                        <?php } ?>
+                                                                            </select>
+                                                                            <small id="referalDoctor_err" class="text-danger pt-1"></small>
+                                                                        </div>
 
-                                                <!-- <div class="form-group pb-3">
+                                                                        <div class="form-group pb-3">
+                                                                            <label class="form-label" for="patientId">Patient Id <span
+                                                                                    class="text-danger">*</span></label>
+                                                                            <div class="input-group mb-1">
+                                                                                <input type="text" class="form-control"
+                                                                                    placeholder="Search patient Id / Name" id="patientSearch"
+                                                                                    autocomplete="off">
+                                                                                <span class="input-group-text bg-white border-start-0"><i
+                                                                                        class="bi bi-search"></i></span>
+                                                                                <button class="btn text-light d-flex align-items-center"
+                                                                                    style="background-color: #00ad8e;" type="button" id="addPatientBtn"
+                                                                                    title="Add New Patient">
+                                                                                    <i class="bi bi-plus-lg me-1"></i> Add New Patient
+                                                                                </button>
+                                                                            </div>
+                                                                            <select class="form-select" name="patientId" id="patientId">
+                                                        <?php foreach ($patientsId as $value): ?>
+                                                                                            <option
+                                                                                                value="<?php echo htmlspecialchars($value['patientId'] . '|' . $value['id']); ?>">
+                                                                        <?php echo htmlspecialchars($value['patientId'] . " / " . $value['firstName'] . " " . $value['lastName']); ?>
+                                                                                            </option>
+                                                        <?php endforeach; ?>
+                                                                            </select>
+                                                                            <small id="patientId_err" class="text-danger pt-1"></small>
+                                                                        </div>
+
+                                                                        <div class="form-group pb-3" id="modeSection">
+                                                                            <label class="form-label" for="patientId">Enable Video? </label>
+
+                                                                            <div class="d-flex gap-2" style="max-width: 160px;">
+                                                                                <div class="flex-fill">
+                                                                                    <input type="radio" class="btn-check" name="appConsult" id="video"
+                                                                                        value="video" autocomplete="off" checked>
+                                                                                    <label class="btn btn-sm btn-outline-success w-100 fw-bold"
+                                                                                        for="video">Yes</label>
+                                                                                </div>
+                                                                                <div class="flex-fill">
+                                                                                    <input type="radio" class="btn-check" name="appConsult" id="audio"
+                                                                                        value="audio" autocomplete="off">
+                                                                                    <label class="btn btn-sm btn-outline-secondary w-100 fw-bold"
+                                                                                        for="audio">No</label>
+                                                                                </div>
+                                                                            </div>
+
+                                                                            <div id="appConsult_err" class="text-danger pt-1 small"></div>
+                                                                        </div>
+
+                                                                        <div class="form-group pb-3">
+                                                                            <label class="form-label">Date <span class="text-danger">*</span></label>
+                                                                            <input type="date" class="form-control" id="appDate" name="appDate"
+                                                                                onchange="generateAllTimeSlots()">
+                                                                            <small id="appDate_err" class="text-danger pt-1"></small>
+                                                                        </div>
+
+                                                                        <div class="form-group pb-1">
+                                                                            <label class="form-label">Time <span class="text-danger">*</span></label>
+                                                                            <input type="text" class="form-control bg-light" id="appTime" name="appTime"
+                                                                                placeholder="Choose a slot below" readonly>
+                                                                            <small id="appTime_err" class="text-danger pt-1"></small>
+                                                                        </div>
+
+                                                                        <div id="allTimeSlotsWrapper" class="mt-1">
+                                                                        </div>
+
+                                                                        <div class="form-group py-3">
+                                                                            <label class="form-label" for="appReason">Complaint <span
+                                                                                    class="text-danger">*</span></label></label>
+                                                                            <textarea class="form-control" id="appReason" name="appReason" rows="3"
+                                                                                maxlength="250"
+                                                                                placeholder="Enter complaint to book appointment"></textarea>
+                                                                            <small id="appReason_err" class="text-danger pt-1"></small>
+                                                                        </div>
+
+                                                                        <!-- <div class="form-group pb-3">
                                                     <label class="form-label" for="pay">Payment</label>
                                                     <input type="text" class="form-control" id="pay" name="pay"
                                                         placeholder="Add payment details">
                                                 </div> -->
 
-                                                <button type="submit" id="AppSubmit" class="btn text-light float-end mt-2"
-                                                    style="background-color: #00ad8e;">Book Appointment</button>
-                                            </fieldset>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-
-                    <!--New Appoinmtent form validation -->
-                    <script>
-                        function toggleAppointmentFields() {
-                            var type = document.getElementById("appointmentType").value;
-                            var fieldset = document.getElementById("appointmentFormFields");
-                            var referalSection = document.getElementById("referalDoctorSection");
-                            const appointmentField = document.getElementById('appointmentType');
-
-                            if (type === "") {
-                                // Disable everything if no type selected
-                                if (fieldset) fieldset.disabled = true;
-                                //appointmentField.style.animation = "pulse-blue 2s infinite ease-in-out";
-                                appointmentField.style.borderColor = "#b6afaf";
-                                appointmentField.style.backgroundColor = "#f0eeee";
-                                appointmentField.style.color = "#212529";
-                            } else {
-                                // Enable form
-                                if (fieldset) fieldset.disabled = false;
-
-                                appointmentField.style.animation = "none";
-                                appointmentField.style.boxShadow = "none";
-                                appointmentField.style.borderColor = "#ebeff3"; // Reset to standard gray
-
-                                if (type === "PATIENT") {
-                                    if (referalSection) referalSection.style.display = "none";
-
-                                    appointmentField.style.backgroundColor = "#2F80ED";
-                                    appointmentField.style.color = "#ffffff";
-                                    appointmentField.style.borderColor = "#2F80ED";
-                                    document.getElementById("referalDoctor").value = "";
-                                } else if (type === "CC") {
-                                    // Show them for CC & HCP
-                                    if (referalSection) referalSection.style.display = "block";
-                                    appointmentField.style.backgroundColor = "#00ad8e";
-                                    appointmentField.style.color = "#ffffff";
-                                    appointmentField.style.borderColor = "#198754";
-                                }
-                            }
-                        }
-                        function clearErrorAppointment() {
-                            var type = document.getElementById("appointmentType").value;
-                            var patientId = document.getElementById("patientId").value;
-                            var referalDr = document.getElementById("referalDoctor").value;
-                            var date = document.getElementById("appDate").value;
-                            var time = document.getElementById("appTime").value;
-
-                            if (type != "") {
-                                document.getElementById("appointmentType_err").innerHTML = "";
-                            }
-                            if (patientId != "") {
-                                document.getElementById("patientId_err").innerHTML = "";
-                            }
-                            if (referalDr != "") {
-                                document.getElementById("referalDoctor_err").innerHTML = "";
-                            }
-                            if (date != "") {
-                                document.getElementById("appDate_err").innerHTML = "";
-                            }
-                            if (time != "") {
-                                document.getElementById("appTime_err").innerHTML = "";
-                            }
-                        }
-
-                        function validateAppointment() {
-                            var type = document.getElementById("appointmentType").value;
-                            var patientId = document.getElementById("patientId").value;
-                            var referalDr = document.getElementById("referalDoctor").value;
-                            var date = document.getElementById("appDate").value;
-                            var time = document.getElementById("appTime").value;
-                            var Reason = document.getElementById("appReason").value;
-
-                            if (type == "") {
-                                document.getElementById("appointmentType_err").innerHTML = "Please select an appointment type.";
-                                document.getElementById("appointmentType").focus();
-                                return false;
-                            } else {
-                                document.getElementById("appointmentType_err").innerHTML = "";
-                            }
-
-                            if (type !== "PATIENT") {
-                                if (referalDr == "") {
-                                    document.getElementById("referalDoctor_err").innerHTML = "Please select the referral doctor’s name.";
-                                    document.getElementById("referalDoctor").focus();
-                                    return false;
-                                } else {
-                                    document.getElementById("referalDoctor_err").innerHTML = "";
-                                }
-                            }
-
-                            if (patientId == "") {
-                                document.getElementById("patientId_err").innerHTML = "Please select the patient";
-                                document.getElementById("patientId").focus();
-                                return false;
-                            } else {
-                                document.getElementById("patientId_err").innerHTML = "";
-                            }
-
-                            if (date == "") {
-                                document.getElementById("appDate_err").innerHTML = "Please select a date.";
-                                document.getElementById("appDate").focus();
-                                return false;
-                            } else {
-                                document.getElementById("appDate_err").innerHTML = "";
-                            }
-
-                            if (time == "") {
-                                document.getElementById("appTime_err").innerHTML = "Please select a time.";
-                                document.getElementById("appTime").focus();
-                                return false;
-                            } else {
-                                document.getElementById("appTime_err").innerHTML = "";
-                            }
-
-                            if (Reason == "") {
-                                document.getElementById("appReason_err").innerHTML = "Please enter the compliant.";
-                                document.getElementById("appReason").focus();
-                                return false;
-
-                            } else {
-                                document.getElementById("appReason_err").innerHTML = "";
-                            }
-                            var submitBtn = document.getElementById("AppSubmit");
-                            if (submitBtn) {
-                                submitBtn.disabled = true;
-                                submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Processing...';
-                            }
-
-                            return true;
-                        }
-                        window.addEventListener('load', function () {
-                            toggleAppointmentFields();
-                        });
-                    </script>
-
-            <?php
-        } else if ($method == "appointmentReschedule") {
-            ?>
-                        <section>
-                            <div class="card rounded">
-                                <div class="d-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
-                                    <p style="font-size: 24px; font-weight: 500">Reschedule Online Appoitment</p>
-                                    <a href="<?php echo base_url() . "Healthcareprovider/appointments" ?>"
-                                        class="float-end text-dark mt-2"><i class="bi bi-arrow-left"></i> Back</a>
-                                </div>
-                                <div class="card-body px-md-4 pb-4">
-                                    <div>
-                                        <div class="col-md-8">
-                                    <?php
-                                    foreach ($updateAppDetails as $key => $value) {
-                                        ?>
-                                                <form action="<?php echo base_url() . "Healthcareprovider/updateAppointmentForm" ?>"
-                                                    method="POST" name="patientDetails" onsubmit="return validateAppointment()"
-                                                    oninput="clearErrorAppointment()">
-                                                    <div class="form-group pb-3">
-                                                        <label class="form-label">Appointment With </label>
-                                                        <input type="text" class="form-control" name="appointmentType" id="appointmentType"
-                                                            value="<?= $value['appointmentType'] === 'CC' ? 'CC & HCP Appointment' : 'PATIENT & HCP Appointment' ?>"
-                                                            disabled
-                                                            style="background-color: <?= $value['appointmentType'] === 'CC' ? '#67c298' : '#87aee0' ?>; 
-                                                                    color: white !important; cursor: no-drop; opacity: 1;">
-                                                    </div>
-                                                    <input type="hidden" id="appTableId" name="appTableId"
-                                                        value="<?php echo $value['id'] ?>">
-                                                    <div class="form-group pb-3">
-                                                        <label class="form-label" for="patientId">Patient Id</label>
-                                                        <input type="text" class="form-control" name="patientId" id="patientId"
-                                                            value="<?php echo $value['patientId'] ?>" disabled
-                                                            onmouseover="style='cursor: no-drop;'" onmouseout="style='cursor: ns-resize;'">
-                                                    </div>
-                                                    <div class="form-group pb-3">
-                                                        <label class="form-label" for="referalDoctor">Referal Doctor ID</label>
-                                                        <input type="text" class="form-control" id="referalDoctor" name="referalDoctor"
-                                                            value="<?php
-                                                            echo (empty($value['referalDoctor']) || $value['referalDoctor'] === 'Nil')
-                                                                ? 'NA'
-                                                                : htmlspecialchars($value['referalDoctor'], ENT_QUOTES, 'UTF-8');
-                                                            ?>" disabled onmouseover="style='cursor: no-drop;'"
-                                                            onmouseout="style='cursor: ns-resize;">
-                                                    </div>
-                                                    <div class="form-group pb-3" id="modeSection">
-                                                        <label class="form-label" for="patientId">Enable Video?</label>
-
-                                                        <div class="d-flex gap-2 pb-3" style="max-width: 100px; cursor: no-drop;">
-                                                <?php if ($value['modeOfConsultant'] == 'video'): ?>
-                                                                <div class="flex-fill">
-                                                                    <input type="radio" class="btn-check" checked disabled>
-                                                                    <label class="btn btn-sm btn-outline-success w-100 fw-bold"
-                                                                        style="cursor: no-drop;">Yes</label>
-                                                                </div>
-                                                <?php else: ?>
-                                                                <div class="flex-fill">
-                                                                    <input type="radio" class="btn-check" checked disabled>
-                                                                    <label class="btn btn-sm btn-outline-secondary w-100 fw-bold"
-                                                                        style="cursor: no-drop;">No</label>
-                                                                </div>
-                                                <?php endif; ?>
-                                                        </div>
-
-                                                        <div class="form-group pb-3">
-                                                            <label class="form-label">Date <span class="text-danger">*</span></label>
-                                                            <input type="date" class="form-control" id="appDate" name="appDate"
-                                                                onchange="generateAllTimeSlots()">
-                                                            <small id="appDate_err" class="text-danger pt-1"></small>
-                                                        </div>
-
-                                                        <div class="form-group pb-1">
-                                                            <label class="form-label">Time <span class="text-danger">*</span></label>
-                                                            <input type="text" class="form-control bg-light" id="appTime" name="appTime"
-                                                                placeholder="Choose a slot below" readonly>
-                                                            <small id="appTime_err" class="text-danger pt-1"></small>
-                                                        </div>
-
-                                                        <div id="allTimeSlotsWrapper" class="mt-1">
-                                                        </div>
-
-                                                        <div class="form-group py-3">
-                                                            <label class="form-label" for="appReason">Complaint</label>
-                                                            <input type="text" class="form-control" id="appReason" name="appReason"
-                                                                value="<?php echo $value['patientComplaint'] != '' ? $value['patientComplaint'] : "-"; ?>"
-                                                                disabled onmouseover="style='cursor: no-drop;'"
-                                                                onmouseout="style='cursor: ns-resize;">
-                                                        </div>
-
-                                                        <!-- <div class="form-group pb-3">
-                                                            <label class="form-label" for="pay">Payment Status</label>
-                                                            <input type="text" class="form-control" id="pay" name="pay" value="Paid" disabled
-                                                                onmouseover="style='cursor: no-drop;'" onmouseout="style='cursor: ns-resize;">
-                                                        </div> -->
-                                                        <div class="d-flex justify-content-between mt-2">
-                                                            <button type="reset" class="btn btn-secondary">Reset</button>
-                                                            <button type="submit" id="ReSubmit" class="btn text-light"
-                                                                style="background-color: #00ad8e;">Submit</button>
-                                                        </div>
-                                                </form>
-                                <?php } ?>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </section>
-
-                        <!-- validation Check for Reschedule -->
-                        <script>
-                            function clearErrorAppointment() {
-                                var date = document.getElementById("appDate").value;
-                                var dayTime = document.getElementById("dayTime").value;
-                                var time = document.getElementById("appTime").value;
-
-                                if (date != "") {
-                                    document.getElementById("appDate_err").innerHTML = "";
-                                }
-                                if (dayTime != "") {
-                                    document.getElementById("dayTime_err").innerHTML = "";
-                                }
-                                if (time != "") {
-                                    document.getElementById("appTime_err").innerHTML = "";
-                                }
-                            }
-
-                            function validateAppointment() {
-                                var date = document.getElementById("appDate").value;
-                                var time = document.getElementById("appTime").value;
-
-                                if (date == "") {
-                                    document.getElementById("appDate_err").innerHTML = "Please select a date.";
-                                    document.getElementById("appDate").focus();
-                                    return false;
-                                } else {
-                                    document.getElementById("appDate_err").innerHTML = "";
-                                }
-
-                                if (time == "") {
-                                    document.getElementById("appTime_err").innerHTML = "Please select a time.";
-                                    document.getElementById("appTime").focus();
-                                    return false;
-                                } else {
-                                    document.getElementById("appTime_err").innerHTML = "";
-                                }
-
-                                var submitBtn = document.getElementById("ReSubmit");
-                                if (submitBtn) {
-                                    submitBtn.disabled = true;
-                                    submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Processing...';
-                                }
-                                return true;
-                            }
-                        </script>
-            <?php
-
-
-        } else if ($method == "chiefDoctors") {
-            ?>
-                            <section>
-                                <div class="card rounded">
-                                    <div class="d-sm-flex justify-content-between p-3">
-                                        <p class="ps-2 m-0" style="font-size: 24px; font-weight: 500">
-                                            Chief Doctors
-                                        </p>
-                                        <div class="input-group pt-2 pt-sm-0" style="width:250px;">
-                                            <span class="input-group-text" id="searchIcon">
-                                                <i class="bi bi-search"></i>
-                                            </span>
-                                            <input type="text" id="searchInputChiefDoctor" class="form-control" placeholder="Search by name"
-                                                aria-describedby="searchIcon">
-                                            <button class="btn btn-outline-secondary" type="button" id="clearSearchChiefDoctor">
-                                                <i class="bi bi-x"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-
-                <?php if (isset($ccDetails[0]['id'])) { ?>
-
-                                    <div class="container">
-                                        <div class="row justify-content-center" id="doctorContainer">
-                                        </div>
-
-                                        <div class="pagination justify-content-center mt-3" id="paginationContainer">
-                                        </div>
-                                    </div>
-                <?php } else { ?>
-                                    <h5 class="card text-center p-3"><b>No Records Found.</b> </h5>
-                <?php } ?>
-                            </section>
-
-                            <script>
-                                const itemsPerPage = 6;
-                                const ccDetails = <?php echo json_encode($ccDetails); ?>;
-                                let filteredDetails = ccDetails;
-                                const initialPage = parseInt(localStorage.getItem('currentPage')) || 1;
-
-                                function displayPage(page) {
-                                    localStorage.setItem('currentPage', page);
-                                    const start = (page - 1) * itemsPerPage;
-                                    const end = start + itemsPerPage;
-                                    const itemsToShow = filteredDetails.slice(start, end);
-
-                                    const doctorContainer = document.getElementById('doctorContainer');
-                                    doctorContainer.innerHTML = '';
-
-                                    if (itemsToShow.length === 0) {
-                                        const noMatchesDiv = document.createElement('div');
-                                        noMatchesDiv.className = 'col-12 text-center';
-                                        noMatchesDiv.innerHTML = '<p>No matches found.</p>';
-                                        doctorContainer.appendChild(noMatchesDiv);
-                                    } else {
-                                        itemsToShow.forEach(value => {
-                                            const doctorItem = document.createElement('div');
-                                            doctorItem.className = 'card col-lg-4 m-3 chief-doctor-item';
-                                            doctorItem.innerHTML =
-                                                '<div class=\'d-sm-flex justify-content-evenly text-center p-4\'>' +
-                                                '<img src="' + (value.ccPhoto ? '<?php echo base_url(); ?>uploads/' + value.ccPhoto : '<?php echo base_url(); ?>assets/BlankProfile.jpg') +
-                                                'alt="Profile Photo" width="122" height="122" class="rounded-circle my-auto" ' +
-                                                'onerror="this.onerror=null;this.src=\'<?php echo base_url(); ?>assets/BlankProfile.jpg\';">' +
-                                                '<div>' +
-                                                '<p class=\'card-title\'><b>' + value.doctorName + '</b> /<br>' + value.ccId + '</p>' +
-                                                '<p style=\'color: #00ad8e;\'><b>' + value.specialization + '</b></p>' +
-                                                '<a href=\'<?php echo base_url(); ?>Healthcareprovider/chiefDoctorsProfile/' + value.id + '\' ' +
-                                                'class=\'btn btn-secondary\'>Full Details</a>' +
-                                                '</div>' +
-                                                '</div>';
-                                            doctorContainer.appendChild(doctorItem);
-                                        });
-                                    }
-
-                                    generatePagination(filteredDetails.length, page);
-                                }
-
-                                function generatePagination(totalItems, currentPage) {
-                                    const totalPages = Math.ceil(totalItems / itemsPerPage);
-                                    const paginationContainer = document.getElementById('paginationContainer');
-                                    paginationContainer.innerHTML = '';
-
-                                    const ul = document.createElement('ul');
-                                    ul.className = 'pagination';
-
-                                    const prevLi = document.createElement('li');
-                                    prevLi.innerHTML =
-                                        '<a href=\'#\'>' +
-                                        '<button type=\'button\' class=\'bg-light border px-3 py-2\' ' + (currentPage === 1 ? 'disabled' : '') + '>&lt;</button>' +
-                                        '</a>';
-                                    prevLi.onclick = () => {
-                                        if (currentPage > 1) displayPage(currentPage - 1);
-                                    };
-                                    ul.appendChild(prevLi);
-
-                                    for (let i = 1; i <= totalPages; i++) {
-                                        const li = document.createElement('li');
-                                        li.innerHTML =
-                                            '<a href=\'#\'>' +
-                                            '<button type=\'button\' class=\'btn border px-3 py-2 ' + (i === currentPage ? 'btn-secondary text-light' : '') + '\'>' + i + '</button>' +
-                                            '</a>';
-                                        li.onclick = () => displayPage(i);
-                                        ul.appendChild(li);
-                                    }
-
-                                    const nextLi = document.createElement('li');
-                                    nextLi.innerHTML =
-                                        '<a href=\'#\'>' +
-                                        '<button type=\'button\' class=\'bg-light border px-3 py-2\' ' + (currentPage === totalPages ? 'disabled' : '') + '>&gt;</button>' +
-                                        '</a>';
-                                    nextLi.onclick = () => {
-                                        if (currentPage < totalPages) displayPage(currentPage + 1);
-                                    };
-                                    ul.appendChild(nextLi);
-
-                                    paginationContainer.appendChild(ul);
-                                }
-
-                                document.getElementById('searchInputChiefDoctor').addEventListener('keyup', function () {
-                                    const searchQuery = this.value.toLowerCase();
-                                    filteredDetails = ccDetails.filter(item => item.doctorName.toLowerCase().includes(searchQuery));
-                                    displayPage(1);
-                                });
-
-                                document.getElementById('clearSearchChiefDoctor').addEventListener('click', function () {
-                                    document.getElementById('searchInputChiefDoctor').value = '';
-                                    filteredDetails = ccDetails;
-                                    displayPage(1);
-                                });
-
-                                displayPage(initialPage);
-                            </script>
-
-
-            <?php
-        } else if ($method == "chiefDoctorProfile") {
-            ?>
-                                <section>
-                                    <div class="card rounded">
-                                        <div class="d-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
-                                            <p style="font-size: 24px; font-weight: 500">
-                                                Chief Doctor Profile </p>
-                                            <button onclick="goBack()" class="border-0 bg-light float-end text-dark pb-3"><i
-                                                    class="bi bi-arrow-left"></i> Back</button>
-                                        </div>
-
-                                        <div class="card-body p-3 p-sm-4">
-
-                                            <div class="d-sm-flex justify-content-start mt-2 mb-5">
-                                <?php
-                                foreach ($ccDetails as $key => $value) {
-                                    ?>
-                                <?php if (isset($value['ccPhoto']) && $value['ccPhoto'] != "") { ?>
-                                                        <img src="<?php echo base_url('uploads/' . $value['ccPhoto']); ?>" alt="Profile Photo"
-                                                            width="140" height="140" class="rounded-circle"
-                                                            onerror="this.onerror=null;this.src='<?= base_url('assets/BlankProfile.jpg'); ?>';">
-                                <?php } else { ?>
-                                                        <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg" alt="Profile Photo" width="140"
-                                                            height="140" class="rounded-circle my-auto">
-                                <?php } ?>
-                                                    <div class="ps-sm-5">
-                                                        <p style="font-size:20px;font-weight:500;">Dr.
-                                        <?php echo $value['doctorName']; ?>
-                                                        </p>
-                                                        <p style="font-size:16px;font-weight:400;color:#00ad8e;">
-                                        <?php echo $value['specialization']; ?>
-                                                        </p>
-                                                        <p><a href="tel:<?php echo $value['doctorMobile']; ?>"
-                                                                style="font-size:16px;font-weight:400;"
-                                                                class="text-decoration-none text-dark fs-6">+91
-                                            <?php echo $value['doctorMobile']; ?>
-                                                            </a> | <a href="mailto:<?php echo $value['doctorMail']; ?>"
-                                                                style="font-size:16px;font-weight:400;" class="text-decoration-none text-dark fs-6">
-                                            <?php echo $value['doctorMail']; ?>
-                                                            </a></p>
-                                                    </div>
-                                                </div>
-
-                                                <p class="my-3 fs-5 fw-semibold">Profile Details</p>
-
-                                                <div class="d-md-flex pb-1">
-                                                    <p class="text-secondary col-md-3 mb-1">Years of Experience : </p>
-                                                    <p class="col-md-9 ps-2">
-                                    <?php echo $value['yearOfExperience'] ? $value['yearOfExperience'] : "-"; ?>
-                                                    </p>
-                                                </div>
-
-                                                <div class="d-md-flex pb-1">
-                                                    <p class="text-secondary col-md-3 mb-1">Qualification : </p>
-                                                    <p class="col-md-9 ps-2">
-                                    <?php echo $value['qualification'] ? $value['qualification'] : "Not provided"; ?>
-                                                    </p>
-                                                </div>
-
-                                                <div class="d-md-flex pb-1">
-                                                    <p class="text-secondary col-md-3 mb-1">Registration detail : </p>
-                                                    <p class="col-md-9 ps-2">
-                                    <?php echo $value['regDetails'] ? $value['regDetails'] : "Not provided"; ?>
-                                                    </p>
-                                                </div>
-
-                                                <div class="d-md-flex pb-1">
-                                                    <p class="text-secondary col-md-3 mb-1">Membership : </p>
-                                                    <p class="col-md-9 ps-2">
-                                    <?php echo $value['membership'] ? $value['membership'] : "Not provided"; ?>
-                                                    </p>
-                                                </div>
-
-                                                <div class="d-md-flex pb-1">
-                                                    <p class="text-secondary col-md-3 mb-1">Services : </p>
-                                                    <p class="col-md-9 ps-2">
-                                    <?php echo $value['services'] ? $value['services'] : "Not provided"; ?>
-                                                    </p>
-                                                </div>
-
-                                                <div class="d-md-flex pb-1">
-                                                    <p class="text-secondary col-md-3 mb-1">Date of Birth : </p>
-                                                    <p class="col-md-9 ps-2">
-                                    <?php echo $value['dateOfBirth'] ? $value['dateOfBirth'] : "Not provided"; ?>
-                                                    </p>
-                                                </div>
-
-                                                <div class="d-md-flex pb-1">
-                                                    <p class="text-secondary col-md-3 mb-1">Hospital / Clinic Name : </p>
-                                                    <p class="col-md-9 ps-2">
-                                    <?php echo $value['hospitalName'] ? $value['hospitalName'] : "Not provided"; ?>
-                                                    </p>
-                                                </div>
-
-                                                <div class="d-md-flex pb-1">
-                                                    <p class="text-secondary col-md-3 mb-1">Location : </p>
-                                                    <p class="col-md-9 ps-2">
-                                    <?php echo $value['location'] ? $value['location'] : "Not provided"; ?>
-                                                    </p>
-                                                </div>
-
-                                            </div>
-                    <?php } ?>
-                                    </div>
-                                </section>
-
-            <?php
-        } else if ($method == "myProfile") {
-            ?>
-                                    <section>
-                                        <div class="card rounded">
-                                            <div class="d-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
-                                                <p style="font-size: 24px; font-weight: 500"> My Profile</p>
-                                                <a href="<?php echo base_url() . "Healthcareprovider/dashboard" ?>"
-                                                    class="float-end text-dark mt-2"><i class="bi bi-arrow-left"></i> Back</a>
-                                            </div>
-                                            <div class="card-body p-3 p-sm-4">
-                            <?php
-                            foreach ($hcpDetails as $key => $value) {
-                                ?>
-                                                    <div class="d-sm-flex justify-content-start mt-2 mb-5">
-                                <?php if (isset($value['hcpPhoto']) && $value['hcpPhoto'] != "") { ?>
-                                                            <img src="<?php echo base_url('uploads/' . $value['hcpPhoto']); ?>" alt="Profile Photo"
-                                                                width="140" height="140" class="rounded-circle"
-                                                                onerror="this.onerror=null;this.src='<?= base_url('assets/BlankProfile.jpg'); ?>';">
-                                <?php } else { ?>
-                                                            <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg" alt=" Profile Photo" width="140"
-                                                                height="140" class="rounded-circle">
-                                <?php } ?>
-                                                        <div class="ps-sm-5">
-                                                            <p style="font-size:20px;font-weight:500;">Dr.
-                                        <?php echo $value['hcpName']; ?>
-                                                            </p>
-                                                            <p style="font-size:16px;font-weight:400;color:#00ad8e;">
-                                        <?php echo $value['hcpSpecialization']; ?>
-                                                            </p>
-                                                            <p><a href="tel:<?php echo $value['hcpMobile']; ?>" style="font-size:16px;font-weight:400;"
-                                                                    class="text-decoration-none text-dark fs-6">+91
-                                            <?php echo $value['hcpMobile']; ?>
-                                                                </a> | <a href="mailto:<?php echo $value['hcpMail']; ?>"
-                                                                    style="font-size:16px;font-weight:400;" class="text-decoration-none text-dark fs-6">
-                                            <?php echo $value['hcpMail']; ?>
-                                                                </a></p>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="d-flex justify-content-between mt-2 ">
-                                                        <p class="my-3 fs-5 fw-semibold">Profile Details :</p>
-                                                        <a href="<?php echo base_url() . "Healthcareprovider/editMyProfile" ?>"><i
-                                                                class="bi bi-pencil-square"></i> Edit</a>
-                                                    </div>
-
-                                                    <div class="d-md-flex pb-1">
-                                                        <p class="text-secondary col-md-3 mb-1">Years of Experience : </p>
-                                                        <p class="col-md-9 ps-2">
-                                    <?php echo $value['hcpExperience'] ? $value['hcpExperience'] : "Not provided"; ?>
-                                                        </p>
-                                                    </div>
-
-                                                    <div class="d-md-flex pb-1">
-                                                        <p class="text-secondary col-md-3 mb-1">Qualification : </p>
-                                                        <p class="col-md-9 ps-2">
-                                    <?php echo $value['hcpQualification'] ? $value['hcpQualification'] : "Not provided"; ?>
-                                                        </p>
-                                                    </div>
-
-                                                    <div class="d-md-flex pb-1">
-                                                        <p class="text-secondary col-md-3 mb-1">Date of Birth : </p>
-                                                        <p class="col-md-9 ps-2">
-                                    <?php echo $value['hcpDob'] ? $value['hcpDob'] : "Not provided"; ?>
-                                                        </p>
-                                                    </div>
-
-                                                    <div class="d-md-flex pb-1">
-                                                        <p class="text-secondary col-md-3 mb-1">Hospital / Clinic Name : </p>
-                                                        <p class="col-md-9 ps-2">
-                                    <?php echo $value['hcpHospitalName'] ? $value['hcpHospitalName'] : "Not provided"; ?>
-                                                        </p>
-                                                    </div>
-
-                                                    <div class="d-md-flex pb-1">
-                                                        <p class="text-secondary col-md-3 mb-1">Location : </p>
-                                                        <p class="col-md-9 ps-2">
-                                    <?php echo $value['hcpLocation'] ? $value['hcpLocation'] : "Not provided"; ?>
-                                                        </p>
-                                                    </div>
-
-                        <?php } ?>
-                                            </div>
-                                        </div>
-                                    </section>
-
-            <?php
-        } else if ($method == "editMyProfile") {
-            ?>
-                                        <section>
-                                            <div class="card rounded">
-                                                <div class="d-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
-                                                    <p style="font-size: 24px; font-weight: 500"> Edit Profile Details</p>
-                                                    <a href="<?php echo base_url() . "Healthcareprovider/myProfile" ?>"
-                                                        class="float-end text-dark mt-2"><i class="bi bi-arrow-left"></i> Back</a>
-                                                </div>
-                                                <div class="card-body ps-3 p-sm-4">
-                            <?php
-                            foreach ($hcpDetails as $key => $value) {
-                                ?>
-                                                        <form action="<?php echo base_url() . "Healthcareprovider/updateMyProfile" ?>"
-                                                            name="profileEditForm" name="profileEditForm" enctype="multipart/form-data" method="POST">
-                                                            <div class="position-relative">
-                                                                <img id="previewImage"
-                                                                    src="<?= isset($value['hcpPhoto']) && $value['hcpPhoto'] !== "No data"
-                                                                        ? base_url('uploads/' . $value['hcpPhoto'])
-                                                                        : base_url('assets/img/BlankProfileCircle.png') ?>"
-                                                                    alt="Profile Photo" width="150" height="150" class="rounded-circle d-block mx-auto mb-4"
-                                                                    style="box-shadow: 0px 4px 4px rgba(5, 149, 123, 0.7); outline: 1px solid white;"
-                                                                    onerror="this.onerror=null;this.src='<?= base_url('assets/BlankProfileCircle.png') ?>';">
-                                                                <input type="file" id="profilePhoto" name="profilePhoto"
-                                                                    class="fieldStyle form-control p-3 image-input d-none" accept=".png, .jpg, .jpeg">
-                                                                <a href="#" class="position-absolute rounded-circle px-2 py-1"
-                                                                    style="color: #00ad8e;border: 2px solid #00ad8e;border-radius: 50%;top: 77%; left: 52%; transform: translateX(44%); "
-                                                                    onclick="document.getElementById('profilePhoto').click();"><i
-                                                                        class="bi bi-camera"></i></a>
+                                                                        <button type="submit" id="AppSubmit" class="btn text-light float-end mt-2"
+                                                                            style="background-color: #00ad8e;">Book Appointment</button>
+                                                                    </fieldset>
+                                                                </form>
                                                             </div>
-                                                            <div class="d-md-flex justify-content-between py-3">
-                                                                <div class="col-md-6 pe-md-4 pb-3 pb-md-0">
-                                                                    <label class="form-label" for="drName">Full Name</label>
-                                                                    <input type="text" class="form-control" id="drName" name="drName"
-                                                                        value="<?php echo $value['hcpName']; ?>" placeholder="E.g. Suresh Kumar"
-                                                                        style="cursor: no-drop;" disabled readonly>
-                                                                </div>
-                                                                <div class="col-md-6 pe-md-4 pt-3 pt-md-0">
-                                                                    <label class="form-label" for="drMobile">Mobile Number</label>
-                                                                    <input type="number" class="form-control" id="drMobile" name="drMobile"
-                                                                        value="<?php echo $value['hcpMobile']; ?>" placeholder="E.g. 9632587410"
-                                                                        style="cursor: no-drop;" disabled readonly>
-                                                                </div>
-                                                            </div>
-                                                            <div class="d-md-flex justify-content-between py-3">
-                                                                <div class="col-md-6 pe-md-4 pb-3 pb-md-0">
-                                                                    <label class="form-label" for="drEmail">Email Id</label>
-                                                                    <input type="email" class="form-control" id="drEmail" name="drEmail"
-                                                                        value="<?php echo $value['hcpMail']; ?>" placeholder="E.g. example@gmail.com"
-                                                                        style="cursor: no-drop;" disabled readonly>
-                                                                </div>
-                                                                <div class="col-md-6 pe-md-4 pt-3 pt-md-0">
-                                                                    <label class="form-label" for="specialization">Specialization</label>
-                                                                    <select class="form-control" id="specialization" name="specialization"
-                                                                        style="cursor: no-drop;" disabled readonly>
-                                                                        <option value="" selected><?php echo $value['hcpSpecialization'] ?></option>
-                                                                    </select>
-                                                                </div>
-                                                            </div>
-                                                            <div class="d-md-flex justify-content-between py-3">
-                                                                <div class="col-md-6 pe-md-4 pb-3 pb-md-0">
-                                                                    <label class="form-label" for="yearOfExp">Years of Experience</label>
-                                                                    <input type="text" class="form-control" id="yearOfExp" name="yearOfExp" maxlength="25"
-                                                                        value="<?php echo $value['hcpExperience']; ?>" placeholder="E.g. 25">
-                                                                    <!-- <div id="drName_err" class="text-danger pt-1"></div> -->
-                                                                </div>
-                                                                <div class="col-md-6 pe-md-4 pt-3 pt-md-0">
-                                                                    <label class="form-label" for="qualification">Qualification</label>
-                                                                    <input type="text" class="form-control" id="qualification" name="qualification"
-                                                                        value="<?php echo $value['hcpQualification']; ?>" maxlength="90"
-                                                                        placeholder="E.g. MBBS">
-                                                                    <!-- <div id="drName_err" class="text-danger pt-1"></div> -->
-                                                                </div>
-                                                            </div>
-                                                            <div class="d-md-flex justify-content-between py-3">
-                                                                <div class="col-md-6 pe-md-4 pb-3 pb-md-0">
-                                                                    <label class="form-label" for="dob">Date of Birth</label>
-                                                                    <input type="date" class="form-control" id="dob" name="dob"
-                                                                        value="<?php echo $value['hcpDob']; ?>">
-                                                                    <!-- <div id="drName_err" class="text-danger pt-1"></div> -->
-                                                                </div>
-                                                                <div class="col-md-6 pe-md-4 pt-3 pt-md-0">
-                                                                    <label class="form-label" for="hospitalName">Hospital / Clinic Name</label>
-                                                                    <input type="text" class="form-control" id="hospitalName" name="hospitalName"
-                                                                        maxlength="90" value="<?php echo $value['hcpHospitalName']; ?>"
-                                                                        placeholder="E.g. MMCH">
-                                                                    <!-- <div id="specialization_err" class="text-danger pt-1"></div> -->
-                                                                </div>
-                                                            </div>
-                                                            <div class="d-md-flex justify-content-between py-3">
-                                                                <div class="col-md-6 pe-md-4 pb-3 pb-md-0">
-                                                                    <label class="form-label" for="location">Location</label>
-                                                                    <input type="text" class="form-control" id="location" name="location" maxlength="90"
-                                                                        value="<?php echo $value['hcpLocation']; ?>" placeholder="E.g. Erode">
-                                                                    <!-- <div id="specialization_err" class="text-danger pt-1"></div> -->
-                                                                </div>
-                                                                <div class="col-md-6 pe-md-4 pt-3 pt-md-0">
-                                                                    <label class="form-label">Password</label><br>
-                                                                    <a href="<?php echo base_url('Healthcareprovider/changePassword'); ?>"
-                                                                        class="btn text-light" style="background-color: #00ad8e;">
-                                                                        Change Password</a>
-                                                                </div>
-                                                            </div>
-                                                            <button type="reset" class="btn btn-secondary float-start mt-3">Reset</button>
-                                                            <button type="submit" class="btn float-end mt-3"
-                                                                style="color: white;background-color: #00ad8e;">Update</button>
-                                                        </form>
-                        <?php } ?>
-                                                </div>
-                                            </div>
-                                        </section>
-
-            <?php
-        } else if ($method == "passwordChange") {
-            ?>
-                                            <section>
-                                                <div class="card rounded m-md-2">
-                                                    <div class="d-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
-                                                        <p style="font-size: 24px; font-weight: 500"> Change Password</p>
-                                                        <a href="<?php echo base_url() . "Healthcareprovider/myProfile" ?>"
-                                                            class="float-end text-dark mt-2"><i class="bi bi-arrow-left"></i> Back</a>
-                                                    </div>
-                                                    <div class="card-body">
-                            <?php
-                            foreach ($hcpDetails as $key => $value) {
-                                ?>
-                                                            <form action="<?php echo base_url() . "Healthcareprovider/saveNewPassword" ?>" name="PasswordForm"
-                                                                method="POST" class="px-md-3" onsubmit="return validateNewPassword()"
-                                                                oninput="validateNewPassword()">
-                                                                <input type="hidden" name="hcpDbId" id="hcpDbId" value="<?php echo $value['id']; ?>">
-                                                                <div class="d-md-flex justify-content-between pb-3">
-                                                                    <div class="col-md-6 pe-md-4 pb-3 pb-md-0">
-                                                                        <label class="form-label pb-2" for="drName">Full Name</label>
-                                                                        <input type="text" class="form-control" id="drName" name="drName"
-                                                                            style="cursor: no-drop;" value="<?php echo $value['hcpName']; ?>"
-                                                                            placeholder="Suresh Kumar" disabled readonly>
-                                                                    </div>
-                                                                    <div class="col-md-6 pe-md-4 pt-3 pt-md-0">
-                                                                        <label class="form-label pb-2" for="drMobile">Mobile Number </label>
-                                                                        <input type="text" class="form-control" id="drMobile" name="drMobile"
-                                                                            style="cursor: no-drop;" value="<?php echo $value['hcpMobile']; ?>"
-                                                                            placeholder="9632587410" disabled readonly>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="d-md-flex justify-content-between pt-3">
-                                                                    <div class="col-md-6 pe-md-4 pb-3 pb-md-0">
-                                                                        <label class="form-label pb-2" for="drEmail">Email Id</label>
-                                                                        <div class="">
-                                                                            <input type="email" class="form-control" id="drEmail" name="drEmail"
-                                                                                style="cursor: no-drop;" value="<?php echo $value['hcpMail']; ?>"
-                                                                                placeholder="example@gmail.com" disabled readonly>
-                                                                        </div>
-                                                                        <p type="button" class="float-end mt-2 m-0 p-0" style="color: #00ad8e;"
-                                                                            id="sendEmailOtpBtn" onclick="sendEmailOtp()"
-                                                                            onmouseover="this.style.textDecoration='underline'"
-                                                                            onmouseout="this.style.textDecoration='none'">Send
-                                                                            OTP</p>
-                                                                        <small id="emailOtpStatus" class="text-success"></small>
-                                                                    </div>
-                                                                    <div class="col-md-6 pe-md-4 pt-3 pt-md-0">
-                                                                        <label for="emailOtp" class="form-label pb-2">Enter OTP <span
-                                                                                class="text-danger">*</span></label>
-                                                                        <input type="text" id="emailOtp" maxlength="6" class="form-control"
-                                                                            placeholder="Enter OTP" disabled>
-                                                                        <small id="emailOtpError" class="text-danger"></small>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="d-md-flex justify-content-between py-3">
-                                                                    <div class="col-md-6 pe-md-4 pb-3 pb-md-0">
-                                                                        <label class="form-label pb-2" for="drNewPassword">New Password <span
-                                                                                class="text-danger">*</span></label>
-                                                                        <div style="position: relative;">
-                                                                            <input type="password" class="form-control" id="drNewPassword" maxlength="20"
-                                                                                name="drNewPassword" placeholder="Enter New Password">
-                                                                            <i class="bi bi-eye-fill" onclick="togglePasswordVisibility('drNewPassword', this)"
-                                                                                style="position: absolute; right: 20px;top: 50%;transform: translateY(-50%);cursor: pointer;"></i>
-                                                                        </div>
-                                                                        <small id="passwordError" class="text-danger"></small>
-                                                                    </div>
-                                                                    <div class="col-md-6 pe-md-4 pt-3 pt-md-0">
-                                                                        <label class="form-label pb-2" for="drCnfmPassword">Confirm Password <span
-                                                                                class="text-danger">*</span></label>
-                                                                        <div style="position: relative;">
-                                                                            <input type="password" class="form-control" id="drCnfmPassword" maxlength="20"
-                                                                                name="drCnfmPassword" placeholder="Re-Enter New Password">
-                                                                            <i class="bi bi-eye-fill" onclick="togglePasswordVisibility('drCnfmPassword', this)"
-                                                                                style="position: absolute; right: 20px;top: 50%;transform: translateY(-50%);cursor: pointer;"></i>
-                                                                        </div>
-                                                                        <small id="confirmPasswordError" class="text-danger"></small>
-                                                                    </div>
-                                                                </div>
-                                                                <button type="submit" class="btn float-end mt-3"
-                                                                    style="color: white;background-color: #00ad8e;">Save</button>
-                                                            </form>
-                        <?php } ?>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </section>
 
+                                            <!--New Appoinmtent form validation -->
                                             <script>
-                                                function togglePasswordVisibility(id, icon) {
-                                                    const passwordField = document.getElementById(id);
+                                                function toggleAppointmentFields() {
+                                                    var type = document.getElementById("appointmentType").value;
+                                                    var fieldset = document.getElementById("appointmentFormFields");
+                                                    var referalSection = document.getElementById("referalDoctorSection");
+                                                    const appointmentField = document.getElementById('appointmentType');
 
-                                                    if (passwordField.type === "password") {
-                                                        passwordField.type = "text";
-                                                        icon.classList.remove('bi-eye-fill');
-                                                        icon.classList.add('bi-eye-slash-fill');
+                                                    if (type === "") {
+                                                        // Disable everything if no type selected
+                                                        if (fieldset) fieldset.disabled = true;
+                                                        //appointmentField.style.animation = "pulse-blue 2s infinite ease-in-out";
+                                                        appointmentField.style.borderColor = "#b6afaf";
+                                                        appointmentField.style.backgroundColor = "#f0eeee";
+                                                        appointmentField.style.color = "#212529";
                                                     } else {
-                                                        passwordField.type = "password";
-                                                        icon.classList.remove('bi-eye-slash-fill');
-                                                        icon.classList.add('bi-eye-fill');
+                                                        // Enable form
+                                                        if (fieldset) fieldset.disabled = false;
+
+                                                        appointmentField.style.animation = "none";
+                                                        appointmentField.style.boxShadow = "none";
+                                                        appointmentField.style.borderColor = "#ebeff3"; // Reset to standard gray
+
+                                                        if (type === "PATIENT") {
+                                                            if (referalSection) referalSection.style.display = "none";
+
+                                                            appointmentField.style.backgroundColor = "#2F80ED";
+                                                            appointmentField.style.color = "#ffffff";
+                                                            appointmentField.style.borderColor = "#2F80ED";
+                                                            document.getElementById("referalDoctor").value = "";
+                                                        } else if (type === "CC") {
+                                                            // Show them for CC & HCP
+                                                            if (referalSection) referalSection.style.display = "block";
+                                                            appointmentField.style.backgroundColor = "#00ad8e";
+                                                            appointmentField.style.color = "#ffffff";
+                                                            appointmentField.style.borderColor = "#198754";
+                                                        }
                                                     }
                                                 }
-                                            </script>
+                                                function clearErrorAppointment() {
+                                                    var type = document.getElementById("appointmentType").value;
+                                                    var patientId = document.getElementById("patientId").value;
+                                                    var referalDr = document.getElementById("referalDoctor").value;
+                                                    var date = document.getElementById("appDate").value;
+                                                    var time = document.getElementById("appTime").value;
 
-                                            <script>
-                                                function sendEmailOtp() {
-                                                    const email = document.getElementById('drEmail').value.trim();
-
-                                                    fetch("<?= base_url('Healthcareprovider/sendEmailOtp') ?>", {
-                                                        method: "POST",
-                                                        headers: {
-                                                            "Content-Type": "application/x-www-form-urlencoded"
-                                                        },
-                                                        body: `email=${encodeURIComponent(email)}`
-                                                    })
-                                                        .then(res => res.json())
-                                                        .then(data => {
-                                                            if (data.status === "success") {
-                                                                document.getElementById('emailOtp').disabled = false;
-                                                                document.getElementById('emailOtp').focus();
-                                                                document.getElementById('emailOtpStatus').textContent = "OTP sent to your email.";
-                                                                alert("OTP sent to your email.");
-                                                            } else {
-                                                                document.getElementById('emailOtpStatus').textContent = "Failed to send OTP.";
-                                                            }
-                                                        });
+                                                    if (type != "") {
+                                                        document.getElementById("appointmentType_err").innerHTML = "";
+                                                    }
+                                                    if (patientId != "") {
+                                                        document.getElementById("patientId_err").innerHTML = "";
+                                                    }
+                                                    if (referalDr != "") {
+                                                        document.getElementById("referalDoctor_err").innerHTML = "";
+                                                    }
+                                                    if (date != "") {
+                                                        document.getElementById("appDate_err").innerHTML = "";
+                                                    }
+                                                    if (time != "") {
+                                                        document.getElementById("appTime_err").innerHTML = "";
+                                                    }
                                                 }
 
-                                                document.getElementById('emailOtp').addEventListener('input', () => {
-                                                    const otp = document.getElementById('emailOtp').value.trim();
+                                                function validateAppointment() {
+                                                    var type = document.getElementById("appointmentType").value;
+                                                    var patientId = document.getElementById("patientId").value;
+                                                    var referalDr = document.getElementById("referalDoctor").value;
+                                                    var date = document.getElementById("appDate").value;
+                                                    var time = document.getElementById("appTime").value;
+                                                    var Reason = document.getElementById("appReason").value;
 
-                                                    if (otp.length === 4) {
-                                                        fetch("<?= base_url('Healthcareprovider/verifyEmailOtp') ?>", {
-                                                            method: "POST",
-                                                            headers: {
-                                                                "Content-Type": "application/x-www-form-urlencoded"
-                                                            },
-                                                            body: `otp=${otp}`
-                                                        })
-                                                            .then(res => res.json())
-                                                            .then(data => {
-                                                                if (data.status === "success") {
-                                                                    document.getElementById('emailOtpError').textContent = "";
-                                                                    document.getElementById('emailOtpStatus').textContent = "OTP verified successfully!";
-                                                                    document.getElementById('emailOtp').disabled = true;
-                                                                    document.getElementById('emailOtp').dataset.verified = "true";
-                                                                } else {
-                                                                    document.getElementById('emailOtpError').textContent = "Invalid OTP.";
-                                                                    document.getElementById('emailOtpStatus').textContent = "";
-                                                                    document.getElementById('emailOtp').dataset.verified = "false";
-                                                                }
-                                                            })
-                                                            .catch(err => {
-                                                                console.error("OTP verification error:", err);
-                                                                document.getElementById('emailOtpError').textContent = "Server error during OTP verification.";
-                                                            });
+                                                    if (type == "") {
+                                                        document.getElementById("appointmentType_err").innerHTML = "Please select an appointment type.";
+                                                        document.getElementById("appointmentType").focus();
+                                                        return false;
+                                                    } else {
+                                                        document.getElementById("appointmentType_err").innerHTML = "";
                                                     }
+
+                                                    if (type !== "PATIENT") {
+                                                        if (referalDr == "") {
+                                                            document.getElementById("referalDoctor_err").innerHTML = "Please select the referral doctor’s name.";
+                                                            document.getElementById("referalDoctor").focus();
+                                                            return false;
+                                                        } else {
+                                                            document.getElementById("referalDoctor_err").innerHTML = "";
+                                                        }
+                                                    }
+
+                                                    if (patientId == "") {
+                                                        document.getElementById("patientId_err").innerHTML = "Please select the patient";
+                                                        document.getElementById("patientId").focus();
+                                                        return false;
+                                                    } else {
+                                                        document.getElementById("patientId_err").innerHTML = "";
+                                                    }
+
+                                                    if (date == "") {
+                                                        document.getElementById("appDate_err").innerHTML = "Please select a date.";
+                                                        document.getElementById("appDate").focus();
+                                                        return false;
+                                                    } else {
+                                                        document.getElementById("appDate_err").innerHTML = "";
+                                                    }
+
+                                                    if (time == "") {
+                                                        document.getElementById("appTime_err").innerHTML = "Please select a time.";
+                                                        document.getElementById("appTime").focus();
+                                                        return false;
+                                                    } else {
+                                                        document.getElementById("appTime_err").innerHTML = "";
+                                                    }
+
+                                                    if (Reason == "") {
+                                                        document.getElementById("appReason_err").innerHTML = "Please enter the compliant.";
+                                                        document.getElementById("appReason").focus();
+                                                        return false;
+
+                                                    } else {
+                                                        document.getElementById("appReason_err").innerHTML = "";
+                                                    }
+                                                    var submitBtn = document.getElementById("AppSubmit");
+                                                    if (submitBtn) {
+                                                        submitBtn.disabled = true;
+                                                        submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Processing...';
+                                                    }
+
+                                                    return true;
+                                                }
+                                                window.addEventListener('load', function () {
+                                                    toggleAppointmentFields();
                                                 });
-
-                                                function validateNewPassword() {
-                                                    let password = document.getElementById("drNewPassword").value.trim();
-                                                    let confirmPassword = document.getElementById("drCnfmPassword").value.trim();
-                                                    let otpVerified = document.getElementById("emailOtp").dataset.verified === "true";
-
-                                                    let isValid = true;
-
-                                                    if (password === "") {
-                                                        document.getElementById("passwordError").textContent = "Please enter a new password.";
-                                                        isValid = false;
-                                                    } else if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/.test(password)) {
-                                                        document.getElementById("passwordError").textContent = "Please enter a valid password (8 to 20 characters with at least 1 uppercase letter, 1 lowercase letter, 1 number, and 1 special character).";
-                                                        isValid = false;
-                                                    } else {
-                                                        document.getElementById("passwordError").textContent = "";
-                                                    }
-
-                                                    if (confirmPassword === "") {
-                                                        document.getElementById("confirmPasswordError").textContent = "Please re-enter the password.";
-                                                        isValid = false;
-                                                    } else if (confirmPassword !== password) {
-                                                        document.getElementById("confirmPasswordError").textContent = "Passwords do not match.";
-                                                        isValid = false;
-                                                    } else {
-                                                        document.getElementById("confirmPasswordError").textContent = "";
-                                                    }
-
-                                                    if (!otpVerified) {
-                                                        document.getElementById('emailOtpError').textContent = "Please enter a valid OTP and wait for verification.";
-                                                        isValid = false;
-                                                    }
-
-                                                    return isValid;
-                                                }
                                             </script>
-            <?php
+
+                    <?php
+        } else if ($method == "appointmentReschedule") {
+            ?>
+                                                        <section>
+                                                            <div class="card rounded">
+                                                                <div class="d-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
+                                                                    <p style="font-size: 24px; font-weight: 500">Reschedule Online Appoitment</p>
+                                                                    <a href="<?php echo base_url() . "Healthcareprovider/appointments" ?>"
+                                                                        class="float-end text-dark mt-2"><i class="bi bi-arrow-left"></i> Back</a>
+                                                                </div>
+                                                                <div class="card-body px-md-4 pb-4">
+                                                                    <div>
+                                                                        <div class="col-md-8">
+                                                    <?php
+                                                    foreach ($updateAppDetails as $key => $value) {
+                                                        ?>
+                                                                                        <form action="<?php echo base_url() . "Healthcareprovider/updateAppointmentForm" ?>"
+                                                                                            method="POST" name="patientDetails" onsubmit="return validateAppointment()"
+                                                                                            oninput="clearErrorAppointment()">
+                                                                                            <div class="form-group pb-3">
+                                                                                                <label class="form-label">Appointment With </label>
+                                                                                                <input type="text" class="form-control" name="appointmentType" id="appointmentType"
+                                                                                                    value="<?= $value['appointmentType'] === 'CC' ? 'CC & HCP Appointment' : 'PATIENT & HCP Appointment' ?>"
+                                                                                                    disabled
+                                                                                                    style="background-color: <?= $value['appointmentType'] === 'CC' ? '#67c298' : '#87aee0' ?>; 
+                                                                    color: white !important; cursor: no-drop; opacity: 1;">
+                                                                                            </div>
+                                                                                            <input type="hidden" id="appTableId" name="appTableId"
+                                                                                                value="<?php echo $value['id'] ?>">
+                                                                                            <div class="form-group pb-3">
+                                                                                                <label class="form-label" for="patientId">Patient Id</label>
+                                                                                                <input type="text" class="form-control" name="patientId" id="patientId"
+                                                                                                    value="<?php echo $value['patientId'] ?>" disabled
+                                                                                                    onmouseover="style='cursor: no-drop;'" onmouseout="style='cursor: ns-resize;'">
+                                                                                            </div>
+                                                                                            <div class="form-group pb-3">
+                                                                                                <label class="form-label" for="referalDoctor">Referal Doctor ID</label>
+                                                                                                <input type="text" class="form-control" id="referalDoctor" name="referalDoctor"
+                                                                                                    value="<?php
+                                                                                                    echo (empty($value['referalDoctor']) || $value['referalDoctor'] === 'Nil')
+                                                                                                        ? 'NA'
+                                                                                                        : htmlspecialchars($value['referalDoctor'], ENT_QUOTES, 'UTF-8');
+                                                                                                    ?>" disabled onmouseover="style='cursor: no-drop;'"
+                                                                                                    onmouseout="style='cursor: ns-resize;">
+                                                                                            </div>
+                                                                                            <div class="form-group pb-3" id="modeSection">
+                                                                                                <label class="form-label" for="patientId">Enable Video?</label>
+
+                                                                                                <div class="d-flex gap-2 pb-3" style="max-width: 100px; cursor: no-drop;">
+                                                                <?php if ($value['modeOfConsultant'] == 'video'): ?>
+                                                                                                                <div class="flex-fill">
+                                                                                                                    <input type="radio" class="btn-check" checked disabled>
+                                                                                                                    <label class="btn btn-sm btn-outline-success w-100 fw-bold"
+                                                                                                                        style="cursor: no-drop;">Yes</label>
+                                                                                                                </div>
+                                                                <?php else: ?>
+                                                                                                                <div class="flex-fill">
+                                                                                                                    <input type="radio" class="btn-check" checked disabled>
+                                                                                                                    <label class="btn btn-sm btn-outline-secondary w-100 fw-bold"
+                                                                                                                        style="cursor: no-drop;">No</label>
+                                                                                                                </div>
+                                                                <?php endif; ?>
+                                                                                                </div>
+
+                                                                                                <div class="form-group pb-3">
+                                                                                                    <label class="form-label">Date <span class="text-danger">*</span></label>
+                                                                                                    <input type="date" class="form-control" id="appDate" name="appDate"
+                                                                                                        onchange="generateAllTimeSlots()">
+                                                                                                    <small id="appDate_err" class="text-danger pt-1"></small>
+                                                                                                </div>
+
+                                                                                                <div class="form-group pb-1">
+                                                                                                    <label class="form-label">Time <span class="text-danger">*</span></label>
+                                                                                                    <input type="text" class="form-control bg-light" id="appTime" name="appTime"
+                                                                                                        placeholder="Choose a slot below" readonly>
+                                                                                                    <small id="appTime_err" class="text-danger pt-1"></small>
+                                                                                                </div>
+
+                                                                                                <div id="allTimeSlotsWrapper" class="mt-1">
+                                                                                                </div>
+
+                                                                                                <div class="form-group py-3">
+                                                                                                    <label class="form-label" for="appReason">Complaint</label>
+                                                                                                    <input type="text" class="form-control" id="appReason" name="appReason"
+                                                                                                        value="<?php echo $value['patientComplaint'] != '' ? $value['patientComplaint'] : "-"; ?>"
+                                                                                                        disabled onmouseover="style='cursor: no-drop;'"
+                                                                                                        onmouseout="style='cursor: ns-resize;">
+                                                                                                </div>
+
+                                                                                                <!-- <div class="form-group pb-3">
+                                                            <label class="form-label" for="pay">Payment Status</label>
+                                                            <input type="text" class="form-control" id="pay" name="pay" value="Paid" disabled
+                                                                onmouseover="style='cursor: no-drop;'" onmouseout="style='cursor: ns-resize;">
+                                                        </div> -->
+                                                                                                <div class="d-flex justify-content-between mt-2">
+                                                                                                    <button type="reset" class="btn btn-secondary">Reset</button>
+                                                                                                    <button type="submit" id="ReSubmit" class="btn text-light"
+                                                                                                        style="background-color: #00ad8e;">Submit</button>
+                                                                                                </div>
+                                                                                        </form>
+                                        <?php } ?>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </section>
+
+                                                        <!-- validation Check for Reschedule -->
+                                                        <script>
+                                                            function clearErrorAppointment() {
+                                                                var date = document.getElementById("appDate").value;
+                                                                var dayTime = document.getElementById("dayTime").value;
+                                                                var time = document.getElementById("appTime").value;
+
+                                                                if (date != "") {
+                                                                    document.getElementById("appDate_err").innerHTML = "";
+                                                                }
+                                                                if (dayTime != "") {
+                                                                    document.getElementById("dayTime_err").innerHTML = "";
+                                                                }
+                                                                if (time != "") {
+                                                                    document.getElementById("appTime_err").innerHTML = "";
+                                                                }
+                                                            }
+
+                                                            function validateAppointment() {
+                                                                var date = document.getElementById("appDate").value;
+                                                                var time = document.getElementById("appTime").value;
+
+                                                                if (date == "") {
+                                                                    document.getElementById("appDate_err").innerHTML = "Please select a date.";
+                                                                    document.getElementById("appDate").focus();
+                                                                    return false;
+                                                                } else {
+                                                                    document.getElementById("appDate_err").innerHTML = "";
+                                                                }
+
+                                                                if (time == "") {
+                                                                    document.getElementById("appTime_err").innerHTML = "Please select a time.";
+                                                                    document.getElementById("appTime").focus();
+                                                                    return false;
+                                                                } else {
+                                                                    document.getElementById("appTime_err").innerHTML = "";
+                                                                }
+
+                                                                var submitBtn = document.getElementById("ReSubmit");
+                                                                if (submitBtn) {
+                                                                    submitBtn.disabled = true;
+                                                                    submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Processing...';
+                                                                }
+                                                                return true;
+                                                            }
+                                                        </script>
+                    <?php
+
+
+        } else if ($method == "chiefDoctors") {
+            ?>
+                                                                    <section>
+                                                                        <div class="card rounded">
+                                                                            <div class="d-sm-flex justify-content-between p-3">
+                                                                                <p class="ps-2 m-0" style="font-size: 24px; font-weight: 500">
+                                                                                    Chief Doctors
+                                                                                </p>
+                                                                                <div class="input-group pt-2 pt-sm-0" style="width:250px;">
+                                                                                    <span class="input-group-text" id="searchIcon">
+                                                                                        <i class="bi bi-search"></i>
+                                                                                    </span>
+                                                                                    <input type="text" id="searchInputChiefDoctor" class="form-control" placeholder="Search by name"
+                                                                                        aria-describedby="searchIcon">
+                                                                                    <button class="btn btn-outline-secondary" type="button" id="clearSearchChiefDoctor">
+                                                                                        <i class="bi bi-x"></i>
+                                                                                    </button>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+                        <?php if (isset($ccDetails[0]['id'])) { ?>
+
+                                                                                    <div class="container">
+                                                                                        <div class="row justify-content-center" id="doctorContainer">
+                                                                                        </div>
+
+                                                                                        <div class="pagination justify-content-center mt-3" id="paginationContainer">
+                                                                                        </div>
+                                                                                    </div>
+                        <?php } else { ?>
+                                                                                    <h5 class="card text-center p-3"><b>No Records Found.</b> </h5>
+                        <?php } ?>
+                                                                    </section>
+
+                                                                    <script>
+                                                                        const itemsPerPage = 6;
+                                                                        const ccDetails = <?php echo json_encode($ccDetails); ?>;
+                                                                        let filteredDetails = ccDetails;
+                                                                        const initialPage = parseInt(localStorage.getItem('currentPage')) || 1;
+
+                                                                        function displayPage(page) {
+                                                                            localStorage.setItem('currentPage', page);
+                                                                            const start = (page - 1) * itemsPerPage;
+                                                                            const end = start + itemsPerPage;
+                                                                            const itemsToShow = filteredDetails.slice(start, end);
+
+                                                                            const doctorContainer = document.getElementById('doctorContainer');
+                                                                            doctorContainer.innerHTML = '';
+
+                                                                            if (itemsToShow.length === 0) {
+                                                                                const noMatchesDiv = document.createElement('div');
+                                                                                noMatchesDiv.className = 'col-12 text-center';
+                                                                                noMatchesDiv.innerHTML = '<p>No matches found.</p>';
+                                                                                doctorContainer.appendChild(noMatchesDiv);
+                                                                            } else {
+                                                                                itemsToShow.forEach(value => {
+                                                                                    const doctorItem = document.createElement('div');
+                                                                                    doctorItem.className = 'card col-lg-4 m-3 chief-doctor-item';
+                                                                                    doctorItem.innerHTML =
+                                                                                        '<div class=\'d-sm-flex justify-content-evenly text-center p-4\'>' +
+                                                                                        '<img src="' + (value.ccPhoto ? '<?php echo base_url(); ?>uploads/' + value.ccPhoto : '<?php echo base_url(); ?>assets/BlankProfile.jpg') +
+                                                                                        'alt="Profile Photo" width="122" height="122" class="rounded-circle my-auto" ' +
+                                                                                        'onerror="this.onerror=null;this.src=\'<?php echo base_url(); ?>assets/BlankProfile.jpg\';">' +
+                                                                                        '<div>' +
+                                                                                        '<p class=\'card-title\'><b>' + value.doctorName + '</b> /<br>' + value.ccId + '</p>' +
+                                                                                        '<p style=\'color: #00ad8e;\'><b>' + value.specialization + '</b></p>' +
+                                                                                        '<a href=\'<?php echo base_url(); ?>Healthcareprovider/chiefDoctorsProfile/' + value.id + '\' ' +
+                                                                                        'class=\'btn btn-secondary\'>Full Details</a>' +
+                                                                                        '</div>' +
+                                                                                        '</div>';
+                                                                                    doctorContainer.appendChild(doctorItem);
+                                                                                });
+                                                                            }
+
+                                                                            generatePagination(filteredDetails.length, page);
+                                                                        }
+
+                                                                        function generatePagination(totalItems, currentPage) {
+                                                                            const totalPages = Math.ceil(totalItems / itemsPerPage);
+                                                                            const paginationContainer = document.getElementById('paginationContainer');
+                                                                            paginationContainer.innerHTML = '';
+
+                                                                            const ul = document.createElement('ul');
+                                                                            ul.className = 'pagination';
+
+                                                                            const prevLi = document.createElement('li');
+                                                                            prevLi.innerHTML =
+                                                                                '<a href=\'#\'>' +
+                                                                                '<button type=\'button\' class=\'bg-light border px-3 py-2\' ' + (currentPage === 1 ? 'disabled' : '') + '>&lt;</button>' +
+                                                                                '</a>';
+                                                                            prevLi.onclick = () => {
+                                                                                if (currentPage > 1) displayPage(currentPage - 1);
+                                                                            };
+                                                                            ul.appendChild(prevLi);
+
+                                                                            for (let i = 1; i <= totalPages; i++) {
+                                                                                const li = document.createElement('li');
+                                                                                li.innerHTML =
+                                                                                    '<a href=\'#\'>' +
+                                                                                    '<button type=\'button\' class=\'btn border px-3 py-2 ' + (i === currentPage ? 'btn-secondary text-light' : '') + '\'>' + i + '</button>' +
+                                                                                    '</a>';
+                                                                                li.onclick = () => displayPage(i);
+                                                                                ul.appendChild(li);
+                                                                            }
+
+                                                                            const nextLi = document.createElement('li');
+                                                                            nextLi.innerHTML =
+                                                                                '<a href=\'#\'>' +
+                                                                                '<button type=\'button\' class=\'bg-light border px-3 py-2\' ' + (currentPage === totalPages ? 'disabled' : '') + '>&gt;</button>' +
+                                                                                '</a>';
+                                                                            nextLi.onclick = () => {
+                                                                                if (currentPage < totalPages) displayPage(currentPage + 1);
+                                                                            };
+                                                                            ul.appendChild(nextLi);
+
+                                                                            paginationContainer.appendChild(ul);
+                                                                        }
+
+                                                                        document.getElementById('searchInputChiefDoctor').addEventListener('keyup', function () {
+                                                                            const searchQuery = this.value.toLowerCase();
+                                                                            filteredDetails = ccDetails.filter(item => item.doctorName.toLowerCase().includes(searchQuery));
+                                                                            displayPage(1);
+                                                                        });
+
+                                                                        document.getElementById('clearSearchChiefDoctor').addEventListener('click', function () {
+                                                                            document.getElementById('searchInputChiefDoctor').value = '';
+                                                                            filteredDetails = ccDetails;
+                                                                            displayPage(1);
+                                                                        });
+
+                                                                        displayPage(initialPage);
+                                                                    </script>
+
+
+                    <?php
+        } else if ($method == "chiefDoctorProfile") {
+            ?>
+                                                                                <section>
+                                                                                    <div class="card rounded">
+                                                                                        <div class="d-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
+                                                                                            <p style="font-size: 24px; font-weight: 500">
+                                                                                                Chief Doctor Profile </p>
+                                                                                            <button onclick="goBack()" class="border-0 bg-light float-end text-dark pb-3"><i
+                                                                                                    class="bi bi-arrow-left"></i> Back</button>
+                                                                                        </div>
+
+                                                                                        <div class="card-body p-3 p-sm-4">
+
+                                                                                            <div class="d-sm-flex justify-content-start mt-2 mb-5">
+                                                <?php
+                                                foreach ($ccDetails as $key => $value) {
+                                                    ?>
+                                                <?php if (isset($value['ccPhoto']) && $value['ccPhoto'] != "") { ?>
+                                                                                                                        <img src="<?php echo base_url('uploads/' . $value['ccPhoto']); ?>" alt="Profile Photo"
+                                                                                                                            width="140" height="140" class="rounded-circle"
+                                                                                                                            onerror="this.onerror=null;this.src='<?= base_url('assets/BlankProfile.jpg'); ?>';">
+                                                <?php } else { ?>
+                                                                                                                        <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg" alt="Profile Photo" width="140"
+                                                                                                                            height="140" class="rounded-circle my-auto">
+                                                <?php } ?>
+                                                                                                            <div class="ps-sm-5">
+                                                                                                                <p style="font-size:20px;font-weight:500;">Dr.
+                                                        <?php echo $value['doctorName']; ?>
+                                                                                                                </p>
+                                                                                                                <p style="font-size:16px;font-weight:400;color:#00ad8e;">
+                                                        <?php echo $value['specialization']; ?>
+                                                                                                                </p>
+                                                                                                                <p><a href="tel:<?php echo $value['doctorMobile']; ?>"
+                                                                                                                        style="font-size:16px;font-weight:400;"
+                                                                                                                        class="text-decoration-none text-dark fs-6">+91
+                                                            <?php echo $value['doctorMobile']; ?>
+                                                                                                                    </a> | <a href="mailto:<?php echo $value['doctorMail']; ?>"
+                                                                                                                        style="font-size:16px;font-weight:400;" class="text-decoration-none text-dark fs-6">
+                                                            <?php echo $value['doctorMail']; ?>
+                                                                                                                    </a></p>
+                                                                                                            </div>
+                                                                                                        </div>
+
+                                                                                                        <p class="my-3 fs-5 fw-semibold">Profile Details</p>
+
+                                                                                                        <div class="d-md-flex pb-1">
+                                                                                                            <p class="text-secondary col-md-3 mb-1">Years of Experience : </p>
+                                                                                                            <p class="col-md-9 ps-2">
+                                                    <?php echo $value['yearOfExperience'] ? $value['yearOfExperience'] : "-"; ?>
+                                                                                                            </p>
+                                                                                                        </div>
+
+                                                                                                        <div class="d-md-flex pb-1">
+                                                                                                            <p class="text-secondary col-md-3 mb-1">Qualification : </p>
+                                                                                                            <p class="col-md-9 ps-2">
+                                                    <?php echo $value['qualification'] ? $value['qualification'] : "Not provided"; ?>
+                                                                                                            </p>
+                                                                                                        </div>
+
+                                                                                                        <div class="d-md-flex pb-1">
+                                                                                                            <p class="text-secondary col-md-3 mb-1">Registration detail : </p>
+                                                                                                            <p class="col-md-9 ps-2">
+                                                    <?php echo $value['regDetails'] ? $value['regDetails'] : "Not provided"; ?>
+                                                                                                            </p>
+                                                                                                        </div>
+
+                                                                                                        <div class="d-md-flex pb-1">
+                                                                                                            <p class="text-secondary col-md-3 mb-1">Membership : </p>
+                                                                                                            <p class="col-md-9 ps-2">
+                                                    <?php echo $value['membership'] ? $value['membership'] : "Not provided"; ?>
+                                                                                                            </p>
+                                                                                                        </div>
+
+                                                                                                        <div class="d-md-flex pb-1">
+                                                                                                            <p class="text-secondary col-md-3 mb-1">Services : </p>
+                                                                                                            <p class="col-md-9 ps-2">
+                                                    <?php echo $value['services'] ? $value['services'] : "Not provided"; ?>
+                                                                                                            </p>
+                                                                                                        </div>
+
+                                                                                                        <div class="d-md-flex pb-1">
+                                                                                                            <p class="text-secondary col-md-3 mb-1">Date of Birth : </p>
+                                                                                                            <p class="col-md-9 ps-2">
+                                                    <?php echo $value['dateOfBirth'] ? $value['dateOfBirth'] : "Not provided"; ?>
+                                                                                                            </p>
+                                                                                                        </div>
+
+                                                                                                        <div class="d-md-flex pb-1">
+                                                                                                            <p class="text-secondary col-md-3 mb-1">Hospital / Clinic Name : </p>
+                                                                                                            <p class="col-md-9 ps-2">
+                                                    <?php echo $value['hospitalName'] ? $value['hospitalName'] : "Not provided"; ?>
+                                                                                                            </p>
+                                                                                                        </div>
+
+                                                                                                        <div class="d-md-flex pb-1">
+                                                                                                            <p class="text-secondary col-md-3 mb-1">Location : </p>
+                                                                                                            <p class="col-md-9 ps-2">
+                                                    <?php echo $value['location'] ? $value['location'] : "Not provided"; ?>
+                                                                                                            </p>
+                                                                                                        </div>
+
+                                                                                                    </div>
+                            <?php } ?>
+                                                                                    </div>
+                                                                                </section>
+
+                    <?php
+        } else if ($method == "myProfile") {
+            ?>
+                                                                                            <section>
+                                                                                                <div class="card rounded">
+                                                                                                    <div class="d-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
+                                                                                                        <p style="font-size: 24px; font-weight: 500"> My Profile</p>
+                                                                                                        <a href="<?php echo base_url() . "Healthcareprovider/dashboard" ?>"
+                                                                                                            class="float-end text-dark mt-2"><i class="bi bi-arrow-left"></i> Back</a>
+                                                                                                    </div>
+                                                                                                    <div class="card-body p-3 p-sm-4">
+                                            <?php
+                                            foreach ($hcpDetails as $key => $value) {
+                                                ?>
+                                                                                                                    <div class="d-sm-flex justify-content-start mt-2 mb-5">
+                                                <?php if (isset($value['hcpPhoto']) && $value['hcpPhoto'] != "") { ?>
+                                                                                                                                    <img src="<?php echo base_url('uploads/' . $value['hcpPhoto']); ?>" alt="Profile Photo"
+                                                                                                                                        width="140" height="140" class="rounded-circle"
+                                                                                                                                        onerror="this.onerror=null;this.src='<?= base_url('assets/BlankProfile.jpg'); ?>';">
+                                                <?php } else { ?>
+                                                                                                                                    <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg" alt=" Profile Photo" width="140"
+                                                                                                                                        height="140" class="rounded-circle">
+                                                <?php } ?>
+                                                                                                                        <div class="ps-sm-5">
+                                                                                                                            <p style="font-size:20px;font-weight:500;">Dr.
+                                                        <?php echo $value['hcpName']; ?>
+                                                                                                                            </p>
+                                                                                                                            <p style="font-size:16px;font-weight:400;color:#00ad8e;">
+                                                        <?php echo $value['hcpSpecialization']; ?>
+                                                                                                                            </p>
+                                                                                                                            <p><a href="tel:<?php echo $value['hcpMobile']; ?>" style="font-size:16px;font-weight:400;"
+                                                                                                                                    class="text-decoration-none text-dark fs-6">+91
+                                                            <?php echo $value['hcpMobile']; ?>
+                                                                                                                                </a> | <a href="mailto:<?php echo $value['hcpMail']; ?>"
+                                                                                                                                    style="font-size:16px;font-weight:400;" class="text-decoration-none text-dark fs-6">
+                                                            <?php echo $value['hcpMail']; ?>
+                                                                                                                                </a></p>
+                                                                                                                        </div>
+                                                                                                                    </div>
+
+                                                                                                                    <div class="d-flex justify-content-between mt-2 ">
+                                                                                                                        <p class="my-3 fs-5 fw-semibold">Profile Details :</p>
+                                                                                                                        <a href="<?php echo base_url() . "Healthcareprovider/editMyProfile" ?>"><i
+                                                                                                                                class="bi bi-pencil-square"></i> Edit</a>
+                                                                                                                    </div>
+
+                                                                                                                    <div class="d-md-flex pb-1">
+                                                                                                                        <p class="text-secondary col-md-3 mb-1">Years of Experience : </p>
+                                                                                                                        <p class="col-md-9 ps-2">
+                                                    <?php echo $value['hcpExperience'] ? $value['hcpExperience'] : "Not provided"; ?>
+                                                                                                                        </p>
+                                                                                                                    </div>
+
+                                                                                                                    <div class="d-md-flex pb-1">
+                                                                                                                        <p class="text-secondary col-md-3 mb-1">Qualification : </p>
+                                                                                                                        <p class="col-md-9 ps-2">
+                                                    <?php echo $value['hcpQualification'] ? $value['hcpQualification'] : "Not provided"; ?>
+                                                                                                                        </p>
+                                                                                                                    </div>
+
+                                                                                                                    <div class="d-md-flex pb-1">
+                                                                                                                        <p class="text-secondary col-md-3 mb-1">Date of Birth : </p>
+                                                                                                                        <p class="col-md-9 ps-2">
+                                                    <?php echo $value['hcpDob'] ? $value['hcpDob'] : "Not provided"; ?>
+                                                                                                                        </p>
+                                                                                                                    </div>
+
+                                                                                                                    <div class="d-md-flex pb-1">
+                                                                                                                        <p class="text-secondary col-md-3 mb-1">Hospital / Clinic Name : </p>
+                                                                                                                        <p class="col-md-9 ps-2">
+                                                    <?php echo $value['hcpHospitalName'] ? $value['hcpHospitalName'] : "Not provided"; ?>
+                                                                                                                        </p>
+                                                                                                                    </div>
+
+                                                                                                                    <div class="d-md-flex pb-1">
+                                                                                                                        <p class="text-secondary col-md-3 mb-1">Location : </p>
+                                                                                                                        <p class="col-md-9 ps-2">
+                                                    <?php echo $value['hcpLocation'] ? $value['hcpLocation'] : "Not provided"; ?>
+                                                                                                                        </p>
+                                                                                                                    </div>
+
+                                <?php } ?>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </section>
+
+                    <?php
+        } else if ($method == "editMyProfile") {
+            ?>
+                                                                                                        <section>
+                                                                                                            <div class="card rounded">
+                                                                                                                <div class="d-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
+                                                                                                                    <p style="font-size: 24px; font-weight: 500"> Edit Profile Details</p>
+                                                                                                                    <a href="<?php echo base_url() . "Healthcareprovider/myProfile" ?>"
+                                                                                                                        class="float-end text-dark mt-2"><i class="bi bi-arrow-left"></i> Back</a>
+                                                                                                                </div>
+                                                                                                                <div class="card-body ps-3 p-sm-4">
+                                            <?php
+                                            foreach ($hcpDetails as $key => $value) {
+                                                ?>
+                                                                                                                                <form action="<?php echo base_url() . "Healthcareprovider/updateMyProfile" ?>"
+                                                                                                                                    name="profileEditForm" name="profileEditForm" enctype="multipart/form-data" method="POST">
+                                                                                                                                    <div class="position-relative">
+                                                                                                                                        <img id="previewImage"
+                                                                                                                                            src="<?= isset($value['hcpPhoto']) && $value['hcpPhoto'] !== "No data"
+                                                                                                                                                ? base_url('uploads/' . $value['hcpPhoto'])
+                                                                                                                                                : base_url('assets/img/BlankProfileCircle.png') ?>"
+                                                                                                                                            alt="Profile Photo" width="150" height="150" class="rounded-circle d-block mx-auto mb-4"
+                                                                                                                                            style="box-shadow: 0px 4px 4px rgba(5, 149, 123, 0.7); outline: 1px solid white;"
+                                                                                                                                            onerror="this.onerror=null;this.src='<?= base_url('assets/BlankProfileCircle.png') ?>';">
+                                                                                                                                        <input type="file" id="profilePhoto" name="profilePhoto"
+                                                                                                                                            class="fieldStyle form-control p-3 image-input d-none" accept=".png, .jpg, .jpeg">
+                                                                                                                                        <a href="#" class="position-absolute rounded-circle px-2 py-1"
+                                                                                                                                            style="color: #00ad8e;border: 2px solid #00ad8e;border-radius: 50%;top: 77%; left: 52%; transform: translateX(44%); "
+                                                                                                                                            onclick="document.getElementById('profilePhoto').click();"><i
+                                                                                                                                                class="bi bi-camera"></i></a>
+                                                                                                                                    </div>
+                                                                                                                                    <div class="d-md-flex justify-content-between py-3">
+                                                                                                                                        <div class="col-md-6 pe-md-4 pb-3 pb-md-0">
+                                                                                                                                            <label class="form-label" for="drName">Full Name</label>
+                                                                                                                                            <input type="text" class="form-control" id="drName" name="drName"
+                                                                                                                                                value="<?php echo $value['hcpName']; ?>" placeholder="E.g. Suresh Kumar"
+                                                                                                                                                style="cursor: no-drop;" disabled readonly>
+                                                                                                                                        </div>
+                                                                                                                                        <div class="col-md-6 pe-md-4 pt-3 pt-md-0">
+                                                                                                                                            <label class="form-label" for="drMobile">Mobile Number</label>
+                                                                                                                                            <input type="number" class="form-control" id="drMobile" name="drMobile"
+                                                                                                                                                value="<?php echo $value['hcpMobile']; ?>" placeholder="E.g. 9632587410"
+                                                                                                                                                style="cursor: no-drop;" disabled readonly>
+                                                                                                                                        </div>
+                                                                                                                                    </div>
+                                                                                                                                    <div class="d-md-flex justify-content-between py-3">
+                                                                                                                                        <div class="col-md-6 pe-md-4 pb-3 pb-md-0">
+                                                                                                                                            <label class="form-label" for="drEmail">Email Id</label>
+                                                                                                                                            <input type="email" class="form-control" id="drEmail" name="drEmail"
+                                                                                                                                                value="<?php echo $value['hcpMail']; ?>" placeholder="E.g. example@gmail.com"
+                                                                                                                                                style="cursor: no-drop;" disabled readonly>
+                                                                                                                                        </div>
+                                                                                                                                        <div class="col-md-6 pe-md-4 pt-3 pt-md-0">
+                                                                                                                                            <label class="form-label" for="specialization">Specialization</label>
+                                                                                                                                            <select class="form-control" id="specialization" name="specialization"
+                                                                                                                                                style="cursor: no-drop;" disabled readonly>
+                                                                                                                                                <option value="" selected><?php echo $value['hcpSpecialization'] ?></option>
+                                                                                                                                            </select>
+                                                                                                                                        </div>
+                                                                                                                                    </div>
+                                                                                                                                    <div class="d-md-flex justify-content-between py-3">
+                                                                                                                                        <div class="col-md-6 pe-md-4 pb-3 pb-md-0">
+                                                                                                                                            <label class="form-label" for="yearOfExp">Years of Experience</label>
+                                                                                                                                            <input type="text" class="form-control" id="yearOfExp" name="yearOfExp" maxlength="25"
+                                                                                                                                                value="<?php echo $value['hcpExperience']; ?>" placeholder="E.g. 25">
+                                                                                                                                            <!-- <div id="drName_err" class="text-danger pt-1"></div> -->
+                                                                                                                                        </div>
+                                                                                                                                        <div class="col-md-6 pe-md-4 pt-3 pt-md-0">
+                                                                                                                                            <label class="form-label" for="qualification">Qualification</label>
+                                                                                                                                            <input type="text" class="form-control" id="qualification" name="qualification"
+                                                                                                                                                value="<?php echo $value['hcpQualification']; ?>" maxlength="90"
+                                                                                                                                                placeholder="E.g. MBBS">
+                                                                                                                                            <!-- <div id="drName_err" class="text-danger pt-1"></div> -->
+                                                                                                                                        </div>
+                                                                                                                                    </div>
+                                                                                                                                    <div class="d-md-flex justify-content-between py-3">
+                                                                                                                                        <div class="col-md-6 pe-md-4 pb-3 pb-md-0">
+                                                                                                                                            <label class="form-label" for="dob">Date of Birth</label>
+                                                                                                                                            <input type="date" class="form-control" id="dob" name="dob"
+                                                                                                                                                value="<?php echo $value['hcpDob']; ?>">
+                                                                                                                                            <!-- <div id="drName_err" class="text-danger pt-1"></div> -->
+                                                                                                                                        </div>
+                                                                                                                                        <div class="col-md-6 pe-md-4 pt-3 pt-md-0">
+                                                                                                                                            <label class="form-label" for="hospitalName">Hospital / Clinic Name</label>
+                                                                                                                                            <input type="text" class="form-control" id="hospitalName" name="hospitalName"
+                                                                                                                                                maxlength="90" value="<?php echo $value['hcpHospitalName']; ?>"
+                                                                                                                                                placeholder="E.g. MMCH">
+                                                                                                                                            <!-- <div id="specialization_err" class="text-danger pt-1"></div> -->
+                                                                                                                                        </div>
+                                                                                                                                    </div>
+                                                                                                                                    <div class="d-md-flex justify-content-between py-3">
+                                                                                                                                        <div class="col-md-6 pe-md-4 pb-3 pb-md-0">
+                                                                                                                                            <label class="form-label" for="location">Location</label>
+                                                                                                                                            <input type="text" class="form-control" id="location" name="location" maxlength="90"
+                                                                                                                                                value="<?php echo $value['hcpLocation']; ?>" placeholder="E.g. Erode">
+                                                                                                                                            <!-- <div id="specialization_err" class="text-danger pt-1"></div> -->
+                                                                                                                                        </div>
+                                                                                                                                        <div class="col-md-6 pe-md-4 pt-3 pt-md-0">
+                                                                                                                                            <label class="form-label">Password</label><br>
+                                                                                                                                            <a href="<?php echo base_url('Healthcareprovider/changePassword'); ?>"
+                                                                                                                                                class="btn text-light" style="background-color: #00ad8e;">
+                                                                                                                                                Change Password</a>
+                                                                                                                                        </div>
+                                                                                                                                    </div>
+                                                                                                                                    <button type="reset" class="btn btn-secondary float-start mt-3">Reset</button>
+                                                                                                                                    <button type="submit" class="btn float-end mt-3"
+                                                                                                                                        style="color: white;background-color: #00ad8e;">Update</button>
+                                                                                                                                </form>
+                                <?php } ?>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                        </section>
+
+                    <?php
+        } else if ($method == "passwordChange") {
+            ?>
+                                                                                                                    <section>
+                                                                                                                        <div class="card rounded m-md-2">
+                                                                                                                            <div class="d-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
+                                                                                                                                <p style="font-size: 24px; font-weight: 500"> Change Password</p>
+                                                                                                                                <a href="<?php echo base_url() . "Healthcareprovider/myProfile" ?>"
+                                                                                                                                    class="float-end text-dark mt-2"><i class="bi bi-arrow-left"></i> Back</a>
+                                                                                                                            </div>
+                                                                                                                            <div class="card-body">
+                                            <?php
+                                            foreach ($hcpDetails as $key => $value) {
+                                                ?>
+                                                                                                                                            <form action="<?php echo base_url() . "Healthcareprovider/saveNewPassword" ?>" name="PasswordForm"
+                                                                                                                                                method="POST" class="px-md-3" onsubmit="return validateNewPassword()"
+                                                                                                                                                oninput="validateNewPassword()">
+                                                                                                                                                <input type="hidden" name="hcpDbId" id="hcpDbId" value="<?php echo $value['id']; ?>">
+                                                                                                                                                <div class="d-md-flex justify-content-between pb-3">
+                                                                                                                                                    <div class="col-md-6 pe-md-4 pb-3 pb-md-0">
+                                                                                                                                                        <label class="form-label pb-2" for="drName">Full Name</label>
+                                                                                                                                                        <input type="text" class="form-control" id="drName" name="drName"
+                                                                                                                                                            style="cursor: no-drop;" value="<?php echo $value['hcpName']; ?>"
+                                                                                                                                                            placeholder="Suresh Kumar" disabled readonly>
+                                                                                                                                                    </div>
+                                                                                                                                                    <div class="col-md-6 pe-md-4 pt-3 pt-md-0">
+                                                                                                                                                        <label class="form-label pb-2" for="drMobile">Mobile Number </label>
+                                                                                                                                                        <input type="text" class="form-control" id="drMobile" name="drMobile"
+                                                                                                                                                            style="cursor: no-drop;" value="<?php echo $value['hcpMobile']; ?>"
+                                                                                                                                                            placeholder="9632587410" disabled readonly>
+                                                                                                                                                    </div>
+                                                                                                                                                </div>
+                                                                                                                                                <div class="d-md-flex justify-content-between pt-3">
+                                                                                                                                                    <div class="col-md-6 pe-md-4 pb-3 pb-md-0">
+                                                                                                                                                        <label class="form-label pb-2" for="drEmail">Email Id</label>
+                                                                                                                                                        <div class="">
+                                                                                                                                                            <input type="email" class="form-control" id="drEmail" name="drEmail"
+                                                                                                                                                                style="cursor: no-drop;" value="<?php echo $value['hcpMail']; ?>"
+                                                                                                                                                                placeholder="example@gmail.com" disabled readonly>
+                                                                                                                                                        </div>
+                                                                                                                                                        <p type="button" class="float-end mt-2 m-0 p-0" style="color: #00ad8e;"
+                                                                                                                                                            id="sendEmailOtpBtn" onclick="sendEmailOtp()"
+                                                                                                                                                            onmouseover="this.style.textDecoration='underline'"
+                                                                                                                                                            onmouseout="this.style.textDecoration='none'">Send
+                                                                                                                                                            OTP</p>
+                                                                                                                                                        <small id="emailOtpStatus" class="text-success"></small>
+                                                                                                                                                    </div>
+                                                                                                                                                    <div class="col-md-6 pe-md-4 pt-3 pt-md-0">
+                                                                                                                                                        <label for="emailOtp" class="form-label pb-2">Enter OTP <span
+                                                                                                                                                                class="text-danger">*</span></label>
+                                                                                                                                                        <input type="text" id="emailOtp" maxlength="6" class="form-control"
+                                                                                                                                                            placeholder="Enter OTP" disabled>
+                                                                                                                                                        <small id="emailOtpError" class="text-danger"></small>
+                                                                                                                                                    </div>
+                                                                                                                                                </div>
+                                                                                                                                                <div class="d-md-flex justify-content-between py-3">
+                                                                                                                                                    <div class="col-md-6 pe-md-4 pb-3 pb-md-0">
+                                                                                                                                                        <label class="form-label pb-2" for="drNewPassword">New Password <span
+                                                                                                                                                                class="text-danger">*</span></label>
+                                                                                                                                                        <div style="position: relative;">
+                                                                                                                                                            <input type="password" class="form-control" id="drNewPassword" maxlength="20"
+                                                                                                                                                                name="drNewPassword" placeholder="Enter New Password">
+                                                                                                                                                            <i class="bi bi-eye-fill" onclick="togglePasswordVisibility('drNewPassword', this)"
+                                                                                                                                                                style="position: absolute; right: 20px;top: 50%;transform: translateY(-50%);cursor: pointer;"></i>
+                                                                                                                                                        </div>
+                                                                                                                                                        <small id="passwordError" class="text-danger"></small>
+                                                                                                                                                    </div>
+                                                                                                                                                    <div class="col-md-6 pe-md-4 pt-3 pt-md-0">
+                                                                                                                                                        <label class="form-label pb-2" for="drCnfmPassword">Confirm Password <span
+                                                                                                                                                                class="text-danger">*</span></label>
+                                                                                                                                                        <div style="position: relative;">
+                                                                                                                                                            <input type="password" class="form-control" id="drCnfmPassword" maxlength="20"
+                                                                                                                                                                name="drCnfmPassword" placeholder="Re-Enter New Password">
+                                                                                                                                                            <i class="bi bi-eye-fill" onclick="togglePasswordVisibility('drCnfmPassword', this)"
+                                                                                                                                                                style="position: absolute; right: 20px;top: 50%;transform: translateY(-50%);cursor: pointer;"></i>
+                                                                                                                                                        </div>
+                                                                                                                                                        <small id="confirmPasswordError" class="text-danger"></small>
+                                                                                                                                                    </div>
+                                                                                                                                                </div>
+                                                                                                                                                <button type="submit" class="btn float-end mt-3"
+                                                                                                                                                    style="color: white;background-color: #00ad8e;">Save</button>
+                                                                                                                                            </form>
+                                <?php } ?>
+                                                                                                                            </div>
+                                                                                                                        </div>
+                                                                                                                    </section>
+
+                                                                                                                    <script>
+                                                                                                                        function togglePasswordVisibility(id, icon) {
+                                                                                                                            const passwordField = document.getElementById(id);
+
+                                                                                                                            if (passwordField.type === "password") {
+                                                                                                                                passwordField.type = "text";
+                                                                                                                                icon.classList.remove('bi-eye-fill');
+                                                                                                                                icon.classList.add('bi-eye-slash-fill');
+                                                                                                                            } else {
+                                                                                                                                passwordField.type = "password";
+                                                                                                                                icon.classList.remove('bi-eye-slash-fill');
+                                                                                                                                icon.classList.add('bi-eye-fill');
+                                                                                                                            }
+                                                                                                                        }
+                                                                                                                    </script>
+
+                                                                                                                    <script>
+                                                                                                                        function sendEmailOtp() {
+                                                                                                                            const email = document.getElementById('drEmail').value.trim();
+
+                                                                                                                            fetch("<?= base_url('Healthcareprovider/sendEmailOtp') ?>", {
+                                                                                                                                method: "POST",
+                                                                                                                                headers: {
+                                                                                                                                    "Content-Type": "application/x-www-form-urlencoded"
+                                                                                                                                },
+                                                                                                                                body: `email=${encodeURIComponent(email)}`
+                                                                                                                            })
+                                                                                                                                .then(res => res.json())
+                                                                                                                                .then(data => {
+                                                                                                                                    if (data.status === "success") {
+                                                                                                                                        document.getElementById('emailOtp').disabled = false;
+                                                                                                                                        document.getElementById('emailOtp').focus();
+                                                                                                                                        document.getElementById('emailOtpStatus').textContent = "OTP sent to your email.";
+                                                                                                                                        alert("OTP sent to your email.");
+                                                                                                                                    } else {
+                                                                                                                                        document.getElementById('emailOtpStatus').textContent = "Failed to send OTP.";
+                                                                                                                                    }
+                                                                                                                                });
+                                                                                                                        }
+
+                                                                                                                        document.getElementById('emailOtp').addEventListener('input', () => {
+                                                                                                                            const otp = document.getElementById('emailOtp').value.trim();
+
+                                                                                                                            if (otp.length === 4) {
+                                                                                                                                fetch("<?= base_url('Healthcareprovider/verifyEmailOtp') ?>", {
+                                                                                                                                    method: "POST",
+                                                                                                                                    headers: {
+                                                                                                                                        "Content-Type": "application/x-www-form-urlencoded"
+                                                                                                                                    },
+                                                                                                                                    body: `otp=${otp}`
+                                                                                                                                })
+                                                                                                                                    .then(res => res.json())
+                                                                                                                                    .then(data => {
+                                                                                                                                        if (data.status === "success") {
+                                                                                                                                            document.getElementById('emailOtpError').textContent = "";
+                                                                                                                                            document.getElementById('emailOtpStatus').textContent = "OTP verified successfully!";
+                                                                                                                                            document.getElementById('emailOtp').disabled = true;
+                                                                                                                                            document.getElementById('emailOtp').dataset.verified = "true";
+                                                                                                                                        } else {
+                                                                                                                                            document.getElementById('emailOtpError').textContent = "Invalid OTP.";
+                                                                                                                                            document.getElementById('emailOtpStatus').textContent = "";
+                                                                                                                                            document.getElementById('emailOtp').dataset.verified = "false";
+                                                                                                                                        }
+                                                                                                                                    })
+                                                                                                                                    .catch(err => {
+                                                                                                                                        console.error("OTP verification error:", err);
+                                                                                                                                        document.getElementById('emailOtpError').textContent = "Server error during OTP verification.";
+                                                                                                                                    });
+                                                                                                                            }
+                                                                                                                        });
+
+                                                                                                                        function validateNewPassword() {
+                                                                                                                            let password = document.getElementById("drNewPassword").value.trim();
+                                                                                                                            let confirmPassword = document.getElementById("drCnfmPassword").value.trim();
+                                                                                                                            let otpVerified = document.getElementById("emailOtp").dataset.verified === "true";
+
+                                                                                                                            let isValid = true;
+
+                                                                                                                            if (password === "") {
+                                                                                                                                document.getElementById("passwordError").textContent = "Please enter a new password.";
+                                                                                                                                isValid = false;
+                                                                                                                            } else if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/.test(password)) {
+                                                                                                                                document.getElementById("passwordError").textContent = "Please enter a valid password (8 to 20 characters with at least 1 uppercase letter, 1 lowercase letter, 1 number, and 1 special character).";
+                                                                                                                                isValid = false;
+                                                                                                                            } else {
+                                                                                                                                document.getElementById("passwordError").textContent = "";
+                                                                                                                            }
+
+                                                                                                                            if (confirmPassword === "") {
+                                                                                                                                document.getElementById("confirmPasswordError").textContent = "Please re-enter the password.";
+                                                                                                                                isValid = false;
+                                                                                                                            } else if (confirmPassword !== password) {
+                                                                                                                                document.getElementById("confirmPasswordError").textContent = "Passwords do not match.";
+                                                                                                                                isValid = false;
+                                                                                                                            } else {
+                                                                                                                                document.getElementById("confirmPasswordError").textContent = "";
+                                                                                                                            }
+
+                                                                                                                            if (!otpVerified) {
+                                                                                                                                document.getElementById('emailOtpError').textContent = "Please enter a valid OTP and wait for verification.";
+                                                                                                                                isValid = false;
+                                                                                                                            }
+
+                                                                                                                            return isValid;
+                                                                                                                        }
+                                                                                                                    </script>
+                    <?php
         } ?>
 
         <!-- All modal files -->
@@ -4112,11 +4817,11 @@ Thank you.`;
     <!-- Sidebar Active -->
     <script>
         <?php if ($method == "dashboard") { ?>
-            document.getElementById('dashboard').style.color = "#87F7E3";
+                    document.getElementById('dashboard').style.color = "#87F7E3";
         <?php } elseif ($method == "appointments" || $method == "appointmentsForm" || $method == "appointmentUpdate" || $method == "appointmentReschedule") { ?>
-            document.getElementById('appointments').style.color = "#87F7E3";
+                    document.getElementById('appointments').style.color = "#87F7E3";
         <?php } elseif ($method == "chiefDoctors" || $method == "chiefDoctorProfile") { ?>
-            document.getElementById('chiefDoctor').style.color = "#87F7E3";
+                    document.getElementById('chiefDoctor').style.color = "#87F7E3";
         <?php } ?>
     </script>
 

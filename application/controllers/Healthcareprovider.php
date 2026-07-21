@@ -326,6 +326,44 @@ class Healthcareprovider extends CI_Controller
         echo json_encode(['success' => true, 'data' => $data, 'from' => $from, 'to' => $to]);
     }
 
+    public function getDischargeFollowUpDatesInRange()
+    {
+        $hcpIdDb = $this->session->userdata('hcpIdDb');
+        if (!$hcpIdDb) {
+            echo json_encode(['success' => false, 'message' => 'Unauthorized']);
+            return;
+        }
+
+        $from = $this->input->get('from') ?: date('Y-m-d', strtotime('-1 year'));
+        $to   = $this->input->get('to')   ?: date('Y-m-d', strtotime('+1 year'));
+
+        $dates = $this->HcpModel->getDischargeFollowUpDatesInRange($hcpIdDb, $from, $to);
+
+        echo json_encode(['success' => true, 'dates' => $dates]);
+    }
+
+    public function getDischargeFollowUpsByDateRange()
+    {
+        $hcpIdDb = $this->session->userdata('hcpIdDb');
+        if (!$hcpIdDb) {
+            echo json_encode(['success' => false, 'message' => 'Unauthorized']);
+            return;
+        }
+
+        $from = $this->input->get('from');
+        $to   = $this->input->get('to');
+
+        if (!$from || !$to) {
+            echo json_encode(['success' => false, 'message' => 'From and To dates are required']);
+            return;
+        }
+
+        $data = $this->HcpModel->getDischargeFollowUpsByDateRange($hcpIdDb, $from, $to);
+
+        echo json_encode(['success' => true, 'data' => $data, 'from' => $from, 'to' => $to]);
+    }
+
+
     public function patients()
     {
         if (isset($_SESSION['hcpsName'])) {

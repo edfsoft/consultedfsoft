@@ -539,9 +539,18 @@
                             class="pb-3 d-flex justify-content-between align-items-center">
                             <span><i class="bi bi-calendar-check pe-3"></i>Follow-ups (Post Discharge)</span>
 
-                            <span id="followupCount" class="px-2"
-                                style="font-size:16px;color:#00ad8e;border:2px solid #00ad8e;border-radius:50%;">0</span>
+                            <span class="d-flex align-items-center gap-2">
+                                <button id="postDischargeDownloadBtn" title="Download Post Discharge List"
+                                    class="btn btn-sm d-flex align-items-center gap-1"
+                                    style="background:#00ad8e;color:#fff;border-radius:8px;font-size:13px;padding:4px 10px;"
+                                    data-bs-toggle="modal" data-bs-target="#postDischargeDownloadModal">
+                                    <i class="bi bi-download"></i> Download
+                                </button>
+                                <span id="followupCount" class="px-2"
+                                    style="font-size:16px;color:#00ad8e;border:2px solid #00ad8e;border-radius:50%;">0</span>
+                            </span>
                         </p>
+
 
                         <div class="rounded-4 px-3">
 
@@ -652,21 +661,22 @@
                 }
 
                 .flatpickr-input { cursor: pointer; }
-                #fuDlFromDate, #fuDlToDate { background: #fff; }
+                #fuDlFromDate, #fuDlToDate, #pdDlFromDate, #pdDlToDate { background: #fff; }
 
                 /* Prevent table rows and groups from breaking across pages in PDF/print */
-                #fuDlTable tr, #fuDlTable tbody, #fuDlTable td {
+                #fuDlTable tr, #fuDlTable tbody, #fuDlTable td,
+                #pdDlTable tr, #pdDlTable tbody, #pdDlTable td {
                     page-break-inside: avoid !important;
                     break-inside: avoid !important;
                 }
 
                 /* Print area portrait width & styling */
-                #fuDlPrintArea {
+                #fuDlPrintArea, #pdDlPrintArea {
                     width: 700px !important;
                     margin: 0 auto !important;
                     box-sizing: border-box !important;
                 }
-                #fuDlPrintArea .table-responsive {
+                #fuDlPrintArea .table-responsive, #pdDlPrintArea .table-responsive {
                     overflow: visible !important;
                 }
             </style>
@@ -808,6 +818,132 @@
                 </div>
             </div>
             <!-- End Download Modal -->
+
+
+            <!-- ============================================================
+                 Post Discharge Follow-up Date-Range Download Modal
+            ============================================================ -->
+            <div class="modal fade" id="postDischargeDownloadModal" tabindex="-1" aria-labelledby="postDischargeDownloadModalLabel" aria-hidden="true"
+                 data-bs-backdrop="static" data-bs-keyboard="false">
+                <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+                    <div class="modal-content" style="border-radius:16px;font-family:'Poppins',sans-serif;">
+
+                         <!-- Modal Header -->
+                        <div class="modal-header" style="background:#00ad8e;color:#fff;border-radius:16px 16px 0 0;">
+                            <h5 class="modal-title fw-semibold" id="postDischargeDownloadModalLabel">
+                                <i class="bi bi-download me-2"></i> Download Patient Admission & Discharge List
+                            </h5>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                        </div>
+
+                        <!-- Modal Body -->
+                        <div class="modal-body p-4">
+
+                            <!-- Date Range Pickers -->
+                            <div class="row g-3 mb-3 align-items-end">
+                                <div class="col-12 col-md-4">
+                                    <label class="form-label fw-semibold" for="pdDlFromDate">
+                                        From Date <span class="text-danger">*</span>
+                                    </label>
+                                    <input type="text" id="pdDlFromDate" class="form-control" placeholder="Select from date"
+                                        style="border:2px solid #00ad8e;border-radius:10px;" readonly>
+                                    <div id="pdDlFromErr" class="d-none mt-1" style="font-size:12px;color:#dc3545;">
+                                        <i class="bi bi-exclamation-circle me-1"></i>Please select a valid From date.
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-4">
+                                    <label class="form-label fw-semibold" for="pdDlToDate">
+                                        To Date <span class="text-danger">*</span>
+                                    </label>
+                                    <input type="text" id="pdDlToDate" class="form-control" placeholder="Select to date"
+                                        style="border:2px solid #00ad8e;border-radius:10px;" readonly>
+                                    <div id="pdDlToErr" class="d-none mt-1" style="font-size:12px;color:#dc3545;">
+                                        <i class="bi bi-exclamation-circle me-1"></i>Please select a valid To date.
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-4">
+                                    <button id="pdDlPreviewBtn" class="btn w-100 fw-semibold"
+                                        style="background:#00ad8e;color:#fff;border-radius:10px;padding:10px;">
+                                        <i class="bi bi-eye me-1"></i> Preview List
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Info note -->
+                            <div class="alert alert-info py-2 px-3 mb-3" style="font-size:13px;border-radius:10px;">
+                                <i class="bi bi-info-circle me-1"></i>
+                                Select an <strong>Admission Date range</strong> (From Date and To Date) to preview and download the patient admission & discharge list.
+                            </div>
+
+                            <!-- Download Actions -->
+                            <div id="pdDlActions" class="d-none mb-3">
+                                <div class="d-flex justify-content-end gap-2">
+                                    <button id="pdDlPdfBtn" class="btn fw-semibold d-flex align-items-center gap-1"
+                                        style="background:#dc3545;color:#fff;border-radius:10px;">
+                                        <i class="bi bi-file-earmark-pdf"></i> Download PDF
+                                    </button>
+                                    <button id="pdDlImgBtn" class="btn fw-semibold d-flex align-items-center gap-1"
+                                        style="background:#0d6efd;color:#fff;border-radius:10px;">
+                                        <i class="bi bi-image"></i> Download Image JPG
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Preview Table Container -->
+                            <div id="pdDlPreviewWrap" class="d-none">
+
+                                <!-- Loading spinner -->
+                                <div id="pdDlLoading" class="d-none text-center py-4">
+                                    <div class="spinner-border" style="color:#00ad8e;"></div>
+                                    <p class="mt-2" style="color:#00ad8e;">Loading patient admission & discharge data...</p>
+                                </div>
+
+                                <!-- Printable Area -->
+                                <div id="pdDlPrintArea" style="background:#fff;padding:16px;border:1px solid #dee2e6;border-radius:10px;">
+
+                                    <!-- Header -->
+                                    <div style="text-align:center;margin-bottom:12px;border-bottom:1px solid #dee2e6;padding-bottom:8px;">
+                                        <h5 style="font-weight:700;margin:0;color:#000;">Patient Admission & Discharge List</h5>
+                                        <p id="pdDlPrintSubtitle" style="font-size:13px;margin:4px 0 8px;color:#555;"></p>
+                                        <div style="display:flex;justify-content:space-between;font-size:12px;color:#333;margin-top:6px;font-weight:500;">
+                                            <div><strong>HCP:</strong> <?php echo $_SESSION['hcpsName'] . ' ('. $_SESSION['hcpId'].')'; ?></div>
+                                            <div><strong>Generated on:</strong> <span id="pdDlGeneratedAt"></span></div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Table -->
+                                    <div class="table-responsive" id="pdDlTableContainer">
+                                        <table id="pdDlTable"
+                                            style="width:100%;border-collapse:collapse;font-size:13px;font-family:'Poppins',sans-serif;">
+                                            <thead>
+                                                <tr>
+                                                    <th style="border:1.5px solid #333;padding:7px 10px;text-align:center;background:#f8f9fa;width:8%;">S.No</th>
+                                                    <th style="border:1.5px solid #333;padding:7px 10px;text-align:center;background:#f8f9fa;width:15%;">Patient ID</th>
+                                                    <th style="border:1.5px solid #333;padding:7px 10px;text-align:center;background:#f8f9fa;width:27%;">Patient Name</th>
+                                                    <th style="border:1.5px solid #333;padding:7px 10px;text-align:center;background:#f8f9fa;width:20%;">Patient Contact Number</th>
+                                                    <th style="border:1.5px solid #333;padding:7px 10px;text-align:center;background:#f8f9fa;width:15%;">Admission Date</th>
+                                                    <th style="border:1.5px solid #333;padding:7px 10px;text-align:center;background:#f8f9fa;width:15%;">Discharge Date</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="pdDlTableBody"></tbody>
+                                        </table>
+                                    </div>
+
+                                    <!-- Footer -->
+                                    <div style="margin-top:12px;padding-top:8px;border-top:1px solid #dee2e6;display:flex;justify-content:space-between;align-items:center;font-size:13px;font-weight:600;color:#333;">
+                                        <div id="pdDlPrintDuration"></div>
+                                        <div id="pdDlPrintCountFooter"></div>
+                                    </div>
+                                </div><!-- /pdDlPrintArea -->
+
+                            </div><!-- /pdDlPreviewWrap -->
+
+                        </div><!-- /modal-body -->
+                    </div>
+                </div>
+            </div>
+            <!-- End Post Discharge Download Modal -->
+
 
             <!-- Follow-up Download Modal JavaScript -->
             <script>
@@ -1386,6 +1522,465 @@
 
             })();
             </script>
+
+
+            <!-- Post Discharge Follow-up Download Modal JavaScript -->
+            <script>
+            (function () {
+                'use strict';
+
+                /* ── URLs ───────────────────────────────────────────────── */
+                const urlDates = '<?= base_url("Healthcareprovider/getDischargeFollowUpDatesInRange") ?>';
+                const urlRange = '<?= base_url("Healthcareprovider/getDischargeFollowUpsByDateRange") ?>';
+
+                /* ── DOM refs ───────────────────────────────────────────── */
+                const previewBtn     = document.getElementById('pdDlPreviewBtn');
+                const pdfBtn         = document.getElementById('pdDlPdfBtn');
+                const imgBtn         = document.getElementById('pdDlImgBtn');
+                const actionsDiv     = document.getElementById('pdDlActions');
+                const previewWrap    = document.getElementById('pdDlPreviewWrap');
+                const loadingDiv     = document.getElementById('pdDlLoading');
+                let tableEl          = document.getElementById('pdDlTable');
+                let tableContainer   = document.getElementById('pdDlTableContainer');
+                let printDurEl       = document.getElementById('pdDlPrintDuration');
+                let printCountFoot   = document.getElementById('pdDlPrintCountFooter');
+                let subtitleEl       = document.getElementById('pdDlPrintSubtitle');
+
+                function rebindDOMRefs() {
+                    tableEl        = document.getElementById('pdDlTable');
+                    tableContainer = document.getElementById('pdDlTableContainer');
+                    printDurEl     = document.getElementById('pdDlPrintDuration');
+                    printCountFoot = document.getElementById('pdDlPrintCountFooter');
+                    subtitleEl     = document.getElementById('pdDlPrintSubtitle');
+                }
+
+                /* ── State ──────────────────────────────────────────────── */
+                let validDates      = [];   // YYYY-MM-DD strings that have follow-ups
+                let datesLoaded     = false;
+                let fpFrom          = null; // flatpickr instance – From
+                let fpTo            = null; // flatpickr instance – To
+                let selectedFrom    = '';
+                let selectedTo      = '';
+
+                /* Helper to clear table bodies & extra generated tables */
+                function clearTableBodies() {
+                    if (tableContainer) {
+                        const extraTables = tableContainer.querySelectorAll('table:not(#pdDlTable)');
+                        extraTables.forEach(t => t.remove());
+                    }
+                    if (tableEl) {
+                        const tbodies = tableEl.querySelectorAll('tbody');
+                        tbodies.forEach(tb => tb.remove());
+                        tableEl.classList.remove('d-none');
+                    }
+                }
+
+                /* Helper to show table message */
+                function showTableMessage(msg, isError = false) {
+                    clearTableBodies();
+                    const tbody = document.createElement('tbody');
+                    tbody.innerHTML = `<tr><td colspan="6" class="text-center ${isError ? 'text-danger' : 'text-muted'} py-4">${msg}</td></tr>`;
+                    tableEl.appendChild(tbody);
+                }
+
+                /* ── Helpers ────────────────────────────────────────────── */
+                function todayISO() {
+                    const n = new Date();
+                    return `${n.getFullYear()}-${String(n.getMonth()+1).padStart(2,'0')}-${String(n.getDate()).padStart(2,'0')}`;
+                }
+
+                function toISO(dateObj) {
+                    return `${dateObj.getFullYear()}-${String(dateObj.getMonth()+1).padStart(2,'0')}-${String(dateObj.getDate()).padStart(2,'0')}`;
+                }
+
+                /** "YYYY-MM-DD" → "dd-mm-yyyy"  e.g. 13-07-2026 */
+                function fmtShort(isoStr) {
+                    if (!isoStr) return '-';
+                    const [y, m, d] = isoStr.split('-');
+                    return `${d.padStart(2,'0')}-${m.padStart(2,'0')}-${y}`;
+                }
+
+                function getNowTimestamp() {
+                    const now = new Date();
+                    const d = String(now.getDate()).padStart(2, '0');
+                    const m = String(now.getMonth() + 1).padStart(2, '0');
+                    const y = now.getFullYear();
+                    let hours = now.getHours();
+                    const minutes = String(now.getMinutes()).padStart(2, '0');
+                    const ampm = hours >= 12 ? 'PM' : 'AM';
+                    hours = hours % 12;
+                    hours = hours ? hours : 12; // the hour '0' should be '12'
+                    const hrs = String(hours).padStart(2, '0');
+                    return `${d}-${m}-${y} ${hrs}:${minutes} ${ampm}`;
+                }
+
+                /** "YYYY-MM-DD" → "dd Mon yyyy"  e.g. 13 Jul 2026 */
+                function fmtLong(isoStr) {
+                    if (!isoStr) return '-';
+                    const dt = new Date(isoStr + 'T00:00:00');
+                    return dt.toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' });
+                }
+
+                function daysBetween(f, t) {
+                    return Math.round((new Date(t+'T00:00:00') - new Date(f+'T00:00:00')) / 86400000) + 1;
+                }
+
+                /* ── Fetch valid admission dates & initialise flatpickr ─── */
+                function loadValidDates() {
+                    if (datesLoaded) return Promise.resolve();
+                    const past = toISO(new Date(Date.now() - 365 * 86400000));
+                    const far  = toISO(new Date(Date.now() + 365 * 86400000));
+
+                    return fetch(`${urlDates}?from=${past}&to=${far}`)
+                        .then(r => r.json())
+                        .then(res => {
+                            validDates  = (res.success && res.dates) ? res.dates : [];
+                            datesLoaded = true;
+                            initPickers();
+                        })
+                        .catch(() => { datesLoaded = true; initPickers(); });
+                }
+
+                /* ── Initialise flatpickr instances ─────────────────────── */
+                function initPickers() {
+                    if (fpFrom) { fpFrom.destroy(); fpFrom = null; }
+                    if (fpTo)   { fpTo.destroy();   fpTo   = null; }
+
+                    fpFrom = flatpickr('#pdDlFromDate', {
+                        dateFormat   : 'Y-m-d',
+                        disableMobile: true,
+                        onChange(selDates) {
+                            selectedFrom = selDates.length ? toISO(selDates[0]) : '';
+                            document.getElementById('pdDlFromErr').classList.add('d-none');
+                            resetPreview();
+                            if (fpTo) {
+                                if (selectedTo && selectedTo < selectedFrom) {
+                                    fpTo.clear();
+                                    selectedTo = '';
+                                }
+                            }
+                        }
+                    });
+
+                    fpTo = flatpickr('#pdDlToDate', {
+                        dateFormat   : 'Y-m-d',
+                        disableMobile: true,
+                        onChange(selDates) {
+                            selectedTo = selDates.length ? toISO(selDates[0]) : '';
+                            document.getElementById('pdDlToErr').classList.add('d-none');
+                            resetPreview();
+                        }
+                    });
+                }
+
+                function resetPreview() {
+                    actionsDiv.classList.add('d-none');
+                    previewWrap.classList.add('d-none');
+                    clearTableBodies();
+                }
+
+                /* ── Load & render preview table ────────────────────────── */
+                function loadPreview() {
+                    const fromErrEl = document.getElementById('pdDlFromErr');
+                    const toErrEl   = document.getElementById('pdDlToErr');
+                    let valid = true;
+
+                    if (!selectedFrom) {
+                        fromErrEl.classList.remove('d-none');
+                        valid = false;
+                    } else {
+                        fromErrEl.classList.add('d-none');
+                    }
+
+                    if (!selectedTo) {
+                        toErrEl.classList.remove('d-none');
+                        valid = false;
+                    } else if (selectedFrom && selectedTo < selectedFrom) {
+                        toErrEl.innerHTML = '<i class="bi bi-exclamation-circle me-1"></i>To date must be on or after From date.';
+                        toErrEl.classList.remove('d-none');
+                        valid = false;
+                    } else {
+                        toErrEl.classList.add('d-none');
+                    }
+
+                    if (!valid) return;
+
+                    previewWrap.classList.remove('d-none');
+                    loadingDiv.classList.remove('d-none');
+                    clearTableBodies();
+                    actionsDiv.classList.add('d-none');
+
+                    fetch(`${urlRange}?from=${selectedFrom}&to=${selectedTo}`)
+                        .then(r => r.json())
+                        .then(res => {
+                            loadingDiv.classList.add('d-none');
+                            if (!res.success || !res.data || !res.data.length) {
+                                const days = daysBetween(selectedFrom, selectedTo);
+                                subtitleEl.textContent     = `Admission Date: From ${fmtLong(selectedFrom)} to ${fmtLong(selectedTo)}`;
+                                printDurEl.textContent     = `Duration: ${fmtLong(selectedFrom)} — ${fmtLong(selectedTo)} (${days} day${days !== 1 ? 's' : ''})`;
+                                printCountFoot.textContent = 'Total Patients: 0';
+                                document.getElementById('pdDlGeneratedAt').textContent = getNowTimestamp();
+                                showTableMessage('No admissions on the selected interval.');
+                                return;
+                            }
+                            renderPreviewTable(res.data, selectedFrom, selectedTo);
+                        })
+                        .catch(() => {
+                            loadingDiv.classList.add('d-none');
+                            showTableMessage('Error loading data. Please try again.', true);
+                        });
+                }
+
+                function renderPreviewTable(data, from, to) {
+                    clearTableBodies();
+
+                    const colGroupHtml = `
+                        <colgroup>
+                            <col style="width: 8%;">
+                            <col style="width: 15%;">
+                            <col style="width: 27%;">
+                            <col style="width: 20%;">
+                            <col style="width: 15%;">
+                            <col style="width: 15%;">
+                        </colgroup>
+                    `;
+
+                    tableEl.innerHTML = colGroupHtml + `
+                        <thead>
+                            <tr>
+                                <th style="border:1.5px solid #333;padding:7px 10px;text-align:center;background:#f8f9fa;">S.No</th>
+                                <th style="border:1.5px solid #333;padding:7px 10px;text-align:center;background:#f8f9fa;">Patient ID</th>
+                                <th style="border:1.5px solid #333;padding:7px 10px;text-align:center;background:#f8f9fa;">Patient Name</th>
+                                <th style="border:1.5px solid #333;padding:7px 10px;text-align:center;background:#f8f9fa;">Patient Contact Number</th>
+                                <th style="border:1.5px solid #333;padding:7px 10px;text-align:center;background:#f8f9fa;">Admission Date</th>
+                                <th style="border:1.5px solid #333;padding:7px 10px;text-align:center;background:#f8f9fa;">Discharge Date</th>
+                            </tr>
+                        </thead>
+                    `;
+
+                    const tbody = document.createElement('tbody');
+                    data.forEach((row, i) => {
+                        const tr = document.createElement('tr');
+                        tr.style.cssText = 'page-break-inside: avoid; break-inside: avoid;';
+                        tr.innerHTML = `
+                            <td style="border:1.5px solid #333;padding:7px 10px;text-align:center;page-break-inside: avoid; break-inside: avoid;">${i + 1}</td>
+                            <td style="border:1.5px solid #333;padding:7px 10px;page-break-inside: avoid; break-inside: avoid; word-break: break-all;">${row.patientId || '-'}</td>
+                            <td style="border:1.5px solid #333;padding:7px 10px;page-break-inside: avoid; break-inside: avoid; word-break: break-word;">${row.patient_name || '-'}</td>
+                            <td style="border:1.5px solid #333;padding:7px 10px;text-align:center;page-break-inside: avoid; break-inside: avoid; white-space: nowrap;">${row.mobileNumber || '-'}</td>
+                            <td style="border:1.5px solid #333;padding:7px 10px;text-align:center;page-break-inside: avoid; break-inside: avoid; white-space: nowrap;">${fmtShort(row.appointment_date)}</td>
+                            <td style="border:1.5px solid #333;padding:7px 10px;text-align:center;page-break-inside: avoid; break-inside: avoid; white-space: nowrap;">${fmtShort(row.discharge_date)}</td>
+                        `;
+                        tbody.appendChild(tr);
+                    });
+                    tableEl.appendChild(tbody);
+
+                    const totalPatients = data.length;
+                    const days    = daysBetween(from, to);
+                    const durTxt  = `${fmtLong(from)} — ${fmtLong(to)} (${days} day${days !== 1 ? 's' : ''})`;
+                    const cntTxt  = `Total Patients: ${totalPatients}`;
+
+                    subtitleEl.textContent     = `Admission Date: From ${fmtLong(from)} to ${fmtLong(to)}`;
+                    printDurEl.textContent     = `Duration: ${durTxt}`;
+                    printCountFoot.textContent = cntTxt;
+
+                    document.getElementById('pdDlGeneratedAt').textContent = getNowTimestamp();
+
+                    actionsDiv.classList.remove('d-none');
+                }
+
+                /* ── Pagination Logic before downloading ───────────────── */
+                function paginateTable() {
+                    const area = document.getElementById('pdDlPrintArea');
+                    const table = document.getElementById('pdDlTable');
+                    if (!table || table.classList.contains('d-none')) return;
+
+                    area.style.width = '794px';
+
+                    const headerEl = area.querySelector('div:first-child');
+                    const footerEl = area.querySelector('div:last-child');
+                    const theadEl = table.querySelector('thead');
+
+                    const headerHeight = headerEl ? headerEl.offsetHeight : 0;
+                    const footerHeight = footerEl ? footerEl.offsetHeight : 0;
+                    const theadHeight = theadEl ? theadEl.offsetHeight : 0;
+
+                    const PAGE_HEIGHT = 1047;
+
+                    const rowData = [];
+                    const trs = table.querySelectorAll('tbody tr');
+                    trs.forEach(tr => {
+                        rowData.push({ 
+                            tr: tr.cloneNode(true), 
+                            height: tr.offsetHeight || 37 
+                        });
+                    });
+
+                    if (rowData.length === 0) return;
+
+                    const container = document.getElementById('pdDlTableContainer');
+                    if (container) {
+                        container.innerHTML = '';
+                    }
+
+                    let currentPageHeight = headerHeight + theadHeight;
+                    let currentTable = null;
+                    let currentTbody = null;
+
+                    function startNewPage() {
+                        currentTable = document.createElement('table');
+                        currentTable.style.cssText = 'width:100%; border-collapse:collapse; font-size:13px; font-family:\'Poppins\',sans-serif; page-break-before: always; break-before: always;';
+                        currentTable.innerHTML = `
+                            <colgroup>
+                                <col style="width: 8%;">
+                                <col style="width: 15%;">
+                                <col style="width: 27%;">
+                                <col style="width: 20%;">
+                                <col style="width: 15%;">
+                                <col style="width: 15%;">
+                            </colgroup>
+                        `;
+
+                        const thead = document.createElement('thead');
+                        thead.innerHTML = theadEl.innerHTML;
+                        currentTable.appendChild(thead);
+
+                        currentTbody = document.createElement('tbody');
+                        currentTable.appendChild(currentTbody);
+
+                        container.appendChild(currentTable);
+                        currentPageHeight = theadHeight;
+                    }
+
+                    // Initialize first page
+                    currentTable = document.createElement('table');
+                    currentTable.style.cssText = 'width:100%; border-collapse:collapse; font-size:13px; font-family:\'Poppins\',sans-serif;';
+                    currentTable.innerHTML = `
+                        <colgroup>
+                            <col style="width: 8%;">
+                            <col style="width: 15%;">
+                            <col style="width: 27%;">
+                            <col style="width: 20%;">
+                            <col style="width: 15%;">
+                            <col style="width: 15%;">
+                        </colgroup>
+                    `;
+                    const initialThead = document.createElement('thead');
+                    initialThead.innerHTML = theadEl.innerHTML;
+                    currentTable.appendChild(initialThead);
+
+                    currentTbody = document.createElement('tbody');
+                    currentTable.appendChild(currentTbody);
+                    container.appendChild(currentTable);
+
+                    rowData.forEach(item => {
+                        const rowHeight = item.height;
+                        const limit = PAGE_HEIGHT - footerHeight;
+
+                        if (currentPageHeight + rowHeight > limit) {
+                            startNewPage();
+                        }
+
+                        currentTbody.appendChild(item.tr);
+                        currentPageHeight += rowHeight;
+                    });
+                }
+
+                /* ── PDF Download — modal stays open after download ──── */
+                function downloadPDF() {
+                    const area     = document.getElementById('pdDlPrintArea');
+                    const filename = `EDF_patient_admission_and_discharge_list_${fmtShort(selectedFrom)}_to_${fmtShort(selectedTo)}.pdf`;
+
+                    // Update timestamp to the exact download time
+                    document.getElementById('pdDlGeneratedAt').textContent = getNowTimestamp();
+
+                    pdfBtn.disabled = true;
+                    pdfBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Generating…';
+
+                    // Save original HTML content & width style to restore after download
+                    const originalHTML = area.innerHTML;
+                    const originalWidthStyle = area.style.width;
+
+                    // Run the pagination to dynamically break table rows across pages safely
+                    paginateTable();
+
+                    html2pdf().set({
+                        margin      : [10, 10, 10, 10],
+                        filename,
+                        image       : { type:'jpeg', quality:0.98 },
+                        html2canvas : { scale:2, useCORS:true },
+                        jsPDF       : { unit:'mm', format:'a4', orientation:'portrait' },
+                        pagebreak   : { mode: 'css' }
+                    }).from(area).save().then(() => {
+                        // Restore preview DOM and width style
+                        area.innerHTML = originalHTML;
+                        area.style.width = originalWidthStyle;
+                        rebindDOMRefs();
+
+                        pdfBtn.disabled = false;
+                        pdfBtn.innerHTML = '<i class="bi bi-file-earmark-pdf"></i> Download PDF';
+                    });
+                }
+
+                /* ── Image Download — modal stays open after download ─── */
+                function downloadImage() {
+                    const area     = document.getElementById('pdDlPrintArea');
+                    const filename = `EDF_patient_admission_and_discharge_list_${fmtShort(selectedFrom)}_to_${fmtShort(selectedTo)}.jpg`;
+
+                    // Update timestamp to the exact download time
+                    document.getElementById('pdDlGeneratedAt').textContent = getNowTimestamp();
+
+                    imgBtn.disabled = true;
+                    imgBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Generating…';
+
+                    // Save original HTML content & width style to restore after download
+                    const originalHTML = area.innerHTML;
+                    const originalWidthStyle = area.style.width;
+
+                    // Run the pagination to dynamically break table rows across pages safely
+                    paginateTable();
+
+                    html2canvas(area, { scale:2, useCORS:true, backgroundColor:'#ffffff' })
+                        .then(canvas => {
+                            const link  = document.createElement('a');
+                            link.download = filename;
+                            link.href = canvas.toDataURL('image/jpeg');
+                            link.click();
+
+                            // Restore preview DOM and width style
+                            area.innerHTML = originalHTML;
+                            area.style.width = originalWidthStyle;
+                            rebindDOMRefs();
+
+                            imgBtn.disabled = false;
+                            imgBtn.innerHTML = '<i class="bi bi-image"></i> Download Image JPG';
+                        });
+                }
+
+                /* ── Event listeners ────────────────────────────────────── */
+                previewBtn.addEventListener('click', loadPreview);
+                pdfBtn.addEventListener('click', downloadPDF);
+                imgBtn.addEventListener('click', downloadImage);
+
+                /* ── Reset & reload on modal open ───────────────────────── */
+                const modalEl = document.getElementById('postDischargeDownloadModal');
+                if (modalEl) {
+                    modalEl.addEventListener('show.bs.modal', function () {
+                        selectedFrom = '';
+                        selectedTo   = '';
+                        resetPreview();
+                        document.getElementById('pdDlFromErr').classList.add('d-none');
+                        document.getElementById('pdDlToErr').classList.add('d-none');
+                        // Reload dates each open so new follow-ups are reflected
+                        datesLoaded = false;
+                        document.getElementById('pdDlFromDate').value = '';
+                        document.getElementById('pdDlToDate').value   = '';
+                        loadValidDates();
+                    });
+                }
+
+            })();
+            </script>
+
 
 
             <!-- Completed Consultations script -->

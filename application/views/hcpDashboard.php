@@ -1394,15 +1394,15 @@
                             container.innerHTML = '';
                         }
 
-                        // Constants
-                        const ROWS_PER_PAGE = 25;
-                        const headerEl = area.querySelector('div:first-child');
                         const theadEl = table.querySelector('thead');
 
-                        // Paginate rows: 25 rows per page
+                        // Paginate rows: 25 rows on Page 1 (with headers), 28 rows on subsequent pages
                         let pageNumber = 0;
-                        for (let i = 0; i < allRows.length; i += ROWS_PER_PAGE) {
-                            const pageRows = allRows.slice(i, i + ROWS_PER_PAGE);
+                        let currentIndex = 0;
+                        while (currentIndex < allRows.length) {
+                            const pageSize = (pageNumber === 0) ? 25 : 28;
+                            const pageRows = allRows.slice(currentIndex, currentIndex + pageSize);
+                            currentIndex += pageSize;
 
                             // Insert clean page break spacer for page 2+ to absorb html2pdf canvas slice gap
                             if (pageNumber > 0) {
@@ -1427,8 +1427,8 @@
                                         </colgroup>
                                     `;
 
-                            // Add thead on every page for consistent layout
-                            if (theadEl) {
+                            // Add thead only on first page
+                            if (pageNumber === 0 && theadEl) {
                                 const thead = document.createElement('thead');
                                 thead.innerHTML = theadEl.innerHTML;
                                 thead.style.cssText = 'page-break-inside: avoid; break-inside: avoid; border-collapse:collapse; border-spacing:0;';
@@ -1884,14 +1884,15 @@
                             container.innerHTML = '';
                         }
 
-                        // Constants
-                        const ROWS_PER_PAGE = 25;
                         const theadEl = table.querySelector('thead');
 
-                        // Paginate rows: 25 rows per page
+                        // Paginate rows: 25 rows on Page 1 (with headers), 28 rows on subsequent pages
                         let pageNumber = 0;
-                        for (let i = 0; i < allRows.length; i += ROWS_PER_PAGE) {
-                            const pageRows = allRows.slice(i, i + ROWS_PER_PAGE);
+                        let currentIndex = 0;
+                        while (currentIndex < allRows.length) {
+                            const pageSize = (pageNumber === 0) ? 25 : 28;
+                            const pageRows = allRows.slice(currentIndex, currentIndex + pageSize);
+                            currentIndex += pageSize;
 
                             // Insert clean page break spacer for page 2+ to absorb html2pdf canvas slice gap
                             if (pageNumber > 0) {
@@ -1916,8 +1917,8 @@
                                         </colgroup>
                                     `;
 
-                            // Add thead on every page for consistent layout
-                            if (theadEl) {
+                            // Add thead only on first page
+                            if (pageNumber === 0 && theadEl) {
                                 const thead = document.createElement('thead');
                                 thead.innerHTML = theadEl.innerHTML;
                                 thead.style.cssText = 'page-break-inside: avoid; break-inside: avoid; border-collapse:collapse; border-spacing:0;';

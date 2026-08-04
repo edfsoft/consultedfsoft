@@ -556,7 +556,7 @@
         <div class="modal-content">
 
             <div class="modal-header">
-                <h5 class="modal-title fw-medium" style="font-family: Poppins, sans-serif;">Add Post-Discharge
+                <h5 class="modal-title fw-medium" style="font-family: Poppins, sans-serif;" id="followupModalTitle">Add Post-Discharge
                     Follow-up</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
@@ -565,6 +565,7 @@
 
                 <div class="modal-body">
                     <input type="hidden" name="patient_id" id="modal_patient_id">
+                    <input type="hidden" name="plan_id" id="modal_plan_id" value="">
 
                     <div class="row">
 
@@ -579,8 +580,7 @@
 
                         <!-- Discharge -->
                         <div class="col-md-6">
-                            <label class="form-label fieldLabel">Discharge Date <span
-                                    class="text-danger">*</span></label>
+                            <label class="form-label fieldLabel">Discharge Date</label>
                             <input type="date" name="discharge_date" id="discharge_date"
                                 class="form-control fieldStyle">
                             <small id="discharge_date_err" class="text-danger"></small>
@@ -588,8 +588,7 @@
 
                         <!-- Review -->
                         <div class="col-md-6 mt-3">
-                            <label class="form-label fieldLabel">Next Review Date <span
-                                    class="text-danger">*</span></label>
+                            <label class="form-label fieldLabel">Next Review Date</label>
                             <input type="date" name="next_review_date" id="next_review_date"
                                 class="form-control fieldStyle">
                             <small id="review_date_err" class="text-danger"></small>
@@ -599,14 +598,14 @@
                         <div class="col-md-6 mt-3">
                             <label class="form-label fieldLabel">Follow-up Interval (Days)</label>
                             <input type="number" name="followup_interval_days" id="interval_days"
-                                class="form-control fieldStyle" value="7" min="1">
+                                class="form-control fieldStyle" placeholder="Enter interval in days" min="0">
                             <small id="interval_err" class="text-danger"></small>
                         </div>
 
                         <!-- Notes -->
                         <div class="col-md-12 mt-3">
                             <label class="form-label fieldLabel">Notes</label>
-                            <textarea name="notes" class="form-control" placeholder="Enter the notes"></textarea>
+                            <textarea name="notes" id="followup_notes" class="form-control" placeholder="Enter the notes"></textarea>
                         </div>
 
                     </div>

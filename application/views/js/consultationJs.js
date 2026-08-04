@@ -264,6 +264,18 @@ document
 		var patientId = this.getAttribute("data-patient-id");
 
 		document.getElementById("modal_patient_id").value = patientId;
+		document.getElementById("modal_plan_id").value = "";
+		document.getElementById("appointment_date").value = "";
+		document.getElementById("discharge_date").value = "";
+		document.getElementById("next_review_date").value = "";
+		document.getElementById("interval_days").value = "";
+		document.getElementById("followup_notes").value = "";
+		document.getElementById("followupModalTitle").innerText = "Add Post-Discharge Follow-up";
+
+		document.getElementById("appointment_date_err").innerText = "";
+		document.getElementById("discharge_date_err").innerText = "";
+		document.getElementById("review_date_err").innerText = "";
+		document.getElementById("interval_err").innerText = "";
 
 		var modal = new bootstrap.Modal(document.getElementById("followupModal"));
 		modal.show();
@@ -284,57 +296,63 @@ function validateFollowupForm() {
 
 	if (!appointment) {
 		document.getElementById("appointment_date_err").innerText =
-			"Appointment date is required";
+			"Please select appointment date";
 		isValid = false;
 	}
 
-	if (!discharge) {
-		document.getElementById("discharge_date_err").innerText =
-			"Discharge date is required";
-		isValid = false;
-	}
-
-	if (!review) {
-		document.getElementById("review_date_err").innerText =
-			"Review date is required";
-		isValid = false;
-	}
-
-	if (!interval) {
-		document.getElementById("interval_err").innerText = "Interval is required";
-		isValid = false;
-	}
-
-	if (!isValid) return false;
-
-	let appDate = new Date(appointment);
-	let disDate = new Date(discharge);
-	let revDate = new Date(review);
-
-	if (appDate > disDate) {
-		document.getElementById("appointment_date_err").innerText =
-			"Appointment date must be before or same as discharge date";
-		isValid = false;
-	}
-
-	if (revDate <= disDate) {
-		document.getElementById("review_date_err").innerText =
-			"Review date must be after discharge date";
-		isValid = false;
-	}
-
-	if (interval < 1) {
+	if (discharge && review && (interval === "" || interval === null)) {
 		document.getElementById("interval_err").innerText =
-			"Interval must be at least 1 day";
+			"Please enter interval in days";
 		isValid = false;
-	}
-
-	let diffDays = Math.floor((revDate - disDate) / (1000 * 60 * 60 * 24));
-
-	if (interval > diffDays) {
+	} else if (interval !== "" && interval !== null && parseInt(interval) < 0) {
 		document.getElementById("interval_err").innerText =
-			"Interval must not exceed the days between discharge and review date";
+			"Interval cannot be negative";
 		isValid = false;
 	}
+
+	if (appointment && discharge) {
+		let appDate = new Date(appointment);
+		let disDate = new Date(discharge);
+		if (appDate > disDate) {
+			document.getElementById("appointment_date_err").innerText =
+				"Appointment date must be before or same as discharge date";
+			isValid = false;
+		}
+	}
+
+	if (review) {
+		let revDate = new Date(review);
+
+		if (discharge) {
+			let disDate = new Date(discharge);
+			if (revDate <= disDate) {
+				document.getElementById("review_date_err").innerText =
+					"Please select review date after discharge date";
+				isValid = false;
+			}
+
+			let diffDays = Math.floor((revDate - disDate) / (1000 * 60 * 60 * 24));
+			if (interval && interval > diffDays) {
+				document.getElementById("interval_err").innerText =
+					"Interval must not exceed the days between discharge and review date";
+				isValid = false;
+			}
+		} else if (appointment) {
+			let appDate = new Date(appointment);
+			if (revDate <= appDate) {
+				document.getElementById("review_date_err").innerText =
+					"Please select review date after appointment date";
+				isValid = false;
+			}
+
+			let diffDays = Math.floor((revDate - appDate) / (1000 * 60 * 60 * 24));
+			if (interval && interval > diffDays) {
+				document.getElementById("interval_err").innerText =
+					"Interval must not exceed the days between appointment and review date";
+				isValid = false;
+			}
+		}
+	}
+
 	return isValid;
 }

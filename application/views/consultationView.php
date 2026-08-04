@@ -2232,38 +2232,48 @@
                                         <table class="table table-bordered text-center">
                                             <thead class="table-light">
                                                 <tr>
-                                                    <th style="color: #00ad8e;" class="scTableStyles">S.No</th>
-                                                    <th style="color: #00ad8e;" class="scTableStyles">Appointment Date</th>
-                                                    <th style="color: #00ad8e;" class="scTableStyles">Discharge Date</th>
-                                                    <th style="color: #00ad8e;" class="scTableStyles">Next Review Date</th>
-                                                    <th style="color: #00ad8e;" class="scTableStyles">Interval (Days)</th>
-                                                    <th style="color: #00ad8e;" class="scTableStyles">Notes</th>
-                                                    <th style="color: #00ad8e;" class="scTableStyles">Action</th>
+                                                    <th style="color: #00ad8e; width: 60px;" class="scTableStyles">S.No</th>
+                                                    <th style="color: #00ad8e; min-width: 130px;" class="scTableStyles">Appointment Date</th>
+                                                    <th style="color: #00ad8e; min-width: 130px;" class="scTableStyles">Discharge Date</th>
+                                                    <th style="color: #00ad8e; min-width: 130px;" class="scTableStyles">Next Review Date</th>
+                                                    <th style="color: #00ad8e; min-width: 110px;" class="scTableStyles">Interval (Days)</th>
+                                                    <th style="color: #00ad8e; max-width: 250px; min-width: 180px;" class="scTableStyles">Notes</th>
+                                                    <th style="color: #00ad8e; min-width: 125px;" class="scTableStyles">Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <?php
                                                 $count = 1;
-                                                foreach ($dischargeFollowUp as $plan) { ?>
+                                                foreach ($dischargeFollowUp as $plan) {
+                                                    $appDateFormatted = (!empty($plan['appointment_date']) && $plan['appointment_date'] != '0000-00-00' && strtotime($plan['appointment_date']) > 0) ? date('d M Y', strtotime($plan['appointment_date'])) : 'Not Selected';
+                                                    $disDateFormatted = (!empty($plan['discharge_date']) && $plan['discharge_date'] != '0000-00-00' && strtotime($plan['discharge_date']) > 0) ? date('d M Y', strtotime($plan['discharge_date'])) : 'Not Selected';
+                                                    $revDateFormatted = (!empty($plan['next_review_date']) && $plan['next_review_date'] != '0000-00-00' && strtotime($plan['next_review_date']) > 0) ? date('d M Y', strtotime($plan['next_review_date'])) : 'Not Selected';
+                                                    ?>
 
                                                     <tr>
                                                         <td><?= $count++ ?>.</td>
-                                                        <td><?= date('d M Y', strtotime($plan['appointment_date'])) ?></td>
-                                                        <td><?= date('d M Y', strtotime($plan['discharge_date'])) ?></td>
-                                                        <td><?= date('d M Y', strtotime($plan['next_review_date'])) ?></td>
-                                                        <td><?= $plan['followup_interval_days'] ?></td>
-                                                        <td><?= !empty($plan['notes']) ? $plan['notes'] : '-' ?></td>
+                                                        <td><?= $appDateFormatted ?></td>
+                                                        <td><?= $disDateFormatted ?></td>
+                                                        <td><?= $revDateFormatted ?></td>
+                                                        <td><?= ($plan['followup_interval_days'] !== null && $plan['followup_interval_days'] !== '' && $plan['followup_interval_days'] !== false) ? $plan['followup_interval_days'] : '-' ?></td>
+                                                        <td style="max-width: 250px; word-break: break-word; text-align: left;"><?= !empty($plan['notes']) ? html_escape($plan['notes']) : '-' ?></td>
 
-                                                        <td>
+                                                        <td style="white-space: nowrap;">
                                                             <!-- Expand -->
                                                             <button class="btn btn-info btn-sm"
                                                                 onclick="toggleFollowups(<?= $plan['id'] ?>)">
                                                                 <i class="bi bi-eye"></i>
                                                             </button>
 
+                                                            <!-- Edit -->
+                                                            <button class="btn btn-warning btn-sm text-white"
+                                                                onclick='editDischargeFollowup(<?= json_encode($plan, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP) ?>)'>
+                                                                <i class="bi bi-pencil"></i>
+                                                            </button>
+
                                                             <!-- Delete -->
                                                             <button class="btn btn-danger btn-sm"
-                                                                onclick="confirmDeleteDischargeFollowup(<?php echo $plan['patient_id'] ?>, <?php echo $plan['id'] ?>, '<?php echo date('d M Y', strtotime($plan['appointment_date'])); ?>')">
+                                                                onclick="confirmDeleteDischargeFollowup(<?php echo $plan['patient_id'] ?>, <?php echo $plan['id'] ?>, '<?php echo $appDateFormatted; ?>')">
                                                                 <i class="bi bi-trash"></i>
                                                             </button>
                                                         </td>
@@ -7873,6 +7883,26 @@
                 recordId: id,
                 url: "<?php echo site_url('Consultation/deleteDischargeFollowup/') ?>"
             });
+        }
+
+        function editDischargeFollowup(plan) {
+            document.getElementById("modal_patient_id").value = plan.patient_id;
+            document.getElementById("modal_plan_id").value = plan.id;
+            document.getElementById("appointment_date").value = plan.appointment_date || '';
+            document.getElementById("discharge_date").value = (plan.discharge_date && plan.discharge_date !== '0000-00-00') ? plan.discharge_date : '';
+            document.getElementById("next_review_date").value = (plan.next_review_date && plan.next_review_date !== '0000-00-00') ? plan.next_review_date : '';
+            document.getElementById("interval_days").value = (plan.followup_interval_days !== null && plan.followup_interval_days !== '' && plan.followup_interval_days !== undefined) ? plan.followup_interval_days : '';
+            document.getElementById("followup_notes").value = plan.notes || '';
+
+            document.getElementById("followupModalTitle").innerText = "Edit Post-Discharge Follow-up";
+
+            document.getElementById("appointment_date_err").innerText = "";
+            document.getElementById("discharge_date_err").innerText = "";
+            document.getElementById("review_date_err").innerText = "";
+            document.getElementById("interval_err").innerText = "";
+
+            var modal = new bootstrap.Modal(document.getElementById("followupModal"));
+            modal.show();
         }
 
         document.getElementById('confirmGlobalDeleteBtn').addEventListener('click', function () {

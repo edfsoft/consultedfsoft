@@ -6691,7 +6691,7 @@
                     timing: row.timing ?? "0-0-0-0",
                     food_timing: row.food_timing ?? "",
                     notes: row.notes ?? "",
-                    composition: row.compositionName ?? row.composition ?? "",
+                    composition: row.composition_name ?? row.compositionName ?? row.composition ?? "",
                     category: row.category ?? row.medicineCategory ?? ""
                 };
             }
@@ -6729,8 +6729,19 @@
 
                 medicinesModalTitle.textContent = existing ? `Edit: ${pendingMedicineName}` : `Details for: ${pendingMedicineName}`;
 
-                medicineCompositionText.textContent = getCleanDisplay(medData?.compositionName || medData?.composition || '', 'composition');
-                medicineCategoryText.textContent = getCleanDisplay(medData?.category || medData?.medicineCategory || '', 'category');
+                let compVal = medData?.composition_name ?? medData?.compositionName ?? medData?.composition ?? '';
+                let catVal = medData?.category ?? medData?.medicineCategory ?? '';
+
+                if ((!compVal || !catVal) && (pendingMedicineMasterId || pendingMedicineName)) {
+                    let masterMed = medicinesData.find(m => m.id === pendingMedicineMasterId || (m.medicineName && m.medicineName.toLowerCase() === (pendingMedicineName || '').toLowerCase()));
+                    if (masterMed) {
+                        if (!compVal) compVal = masterMed.compositionName || masterMed.composition || masterMed.composition_name || '';
+                        if (!catVal) catVal = masterMed.category || masterMed.medicineCategory || '';
+                    }
+                }
+
+                medicineCompositionText.textContent = getCleanDisplay(compVal, 'composition');
+                medicineCategoryText.textContent = getCleanDisplay(catVal, 'category');
 
                 medicineQuantity.value = "";
                 medicineNotes.value = "";
@@ -6762,27 +6773,26 @@
                 const food_timing = document.querySelector('input[name="foodTiming"]:checked')?.value || "";
 
                 if (!pendingMedicineName) return;
-                let medData;
+                let compVal = '';
+                let catVal = '';
                 if (pendingMedicineId) {
                     const existingMed = selectedMedicines.find(m => String(m.id) === String(pendingMedicineId));
                     if (existingMed) {
-                        medData = {
-                            compositionName: existingMed.composition || '',
-                            category: existingMed.category || ''
-                        };
-                    } else {
-                        medData = { compositionName: '', category: '' };
+                        compVal = existingMed.composition || existingMed.composition_name || existingMed.compositionName || '';
+                        catVal = existingMed.category || existingMed.medicineCategory || '';
                     }
-                } else {
-                    medData = medicinesData.find(m => m.id === pendingMedicineMasterId) || { compositionName: '', category: '' };
+                }
+                if ((!compVal || !catVal) && (pendingMedicineMasterId || pendingMedicineName)) {
+                    const found = medicinesData.find(m => m.id === pendingMedicineMasterId || (m.medicineName && m.medicineName.toLowerCase() === (pendingMedicineName || '').toLowerCase())) || {};
+                    if (!compVal) compVal = found.compositionName || found.composition || found.composition_name || '';
+                    if (!catVal) catVal = found.category || found.medicineCategory || '';
                 }
                 const existingIndex = selectedMedicines.findIndex(
                     m => String(m.id) === String(pendingMedicineId)
                 );
 
-                //const medData = medicinesData.find(m => m.id === pendingMedicineMasterId) || { compositionName: '', category: '' };
-                const composition = medData.compositionName || "";
-                const category = medData.category || "";
+                const composition = compVal;
+                const category = catVal;
 
                 const data = {
                     id: pendingMedicineId || `temp_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,

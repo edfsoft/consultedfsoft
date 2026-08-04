@@ -2245,9 +2245,9 @@
                                                 <?php
                                                 $count = 1;
                                                 foreach ($dischargeFollowUp as $plan) {
-                                                    $appDateFormatted = (!empty($plan['appointment_date']) && $plan['appointment_date'] != '0000-00-00' && strtotime($plan['appointment_date']) > 0) ? date('d M Y', strtotime($plan['appointment_date'])) : 'Not Selected';
-                                                    $disDateFormatted = (!empty($plan['discharge_date']) && $plan['discharge_date'] != '0000-00-00' && strtotime($plan['discharge_date']) > 0) ? date('d M Y', strtotime($plan['discharge_date'])) : 'Not Selected';
-                                                    $revDateFormatted = (!empty($plan['next_review_date']) && $plan['next_review_date'] != '0000-00-00' && strtotime($plan['next_review_date']) > 0) ? date('d M Y', strtotime($plan['next_review_date'])) : 'Not Selected';
+                                                    $appDateFormatted = (!empty($plan['appointment_date']) && $plan['appointment_date'] != '0000-00-00' && strtotime($plan['appointment_date']) > 0) ? date('d M Y', strtotime($plan['appointment_date'])) : '-';
+                                                    $disDateFormatted = (!empty($plan['discharge_date']) && $plan['discharge_date'] != '0000-00-00' && strtotime($plan['discharge_date']) > 0) ? date('d M Y', strtotime($plan['discharge_date'])) : '-';
+                                                    $revDateFormatted = (!empty($plan['next_review_date']) && $plan['next_review_date'] != '0000-00-00' && strtotime($plan['next_review_date']) > 0) ? date('d M Y', strtotime($plan['next_review_date'])) : '-';
                                                     ?>
 
                                                     <tr>

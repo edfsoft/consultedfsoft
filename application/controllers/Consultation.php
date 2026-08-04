@@ -1201,7 +1201,7 @@ class Consultation extends CI_Controller
             'appointment_date' => (!empty($appointmentDate) && $appointmentDate != '0000-00-00') ? $appointmentDate : null,
             'discharge_date' => (!empty($dischargeDate) && $dischargeDate != '0000-00-00') ? $dischargeDate : null,
             'next_review_date' => (!empty($nextReviewDate) && $nextReviewDate != '0000-00-00') ? $nextReviewDate : null,
-            'followup_interval_days' => ($this->input->post('followup_interval_days') !== '' && $this->input->post('followup_interval_days') !== null) ? $this->input->post('followup_interval_days') : 0,
+            'followup_interval_days' => ($this->input->post('followup_interval_days') !== '' && $this->input->post('followup_interval_days') !== null) ? $this->input->post('followup_interval_days') : null,
             'notes' => $this->input->post('notes'),
         ];
 

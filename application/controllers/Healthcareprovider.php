@@ -293,7 +293,7 @@ class Healthcareprovider extends CI_Controller
             return;
         }
 
-        $from = $this->input->get('from') ?: date('Y-m-d');
+        $from = $this->input->get('from') ?: date('Y-m-d', strtotime('-5 years'));
         $to   = $this->input->get('to')   ?: date('Y-m-d', strtotime('+1 year'));
 
         $dates = $this->HcpModel->getFollowUpDatesInRange($hcpIdDb, $from, $to);

@@ -804,7 +804,6 @@
                             <div class="alert alert-info py-2 px-3 mb-3" style="font-size:13px;border-radius:10px;">
                                 <i class="bi bi-info-circle me-1"></i>
                                 Only dates <strong>highlighted</strong> in the calendar have follow-ups and can be selected.
-                                Both dates must be <strong>today or later</strong>.
                             </div>
 
                             <!-- Download Buttons (shown after preview) -->
@@ -1148,10 +1147,10 @@
                     /* ── Fetch valid follow-up dates & initialise flatpickr ─── */
                     function loadValidDates() {
                         if (datesLoaded) return Promise.resolve();
-                        const today = todayISO();
+                        const past = toISO(new Date(Date.now() - 365 * 5 * 86400000));
                         const far = toISO(new Date(Date.now() + 365 * 86400000));
 
-                        return fetch(`${urlDates}?from=${today}&to=${far}`)
+                        return fetch(`${urlDates}?from=${past}&to=${far}`)
                             .then(r => r.json())
                             .then(res => {
                                 validDates = (res.success && res.dates) ? res.dates : [];
@@ -1163,18 +1162,16 @@
 
                     /* ── Initialise flatpickr instances ─────────────────────── */
                     function initPickers() {
-                        const today = todayISO();
-
                         // Destroy old instances if re-opened
                         if (fpFrom) { fpFrom.destroy(); fpFrom = null; }
                         if (fpTo) { fpTo.destroy(); fpTo = null; }
 
-                        /* Disable dates that have NO follow-ups or are before today.
+                        /* Disable dates that have NO follow-ups.
                            NO minDate set — so the full month grid is always rendered.
-                           disableFn grays out past dates AND dates with no follow-ups. */
+                           disableFn grays out dates with no follow-ups. */
                         const disableFn = (date) => {
                             const iso = toISO(date);
-                            return iso < today || !validDates.includes(iso);
+                            return !validDates.includes(iso);
                         };
 
                         fpFrom = flatpickr('#fuDlFromDate', {
@@ -1189,7 +1186,7 @@
                                 if (fpTo) {
                                     fpTo.set('disable', [(date) => {
                                         const iso = toISO(date);
-                                        return iso < today || !validDates.includes(iso) || (selectedFrom && iso < selectedFrom);
+                                        return !validDates.includes(iso) || (selectedFrom && iso < selectedFrom);
                                     }]);
                                     // Clear To if it is now before the new From
                                     if (selectedTo && selectedTo < selectedFrom) {

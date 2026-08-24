@@ -1148,8 +1148,14 @@ class ConsultModel extends CI_Model
 
     public function saveDischargeFollowUp($data)
     {
-        $this->db->insert('discharge_followup_plan ', $data);
+        $this->db->insert('discharge_followup_plan', $data);
         return $this->db->insert_id();
+    }
+
+    public function updateDischargeFollowUp($planId, $data)
+    {
+        $this->db->where('id', $planId);
+        return $this->db->update('discharge_followup_plan', $data);
     }
 
     public function getDischargeFollowUp($patientId)

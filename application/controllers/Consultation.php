@@ -1190,22 +1190,34 @@ class Consultation extends CI_Controller
     public function saveDischargeFollowUp()
     {
         $patientId = $this->input->post('patient_id');
+        $planId = $this->input->post('plan_id');
+
+        $appointmentDate = $this->input->post('appointment_date');
+        $dischargeDate = $this->input->post('discharge_date');
+        $nextReviewDate = $this->input->post('next_review_date');
+
         $data = [
             'patient_id' => $patientId,
-            'appointment_date' => $this->input->post('appointment_date'),
-            'discharge_date' => $this->input->post('discharge_date'),
-            'next_review_date' => $this->input->post('next_review_date'),
-            'followup_interval_days' => $this->input->post('followup_interval_days'),
+            'appointment_date' => (!empty($appointmentDate) && $appointmentDate != '0000-00-00') ? $appointmentDate : null,
+            'discharge_date' => (!empty($dischargeDate) && $dischargeDate != '0000-00-00') ? $dischargeDate : null,
+            'next_review_date' => (!empty($nextReviewDate) && $nextReviewDate != '0000-00-00') ? $nextReviewDate : null,
+            'followup_interval_days' => ($this->input->post('followup_interval_days') !== '' && $this->input->post('followup_interval_days') !== null) ? $this->input->post('followup_interval_days') : null,
             'notes' => $this->input->post('notes'),
         ];
 
-        $plan_id = $this->ConsultModel->saveDischargeFollowUp($data);
-
-        $this->generate_discharge_follow($plan_id);
-        if ($plan_id) {
-            $this->session->set_flashdata('showSuccessMessage', 'Discharge follow-up data saved successfully.');
+        if (!empty($planId)) {
+            $this->ConsultModel->updateDischargeFollowUp($planId, $data);
+            $this->db->where('plan_id', $planId)->delete('patient_followups');
+            $this->generate_discharge_follow($planId);
+            $this->session->set_flashdata('showSuccessMessage', 'Discharge follow-up updated successfully.');
         } else {
-            $this->session->set_flashdata('showErrorMessage', 'Failed to save discharge follow-up data.');
+            $plan_id = $this->ConsultModel->saveDischargeFollowUp($data);
+            if ($plan_id) {
+                $this->generate_discharge_follow($plan_id);
+                $this->session->set_flashdata('showSuccessMessage', 'Discharge follow-up data saved successfully.');
+            } else {
+                $this->session->set_flashdata('showErrorMessage', 'Failed to save discharge follow-up data.');
+            }
         }
         redirect('Consultation/consultation/' . $patientId . '#post-discharge-follow-up');
     }
@@ -1216,17 +1228,29 @@ class Consultation extends CI_Controller
             ->get('discharge_followup_plan')
             ->row();
 
-        $start = strtotime($plan->discharge_date);
-        $end = strtotime($plan->next_review_date);
-        $interval = $plan->followup_interval_days;
+        if (!$plan) {
+            return;
+        }
 
-        for ($date = $start + ($interval * 86400); $date <= $end; $date += ($interval * 86400)) {
+        $startDateStr = (!empty($plan->discharge_date) && $plan->discharge_date != '0000-00-00') ? $plan->discharge_date : ((!empty($plan->appointment_date) && $plan->appointment_date != '0000-00-00') ? $plan->appointment_date : null);
+        $endDateStr = (!empty($plan->next_review_date) && $plan->next_review_date != '0000-00-00') ? $plan->next_review_date : null;
 
-            $this->db->insert('patient_followups', [
-                'plan_id' => $plan_id,
-                'patient_id' => $plan->patient_id,
-                'followup_date' => date('Y-m-d', $date)
-            ]);
+        if (empty($startDateStr) || empty($endDateStr) || empty($plan->followup_interval_days)) {
+            return;
+        }
+
+        $start = strtotime($startDateStr);
+        $end = strtotime($endDateStr);
+        $interval = (int)$plan->followup_interval_days;
+
+        if ($start && $end && $start < $end && $interval > 0) {
+            for ($date = $start + ($interval * 86400); $date <= $end; $date += ($interval * 86400)) {
+                $this->db->insert('patient_followups', [
+                    'plan_id' => $plan_id,
+                    'patient_id' => $plan->patient_id,
+                    'followup_date' => date('Y-m-d', $date)
+                ]);
+            }
         }
     }
 

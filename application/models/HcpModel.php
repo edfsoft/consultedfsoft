@@ -249,14 +249,13 @@ class HcpModel extends CI_Model
 
     public function getDischargeFollwupByDate($hcpIdDb, $date)
     {
-        return $this->db->select('pf.*, CONCAT(pd.firstName, " ", pd.lastName) as patient_name, pd.patientId, pd.mobileNumber, pd.id as patientDbId')
-            ->from('patient_followups pf')
-            ->join('patient_details pd', 'pd.id = pf.patient_id')
-            ->where('pf.followup_date', $date)
+        return $this->db->select('dfp.id, dfp.patient_id, dfp.appointment_date, dfp.discharge_date, dfp.next_review_date, dfp.notes, CONCAT(pd.firstName, " ", pd.lastName) as patient_name, pd.patientId, pd.mobileNumber, pd.id as patientDbId')
+            ->from('discharge_followup_plan dfp')
+            ->join('patient_details pd', 'pd.id = dfp.patient_id')
+            ->where('dfp.appointment_date', $date)
             ->where('pd.patientHcpDbId', $hcpIdDb)
             ->where('pd.deleteStatus', '0')
-            ->where_in('pf.status', ['missed', 'pending'])
-            ->order_by('pf.id', 'DESC')
+            ->order_by('dfp.id', 'DESC')
             ->get()
             ->result();
     }

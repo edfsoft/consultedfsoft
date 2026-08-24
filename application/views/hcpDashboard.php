@@ -907,7 +907,7 @@
                 <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
                     <div class="modal-content" style="border-radius:16px;font-family:'Poppins',sans-serif;">
 
-                        <!-- Modal Header -->
+                        <!-- Modal Header --> 
                         <div class="modal-header" style="background:#00ad8e;color:#fff;border-radius:16px 16px 0 0;">
                             <h5 class="modal-title fw-semibold" id="postDischargeDownloadModalLabel">
                                 <i class="bi bi-download me-2"></i> Download Patient Admission & Discharge List

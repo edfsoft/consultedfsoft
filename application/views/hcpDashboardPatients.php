@@ -70,61 +70,66 @@
             ?>
             <section>
                 <div class="card rounded">
-                    <div class="d-sm-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
-                        <p style="font-size: 24px; font-weight: 500">
+                    <div class="d-sm-flex justify-content-between align-items-center mt-2 p-3 pb-2 pt-sm-3 px-sm-4">
+                        <p class="mb-0" style="font-size: 24px; font-weight: 500">
                             Patients
                         </p>
                         <a href="<?php echo base_url() . 'Healthcareprovider/patientform'; ?>">
-                            <button style="background-color: #00ad8e;" class="text-light border-0 rounded float-end p-2">
-                                <i class="bi bi-plus-square-fill"></i> Add Patient
+                            <button style="background-color: #00ad8e;" class="text-light border-0 rounded float-end px-3 py-2">
+                                <i class="bi bi-plus-square-fill me-1"></i> Add Patient
                             </button>
                         </a>
                     </div>
                     <?php if ((isset($totalPatientCount) && $totalPatientCount > 0) || (isset($patientList) && count($patientList) > 0)) {
                         ?>
-                        <div id="entriesPerPage" class="d-flex flex-wrap align-items-center justify-content-between gap-2 m-3">
-                            <div class="d-flex flex-wrap align-items-center gap-2">
-                                <select id="filterDropdown" class="form-select border border-2 rounded-3 px-3 py-2"
-                                    style="height: 50px; width: 220px;">
+                        <div class="px-sm-4 px-3 py-1">
+                            <!-- Line 1: Gender Filter (Left) & Patient Search (Right) -->
+                            <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-2">
+                                <select id="filterDropdown" class="form-select border border-2 rounded-2 px-3 py-1"
+                                    style="height: 40px; width: 220px; font-size: 14px;">
                                     <option value="All">Filter (All Genders)</option>
                                     <option value="Male">Male</option>
                                     <option value="Female">Female</option>
                                 </select>
-                                <select id="clinicalCategoryDropdown" class="form-select border border-2 rounded-3 px-3 py-2"
-                                    style="height: 50px; width: 220px;">
-                                    <option value="All">All Clinical Topics</option>
-                                    <option value="Diagnosis">Diagnosis</option>
-                                    <option value="Symptoms">Symptoms</option>
-                                    <option value="Medicines">Medicines</option>
-                                    <option value="Findings">Findings</option>
-                                    <option value="Investigations">Investigations</option>
-                                    <option value="Advices">Advices</option>
-                                </select>
-                            </div>
-                            <div class="d-flex flex-wrap align-items-center gap-2 pt-2 pt-md-0">
                                 <div class="d-flex align-items-center position-relative">
-                                    <input type="text" id="clinicalSearchBar" class="border border-2 rounded-3 px-3 py-2"
-                                        style="height: 50px; width: 260px" placeholder="Search Clinical (e.g. Diabetes)">
-                                    <span id="clearClinicalSearch" class="position-absolute"
-                                        style="right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer; display: none; font-size: 22px;">×</span>
-                                </div>
-                                <div class="d-flex align-items-center position-relative">
-                                    <input type="text" id="searchBar" class="border border-2 rounded-3 px-3 py-2"
-                                        style="height: 50px; width: 260px" placeholder="Search (ID / NAME / MOBILE)">
+                                    <input type="text" id="searchBar" class="form-control border border-2 rounded-2 px-3 py-1"
+                                        style="height: 40px; width: 270px; font-size: 14px;" placeholder="Search (ID / NAME / MOBILE)">
                                     <span id="clearSearch" class="position-absolute"
-                                        style="right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer; display: none; font-size: 22px;">×</span>
+                                        style="right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer; display: none; font-size: 20px; line-height: 1;">×</span>
                                 </div>
                             </div>
-                        </div>
-                        <div class="ps-4">
-                            <label for="itemsPerPageDropdown">Show </label>
-                            <select id="itemsPerPageDropdown"
-                                class="form-select d-inline-block border border-2 rounded-2 w-auto mx-2">
-                                <option value="10" selected>10</option>
-                                <option value="25">25</option>
-                                <option value="50">50</option>
-                            </select>
-                            <label for="itemsPerPageDropdown">Entries </label>
+
+                            <!-- Line 2: Show Entries (Left) & Clinical Category Filter + Clinical Search (Right) -->
+                            <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-1">
+                                <div class="d-flex align-items-center text-muted" style="font-size: 14px;">
+                                    <label for="itemsPerPageDropdown" class="me-1 mb-0">Show</label>
+                                    <select id="itemsPerPageDropdown" class="form-select border border-2 rounded-2 mx-1"
+                                        style="height: 40px; width: 75px; font-size: 14px; padding: 2px 8px;">
+                                        <option value="10" selected>10</option>
+                                        <option value="25">25</option>
+                                        <option value="50">50</option>
+                                    </select>
+                                    <label for="itemsPerPageDropdown" class="ms-1 mb-0">Entries</label>
+                                </div>
+                                <div class="d-flex align-items-center flex-wrap gap-2">
+                                    <select id="clinicalCategoryDropdown" class="form-select border border-2 rounded-2 px-3 py-1"
+                                        style="height: 40px; width: 220px; font-size: 14px;">
+                                        <option value="All">All Clinical Topics</option>
+                                        <option value="Diagnosis">Diagnosis</option>
+                                        <option value="Symptoms">Symptoms</option>
+                                        <option value="Medicines">Medicines</option>
+                                        <option value="Findings">Findings</option>
+                                        <option value="Investigations">Investigations</option>
+                                        <option value="Advices">Advices</option>
+                                    </select>
+                                    <div class="d-flex align-items-center position-relative">
+                                        <input type="text" id="clinicalSearchBar" class="form-control border border-2 rounded-2 px-3 py-1"
+                                            style="height: 40px; width: 270px; font-size: 14px;" placeholder="Search Clinical (e.g. Diabetes)">
+                                        <span id="clearClinicalSearch" class="position-absolute"
+                                            style="right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer; display: none; font-size: 20px; line-height: 1;">×</span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="card-body ps-2 p-sm-4">
                             <div class="table-responsive">

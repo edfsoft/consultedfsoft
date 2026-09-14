@@ -834,7 +834,7 @@ class HcpModel extends CI_Model
         return $this->db->count_all_results('patient_details');
     }
 
-    public function getPatientsServerSide($hcpIdDb, $start = 0, $limit = 10, $search = '', $gender = 'All', $sortBy = 'id', $sortOrder = 'desc')
+    public function getPatientsServerSide($hcpIdDb, $start = 0, $limit = 10, $search = '', $gender = 'All', $sortBy = 'id', $sortOrder = 'desc', $clinicalSearch = '', $clinicalCategory = 'All')
     {
         // Total count for this HCP
         $this->db->where('patientHcpDbId', $hcpIdDb);
@@ -859,6 +859,65 @@ class HcpModel extends CI_Model
             $this->db->or_like('alternateMobile', $search);
             $this->db->or_like("CONCAT(firstName, ' ', lastName)", $search);
             $this->db->group_end();
+        }
+
+        if (!empty($clinicalSearch)) {
+            $escaped = $this->db->escape_like_str($clinicalSearch);
+            $cat = strtolower(trim($clinicalCategory));
+
+            if ($cat === 'diagnosis') {
+                $this->db->where("EXISTS (
+                    SELECT 1 FROM consultations c 
+                    JOIN consult_diagnosis cd ON cd.consultation_id = c.id 
+                    WHERE c.patient_id = patient_details.id 
+                    AND (cd.diagnosis_name LIKE '%{$escaped}%' OR cd.note LIKE '%{$escaped}%')
+                )", null, false);
+            } elseif ($cat === 'symptoms' || $cat === 'symptom') {
+                $this->db->where("EXISTS (
+                    SELECT 1 FROM consultations c 
+                    JOIN consult_symptoms cs ON cs.consultation_id = c.id 
+                    WHERE c.patient_id = patient_details.id 
+                    AND (cs.symptom_name LIKE '%{$escaped}%' OR cs.note LIKE '%{$escaped}%')
+                )", null, false);
+            } elseif ($cat === 'medicines' || $cat === 'medicine') {
+                $this->db->where("EXISTS (
+                    SELECT 1 FROM consultations c 
+                    JOIN consult_medicines cm ON cm.consultation_id = c.id 
+                    WHERE c.patient_id = patient_details.id 
+                    AND (cm.medicine_name LIKE '%{$escaped}%' OR cm.composition_name LIKE '%{$escaped}%' OR cm.notes LIKE '%{$escaped}%')
+                )", null, false);
+            } elseif ($cat === 'findings' || $cat === 'finding') {
+                $this->db->where("EXISTS (
+                    SELECT 1 FROM consultations c 
+                    JOIN consult_findings cf ON cf.consultation_id = c.id 
+                    WHERE c.patient_id = patient_details.id 
+                    AND (cf.finding_name LIKE '%{$escaped}%' OR cf.note LIKE '%{$escaped}%')
+                )", null, false);
+            } elseif ($cat === 'investigations' || $cat === 'investigation') {
+                $this->db->where("EXISTS (
+                    SELECT 1 FROM consultations c 
+                    JOIN consult_investigations ci ON ci.consultation_id = c.id 
+                    WHERE c.patient_id = patient_details.id 
+                    AND (ci.investigation_name LIKE '%{$escaped}%' OR ci.note LIKE '%{$escaped}%')
+                )", null, false);
+            } elseif ($cat === 'advices' || $cat === 'advice') {
+                $this->db->where("(
+                    EXISTS (SELECT 1 FROM consultations c JOIN consult_advices ca ON ca.consultation_id = c.id WHERE c.patient_id = patient_details.id AND (ca.advice_name LIKE '%{$escaped}%' OR ca.note LIKE '%{$escaped}%'))
+                    OR EXISTS (SELECT 1 FROM consultations c JOIN consult_instructions cinst ON cinst.consultation_id = c.id WHERE c.patient_id = patient_details.id AND cinst.instruction_name LIKE '%{$escaped}%')
+                    OR EXISTS (SELECT 1 FROM consultations c JOIN consult_procedures cp ON cp.consultation_id = c.id WHERE c.patient_id = patient_details.id AND cp.procedure_name LIKE '%{$escaped}%')
+                )", null, false);
+            } else {
+                // All Clinical Topics
+                $this->db->where("(
+                    EXISTS (SELECT 1 FROM consultations c JOIN consult_diagnosis cd ON cd.consultation_id = c.id WHERE c.patient_id = patient_details.id AND (cd.diagnosis_name LIKE '%{$escaped}%' OR cd.note LIKE '%{$escaped}%'))
+                    OR EXISTS (SELECT 1 FROM consultations c JOIN consult_symptoms cs ON cs.consultation_id = c.id WHERE c.patient_id = patient_details.id AND (cs.symptom_name LIKE '%{$escaped}%' OR cs.note LIKE '%{$escaped}%'))
+                    OR EXISTS (SELECT 1 FROM consultations c JOIN consult_medicines cm ON cm.consultation_id = c.id WHERE c.patient_id = patient_details.id AND (cm.medicine_name LIKE '%{$escaped}%' OR cm.composition_name LIKE '%{$escaped}%' OR cm.notes LIKE '%{$escaped}%'))
+                    OR EXISTS (SELECT 1 FROM consultations c JOIN consult_findings cf ON cf.consultation_id = c.id WHERE c.patient_id = patient_details.id AND (cf.finding_name LIKE '%{$escaped}%' OR cf.note LIKE '%{$escaped}%'))
+                    OR EXISTS (SELECT 1 FROM consultations c JOIN consult_investigations ci ON ci.consultation_id = c.id WHERE c.patient_id = patient_details.id AND (ci.investigation_name LIKE '%{$escaped}%' OR ci.note LIKE '%{$escaped}%'))
+                    OR EXISTS (SELECT 1 FROM consultations c JOIN consult_advices ca ON ca.consultation_id = c.id WHERE c.patient_id = patient_details.id AND (ca.advice_name LIKE '%{$escaped}%' OR ca.note LIKE '%{$escaped}%'))
+                    OR EXISTS (SELECT 1 FROM consultations c WHERE c.patient_id = patient_details.id AND (c.notes LIKE '%{$escaped}%' OR c.dietPlan LIKE '%{$escaped}%'))
+                )", null, false);
+            }
         }
 
         $filteredRecords = $this->db->count_all_results('', false);

@@ -392,11 +392,14 @@ class Healthcareprovider extends CI_Controller
         $sortBy = trim($this->input->get_post('sortBy') ?: 'id');
         $sortOrder = trim($this->input->get_post('sortOrder') ?: 'desc');
 
+        $clinicalSearch = trim($this->input->get_post('clinicalSearch') ?: '');
+        $clinicalCategory = trim($this->input->get_post('clinicalCategory') ?: 'All');
+
         if ($limit < 1) $limit = 10;
         if ($page < 1) $page = 1;
         $start = ($page - 1) * $limit;
 
-        $result = $this->HcpModel->getPatientsServerSide($hcpIdDb, $start, $limit, $search, $gender, $sortBy, $sortOrder);
+        $result = $this->HcpModel->getPatientsServerSide($hcpIdDb, $start, $limit, $search, $gender, $sortBy, $sortOrder, $clinicalSearch, $clinicalCategory);
 
         header('Content-Type: application/json');
         echo json_encode($result);

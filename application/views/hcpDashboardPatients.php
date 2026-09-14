@@ -82,18 +82,38 @@
                     </div>
                     <?php if ((isset($totalPatientCount) && $totalPatientCount > 0) || (isset($patientList) && count($patientList) > 0)) {
                         ?>
-                        <div id="entriesPerPage" class="d-md-flex align-items-center justify-content-between m-3">
-                            <select id="filterDropdown" class="form-select border border-2 rounded-3 px-3 py-2"
-                                style="height: 50px; width: 250px;">
-                                <option value="All">Filter (All Genders)</option>
-                                <option value="Male">Male</option>
-                                <option value="Female">Female</option>
-                            </select>
-                            <div class="d-flex align-items-center position-relative pt-2 pt-md-0">
-                                <input type="text" id="searchBar" class="border border-2 rounded-3 px-3 py-2"
-                                    style="height: 50px; width: 260px" placeholder="Search (ID / NAME / MOBILE)">
-                                <span id="clearSearch" class="position-absolute"
-                                    style="right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer; display: none; font-size: 22px;">×</span>
+                        <div id="entriesPerPage" class="d-flex flex-wrap align-items-center justify-content-between gap-2 m-3">
+                            <div class="d-flex flex-wrap align-items-center gap-2">
+                                <select id="filterDropdown" class="form-select border border-2 rounded-3 px-3 py-2"
+                                    style="height: 50px; width: 220px;">
+                                    <option value="All">Filter (All Genders)</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                </select>
+                                <select id="clinicalCategoryDropdown" class="form-select border border-2 rounded-3 px-3 py-2"
+                                    style="height: 50px; width: 220px;">
+                                    <option value="All">All Clinical Topics</option>
+                                    <option value="Diagnosis">Diagnosis</option>
+                                    <option value="Symptoms">Symptoms</option>
+                                    <option value="Medicines">Medicines</option>
+                                    <option value="Findings">Findings</option>
+                                    <option value="Investigations">Investigations</option>
+                                    <option value="Advices">Advices</option>
+                                </select>
+                            </div>
+                            <div class="d-flex flex-wrap align-items-center gap-2 pt-2 pt-md-0">
+                                <div class="d-flex align-items-center position-relative">
+                                    <input type="text" id="clinicalSearchBar" class="border border-2 rounded-3 px-3 py-2"
+                                        style="height: 50px; width: 260px" placeholder="Search Clinical (e.g. Diabetes)">
+                                    <span id="clearClinicalSearch" class="position-absolute"
+                                        style="right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer; display: none; font-size: 22px;">×</span>
+                                </div>
+                                <div class="d-flex align-items-center position-relative">
+                                    <input type="text" id="searchBar" class="border border-2 rounded-3 px-3 py-2"
+                                        style="height: 50px; width: 260px" placeholder="Search (ID / NAME / MOBILE)">
+                                    <span id="clearSearch" class="position-absolute"
+                                        style="right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer; display: none; font-size: 22px;">×</span>
+                                </div>
                             </div>
                         </div>
                         <div class="ps-4">
@@ -151,11 +171,15 @@
                 let sortBy = 'id';
                 let sortOrder = 'desc';
                 let searchDebounceTimer = null;
+                let clinicalSearchDebounceTimer = null;
 
                 const itemsPerPageDropdown = document.getElementById('itemsPerPageDropdown');
                 const searchBar = document.getElementById('searchBar');
                 const clearSearch = document.getElementById('clearSearch');
                 const filterDropdown = document.getElementById('filterDropdown');
+                const clinicalCategoryDropdown = document.getElementById('clinicalCategoryDropdown');
+                const clinicalSearchBar = document.getElementById('clinicalSearchBar');
+                const clearClinicalSearch = document.getElementById('clearClinicalSearch');
                 const sortPatientId = document.getElementById('sortPatientId');
                 const sortPatientName = document.getElementById('sortPatientName');
                 const sortIdIndicator = document.getElementById('sortIdIndicator');
@@ -185,6 +209,30 @@
                     clearSearch.addEventListener('click', () => {
                         searchBar.value = '';
                         toggleClearIcons();
+                        fetchPatients(1);
+                    });
+                }
+
+                if (clinicalSearchBar) {
+                    clinicalSearchBar.addEventListener('input', () => {
+                        toggleClearIcons();
+                        clearTimeout(clinicalSearchDebounceTimer);
+                        clinicalSearchDebounceTimer = setTimeout(() => {
+                            fetchPatients(1);
+                        }, 300);
+                    });
+                }
+
+                if (clearClinicalSearch) {
+                    clearClinicalSearch.addEventListener('click', () => {
+                        clinicalSearchBar.value = '';
+                        toggleClearIcons();
+                        fetchPatients(1);
+                    });
+                }
+
+                if (clinicalCategoryDropdown) {
+                    clinicalCategoryDropdown.addEventListener('change', () => {
                         fetchPatients(1);
                     });
                 }
@@ -230,6 +278,9 @@
                     if (clearSearch && searchBar) {
                         clearSearch.style.display = searchBar.value ? 'block' : 'none';
                     }
+                    if (clearClinicalSearch && clinicalSearchBar) {
+                        clearClinicalSearch.style.display = clinicalSearchBar.value ? 'block' : 'none';
+                    }
                 }
 
                 function fetchPatients(page) {
@@ -238,6 +289,8 @@
 
                     const searchTerm = searchBar ? searchBar.value.trim() : '';
                     const genderFilter = filterDropdown ? filterDropdown.value : 'All';
+                    const clinicalSearchTerm = clinicalSearchBar ? clinicalSearchBar.value.trim() : '';
+                    const clinicalCat = clinicalCategoryDropdown ? clinicalCategoryDropdown.value : 'All';
 
                     const params = new URLSearchParams({
                         page: page,
@@ -245,7 +298,9 @@
                         search: searchTerm,
                         gender: genderFilter,
                         sortBy: sortBy,
-                        sortOrder: sortOrder
+                        sortOrder: sortOrder,
+                        clinicalSearch: clinicalSearchTerm,
+                        clinicalCategory: clinicalCat
                     });
 
                     fetch(`${baseUrl}Healthcareprovider/getPatientsAjax?${params.toString()}`)

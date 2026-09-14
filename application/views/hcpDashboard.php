@@ -3739,12 +3739,17 @@ Thank you.`;
                                                         </button>
                                                     </div>
                                                     <select class="form-select" name="patientId" id="patientId">
-                                                <?php foreach ($patientsId as $value): ?>
-                                                            <option
-                                                                value="<?php echo htmlspecialchars($value['patientId'] . '|' . $value['id']); ?>">
-                                                        <?php echo htmlspecialchars($value['patientId'] . " / " . $value['firstName'] . " " . $value['lastName']); ?>
-                                                            </option>
-                                                <?php endforeach; ?>
+                                                <?php if (!empty($patientsId)): ?>
+                                                            <option value="">Select Patient Id</option>
+                                                    <?php foreach ($patientsId as $value): ?>
+                                                                <option
+                                                                    value="<?php echo htmlspecialchars($value['patientId'] . '|' . $value['id']); ?>">
+                                                            <?php echo htmlspecialchars($value['patientId'] . " / " . $value['firstName'] . " " . $value['lastName']); ?>
+                                                                </option>
+                                                    <?php endforeach; ?>
+                                                <?php else: ?>
+                                                            <option value="" disabled selected>No patients</option>
+                                                <?php endif; ?>
                                                     </select>
                                                     <small id="patientId_err" class="text-danger pt-1"></small>
                                                 </div>

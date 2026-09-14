@@ -1562,7 +1562,7 @@
                                                         </select>
                                                         <div class="d-flex align-items-center position-relative pt-2 pt-md-0">
                                                             <input type="text" id="searchBar" class="border border-2 rounded-3 px-3 py-2"
-                                                                style="height: 50px; width: 260px" placeholder="Search (ID / NAME / MOBILE)">
+                                                                style="height: 50px; width: 290px" placeholder="Search (ID / NAME / MOBILE / HCP)">
                                                             <span id="clearSearch" class="position-absolute"
                                                                 style="right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer; display: none; font-size: 22px;">×</span>
                                                         </div>
@@ -1594,7 +1594,10 @@
                                                                         <th scope="col" style="font-size: 16px; font-weight: 500;">MOBILE NUMBER</th>
                                                                         <th scope="col" style="font-size: 16px; font-weight: 500;">GENDER</th>
                                                                         <th scope="col" style="font-size: 16px; font-weight: 500;">AGE</th>
-                                                                        <th scope="col" style="font-size: 16px; font-weight: 500;">PATIENT HCP</th>
+                                                                        <th scope="col" style="font-size: 16px; font-weight: 500; cursor: pointer;"
+                                                                            id="sortPatientHcp" class="sortable">
+                                                                            PATIENT HCP <span id="sortHcpIndicator"></span>
+                                                                        </th>
                                                                         <th scope="col" style="font-size: 16px; font-weight: 500;">ACTION</th>
                                                                     </tr>
                                                                 </thead>
@@ -1630,8 +1633,10 @@
                                             const filterDropdown = document.getElementById('filterDropdown');
                                             const sortPatientId = document.getElementById('sortPatientId');
                                             const sortPatientName = document.getElementById('sortPatientName');
+                                            const sortPatientHcp = document.getElementById('sortPatientHcp');
                                             const sortIdIndicator = document.getElementById('sortIdIndicator');
                                             const sortNameIndicator = document.getElementById('sortNameIndicator');
+                                            const sortHcpIndicator = document.getElementById('sortHcpIndicator');
 
                                             // Load saved itemsPerPage
                                             const savedItemsPerPage = parseInt(localStorage.getItem('itemsPerPagePatient')) || itemsPerPagePatient;
@@ -1681,9 +1686,25 @@
                                                 applyFilters();
                                             });
 
+                                            if (sortPatientHcp) {
+                                                sortPatientHcp.addEventListener('click', () => {
+                                                    if (sortBy === 'patientHcp') {
+                                                        sortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
+                                                    } else {
+                                                        sortBy = 'patientHcp';
+                                                        sortOrder = 'asc';
+                                                    }
+                                                    updateSortIndicators();
+                                                    applyFilters();
+                                                });
+                                            }
+
                                             function updateSortIndicators() {
                                                 sortIdIndicator.textContent = (sortBy === 'patientId') ? (sortOrder === 'asc' ? '🡱' : '🡳') : '';
                                                 sortNameIndicator.textContent = (sortBy === 'name') ? (sortOrder === 'asc' ? '🡱' : '🡳') : '';
+                                                if (sortHcpIndicator) {
+                                                    sortHcpIndicator.textContent = (sortBy === 'patientHcp') ? (sortOrder === 'asc' ? '🡱' : '🡳') : '';
+                                                }
                                             }
 
                                             function toggleClearIcons() {
@@ -1691,7 +1712,7 @@
                                             }
 
                                             function applyFilters() {
-                                                const searchTerm = searchBar.value.toLowerCase();
+                                                const searchTerm = searchBar.value.toLowerCase().trim();
                                                 const genderFilter = filterDropdown.value;
 
                                                 let filtered = patientList.filter((patient) => {
@@ -1699,12 +1720,16 @@
                                                     const patientId = patient.patientId || '';
                                                     const mobileNumber = patient.mobileNumber || '';
                                                     const alternateMobile = patient.alternateMobile || '';
+                                                    const patientHcp = patient.patientHcp || '';
+                                                    const hcpName = patient.hcpName || '';
 
                                                     const matchesSearch =
                                                         fullName.toLowerCase().includes(searchTerm) ||
                                                         patientId.toLowerCase().includes(searchTerm) ||
                                                         mobileNumber.toLowerCase().includes(searchTerm) ||
-                                                        alternateMobile.toLowerCase().includes(searchTerm);
+                                                        alternateMobile.toLowerCase().includes(searchTerm) ||
+                                                        patientHcp.toLowerCase().includes(searchTerm) ||
+                                                        hcpName.toLowerCase().includes(searchTerm);
 
                                                     let matchesGender = true;
                                                     if (genderFilter !== 'All') {
@@ -1727,6 +1752,12 @@
                                                     } else if (sortBy === 'name') {
                                                         valA = `${a.firstName || ''} ${a.lastName || ''}`.trim().toLowerCase();
                                                         valB = `${b.firstName || ''} ${b.lastName || ''}`.trim().toLowerCase();
+                                                        return sortOrder === 'asc'
+                                                            ? valA.localeCompare(valB)
+                                                            : valB.localeCompare(valA);
+                                                    } else if (sortBy === 'patientHcp') {
+                                                        valA = (a.patientHcp || '').toString().toLowerCase();
+                                                        valB = (b.patientHcp || '').toString().toLowerCase();
                                                         return sortOrder === 'asc'
                                                             ? valA.localeCompare(valB)
                                                             : valB.localeCompare(valA);

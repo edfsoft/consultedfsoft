@@ -214,10 +214,20 @@
 
         let originalOptions = Array.from(selectElement.options);
         const MAX_DISPLAY_COUNT = 5;
+        const hasValidOptions = () => originalOptions.some(opt => opt.value !== '' && !opt.disabled);
 
-        selectElement.value = "";
+        if (hasValidOptions()) {
+            selectElement.value = "";
+        }
+
         searchInputElement.addEventListener('input', function () {
             const term = this.value.toLowerCase().trim();
+
+            if (!hasValidOptions()) {
+                selectElement.innerHTML = `<option value="" disabled selected>No patients</option>`;
+                selectElement.size = 1;
+                return;
+            }
 
             if (term.length > 0) {
                 selectElement.size = 6;
@@ -230,7 +240,7 @@
             let count = 0;
 
             originalOptions.forEach(opt => {
-                if (opt.value === '') return;
+                if (opt.value === '' || opt.disabled) return;
 
                 if (count >= MAX_DISPLAY_COUNT) return;
 
@@ -255,6 +265,7 @@
         });
 
         searchInputElement.addEventListener('click', function () {
+            if (!hasValidOptions()) return;
             selectElement.size = 6;
             this.focus();
             this._ignoreBlur = true;
@@ -292,6 +303,13 @@
         const value = patient.patientId + '|' + patient.id;
         const text = patient.patientId + " / " + patient.firstName + (patient.lastName ? " " + patient.lastName : "");
 
+        // Remove disabled placeholder if present
+        for (let i = selectElement.options.length - 1; i >= 0; i--) {
+            if (selectElement.options[i].disabled || selectElement.options[i].value === '') {
+                selectElement.remove(i);
+            }
+        }
+
         let exists = false;
         for (let opt of selectElement.options) {
             if (opt.value === value) {
@@ -320,8 +338,8 @@
             'Select Patient Id',
             '— No patient found —'
         );
-        let originalOptions = patientElements.originalOptions;
-        const select = patientElements.selectElement;
+        let originalOptions = patientElements ? patientElements.originalOptions : [];
+        const select = patientElements ? patientElements.selectElement : document.getElementById('patientId');
 
         setupSearchDropdown(
             'referalDoctor',

@@ -80,7 +80,7 @@
                             </button>
                         </a>
                     </div>
-                    <?php if (isset($patientList[0]['id'])) {
+                    <?php if ((isset($totalPatientCount) && $totalPatientCount > 0) || (isset($patientList) && count($patientList) > 0)) {
                         ?>
                         <div id="entriesPerPage" class="d-md-flex align-items-center justify-content-between m-3">
                             <select id="filterDropdown" class="form-select border border-2 rounded-3 px-3 py-2"
@@ -145,14 +145,12 @@
             </section>
 
             <script>
-                let itemsPerPagePatients = 10;
-                const patientDetails = <?php echo json_encode($patientList); ?>;
-
-                let filteredPatientDetails = [...patientDetails];
-                const initialPagePatients = parseInt(localStorage.getItem('currentPagePatients')) || 1;
-
+                const baseUrl = '<?php echo base_url(); ?>';
+                let itemsPerPagePatients = parseInt(localStorage.getItem('itemsPerPagePatients')) || 10;
+                let currentPagePatients = parseInt(localStorage.getItem('currentPagePatients')) || 1;
                 let sortBy = 'id';
                 let sortOrder = 'desc';
+                let searchDebounceTimer = null;
 
                 const itemsPerPageDropdown = document.getElementById('itemsPerPageDropdown');
                 const searchBar = document.getElementById('searchBar');
@@ -163,126 +161,121 @@
                 const sortIdIndicator = document.getElementById('sortIdIndicator');
                 const sortNameIndicator = document.getElementById('sortNameIndicator');
 
-                // Load saved itemsPerPage
-                const savedItemsPerPage = parseInt(localStorage.getItem('itemsPerPagePatients')) || itemsPerPagePatients;
-                itemsPerPageDropdown.value = savedItemsPerPage;
-                itemsPerPagePatients = savedItemsPerPage;
+                if (itemsPerPageDropdown) {
+                    itemsPerPageDropdown.value = itemsPerPagePatients;
 
-                // Event Listeners
-                itemsPerPageDropdown.addEventListener('change', (event) => {
-                    itemsPerPagePatients = parseInt(event.target.value);
-                    localStorage.setItem('itemsPerPagePatients', itemsPerPagePatients);
-                    applyFilters();
-                });
+                    itemsPerPageDropdown.addEventListener('change', (event) => {
+                        itemsPerPagePatients = parseInt(event.target.value);
+                        localStorage.setItem('itemsPerPagePatients', itemsPerPagePatients);
+                        fetchPatients(1);
+                    });
+                }
 
-                searchBar.addEventListener('input', () => {
-                    toggleClearIcons();
-                    applyFilters();
-                });
+                if (searchBar) {
+                    searchBar.addEventListener('input', () => {
+                        toggleClearIcons();
+                        clearTimeout(searchDebounceTimer);
+                        searchDebounceTimer = setTimeout(() => {
+                            fetchPatients(1);
+                        }, 300);
+                    });
+                }
 
-                clearSearch.addEventListener('click', () => {
-                    searchBar.value = '';
-                    toggleClearIcons();
-                    applyFilters();
-                });
+                if (clearSearch) {
+                    clearSearch.addEventListener('click', () => {
+                        searchBar.value = '';
+                        toggleClearIcons();
+                        fetchPatients(1);
+                    });
+                }
 
-                filterDropdown.addEventListener('change', applyFilters);
+                if (filterDropdown) {
+                    filterDropdown.addEventListener('change', () => {
+                        fetchPatients(1);
+                    });
+                }
 
-                // Sorting click handlers
-                sortPatientId.addEventListener('click', () => {
-                    if (sortBy === 'id') {
-                        sortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
-                    } else {
-                        sortBy = 'id';
-                        sortOrder = 'desc';  // Default to descending when switching to ID
-                    }
-                    updateSortIndicators();
-                    applyFilters();
-                });
+                if (sortPatientId) {
+                    sortPatientId.addEventListener('click', () => {
+                        if (sortBy === 'id') {
+                            sortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
+                        } else {
+                            sortBy = 'id';
+                            sortOrder = 'desc';
+                        }
+                        updateSortIndicators();
+                        fetchPatients(1);
+                    });
+                }
 
-                sortPatientName.addEventListener('click', () => {
-                    if (sortBy === 'name') {
-                        sortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
-                    } else {
-                        sortBy = 'name';
-                        sortOrder = 'asc';
-                    }
-                    updateSortIndicators();
-                    applyFilters();
-                });
+                if (sortPatientName) {
+                    sortPatientName.addEventListener('click', () => {
+                        if (sortBy === 'name') {
+                            sortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
+                        } else {
+                            sortBy = 'name';
+                            sortOrder = 'asc';
+                        }
+                        updateSortIndicators();
+                        fetchPatients(1);
+                    });
+                }
 
                 function updateSortIndicators() {
-                    sortIdIndicator.textContent = (sortBy === 'id') ? (sortOrder === 'asc' ? '🡱' : '🡳') : '';
-                    sortNameIndicator.textContent = (sortBy === 'name') ? (sortOrder === 'asc' ? '🡱' : '🡳') : '';
+                    if (sortIdIndicator) sortIdIndicator.textContent = (sortBy === 'id') ? (sortOrder === 'asc' ? '🡱' : '🡳') : '';
+                    if (sortNameIndicator) sortNameIndicator.textContent = (sortBy === 'name') ? (sortOrder === 'asc' ? '🡱' : '🡳') : '';
                 }
 
                 function toggleClearIcons() {
-                    clearSearch.style.display = searchBar.value ? 'block' : 'none';
+                    if (clearSearch && searchBar) {
+                        clearSearch.style.display = searchBar.value ? 'block' : 'none';
+                    }
                 }
 
-                function applyFilters() {
-                    const searchTerm = searchBar.value.toLowerCase();
-                    const genderFilter = filterDropdown.value;
-
-                    let filtered = patientDetails.filter((patient) => {
-                        const fullName = `${patient.firstName || ''} ${patient.lastName || ''}`.trim();
-                        const patientId = patient.patientId || '';
-                        const mobileNumber = patient.mobileNumber || '';
-                        const alternateMobileNumber = patient.alternateMobile || '';
-
-                        const matchesSearch =
-                            fullName.toLowerCase().includes(searchTerm) ||
-                            patientId.toLowerCase().includes(searchTerm) ||
-                            mobileNumber.includes(searchTerm) ||
-                            alternateMobileNumber.includes(searchTerm);
-
-                        let matchesGender = true;
-                        if (genderFilter !== 'All') {
-                            matchesGender = patient.gender === genderFilter;
-                        }
-
-                        return matchesSearch && matchesGender;
-                    });
-
-                    // Apply sorting based on current sortBy and sortOrder
-                    filtered.sort((a, b) => {
-                        if (sortBy === 'id') {
-                            const idA = (a.patientId || '').toString().toLowerCase();
-                            const idB = (b.patientId || '').toString().toLowerCase();
-                            return sortOrder === 'asc'
-                                ? idA.localeCompare(idB)
-                                : idB.localeCompare(idA);
-                        } else if (sortBy === 'name') {
-                            const nameA = `${a.firstName || ''} ${a.lastName || ''}`.trim().toLowerCase();
-                            const nameB = `${b.firstName || ''} ${b.lastName || ''}`.trim().toLowerCase();
-                            return sortOrder === 'asc'
-                                ? nameA.localeCompare(nameB)
-                                : nameB.localeCompare(nameA);
-                        }
-                        return 0;
-                    });
-
-                    filteredPatientDetails = filtered;
-                    displayPatientPage(1);
-                }
-
-                function displayPatientPage(page) {
+                function fetchPatients(page) {
+                    currentPagePatients = page;
                     localStorage.setItem('currentPagePatients', page);
+
+                    const searchTerm = searchBar ? searchBar.value.trim() : '';
+                    const genderFilter = filterDropdown ? filterDropdown.value : 'All';
+
+                    const params = new URLSearchParams({
+                        page: page,
+                        limit: itemsPerPagePatients,
+                        search: searchTerm,
+                        gender: genderFilter,
+                        sortBy: sortBy,
+                        sortOrder: sortOrder
+                    });
+
+                    fetch(`${baseUrl}Healthcareprovider/getPatientsAjax?${params.toString()}`)
+                        .then(res => res.json())
+                        .then(response => {
+                            renderPatientTable(response, page);
+                        })
+                        .catch(err => {
+                            console.error('Error fetching patients:', err);
+                        });
+                }
+
+                function renderPatientTable(response, page) {
+                    const data = response.data || [];
+                    const totalRecords = response.filteredRecords !== undefined ? response.filteredRecords : data.length;
                     const start = (page - 1) * itemsPerPagePatients;
-                    const end = start + itemsPerPagePatients;
-                    const itemsToShow = filteredPatientDetails.slice(start, end);
+                    const end = start + data.length;
 
                     const patientContainer = document.getElementById('patientContainer');
+                    if (!patientContainer) return;
                     patientContainer.innerHTML = '';
 
-                    updateEntriesInfo(start + 1, Math.min(end, filteredPatientDetails.length), filteredPatientDetails.length);
+                    updateEntriesInfo(data.length > 0 ? start + 1 : 0, end, totalRecords);
 
-                    if (itemsToShow.length === 0) {
+                    if (data.length === 0) {
                         const noMatchesRow = document.createElement('tr');
                         noMatchesRow.innerHTML = '<td colspan="8" class="text-center">No matches found.</td>';
                         patientContainer.appendChild(noMatchesRow);
                     } else {
-                        itemsToShow.forEach((value, index) => {
+                        data.forEach((value, index) => {
                             let currentAge = value.age;
 
                             if (value.derived_dob) {
@@ -301,51 +294,58 @@
                                 currentAge = yearsDiff;
                             }
 
+                            const photoUrl = value.profilePhoto && value.profilePhoto !== 'No data'
+                                ? `${baseUrl}uploads/${value.profilePhoto}`
+                                : `${baseUrl}assets/BlankProfile.jpg`;
+
                             const patientRow = document.createElement('tr');
                             patientRow.innerHTML = `
-                    <td class="pt-3">${start + index + 1}.</td>
-                    <td class="px-2">
-                        <img src="${value.profilePhoto && value.profilePhoto !== 'No data' ? '<?php echo base_url(); ?>uploads/' + value.profilePhoto : '<?php echo base_url(); ?>assets/BlankProfile.jpg'}" 
-                             alt="Profile" width="40" height="40" class="rounded-circle"  
-                             onerror="this.onerror=null;this.src='<?= base_url('assets/BlankProfile.jpg') ?>';">
-                    </td>
-                    <td style="font-size: 16px" class="pt-3">
-                        <a href="<?php echo base_url('Consultation/consultation/'); ?>${value.id}" class="fieldLink text-dark"> ${value.patientId}</a>
-                    </td>
-                    <td style="font-size: 16px" class="pt-3">
-                        <a href="<?php echo base_url('Consultation/consultation/'); ?>${value.id}" class="fieldLink text-dark"> ${value.firstName} ${value.lastName}</a>
-                    </td>
-                    <td style="font-size: 16px" class="pt-3">
-                        <a href="<?php echo base_url('Consultation/consultation/'); ?>${value.id}" class="fieldLink text-dark"> ${value.mobileNumber}</a>
-                    </td>
-                    <td style="font-size: 16px" class="pt-3">
-                        <a href="<?php echo base_url('Consultation/consultation/'); ?>${value.id}" class="fieldLink text-dark"> ${value.gender}</a>
-                    </td>
-                    <td style="font-size: 16px" class="pt-3">
-                        <a href="<?php echo base_url('Consultation/consultation/'); ?>${value.id}" class="fieldLink text-dark"> ${currentAge}</a>
-                    </td>
-                    <td class="pt-2" style="font-size: 16px;">
-                        <a href="<?php echo base_url(); ?>Healthcareprovider/patientdetails/${value.id}" class="px-1">
-                            <button class="btn btn-success mb-1"><i class="bi bi-eye"></i></button>
-                        </a>
-                        <a href="<?php echo base_url(); ?>Consultation/consultation/${value.id}" class="">
-                            <button class="btn btn-secondary text-light mb-1"><i class="bi bi-calendar-check"></i></button>
-                        </a>
-                    </td>`;
+                                <td class="pt-3">${start + index + 1}.</td>
+                                <td class="px-2">
+                                    <img src="${photoUrl}" 
+                                         alt="Profile" width="40" height="40" class="rounded-circle"  
+                                         onerror="this.onerror=null;this.src='${baseUrl}assets/BlankProfile.jpg';">
+                                </td>
+                                <td style="font-size: 16px" class="pt-3">
+                                    <a href="${baseUrl}Consultation/consultation/${value.id}" class="fieldLink text-dark">${value.patientId}</a>
+                                </td>
+                                <td style="font-size: 16px" class="pt-3">
+                                    <a href="${baseUrl}Consultation/consultation/${value.id}" class="fieldLink text-dark">${value.firstName} ${value.lastName || ''}</a>
+                                </td>
+                                <td style="font-size: 16px" class="pt-3">
+                                    <a href="${baseUrl}Consultation/consultation/${value.id}" class="fieldLink text-dark">${value.mobileNumber || ''}</a>
+                                </td>
+                                <td style="font-size: 16px" class="pt-3">
+                                    <a href="${baseUrl}Consultation/consultation/${value.id}" class="fieldLink text-dark">${value.gender || ''}</a>
+                                </td>
+                                <td style="font-size: 16px" class="pt-3">
+                                    <a href="${baseUrl}Consultation/consultation/${value.id}" class="fieldLink text-dark">${currentAge || ''}</a>
+                                </td>
+                                <td class="pt-2" style="font-size: 16px;">
+                                    <a href="${baseUrl}Healthcareprovider/patientdetails/${value.id}" class="px-1">
+                                        <button class="btn btn-success mb-1"><i class="bi bi-eye"></i></button>
+                                    </a>
+                                    <a href="${baseUrl}Consultation/consultation/${value.id}" class="">
+                                        <button class="btn btn-secondary text-light mb-1"><i class="bi bi-calendar-check"></i></button>
+                                    </a>
+                                </td>`;
                             patientContainer.appendChild(patientRow);
                         });
                     }
-                    generatePatientPagination(filteredPatientDetails.length, page);
+                    generatePatientPagination(totalRecords, page);
                 }
 
                 function updateEntriesInfo(start, end, totalEntries) {
                     const entriesInfo = document.getElementById('entriesInfo');
-                    entriesInfo.textContent = `Showing ${start} to ${end} of ${totalEntries} entries.`;
+                    if (entriesInfo) {
+                        entriesInfo.textContent = `Showing ${start} to ${end} of ${totalEntries} entries.`;
+                    }
                 }
 
                 function generatePatientPagination(totalItems, currentPage) {
-                    const totalPages = Math.ceil(totalItems / itemsPerPagePatients);
+                    const totalPages = Math.ceil(totalItems / itemsPerPagePatients) || 1;
                     const paginationContainer = document.getElementById('paginationContainerPatients');
+                    if (!paginationContainer) return;
                     paginationContainer.innerHTML = '';
 
                     const ul = document.createElement('ul');
@@ -353,7 +353,7 @@
 
                     const prevLi = document.createElement('li');
                     prevLi.innerHTML = `<a href="#"><button type="button" class="bg-light border px-3 py-2" ${currentPage === 1 ? 'disabled' : ''}>Previous</button></a>`;
-                    prevLi.onclick = (e) => { e.preventDefault(); if (currentPage > 1) displayPatientPage(currentPage - 1); };
+                    prevLi.onclick = (e) => { e.preventDefault(); if (currentPage > 1) fetchPatients(currentPage - 1); };
                     ul.appendChild(prevLi);
 
                     const startPage = Math.max(1, currentPage - 2);
@@ -362,22 +362,23 @@
                     for (let i = startPage; i <= endPage; i++) {
                         const li = document.createElement('li');
                         li.innerHTML = `<a href="#"><button type="button" class="btn border px-3 py-2 ${i === currentPage ? 'text-light' : ''}" style="background-color: ${i === currentPage ? '#00ad8e' : 'transparent'};">${i}</button></a>`;
-                        li.onclick = (e) => { e.preventDefault(); displayPatientPage(i); };
+                        li.onclick = (e) => { e.preventDefault(); fetchPatients(i); };
                         ul.appendChild(li);
                     }
 
                     const nextLi = document.createElement('li');
-                    nextLi.innerHTML = `<a href="#"><button type="button" class="border px-3 py-2" ${currentPage === totalPages ? 'disabled' : ''}>Next</button></a>`;
-                    nextLi.onclick = (e) => { e.preventDefault(); if (currentPage < totalPages) displayPatientPage(currentPage + 1); };
+                    nextLi.innerHTML = `<a href="#"><button type="button" class="border px-3 py-2" ${currentPage >= totalPages ? 'disabled' : ''}>Next</button></a>`;
+                    nextLi.onclick = (e) => { e.preventDefault(); if (currentPage < totalPages) fetchPatients(currentPage + 1); };
                     ul.appendChild(nextLi);
 
                     paginationContainer.appendChild(ul);
                 }
 
-                // Initial load - Show 🡳 on ID and sort by ID descending by default
-                updateSortIndicators();
-                toggleClearIcons();
-                applyFilters();  // Will sort by Patient ID descending on first load
+                if (document.getElementById('patientContainer')) {
+                    updateSortIndicators();
+                    toggleClearIcons();
+                    fetchPatients(currentPagePatients);
+                }
             </script>
 
             <?php

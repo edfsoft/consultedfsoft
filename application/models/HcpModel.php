@@ -834,6 +834,56 @@ class HcpModel extends CI_Model
         return $this->db->count_all_results('patient_details');
     }
 
+    public function getPatientsServerSide($hcpIdDb, $start = 0, $limit = 10, $search = '', $gender = 'All', $sortBy = 'id', $sortOrder = 'desc')
+    {
+        // Total count for this HCP
+        $this->db->where('patientHcpDbId', $hcpIdDb);
+        $this->db->where('deleteStatus', '0');
+        $totalRecords = $this->db->count_all_results('patient_details');
+
+        // Filtered count & data
+        $this->db->from('patient_details');
+        $this->db->where('patientHcpDbId', $hcpIdDb);
+        $this->db->where('deleteStatus', '0');
+
+        if ($gender !== 'All' && !empty($gender)) {
+            $this->db->where('gender', $gender);
+        }
+
+        if (!empty($search)) {
+            $this->db->group_start();
+            $this->db->like('patientId', $search);
+            $this->db->or_like('firstName', $search);
+            $this->db->or_like('lastName', $search);
+            $this->db->or_like('mobileNumber', $search);
+            $this->db->or_like('alternateMobile', $search);
+            $this->db->or_like("CONCAT(firstName, ' ', lastName)", $search);
+            $this->db->group_end();
+        }
+
+        $filteredRecords = $this->db->count_all_results('', false);
+
+        $validSortColumns = [
+            'id' => 'patientId',
+            'patientId' => 'patientId',
+            'name' => 'firstName'
+        ];
+        $orderColumn = isset($validSortColumns[$sortBy]) ? $validSortColumns[$sortBy] : 'patientId';
+        $orderDir = (strtolower($sortOrder) === 'asc') ? 'ASC' : 'DESC';
+
+        $this->db->order_by($orderColumn, $orderDir);
+        $this->db->limit($limit, $start);
+
+        $query = $this->db->get();
+        $data = $query->result_array();
+
+        return [
+            'totalRecords' => $totalRecords,
+            'filteredRecords' => $filteredRecords,
+            'data' => $data
+        ];
+    }
+
     public function getCcCount()
     {
         $this->db->where('deleteStatus', '0');

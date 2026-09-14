@@ -368,12 +368,38 @@ class Healthcareprovider extends CI_Controller
     {
         if (isset($_SESSION['hcpsName'])) {
             $this->data['method'] = "patients";
-            $patientList = $this->HcpModel->getPatientList();
-            $this->data['patientList'] = $patientList['response'];
+            $hcpIdDb = $_SESSION['hcpIdDb'];
+            $this->data['totalPatientCount'] = $this->HcpModel->getPatientCount($hcpIdDb);
             $this->load->view('hcpDashboardPatients.php', $this->data);
         } else {
             redirect('Healthcareprovider/');
         }
+    }
+
+    public function getPatientsAjax()
+    {
+        if (!isset($_SESSION['hcpIdDb'])) {
+            header('Content-Type: application/json');
+            echo json_encode(['error' => 'Unauthorized']);
+            return;
+        }
+
+        $hcpIdDb = $_SESSION['hcpIdDb'];
+        $page = (int) ($this->input->get_post('page') ?: 1);
+        $limit = (int) ($this->input->get_post('limit') ?: 10);
+        $search = trim($this->input->get_post('search') ?: '');
+        $gender = trim($this->input->get_post('gender') ?: 'All');
+        $sortBy = trim($this->input->get_post('sortBy') ?: 'id');
+        $sortOrder = trim($this->input->get_post('sortOrder') ?: 'desc');
+
+        if ($limit < 1) $limit = 10;
+        if ($page < 1) $page = 1;
+        $start = ($page - 1) * $limit;
+
+        $result = $this->HcpModel->getPatientsServerSide($hcpIdDb, $start, $limit, $search, $gender, $sortBy, $sortOrder);
+
+        header('Content-Type: application/json');
+        echo json_encode($result);
     }
 
     public function patientform()
